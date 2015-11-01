@@ -417,6 +417,8 @@ int CC_CONFIG::parse_options_client(XML_PARSER& xp) {
         if (xp.parse_bool("no_info_fetch", no_info_fetch)) continue;
         if (xp.parse_bool("no_priority_change", no_priority_change)) continue;
         if (xp.parse_bool("os_random_only", os_random_only)) continue;
+        if (xp.parse_int("process_priority", process_priority)) continue;
+        if (xp.parse_int("process_priority_special", process_priority_special)) continue;
 #ifndef SIM
         if (xp.match_tag("proxy_info")) {
             retval = proxy_info.parse_config(xp);
