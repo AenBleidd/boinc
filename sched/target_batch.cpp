@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // NOTE: this is from Derrick Kondo (INRIA).  Needs to be cleaned up a bit.
 
 /* Assigns uncompleted (and unassigned) workunits of a batch to hosts

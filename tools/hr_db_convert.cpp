@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // utility program for projects that use homogeneous redundancy.
 // Converts old-style info (in result table)
 // to new style (using workseq_next field of workunit)

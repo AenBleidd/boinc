@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 /*
 Copyright (c) 1986, 1993, 1995 by University of Toronto.
 Written by Henry Spencer.  Not derived from licensed software.
