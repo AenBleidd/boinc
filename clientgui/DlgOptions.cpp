@@ -252,7 +252,7 @@ void CDlgOptions::CreateControls() {
     m_UseDifferentTaskColoursCtrl->Create(itemPanel70, ID_USEDIFFERENTTASKCOLOURSCTRL, _("Use different task colours"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_UseDifferentTaskColoursCtrl->SetValue(FALSE);
     if (ShowToolTips())
-      m_UseDifferentTaskColoursCtrl->SetToolTip(_("Use different task colours for to identify CPU or GPU (Intel, AMD/ATI, NVIDIA) tasks"));
+      m_UseDifferentTaskColoursCtrl->SetToolTip(_("Use different task colours to identify CPU or GPU (Intel, AMD/ATI, NVIDIA) tasks."));
     itemBoxSizer71->Add(m_UseDifferentTaskColoursCtrl, 0, wxGROW | wxALL, 5);
 
     wxStaticBox* itemStaticBox77 = new wxStaticBox(itemPanel70, wxID_ANY, _("Task colours"));
