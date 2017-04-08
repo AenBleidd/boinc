@@ -31,6 +31,7 @@
 #endif
 
 #include "error_numbers.h"
+#include "str_replace.h"
 #include "filesys.h"
 
 #include "mfile.h"
@@ -38,6 +39,7 @@
 MFILE::MFILE() {
     buf = (char*)malloc(64*1024);
     len = 0;
+    f = NULL;
 }
 
 MFILE::~MFILE() {
@@ -147,10 +149,13 @@ int MFILE::puts(const char* p) {
     return n;
 }
 
+// This is closing the file even if it couldn't flush it.
+// The caller needs to check the return value and open the file again before the next retry.
+//
 int MFILE::close() {
     int retval = 0;
     if (f) {
-        flush();
+        retval = flush();
         fclose(f);
         f = NULL;
     }

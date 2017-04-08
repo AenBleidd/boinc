@@ -20,7 +20,8 @@
 #ifdef _WIN32
 #include "boinc_win.h"
 #ifdef _MSC_VER
-#define chdir _chdir
+#define chdir    _chdir
+#define snprintf _snprintf
 #endif
 #else
 #include "config.h"
@@ -50,59 +51,60 @@ using std::string;
 LOG_FLAGS log_flags;
 CC_CONFIG cc_config;
 
-static void show_flag(char* buf, bool flag, const char* flag_name) {
+static void show_flag(char* buf, int len, bool flag, const char* flag_name) {
     if (!flag) return;
     int n = (int)strlen(buf);
     if (!n) {
-        strlcpy(buf, flag_name, 256);
+        strlcpy(buf, flag_name, len);
         return;
     }
-    strcat(buf, ", ");
-    strcat(buf, flag_name);
+    strlcat(buf, ", ", len);
+    strlcat(buf, flag_name, len);
     if (strlen(buf) > 60) {
         msg_printf(NULL, MSG_INFO, "log flags: %s", buf);
-        strcpy(buf, "");
+        strlcpy(buf, "", len);
     }
 }
 
 void LOG_FLAGS::show() {
     char buf[256];
-    strcpy(buf, "");
-    show_flag(buf, file_xfer, "file_xfer");
-    show_flag(buf, sched_ops, "sched_ops");
-    show_flag(buf, task, "task");
+    safe_strcpy(buf, "");
+    show_flag(buf, sizeof(buf), file_xfer, "file_xfer");
+    show_flag(buf, sizeof(buf), sched_ops, "sched_ops");
+    show_flag(buf, sizeof(buf), task, "task");
 
-    show_flag(buf, app_msg_receive, "app_msg_receive");
-    show_flag(buf, app_msg_send, "app_msg_send");
-    show_flag(buf, async_file_debug, "async_file_debug");
-    show_flag(buf, benchmark_debug, "benchmark_debug");
-    show_flag(buf, checkpoint_debug, "checkpoint_debug");
-    show_flag(buf, coproc_debug, "coproc_debug");
-    show_flag(buf, cpu_sched, "cpu_sched");
-    show_flag(buf, cpu_sched_debug, "cpu_sched_debug");
-    show_flag(buf, cpu_sched_status, "cpu_sched_status");
-    show_flag(buf, dcf_debug, "dcf_debug");
-    show_flag(buf, file_xfer_debug, "file_xfer_debug");
-    show_flag(buf, gui_rpc_debug, "gui_rpc_debug");
-    show_flag(buf, heartbeat_debug, "heartbeat_debug");
-    show_flag(buf, http_debug, "http_debug");
-    show_flag(buf, http_xfer_debug, "http_xfer_debug");
-    show_flag(buf, mem_usage_debug, "mem_usage_debug");
-    show_flag(buf, network_status_debug, "network_status_debug");
-    show_flag(buf, notice_debug, "notice_debug");
-    show_flag(buf, poll_debug, "poll_debug");
-    show_flag(buf, priority_debug, "priority_debug");
-    show_flag(buf, proxy_debug, "proxy_debug");
-    show_flag(buf, rr_simulation, "rr_simulation");
-    show_flag(buf, sched_op_debug, "sched_op_debug");
-    show_flag(buf, scrsave_debug, "scrsave_debug");
-    show_flag(buf, slot_debug, "slot_debug");
-    show_flag(buf, state_debug, "state_debug");
-    show_flag(buf, statefile_debug, "statefile_debug");
-    show_flag(buf, task_debug, "task_debug");
-    show_flag(buf, time_debug, "time_debug");
-    show_flag(buf, unparsed_xml, "unparsed_xml");
-    show_flag(buf, work_fetch_debug, "work_fetch_debug");
+    show_flag(buf, sizeof(buf), app_msg_receive, "app_msg_receive");
+    show_flag(buf, sizeof(buf), app_msg_send, "app_msg_send");
+    show_flag(buf, sizeof(buf), async_file_debug, "async_file_debug");
+    show_flag(buf, sizeof(buf), benchmark_debug, "benchmark_debug");
+    show_flag(buf, sizeof(buf), checkpoint_debug, "checkpoint_debug");
+    show_flag(buf, sizeof(buf), coproc_debug, "coproc_debug");
+    show_flag(buf, sizeof(buf), cpu_sched, "cpu_sched");
+    show_flag(buf, sizeof(buf), cpu_sched_debug, "cpu_sched_debug");
+    show_flag(buf, sizeof(buf), cpu_sched_status, "cpu_sched_status");
+    show_flag(buf, sizeof(buf), dcf_debug, "dcf_debug");
+    show_flag(buf, sizeof(buf), file_xfer_debug, "file_xfer_debug");
+    show_flag(buf, sizeof(buf), gui_rpc_debug, "gui_rpc_debug");
+    show_flag(buf, sizeof(buf), heartbeat_debug, "heartbeat_debug");
+    show_flag(buf, sizeof(buf), http_debug, "http_debug");
+    show_flag(buf, sizeof(buf), http_xfer_debug, "http_xfer_debug");
+    show_flag(buf, sizeof(buf), idle_detection_debug, "idle_detection_debug");
+    show_flag(buf, sizeof(buf), mem_usage_debug, "mem_usage_debug");
+    show_flag(buf, sizeof(buf), network_status_debug, "network_status_debug");
+    show_flag(buf, sizeof(buf), notice_debug, "notice_debug");
+    show_flag(buf, sizeof(buf), poll_debug, "poll_debug");
+    show_flag(buf, sizeof(buf), priority_debug, "priority_debug");
+    show_flag(buf, sizeof(buf), proxy_debug, "proxy_debug");
+    show_flag(buf, sizeof(buf), rr_simulation, "rr_simulation");
+    show_flag(buf, sizeof(buf), sched_op_debug, "sched_op_debug");
+    show_flag(buf, sizeof(buf), scrsave_debug, "scrsave_debug");
+    show_flag(buf, sizeof(buf), slot_debug, "slot_debug");
+    show_flag(buf, sizeof(buf), state_debug, "state_debug");
+    show_flag(buf, sizeof(buf), statefile_debug, "statefile_debug");
+    show_flag(buf, sizeof(buf), task_debug, "task_debug");
+    show_flag(buf, sizeof(buf), time_debug, "time_debug");
+    show_flag(buf, sizeof(buf), unparsed_xml, "unparsed_xml");
+    show_flag(buf, sizeof(buf), work_fetch_debug, "work_fetch_debug");
 
     if (strlen(buf)) {
         msg_printf(NULL, MSG_INFO, "log flags: %s", buf);
@@ -137,7 +139,7 @@ static void show_exclude_gpu(EXCLUDE_GPU& e) {
     if (e.device_num < 0) {
         safe_strcpy(dev, "all");
     } else {
-        sprintf(dev, "%d", e.device_num);
+        snprintf(dev, sizeof(dev), "%d", e.device_num);
     }
     msg_printf(p, MSG_INFO,
         "Config: excluded GPU.  Type: %s.  App: %s.  Device: %s",
@@ -230,6 +232,9 @@ void CC_CONFIG::show() {
     for (int j=1; j<NPROC_TYPES; j++) {
         show_gpu_ignore(ignore_gpu_instance[j], j);
     }
+    if (lower_client_priority) {
+        msg_printf(NULL, MSG_INFO, "Config: lower client priority");
+    }
     if (max_event_log_lines != DEFAULT_MAX_EVENT_LOG_LINES) {
         if (max_event_log_lines) {
             msg_printf(NULL, MSG_INFO,
@@ -247,6 +252,9 @@ void CC_CONFIG::show() {
     }
     if (no_info_fetch) {
         msg_printf(NULL, MSG_INFO, "Config: don't fetch project list or client version info");
+    }
+    if (no_opencl) {
+        msg_printf(NULL, MSG_INFO, "Config: don't use OpenCL");
     }
     if (no_priority_change) {
         msg_printf(NULL, MSG_INFO, "Config: run apps at regular priority");
@@ -346,6 +354,7 @@ int CC_CONFIG::parse_options_client(XML_PARSER& xp) {
         if (xp.parse_bool("disallow_attach", disallow_attach)) continue;
         if (xp.parse_bool("dont_check_file_sizes", dont_check_file_sizes)) continue;
         if (xp.parse_bool("dont_contact_ref_site", dont_contact_ref_site)) continue;
+        if (xp.parse_bool("lower_client_priority", lower_client_priority)) continue;
         if (xp.parse_bool("dont_suspend_nci", dont_suspend_nci)) continue;
         if (xp.parse_bool("dont_use_vbox", dont_use_vbox)) continue;
         if (xp.match_tag("exclude_gpu")) {
@@ -415,6 +424,7 @@ int CC_CONFIG::parse_options_client(XML_PARSER& xp) {
         if (xp.parse_bool("no_alt_platform", no_alt_platform)) continue;
         if (xp.parse_bool("no_gpus", no_gpus)) continue;
         if (xp.parse_bool("no_info_fetch", no_info_fetch)) continue;
+        if (xp.parse_bool("no_opencl", no_opencl)) continue;
         if (xp.parse_bool("no_priority_change", no_priority_change)) continue;
         if (xp.parse_bool("os_random_only", os_random_only)) continue;
         if (xp.parse_int("process_priority", process_priority)) continue;
@@ -729,7 +739,7 @@ void process_gpu_exclusions() {
         }
         if (found) continue;
         avp->missing_coproc = true;
-        strcpy(avp->missing_coproc_name, "");
+        safe_strcpy(avp->missing_coproc_name, "");
         for (j=0; j<gstate.results.size(); j++) {
             RESULT* rp = gstate.results[j];
             if (rp->avp != avp) continue;

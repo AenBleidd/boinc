@@ -32,6 +32,7 @@
 #endif
 
 #include "error_numbers.h"
+#include "str_replace.h"
 #include "parse.h"
 #include "util.h"
 
@@ -259,6 +260,8 @@ void GLOBAL_PREFS::defaults() {
     vm_max_used_frac = 0.75;
     work_buf_additional_days = 0.5;
     work_buf_min_days = 0.1;
+    
+    override_file_present = false;
 
     // don't initialize source_project, source_scheduler,
     // mod_time, host_specific here
@@ -300,8 +303,8 @@ void GLOBAL_PREFS::init_bools() {
 
 void GLOBAL_PREFS::init() {
     defaults();
-    strcpy(source_project, "");
-    strcpy(source_scheduler, "");
+    safe_strcpy(source_project, "");
+    safe_strcpy(source_scheduler, "");
     mod_time = 0;
     host_specific = false;
 }

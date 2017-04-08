@@ -451,17 +451,13 @@ void CViewWork::OnWorkSuspend( wxCommandEvent& WXUNUSED(event) ) {
         RESULT* result = pDoc->result(m_iSortedIndexes[row]);
         if (result) {
             if (result->suspended_via_gui) {
-                pFrame->UpdateStatusText(_("Resuming task..."));
                 pDoc->WorkResume(result->project_url, result->name);
             } else {
-                pFrame->UpdateStatusText(_("Suspending task..."));
                 pDoc->WorkSuspend(result->project_url, result->name);
             }
         }
     }
 
-    pFrame->UpdateStatusText(wxT(""));
-    
     UpdateSelection();
     pFrame->FireRefreshView();
 
@@ -483,8 +479,6 @@ void CViewWork::OnWorkShowGraphics( wxCommandEvent& WXUNUSED(event) ) {
     wxASSERT(wxDynamicCast(pFrame, CAdvancedFrame));
     wxASSERT(m_pListPane);
 
-    pFrame->UpdateStatusText(_("Showing graphics for task..."));
-
     row = -1;
     while (1) {
         // Step through all selected items
@@ -496,8 +490,6 @@ void CViewWork::OnWorkShowGraphics( wxCommandEvent& WXUNUSED(event) ) {
             pDoc->WorkShowGraphics(result);
         }
     }
-
-    pFrame->UpdateStatusText(wxT(""));
 
     UpdateSelection();
     pFrame->FireRefreshView();
@@ -520,8 +512,6 @@ void CViewWork::OnWorkShowVMConsole( wxCommandEvent& WXUNUSED(event) ) {
     wxASSERT(wxDynamicCast(pFrame, CAdvancedFrame));
     wxASSERT(m_pListPane);
 
-    pFrame->UpdateStatusText(_("Showing VM console for task..."));
-
     row = -1;
     while (1) {
         // Step through all selected items
@@ -533,8 +523,6 @@ void CViewWork::OnWorkShowVMConsole( wxCommandEvent& WXUNUSED(event) ) {
             pDoc->WorkShowVMConsole(result);
         }
     }
-
-    pFrame->UpdateStatusText(wxT(""));
 
     UpdateSelection();
     pFrame->FireRefreshView();
@@ -593,8 +581,6 @@ void CViewWork::OnWorkAbort( wxCommandEvent& WXUNUSED(event) ) {
         return;
     }
 
-    pFrame->UpdateStatusText(_("Aborting task..."));
-
     row = -1;
     while (1) {
         // Step through all selected items
@@ -606,8 +592,6 @@ void CViewWork::OnWorkAbort( wxCommandEvent& WXUNUSED(event) ) {
             pDoc->WorkAbort(result->project_url, result->name);
         }
     }
-
-    pFrame->UpdateStatusText(wxT(""));
 
     UpdateSelection();
     pFrame->FireRefreshView();
@@ -693,14 +677,10 @@ void CViewWork::OnProjectWebsiteClicked( wxEvent& event ) {
     wxASSERT(m_pTaskPane);
     wxASSERT(m_pListPane);
 
-    pFrame->UpdateStatusText(_("Launching browser..."));
-
     int website_task_index = event.GetId() - ID_TASK_PROJECT_WEB_PROJDEF_MIN;
     wxLaunchDefaultBrowser(
         m_TaskGroups[1]->m_Tasks[website_task_index]->m_strWebSiteLink
     );
-
-    pFrame->UpdateStatusText(wxT(""));
 
     UpdateSelection();
     pFrame->FireRefreshView();
@@ -1027,7 +1007,7 @@ bool CViewWork::SynchronizeCacheItem(wxInt32 iRowIndex, wxInt32 iColumnIndex) {
             GetDocCPUTime(m_iSortedIndexes[iRowIndex], x);
             if (x != work->m_fCPUTime) {
                 work->m_fCPUTime = x;
-                FormatCPUTime(x, work->m_strCPUTime);
+                work->m_strCPUTime = FormatTime(x);
                 return true;
             }
             break;
@@ -1169,29 +1149,6 @@ void CViewWork::GetDocCPUTime(wxInt32 item, double& fBuffer) const {
         }
     }
 }
-
-
-wxInt32 CViewWork::FormatCPUTime(double fBuffer, wxString& strBuffer) const {
-    wxInt32        iHour = 0;
-    wxInt32        iMin = 0;
-    wxInt32        iSec = 0;
-    wxTimeSpan     ts;
-    
-    if (0 == fBuffer) {
-        strBuffer = wxT("---");
-    } else {
-        iHour = (wxInt32)(fBuffer / (60 * 60));
-        iMin  = (wxInt32)(fBuffer / 60) % 60;
-        iSec  = (wxInt32)(fBuffer) % 60;
-
-        ts = wxTimeSpan(iHour, iMin, iSec);
-
-        strBuffer = ts.Format();
-    }
-
-    return 0;
-}
-
 
 void CViewWork::GetDocProgress(wxInt32 item, double& fBuffer) const {
     RESULT*        result = wxGetApp().GetDocument()->result(item);

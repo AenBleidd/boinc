@@ -15,6 +15,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+// code related to "time stats logs".
+// These are summaries of client availability send in scheduler requests.
+// The scheduler writes them to a directory hierarchy for later analysis.
+
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -34,8 +38,8 @@ static char* stats_buf = 0;
 // don't write them to disk yet, since we haven't authenticated the host
 //
 
-void handle_time_stats_log(FILE* fin) {
-    dup_element_contents(fin, "</time_stats_log>", &stats_buf);
+int handle_time_stats_log(FILE* fin) {
+    return dup_element_contents(fin, "</time_stats_log>", &stats_buf);
 }
 
 // The host has been authenticated, so write the stats.

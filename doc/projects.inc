@@ -1,7 +1,7 @@
 <?php
 
 // if you change anything here,
-// look at http://boinc.berkeley.edu/project_list.php in a browser to make sure
+// look at https://boinc.berkeley.edu/project_list.php in a browser to make sure
 // you didn't mess up the XML
 
 require_once("../inc/translation.inc");
@@ -20,12 +20,12 @@ $sensing = array(
     array(
         array(
             "Quake Catcher Network",
-            "http://qcn.caltech.edu/sensor",
-            tra("Caltech"),
+            "http://quakecatcher.net",
+            tra("University of Southern California"),
             tra("Seismology"),
             tra("Quake-Catcher Network uses sensors attached to computers and smartphones to detect seismic waves."),
             "",
-            "",
+            "http://quakecatcher.net/sensor/",
             "Help detect earthquakes"
         ),
         array(
@@ -67,7 +67,7 @@ $dormant_projects = array(
         array(
             "FreeHAL",
             "http://www.freehal.net/freehal_at_home/",
-            tra("Private"),
+            tra("Independent"),
             tra("Artificial intelligence"),
             tra("Parse and convert semantic nets for use in FreeHAL, an artificial intelligence that uses semantic networks, stemmers, part of speech databases, and part of speech taggers in order to imitate human behavior in conversations."),
             "",
@@ -111,16 +111,16 @@ $biomed = array(
             "",
             "Develop malaria drugs"
         ),
-        array(
-            "POEM@HOME",
-            "http://boinc.fzk.de/poem/",
-            tra("University of Karlsruhe (Germany)"),
-            tra("Protein structure prediction"),
-            tra("POEM@HOME uses a computational approach to predict the biologically active structure of proteins, to understand the signal-processing mechanisms when the proteins interact with one another, to understand diseases related to protein malfunction or aggregation, and to develop new drugs on the basis of the three-dimensions structure of biologically important proteins."),
-            "poem.jpg",
-            "",
-            "Study protein structure and interaction"
-        ),
+//        array(
+//            "POEM@HOME",
+//            "http://boinc.fzk.de/poem/",
+//            tra("University of Karlsruhe (Germany)"),
+//            tra("Protein structure prediction"),
+//            tra("POEM@HOME uses a computational approach to predict the biologically active structure of proteins, to understand the signal-processing mechanisms when the proteins interact with one another, to understand diseases related to protein malfunction or aggregation, and to develop new drugs on the basis of the three-dimensions structure of biologically important proteins."),
+//            "poem.jpg",
+//            "",
+//            "Study protein structure and interaction"
+//        ),
 //        array(
 //            "Docking@Home",
 //            "http://docking.cis.udel.edu/",
@@ -179,16 +179,16 @@ $biomed = array(
             "",
             "Study evolution using genetics"
         ),
-        array(
-            "Malariacontrol.net",
-            "http://www.malariacontrol.net/",
-            tra("The Swiss Tropical Institute"),
-            tra("Epidemiology"),
-            tra("Simulation models of the transmission dynamics and health effects of malaria are an important tool for malaria control. They can be used to determine optimal strategies for delivering mosquito nets, chemotherapy, or new vaccines which are currently under development and testing.  Such modeling is extremely computer intensive, requiring simulations of large human populations with a diverse set of parameters related to biological and social factors that influence the distribution of the disease. "),
-            "africaathome.gif",
-            "",
-            "Study the spread of malaria"
-        ),
+//        array(
+//            "Malariacontrol.net",
+//            "http://www.malariacontrol.net/",
+//            tra("The Swiss Tropical Institute"),
+//            tra("Epidemiology"),
+//            tra("Simulation models of the transmission dynamics and health effects of malaria are an important tool for malaria control. They can be used to determine optimal strategies for delivering mosquito nets, chemotherapy, or new vaccines which are currently under development and testing.  Such modeling is extremely computer intensive, requiring simulations of large human populations with a diverse set of parameters related to biological and social factors that influence the distribution of the disease. "),
+//            "africaathome.gif",
+//            "",
+//            "Study the spread of malaria"
+//        ),
 //        array(
 //            "Tanpaku",
 //            "http://issofty17.is.noda.tus.ac.jp/",
@@ -283,16 +283,16 @@ $astro_phys_chem = array(
             "",
             "Study the properties of asteroids"
         ),
-        array(
-            "Constellation",
-            "http://aerospaceresearch.net/constellation/",
-            "<a href='http://rechenkraft.net'>Rechenkraft.net</a>, <a href='http://stuttgart.dglr.de'>DGLR</a>, <a href='http://selfnet.de'>Selfnet</a>, and <a href='http://shackspace.de'>shack</a>",
-            tra("Aerospace-related science and engineering"),
-            tra("Constellation is a platform for aerospace-related simulations, including trajectory optimization of launchers, satellites and probes, simulation of Moon's near-surface exosphere, and analysis of dynamic systems of exploration-rovers"),
-            "constellation2.png",
-            "",
-            tra("Perform aerospace-related simulations")
-        ),
+//        array(
+//            "Constellation",
+//            "http://aerospaceresearch.net/constellation/",
+//            "<a href='http://rechenkraft.net'>Rechenkraft.net</a>, <a href='http://stuttgart.dglr.de'>DGLR</a>, <a href='http://selfnet.de'>Selfnet</a>, and <a href='http://shackspace.de'>shack</a>",
+//            tra("Aerospace-related science and engineering"),
+//            tra("Constellation is a platform for aerospace-related simulations, including trajectory optimization of launchers, satellites and probes, simulation of Moon's near-surface exosphere, and analysis of dynamic systems of exploration-rovers"),
+//            "constellation2.png",
+//            "",
+//            tra("Perform aerospace-related simulations")
+//        ),
 //        array(
 //            "eOn",
 //            "http://eon.ices.utexas.edu/eon2/",
@@ -379,7 +379,7 @@ $astro_phys_chem = array(
 //        ),
         array(
             "LHC@home",
-            "http://lhcathomeclassic.cern.ch/sixtrack/",
+            "http://lhcathome.cern.ch/",
             tra("CERN (European Organization for Nuclear Research)"),
             tra("Physics"),
             tra("The Large Hadron Collider (LHC) is a particle accelerator at CERN, the European Organization for Nuclear Research, the world's largest particle physics laboratory.  It is the most powerful instrument ever built to investigate on particles proprieties. LHC@home runs simulations to improve the design of LHC and its detectors."),
@@ -387,16 +387,16 @@ $astro_phys_chem = array(
             "",
             tra("Improve the design of the Large Hadron Collider")
         ),
-        array(
-            "vLHCathome",
-            "http://lhcathome2.cern.ch/vLHCathome/",
-            tra("CERN (European Organization for Nuclear Research)"),
-            tra("Physics"),
-            tra("This project uses CERN-developed virtual machine technology for LHC event physics simulation on volunteer computers.  Requires that you install VirtualBox on your computer"),
-            "t4t.png",
-            "",
-            tra("Simulate high-energy particle collisions")
-        ),
+//        array(
+//            "vLHCathome",
+//            "http://lhcathome2.cern.ch/vLHCathome/",
+//            tra("CERN (European Organization for Nuclear Research)"),
+//            tra("Physics"),
+//            tra("This project uses CERN-developed virtual machine technology for LHC event physics simulation on volunteer computers.  Requires that you install VirtualBox on your computer"),
+//            "t4t.png",
+//            "",
+//            tra("Simulate high-energy particle collisions")
+//        ),
         array(
             "ATLAS@Home",
             "http://atlasathome.cern.ch/",
@@ -456,7 +456,7 @@ $mixed = array(
             "http://casathome.ihep.ac.cn/",
             tra("Chinese Academy of Sciences"),
             tra("Physics, biochemistry, and others"),
-            tra("The objective of CAS@home is to encourage and assist scientists in China to adopt the technologies of volunteer computing and volunteer thinking for their research."),
+            tra("CAS@home is hosted by the Computing Centre of the Institute of High Energy Physics (IHEP), Chinese Academy of Sciences, for Chinese scientists with projects studying protein structure, nanotechnology, cancer genomics, and high energy physics."),
             "cas_at_home.jpg",
             "",
             tra("Help Chinese researchers")
@@ -464,23 +464,23 @@ $mixed = array(
         array(
             "Yoyo@home",
             "http://www.rechenkraft.net/yoyo/",
-            tra("Private"),
+            tra("Independent"),
             tra("Mathematics, physics, evolution"),
             tra("Yoyo@home is an adapter between BOINC and several existing volunteer computing projects: ECM, Muon, Evolution@home, and distributed.net"),
             "",
             "",
             tra("Do research in math, physics, and evolution")
         ),
-        array(
-            "EDGeS@Home",
-            "http://home.edges-grid.eu/home/",
-            tra("MTA-SZTAKI Laboratory of Parallel and Distributed Systems (Hungary)"),
-            tra("European research projects"),
-            tra("The EDGeS@Home Beta project integrates volunteer computing into the service grid network of Europe by allowing service grids to send workunits to be processed by the volunteers of this project. The scientific projects covered by the project include math, physics, biology, etc."),
-            "logo_edges.png",
-            "",
-            tra("Help European researchers")
-        ),
+//        array(
+//            "EDGeS@Home",
+//            "http://home.edges-grid.eu/home/",
+//            tra("MTA-SZTAKI Laboratory of Parallel and Distributed Systems (Hungary)"),
+//            tra("European research projects"),
+//            tra("The EDGeS@Home Beta project integrates volunteer computing into the service grid network of Europe by allowing service grids to send workunits to be processed by the volunteers of this project. The scientific projects covered by the project include math, physics, biology, etc."),
+//            "logo_edges.png",
+//            "",
+//            tra("Help European researchers")
+//        ),
         array(
             "Ibercivis",
             "http://registro.ibercivis.es/",
@@ -519,7 +519,7 @@ $math = array(
 //        array(
 //            "OProject@Home",
 //            "http://oproject.info/",
-//            tra("Private"),
+//            tra("Independent"),
 //            tra("Mathematics, Physics, Artificial Intelligence"),
 //            tra("Simulation of quantum computing; Goldbach's conjecture."),
 //            "oproject_logo.png",
@@ -559,7 +559,7 @@ $math = array(
 //        array(
 //            "Mersenne@home",
 //            "http://mersenneathome.net/",
-//            tra("Private"),
+//            tra("Independent"),
 //            tra("Mathematics"),
 //            tra("Mersenne@home searches for 'Mersenne primes' - prime numbers of the form 2<sup>p</sup>-1."),
 //
@@ -568,7 +568,7 @@ $math = array(
 //        array(
 //            "DistrRTgen",
 //            "http://boinc.freerainbowtables.com/distrrtgen/",
-//            "Private",
+//            "Independent",
 //            tra("Cryptography"),
 //            "To give the world's security experts the best tools available for detecting weak hashes. This can help them to force developers to use more secure methods of password protection.",
 //            "freerainbowtables_logo.png",
@@ -578,7 +578,7 @@ $math = array(
         array(
             "Moo! Wrapper",
             "http://moowrap.net/",
-            "Private",
+            "Independent",
             tra("Cryptography and combinatorics"),
             tra("Run applications from distributed.net"),
             "",
@@ -588,7 +588,7 @@ $math = array(
         array(
             "Enigma@Home",
             "http://www.enigmaathome.net/",
-            tra("Private"),
+            tra("Independent"),
             tra("Cryptography"),
             tra("Attempt to decode 3 original Enigma messages. The signals were intercepted in the North Atlantic in 1942 and are believed to be unbroken."),
             "",
@@ -597,8 +597,8 @@ $math = array(
         ),
         array(
             "Collatz Conjecture",
-            "http://boinc.thesonntags.com/collatz/",
-            tra("Private"),
+            "https://boinc.thesonntags.com/collatz/",
+            tra("Independent"),
             tra("Mathematics"),
             tra("Study the Collatz Conjecture, an unsolved conjecture in mathematics"),
             "",
@@ -654,7 +654,7 @@ $math = array(
         array(
             "PrimeGrid",
             "http://www.primegrid.com/",
-            tra("Private"),
+            tra("Independent"),
             tra("Mathematics"),
             tra("Primegrid has multiple projects searching for different forms of very large prime numbers, including searching for the largest known prime number."),
             "primegrid_logo.png",
@@ -744,7 +744,7 @@ $math = array(
         array(
             "SRBase",
             "http://srbase.myfirewall.org/sr5/",
-            "Private",
+            "Independent",
             "Mathematics",
             "SRBase is a mathematical research project that uses Internet-connected computers trying to solve Sierpinski / Riesel Bases up to 1030.",
             "",

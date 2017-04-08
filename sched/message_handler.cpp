@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-//
 // message_handler - check and validate new messages
 //  [--d debug_level]
 //  [--one_pass]     // make one pass through table, then exit
@@ -116,6 +115,7 @@ int main_loop(bool one_pass) {
         exit(1);
     }
 */
+    // coverity[loop_top] - infinite loop is intended
     while (1) {
         check_stop_daemons();
         did_something = do_message_scan();

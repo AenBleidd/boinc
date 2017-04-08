@@ -463,7 +463,8 @@ bool CTaskBarIcon::SetIcon(const wxIcon& icon, const wxString& ) {
 // after a timeout, so we must call Notification Manager directly on Mac
 void CTaskBarIcon::MacRequestUserAttention()
 {
-    m_pNotificationRequest = (NMRecPtr) NewPtrClear( sizeof( NMRec) ) ;
+    m_pNotificationRequest = (NMRecPtr)malloc(sizeof(NMRec));
+    bzero(m_pNotificationRequest, sizeof(NMRec));
     m_pNotificationRequest->qType = nmType ;
     m_pNotificationRequest->nmMark = 1;
 
@@ -474,7 +475,7 @@ void CTaskBarIcon::MacCancelUserAttentionRequest()
 {
     if (m_pNotificationRequest) {
         NMRemove(m_pNotificationRequest);
-        DisposePtr((Ptr)m_pNotificationRequest);
+        free(m_pNotificationRequest);
         m_pNotificationRequest = NULL;
     }
 }
@@ -655,10 +656,16 @@ void CTaskBarIcon::AdjustMenuItems(wxMenu* pMenu) {
             break;
         }
         if (status.task_mode == RUN_MODE_NEVER) {
-            m_SnoozeGPUMenuItem->Check(false);
+            bool check_gpu_snooze = false;
+            if (status.task_mode_perm != RUN_MODE_NEVER) check_gpu_snooze = true;
+            if ((status.gpu_mode == RUN_MODE_NEVER) && (status.gpu_mode_perm != RUN_MODE_NEVER)) {
+                check_gpu_snooze = true;
+            }
+            m_SnoozeGPUMenuItem->Check(check_gpu_snooze);
             m_SnoozeGPUMenuItem->Enable(false);
+        } else {
+           m_SnoozeGPUMenuItem->Enable(enableSnoozeItems);
         }
-        m_SnoozeGPUMenuItem->Enable(enableSnoozeItems);
     }
 }
 

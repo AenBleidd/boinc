@@ -36,13 +36,10 @@
 
 #include "app_ipc.h"
 
-#if !defined(HAVE_STRDUP) && defined(HAVE__STRDUP)
-#define strdup _strdup
-#endif
-
 using std::string;
 
-APP_INIT_DATA::APP_INIT_DATA() : project_preferences(NULL) {
+APP_INIT_DATA::APP_INIT_DATA() {
+    clear();
 }
 
 APP_INIT_DATA::~APP_INIT_DATA() {
@@ -251,20 +248,20 @@ void APP_INIT_DATA::clear() {
     minor_version = 0;
     release = 0;
     app_version = 0;
-    strcpy(app_name, "");
-    strcpy(symstore, "");
-    strcpy(acct_mgr_url, "");
+    safe_strcpy(app_name, "");
+    safe_strcpy(symstore, "");
+    safe_strcpy(acct_mgr_url, "");
     project_preferences = NULL;
     userid = 0;
     teamid = 0;
     hostid = 0;
-    strcpy(user_name, "");
-    strcpy(team_name, "");
-    strcpy(project_dir, "");
-    strcpy(boinc_dir, "");
-    strcpy(wu_name, "");
-    strcpy(result_name, "");
-    strcpy(authenticator, "");
+    safe_strcpy(user_name, "");
+    safe_strcpy(team_name, "");
+    safe_strcpy(project_dir, "");
+    safe_strcpy(boinc_dir, "");
+    safe_strcpy(wu_name, "");
+    safe_strcpy(result_name, "");
+    safe_strcpy(authenticator, "");
     slot = 0;
     client_pid = 0;
     user_total_credit = 0;
@@ -288,7 +285,7 @@ void APP_INIT_DATA::clear() {
     checkpoint_period = 0;
     // gpu_type is an empty string for client versions before 6.13.3 without this
     // field or (on newer clients) if BOINC did not assign an OpenCL GPU to task.
-    strcpy(gpu_type, "");
+    safe_strcpy(gpu_type, "");
     // gpu_device_num < 0 for client versions before 6.13.3 without this field
     // or (on newer clients) if BOINC did not assign an OpenCL GPU to task.
     gpu_device_num = -1;
@@ -477,6 +474,7 @@ int boinc_resolve_filename(
     // If it's the <soft_link> XML tag, return its value,
     // otherwise, return the original file name
     //
+    // coverity[check_return]
     if (p) parse_str(buf, "<soft_link>", physical_name, len);
     return 0;
 }
@@ -498,6 +496,7 @@ int boinc_resolve_filename_s(const char *virtual_name, string& physical_name) {
     buf[0] = 0;
     p = fgets(buf, 512, fp);
     fclose(fp);
+    // coverity[check_return]
     if (p) parse_str(buf, "<soft_link>", physical_name);
     return 0;
 }
@@ -520,16 +519,16 @@ string resolve_soft_link(const char* project_dir, const char* file) {
     if (!parse_str(buf, "<soft_link>", physical_name, sizeof(physical_name))) {
         return string("");
     }
-    sprintf(buf, "../../%s/", project_dir);
+    snprintf(buf, sizeof(buf), "../../%s/", project_dir);
     if (strstr(physical_name, buf) != physical_name) {
         return string("");
     }
     return string(physical_name + strlen(buf));
 }
 
-void url_to_project_dir(char* url, char* dir) {
+void url_to_project_dir(char* url, char* dir, int dirsize) {
     char buf[256];
     escape_project_url(url, buf);
-    sprintf(dir, "%s/%s", PROJECT_DIR, buf);
+    snprintf(dir, dirsize, "%s/%s", PROJECT_DIR, buf);
 }
 

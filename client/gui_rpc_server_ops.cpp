@@ -21,6 +21,7 @@
 
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
+#include <libproc.h>
 #endif
 
 #ifdef _WIN32
@@ -48,6 +49,10 @@
 #if HAVE_ARPA_INET_H
 #include <arpa/inet.h>
 #endif
+#endif
+
+#ifdef _MSC_VER
+#define snprintf _snprintf
 #endif
 
 #include "error_numbers.h"
@@ -86,7 +91,7 @@ int GUI_RPC_CONN::handle_auth2(char* buf, MIOFILE& fout) {
         auth_failure(fout);
         return ERR_AUTHENTICATOR;
     }
-    sprintf(buf2, "%s%s", nonce, gstate.gui_rpcs.password);
+    snprintf(buf2, sizeof(buf2), "%s%s", nonce, gstate.gui_rpcs.password);
     md5_block((const unsigned char*)buf2, (int)strlen(buf2), nonce_hash_correct);
     if (strcmp(nonce_hash, nonce_hash_correct)) {
         auth_failure(fout);
@@ -153,14 +158,12 @@ static void handle_get_disk_usage(GUI_RPC_CONN& grc) {
 #ifdef __APPLE__
     if (gstate.launched_by_manager) {
         // If launched by Manager, get Manager's size on disk
-        ProcessSerialNumber managerPSN;
-        FSRef ourFSRef;
         char path[MAXPATHLEN];
         double manager_size = 0.0;
-        OSStatus err;
-        err = GetProcessForPID(getppid(), &managerPSN);
-        if (! err) err = GetProcessBundleLocation(&managerPSN, &ourFSRef);
-        if (! err) err = FSRefMakePath (&ourFSRef, (UInt8*)path, sizeof(path));
+        OSStatus err = noErr;
+        
+        retval = proc_pidpath(getppid(), path, sizeof(path));
+        if (retval <= 0) err = fnfErr;
         if (! err) dir_size(path, manager_size, true);
         if (! err) boinc_non_project += manager_size;
     }
@@ -306,7 +309,7 @@ static void handle_project_dont_detach_when_done(GUI_RPC_CONN& grc) {
     if (!p) return;
     gstate.set_client_state_dirty("Project modified by user");
     msg_printf(p, MSG_INFO, "detach when done cleared by user");
-    p->detach_when_done = true;
+    p->detach_when_done = false;
     p->dont_request_more_work = false;
     grc.mfout.printf("<success/>\n");
 }
@@ -549,7 +552,7 @@ static void handle_result_op(GUI_RPC_CONN& grc, const char* op) {
     ACTIVE_TASK* atp;
     string project_url;
 
-    strcpy(result_name, "");
+    safe_strcpy(result_name, "");
     while (!grc.xp.get_tag()) {
         if (grc.xp.parse_str("name", result_name, sizeof(result_name))) continue;
         if (grc.xp.parse_string("project_url", project_url)) continue;
@@ -732,12 +735,16 @@ static void handle_get_project_init_status(GUI_RPC_CONN& grc) {
         "    <url>%s</url>\n"
         "    <name>%s</name>\n"
         "    <team_name>%s</team_name>\n"
+        "    <setup_cookie>%s</setup_cookie>\n"
+        "    %s\n"
         "    %s\n"
         "</get_project_init_status>\n",
         gstate.project_init.url,
         gstate.project_init.name,
         gstate.project_init.team_name,
-        strlen(gstate.project_init.account_key)?"<has_account_key/>":""
+        gstate.project_init.setup_cookie,
+        strlen(gstate.project_init.account_key)?"<has_account_key/>":"",
+        gstate.project_init.embedded?"<embedded/>":""
     );
 }
 
@@ -766,7 +773,10 @@ void handle_get_project_config_poll(GUI_RPC_CONN& grc) {
             grc.get_project_config_op.error_num
         );
     } else {
-        grc.mfout.printf("%s", grc.get_project_config_op.reply.c_str());
+        const char *p = grc.get_project_config_op.reply.c_str();
+        const char *q = strstr(p, "<project_config");
+        if (!q) q = "<project_config/>\n";
+        grc.mfout.printf("%s", q);
     }
 }
 
@@ -775,7 +785,7 @@ void handle_lookup_account(GUI_RPC_CONN& grc) {
     MIOFILE in;
 
     ai.parse(grc.xp);
-    if (!ai.url.size() || !ai.email_addr.size() || !ai.passwd_hash.size()) {
+	if ((!ai.url.size() || !ai.email_addr.size() || !ai.passwd_hash.size()) && !ai.server_assigned_cookie) {
         grc.mfout.printf("<error>missing URL, email address, or password</error>\n");
         return;
     }
@@ -793,7 +803,11 @@ void handle_lookup_account_poll(GUI_RPC_CONN& grc) {
             grc.lookup_account_op.error_num
         );
     } else {
-        grc.mfout.printf("%s", grc.lookup_account_op.reply.c_str());
+        const char *p = grc.lookup_account_op.reply.c_str();
+        const char *q = strstr(p, "<account_out"); 
+        if (!q) q = strstr(p, "<error");
+        if (!q) q = "<account_out/>\n"; 
+        grc.mfout.printf("%s", q); 
     }
 }
 
@@ -985,6 +999,8 @@ static void handle_acct_mgr_rpc_poll(GUI_RPC_CONN& grc) {
 }
 
 static void handle_get_newer_version(GUI_RPC_CONN& grc) {
+    gstate.new_version_check(true);
+
     grc.mfout.printf(
         "<newer_version>%s</newer_version>\n"
         "<download_url>%s</download_url>\n",
@@ -1061,7 +1077,9 @@ static void read_all_projects_list_file(GUI_RPC_CONN& grc) {
     int retval = read_file_string(ALL_PROJECTS_LIST_FILENAME, s);
     if (!retval) {
         strip_whitespace(s);
-        grc.mfout.printf("%s\n", s.c_str());
+        const char *q = strstr(s.c_str(), "<projects");
+        if (!q) q = "<projects/>";        
+        grc.mfout.printf("%s\n", q);
     }
 }
 
@@ -1220,7 +1238,7 @@ static void handle_report_device_status(GUI_RPC_CONN& grc) {
                 //
                 if (strlen(d.device_name)) {
                     if (strcmp(d.device_name, gstate.host_info.domain_name)) {
-                        strcpy(gstate.host_info.domain_name, d.device_name);
+                        safe_strcpy(gstate.host_info.domain_name, d.device_name);
                         gstate.set_client_state_dirty("Device name changed");
                     }
                 }
@@ -1276,7 +1294,7 @@ struct GUI_RPC {
     GUI_RPC(const char* req, GUI_RPC_HANDLER h, bool ar, bool en, bool ro) {
         req_tag = req;
         safe_strcpy(alt_req_tag, req);
-        strcat(alt_req_tag, "/");
+        safe_strcat(alt_req_tag, "/");
         handler = h;
         auth_required = ar;
         enable_network = en;
@@ -1425,7 +1443,8 @@ int GUI_RPC_CONN::handle_rpc() {
     request_msg[request_nbytes] = 0;
     if (!strncmp(request_msg, "OPTIONS", 7)) {
         char buf[1024];
-        sprintf(buf, "HTTP/1.1 200 OK\n"
+        snprintf(buf, sizeof(buf),
+            "HTTP/1.1 200 OK\n"
             "Server: BOINC client\n"
             "Access-Control-Allow-Origin: *\n"
             "Access-Control-Allow-Methods: POST, GET, OPTIONS\n"
@@ -1501,7 +1520,7 @@ int GUI_RPC_CONN::handle_rpc() {
     mout.get_buf(p, n);
     if (http_request) {
         char buf[1024];
-        sprintf(buf,
+        snprintf(buf, sizeof(buf),
             "HTTP/1.1 200 OK\n"
             "Date: Fri, 31 Dec 1999 23:59:59 GMT\n"
             "Server: BOINC client\n"

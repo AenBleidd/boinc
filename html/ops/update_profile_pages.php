@@ -28,11 +28,11 @@ echo date(DATE_RFC822), ": Starting\n";
 set_time_limit(0);
 ini_set("memory_limit", "1024M");
 
-$debug = false;
+$debug = true;
 
 function print_debug_msg($text) {
     global $debug;
-    if ($debug) print($text."\n");
+    if ($debug) echo $text."\n";
 }
 
 db_init();
@@ -51,7 +51,7 @@ $alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P
 //   $descriptor is an optional file descriptor to write the table to.
 
 function show_user_table($members, $offset, $numToDisplay, $cols) {
-    echo "<table class=\"table table-bordered\">\n";
+    start_table();
 
     $rows = ceil($numToDisplay / $cols);
     $count = $offset;
@@ -79,7 +79,7 @@ function show_user_table($members, $offset, $numToDisplay, $cols) {
                     $show_picture = false;
                 }
                 if ($show_picture) {
-                    echo "<a href=\"".URL_BASE."view_profile.php?userid={$members[$count]}\"><img src=\"".URL_BASE.IMAGE_URL."{$members[$count]}_sm.jpg\"></a>";
+                    echo "<a href=\"".secure_url_base()."view_profile.php?userid={$members[$count]}\"><img src=\"".secure_url_base().IMAGE_URL."{$members[$count]}_sm.jpg\"></a>";
                 } else {
                     echo "&nbsp;";
                 }
@@ -92,8 +92,7 @@ function show_user_table($members, $offset, $numToDisplay, $cols) {
         }
         echo "</tr>\n";
     }
-    echo "</table>\n";
-
+    end_table();
 }
 
 // Generates a standard set of links between associated multi-page documents.
@@ -189,7 +188,7 @@ function build_picture_pages($width, $height) {
         $filename = PROFILE_PATH . "user_gallery_" . $page . ".html";
         open_output_buffer();
 
-        page_head("Profile gallery: page $page of $numPages", null, null, "../");
+        page_head("Profile gallery: page $page of $numPages", null, false, "../");
 
         echo "Last updated ", pretty_time_str(time()),
             "\n<p>Browse the user profiles by picture.
@@ -203,7 +202,7 @@ function build_picture_pages($width, $height) {
             for ($col = 0; $col < $width; $col++) {
 	            if ($count < $numIds) {
                     echo "<td class=\"bordered\" align=\"center\">
-                        <a href=\"".URL_BASE."view_profile.php?userid=".$userIds[$count]."\"><img src=\"".URL_BASE.IMAGE_URL.$userIds[$count]."_sm.jpg\"></a>
+                        <a href=\"".secure_url_base()."view_profile.php?userid=".$userIds[$count]."\"><img src=\"".secure_url_base().IMAGE_URL.$userIds[$count]."_sm.jpg\"></a>
                     </td>";
                     $count++;
                 }
@@ -268,7 +267,7 @@ function build_country_pages() {
         $baseFileName =  "profile_country_" . get_legal_filename($country);
         build_profile_pages(
             $countryMembers[$country],
-            "User Profiles from $country", $country, 5, 2,
+            "User Profiles from $country", 5, 2,
             PROFILE_PATH, $baseFileName
         );
     }
@@ -312,14 +311,14 @@ function build_alpha_pages() {
             build_profile_pages(
                 $members[$letter],
                 "User Profiles - Names beginning with $letter",
-                "Names beginning with $letter", 5, 2, $filePath,
+                5, 2, $filePath,
                 "profile_$letter"
             );
         } else {
             build_profile_pages(
                 $members[$letter],
                 "User Profiles - Names beginning with other characters",
-                "Names beginning with other characters", 5, 2, $filePath,
+                5, 2, $filePath,
                 "profile_other"
             );
         }
@@ -333,17 +332,18 @@ function build_alpha_pages() {
 // A generalized function to produce some number of pages summarizing a
 // set of user profiles.
 
-function build_profile_pages($members, $pageHead, $pageTitle, $rowsPerPage, $colsPerPage, $filePath, $baseFileName) {
+function build_profile_pages(
+    $members, $title, $rowsPerPage, $colsPerPage, $dir, $base_filename
+) {
     $numPerPage = $rowsPerPage * $colsPerPage;
     $numPages = ceil(count($members) / $numPerPage);
 
     for ($page = 1; $page <= $numPages; $page++) {
-
-        $filename = $filePath . $baseFileName . "_" . $page . ".html";
+        $filename = $dir . $base_filename . "_" . $page . ".html";
         open_output_buffer();
 
-        $head = $pageHead . ": Page $page of $numPages";
-        page_head($head, null, $pageTitle, "../");
+        $pagetitle = $title.": Page $page of $numPages";
+        page_head($pagetitle, null, null, "../");
 
         echo "Last updated ", pretty_time_str(time()), "<p>\n";
 
@@ -351,7 +351,7 @@ function build_profile_pages($members, $pageHead, $pageTitle, $rowsPerPage, $col
 
         show_user_table($members, $offset, $numPerPage, $colsPerPage);
 
-        write_page_links($baseFileName, $page, $numPages);
+        write_page_links($base_filename, $page, $numPages);
 
         page_tail(false, "../");
 
@@ -370,18 +370,18 @@ function build_country_summary_page($countryMembers) {
     page_head("User Profiles by Country", null, null, "../");
     echo "Last updated " . pretty_time_str(time()) . "<p>";
 
-    echo "<table border=0>\n";
-    echo "<tr><td><b>Country</b></td><td align=\"center\"><b>Profiles</b></td></tr>\n";
+    start_table();
+    row_heading_array(array("Country", "Profiles"));
 
     foreach ($countries as $country) {
         $numMembers = count($countryMembers[$country]);
         $name = get_legal_filename($country);
 
         echo "<tr>\n<td><a href=\"profile_country_",
-            "{$name}_1.html\">$country</a></td><td align=\"center\">$numMembers</td></td>\n";
+            "{$name}_1.html\">$country</a></td><td>$numMembers</td></td>\n";
     }
 
-    echo "</table>";
+    end_table();
     page_tail(false, "../");
 
     close_output_buffer($filename);
@@ -397,7 +397,7 @@ function build_alpha_summary_page($characters_used) {
 
     foreach ($alphabet as $character) {
         if (isset($characters_used[$character])) {
-            echo "<a href=\"".URL_BASE.PROFILE_URL."profile_{$character}_1.html\">$character</a>&nbsp;";
+            echo "<a href=\"".secure_url_base().PROFILE_URL."profile_{$character}_1.html\">$character</a>&nbsp;";
             unset($characters_used[$character]);
         } else {
             echo "$character ";
@@ -406,7 +406,7 @@ function build_alpha_summary_page($characters_used) {
 
     // Link to the 'Other' page if necessary.
     if (!empty($characters_used)) {
-        echo "<a href=\"".URL_BASE.PROFILE_URL."profile_other_1.html\">Other</a>&nbsp;";
+        echo "<a href=\"".secure_url_base().PROFILE_URL."profile_other_1.html\">Other</a>&nbsp;";
     }
     close_output_buffer($filename);
 }

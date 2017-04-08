@@ -171,7 +171,7 @@
           <listitem>
               <para>Attach to an account using the project URL and authenticator
                 (send via email after <option>--create_account</option> was
-                succesfull).</para>
+                successful).</para>
           </listitem>
         </varlistentry>
 
@@ -588,7 +588,7 @@
   <refsect1>
     <title>SEE ALSO</title>
     <para>&man_boinc;, &man_boincmgr;</para>
-    <para><ulink url="http://boinc.berkeley.edu/wiki/Boinccmd_tool"/></para>
+    <para><ulink url="https://boinc.berkeley.edu/wiki/Boinccmd_tool"/></para>
   </refsect1>
 
   <refsect1>

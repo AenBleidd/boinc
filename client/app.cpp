@@ -52,6 +52,9 @@
 #include <cstdlib>
 #endif
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
 
 #include "error_numbers.h"
 #include "filesys.h"
@@ -90,7 +93,7 @@ ACTIVE_TASK::~ACTIVE_TASK() {
 
 ACTIVE_TASK::ACTIVE_TASK() {
 #ifdef _WIN32
-    strcpy(shmem_seg_name, "");
+    safe_strcpy(shmem_seg_name, "");
 #else
     shmem_seg_name = 0;
 #endif
@@ -125,8 +128,8 @@ ACTIVE_TASK::ACTIVE_TASK() {
     bytes_received_episode = 0;
     bytes_sent = 0;
     bytes_received = 0;
-    strcpy(slot_dir, "");
-    strcpy(slot_path, "");
+    safe_strcpy(slot_dir, "");
+    safe_strcpy(slot_path, "");
     max_elapsed_time = 0;
     max_disk_usage = 0;
     max_mem_usage = 0;
@@ -147,8 +150,8 @@ ACTIVE_TASK::ACTIVE_TASK() {
     premature_exit_count = 0;
     overdue_checkpoint = false;
     last_deadline_miss_time = 0;
-    strcpy(web_graphics_url, "");
-    strcpy(remote_desktop_addr, "");
+    safe_strcpy(web_graphics_url, "");
+    safe_strcpy(remote_desktop_addr, "");
     async_copy = NULL;
     finish_file_time = 0;
 }
@@ -423,7 +426,8 @@ void ACTIVE_TASK_SET::get_memory_usage() {
             pi.page_fault_rate = pf/diff;
             if (log_flags.mem_usage_debug) {
                 msg_printf(atp->result->project, MSG_INFO,
-                    "[mem_usage] %s: WS %.2fMB, smoothed %.2fMB, swap %.2fMB, %.2f page faults/sec, user CPU %.3f, kernel CPU %.3f",
+                    "[mem_usage] %s%s: WS %.2fMB, smoothed %.2fMB, swap %.2fMB, %.2f page faults/sec, user CPU %.3f, kernel CPU %.3f",
+                    atp->scheduler_state==CPU_SCHED_SCHEDULED?"":" (not running)",
                     atp->result->name,
                     pi.working_set_size/MEGA,
                     pi.working_set_size_smoothed/MEGA,
@@ -454,12 +458,22 @@ void ACTIVE_TASK_SET::get_memory_usage() {
 
     for (i=0; i<cc_config.exclusive_apps.size(); i++) {
         if (app_running(pm, cc_config.exclusive_apps[i].c_str())) {
+            if (log_flags.mem_usage_debug) {
+                msg_printf(NULL, MSG_INFO,
+                    "[mem_usage] exclusive app %s is running", cc_config.exclusive_apps[i].c_str()
+                );
+            }
             exclusive_app_running = gstate.now;
             break;
         }
     }
     for (i=0; i<cc_config.exclusive_gpu_apps.size(); i++) {
         if (app_running(pm, cc_config.exclusive_gpu_apps[i].c_str())) {
+            if (log_flags.mem_usage_debug) {
+                msg_printf(NULL, MSG_INFO,
+                    "[mem_usage] exclusive GPU app %s is running", cc_config.exclusive_gpu_apps[i].c_str()
+                );
+            }
             exclusive_gpu_app_running = gstate.now;
             break;
         }
@@ -507,8 +521,11 @@ int ACTIVE_TASK::move_trickle_file() {
     char new_path[MAXPATHLEN], old_path[MAXPATHLEN];
     int retval;
 
-    sprintf(old_path, "%s/trickle_up.xml", slot_dir);
-    sprintf(new_path,
+    snprintf(old_path, sizeof(old_path),
+        "%s/trickle_up.xml",
+        slot_dir
+    );
+    snprintf(new_path, sizeof(new_path),
         "%s/trickle_up_%s_%d.xml",
         result->project->project_dir(), result->name, (int)time(0)
     );
@@ -765,8 +782,8 @@ int ACTIVE_TASK::parse(XML_PARSER& xp) {
     PROJECT* project=0;
     double x;
 
-    strcpy(result_name, "");
-    strcpy(project_master_url, "");
+    safe_strcpy(result_name, "");
+    safe_strcpy(project_master_url, "");
 
     while (!xp.get_tag()) {
         if (xp.match_tag("/active_task")) {
@@ -968,7 +985,7 @@ void MSG_QUEUE::msg_queue_poll(MSG_CHANNEL& channel) {
     for (unsigned int i=0; i<msgs.size(); i++) {
         if (log_flags.app_msg_send) {
             msg_printf(NULL, MSG_INFO,
-                "[app_msg_send] poll: deferred: %s", msgs[0].c_str()
+                "[app_msg_send] poll: deferred: %s", msgs[i].c_str()
             );
         }
     }
@@ -1050,7 +1067,7 @@ int ACTIVE_TASK::handle_upload_files() {
                     "Can't find uploadable file %s", p
                 );
             }
-            sprintf(path, "%s/%s", slot_dir, buf);
+            snprintf(path, sizeof(path), "%s/%s", slot_dir, buf);
             delete_project_owned_file(path, true);  // delete the link file
         }
     }
@@ -1085,7 +1102,10 @@ void ACTIVE_TASK_SET::network_available() {
 
 void ACTIVE_TASK::upload_notify_app(const FILE_INFO* fip, const FILE_REF* frp) {
     char path[MAXPATHLEN];
-    sprintf(path, "%s/%s%s", slot_dir, UPLOAD_FILE_STATUS_PREFIX, frp->open_name);
+    snprintf(path, sizeof(path), 
+        "%s/%s%s",
+        slot_dir, UPLOAD_FILE_STATUS_PREFIX, frp->open_name
+    );
     FILE* f = boinc_fopen(path, "w");
     if (!f) return;
     fprintf(f, "<status>%d</status>\n", fip->status);
@@ -1157,6 +1177,7 @@ void* throttler(void*) {
         double on, off, on_frac = gstate.global_prefs.cpu_usage_limit / 100;
 #if 0
 // sub-second CPU throttling
+// DOESN'T WORK BECAUSE OF 1-SEC API POLL
 #define THROTTLE_PERIOD 1.
         on = THROTTLE_PERIOD * on_frac;
         off = THROTTLE_PERIOD - on;

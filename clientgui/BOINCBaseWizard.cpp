@@ -47,37 +47,13 @@ IMPLEMENT_DYNAMIC_CLASS( CBOINCBaseWizard, wxWizardEx )
 CBOINCBaseWizard::CBOINCBaseWizard() :
     wxWizardEx()
 {
+  m_bCancelInProgress = false;
 }
 
 CBOINCBaseWizard::CBOINCBaseWizard(wxWindow *parent, int id, const wxString& title, const wxPoint& pos, long style) :
     wxWizardEx(parent, id, title, pos, style)
 {
-}
-
-/*!
- * Determine if the wizard page has a previous page
- */
-wxWizardPageEx* CBOINCBaseWizard::PopPageTransition()
-{
-    return _PopPageTransition();
-}
-
-wxWizardPageEx* CBOINCBaseWizard::_PopPageTransition()
-{
-    return NULL;
-}
-
-/*!
- * Remove the page transition to the stack
- */
-wxWizardPageEx* CBOINCBaseWizard::PushPageTransition( wxWizardPageEx* pCurrentPage, unsigned long ulPageID )
-{
-    return _PushPageTransition( pCurrentPage, ulPageID );
-}
-
-wxWizardPageEx* CBOINCBaseWizard::_PushPageTransition( wxWizardPageEx* WXUNUSED(pCurrentPage), unsigned long WXUNUSED(ulPageID) )
-{
-    return NULL;
+  m_bCancelInProgress = false;
 }
 
 /*!

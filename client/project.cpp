@@ -18,6 +18,10 @@
 #include <boinc_win.h>
 #endif
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #include <string.h>
 
 #include "str_replace.h"
@@ -36,10 +40,10 @@ PROJECT::PROJECT() {
 }
 
 void PROJECT::init() {
-    strcpy(master_url, "");
-    strcpy(authenticator, "");
-    strcpy(_project_dir, "");
-    strcpy(_project_dir_absolute, "");
+    safe_strcpy(master_url, "");
+    safe_strcpy(authenticator, "");
+    safe_strcpy(_project_dir, "");
+    safe_strcpy(_project_dir_absolute, "");
     project_specific_prefs = "";
     gui_urls = "";
     resource_share = 100;
@@ -50,16 +54,16 @@ void PROJECT::init() {
         no_rsc_apps[i] = false;
         no_rsc_ams[i] = false;
     }
-    strcpy(host_venue, "");
+    safe_strcpy(host_venue, "");
     using_venue_specific_prefs = false;
     scheduler_urls.clear();
-    strcpy(project_name, "");
-    strcpy(symstore, "");
-    strcpy(user_name, "");
-    strcpy(team_name, "");
-    strcpy(email_hash, "");
-    strcpy(cross_project_id, "");
-    strcpy(external_cpid, "");
+    safe_strcpy(project_name, "");
+    safe_strcpy(symstore, "");
+    safe_strcpy(user_name, "");
+    safe_strcpy(team_name, "");
+    safe_strcpy(email_hash, "");
+    safe_strcpy(cross_project_id, "");
+    safe_strcpy(external_cpid, "");
     cpid_time = 0;
     user_total_credit = 0;
     user_expavg_credit = 0;
@@ -84,6 +88,7 @@ void PROJECT::init() {
     anonymous_platform = false;
     non_cpu_intensive = false;
     verify_files_on_app_start = false;
+    report_results_immediately = false;
     pwf.reset(this);
     send_time_stats_log = 0;
     send_job_log = 0;
@@ -94,7 +99,7 @@ void PROJECT::init() {
     detach_when_done = false;
     attached_via_acct_mgr = false;
     ended = false;
-    strcpy(code_sign_key, "");
+    safe_strcpy(code_sign_key, "");
     user_files.clear();
     project_files.clear();
     next_runnable_result = NULL;
@@ -107,6 +112,10 @@ void PROJECT::init() {
     njobs_success = 0;
     njobs_error = 0;
     elapsed_time = 0;
+    cpu_ec = 0;
+    cpu_time = 0;
+    gpu_ec = 0;
+    gpu_time = 0;
     app_configs.clear();
 
 #ifdef SIM
@@ -163,7 +172,7 @@ static bool parse_rsc_param(XML_PARSER& xp, const char* end_tag, int& rsc_type, 
 //
 int PROJECT::parse_state(XML_PARSER& xp) {
     char buf[256];
-    std::string sched_url, stemp;
+    string sched_url, stemp;
     string str1, str2;
     int retval, rt;
     double x;
@@ -319,6 +328,10 @@ int PROJECT::parse_state(XML_PARSER& xp) {
         if (xp.parse_int("njobs_error", njobs_error)) continue;
         if (xp.parse_double("elapsed_time", elapsed_time)) continue;
         if (xp.parse_double("last_rpc_time", last_rpc_time)) continue;
+        if (xp.parse_double("cpu_ec", cpu_ec)) continue;
+        if (xp.parse_double("cpu_time", cpu_time)) continue;
+        if (xp.parse_double("gpu_ec", gpu_ec)) continue;
+        if (xp.parse_double("gpu_time", gpu_time)) continue;
 #ifdef SIM
         if (xp.match_tag("available")) {
             available.parse(xp, "/available");
@@ -494,7 +507,7 @@ int PROJECT::write_state(MIOFILE& out, bool gui_rpc) {
         }
         out.printf("    <project_dir>%s</project_dir>\n", project_dir_absolute());
     } else {
-       for (i=0; i<scheduler_urls.size(); i++) {
+        for (i=0; i<scheduler_urls.size(); i++) {
             out.printf(
                 "    <scheduler_url>%s</scheduler_url>\n",
                 scheduler_urls[i].c_str()
@@ -512,6 +525,13 @@ int PROJECT::write_state(MIOFILE& out, bool gui_rpc) {
                 t->url.c_str()
             );
         }
+        out.printf(
+            "    <cpu_ec>%f</cpu_ec>\n"
+            "    <cpu_time>%f</cpu_time>\n"
+            "    <gpu_ec>%f</gpu_ec>\n"
+            "    <gpu_time>%f</gpu_time>\n",
+            cpu_ec, cpu_time, gpu_ec, gpu_time
+        );
     }
     out.printf(
         "</project>\n"
@@ -579,6 +599,10 @@ void PROJECT::copy_state_fields(PROJECT& p) {
     njobs_error = p.njobs_error;
     elapsed_time = p.elapsed_time;
     last_rpc_time = p.last_rpc_time;
+    cpu_ec = p.cpu_ec;
+    cpu_time = p.cpu_time;
+    gpu_ec = p.gpu_ec;
+    gpu_time = p.gpu_time;
 }
 
 // Write project statistic to GUI RPC reply
@@ -591,7 +615,7 @@ int PROJECT::write_statistics(MIOFILE& out) {
         master_url
     );
 
-    for (std::vector<DAILY_STATS>::iterator i=statistics.begin();
+    for (vector<DAILY_STATS>::iterator i=statistics.begin();
         i!=statistics.end(); ++i
     ) {
         out.printf(
@@ -670,7 +694,7 @@ void PROJECT::delete_project_file_symlinks() {
 
     for (i=0; i<project_files.size(); i++) {
         FILE_REF& fref = project_files[i];
-        sprintf(path, "%s/%s", project_dir(), fref.open_name);
+        snprintf(path, sizeof(path), "%s/%s", project_dir(), fref.open_name);
         delete_project_owned_file(path, false);
     }
 }
@@ -730,8 +754,8 @@ int PROJECT::write_symlink_for_project_file(FILE_INFO* fip) {
     for (i=0; i<project_files.size(); i++) {
         FILE_REF& fref = project_files[i];
         if (fref.file_info != fip) continue;
-        sprintf(link_path, "%s/%s", project_dir(), fref.open_name);
-        sprintf(file_path, "%s/%s", project_dir(), fip->name);
+        snprintf(link_path, sizeof(link_path), "%s/%s", project_dir(), fref.open_name);
+        snprintf(file_path, sizeof(file_path), "%s/%s", project_dir(), fip->name);
         make_soft_link(this, link_path, file_path);
     }
     return 0;
@@ -888,7 +912,7 @@ const char* PROJECT::project_dir() {
     if (_project_dir[0] == 0) {
         char buf[1024];
         escape_project_url(master_url, buf);
-        sprintf(_project_dir, "%s/%s", PROJECTS_DIR, buf);
+        snprintf(_project_dir, sizeof(_project_dir), "%s/%s", PROJECTS_DIR, buf);
     }
     return _project_dir;
 }

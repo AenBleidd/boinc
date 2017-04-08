@@ -38,12 +38,11 @@ if (parse_bool($config, "disable_account_creation")
     error_page("Account creation is disabled");
 }
 
-$privatekey = parse_config($config, "<recaptcha_private_key>");
-if ($privatekey) {
-    $recaptcha = new ReCaptcha($privatekey);
-    $resp = $recaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
-    if (!$resp->success) {
-        show_error(tra("Your reCAPTCHA response was not correct. Please try again."));
+if ($recaptcha_private_key) {
+    if (!boinc_recaptcha_isValidated($recaptcha_private_key)) {
+        show_error(
+            tra("Your reCAPTCHA response was not correct. Please try again.")
+        );
     }
 }
 
@@ -136,9 +135,9 @@ if(defined('INVITE_CODES')) {
 $next_url = post_str('next_url', true);
 $next_url = sanitize_local_url($next_url);
 if ($next_url) {
-    Header("Location: ".URL_BASE."$next_url");
+    Header("Location: ".url_base()."$next_url");
 } else {
-    Header("Location: ".URL_BASE."home.php");
+    Header("Location: ".url_base()."home.php");
     send_cookie('init', "1", true);
     send_cookie('via_web', "1", true);
 }

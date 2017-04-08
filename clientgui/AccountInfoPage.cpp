@@ -286,9 +286,7 @@ wxIcon CAccountInfoPage::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_WIZARD_PAGE_CHANGED event handler for ID_ACCOUNTINFOPAGE
  */
  
-void CAccountInfoPage::OnPageChanged( wxWizardExEvent& event ) {
-    if (event.GetDirection() == false) return;
-
+void CAccountInfoPage::OnPageChanged( wxWizardExEvent& /* event */ ) {
     CWizardAttach*   pWA = ((CWizardAttach*)GetParent());
     CSkinAdvanced*   pSkinAdvanced = wxGetApp().GetSkinManager()->GetAdvanced();
     CSkinWizardATAM* pSkinWizardATAM = wxGetApp().GetSkinManager()->GetWizards()->GetWizardATAM();
@@ -494,7 +492,7 @@ void CAccountInfoPage::OnPageChanged( wxWizardExEvent& event ) {
 
     if (pc.min_passwd_length) {
         wxString str2;
-        str.Printf(_("minimum length %d"), pc.min_passwd_length);
+        str2.Printf(_("minimum length %d"), pc.min_passwd_length);
         m_pAccountPasswordRequirmentsStaticCtrl->SetLabel( str2 );
     }
 

@@ -25,6 +25,7 @@
 #include "sg_TaskPanel.h"
 #include "boinc_api.h"
 #include "filesys.h"
+#include "str_replace.h"
 
 
 #define SORTTASKLIST 1  /* TRUE to sort task selection control alphabetically */
@@ -817,10 +818,11 @@ void CSimpleTaskPanel::GetApplicationAndProjectNames(RESULT* result, wxString* a
             strAppBuffer = wxString(state_result->avp->app_name, wxConvUTF8);
         }
         
-        char buf[256];
         if (avp->gpu_type) {
-            sprintf(buf, " (%s)", proc_type_name(avp->gpu_type));
-            strGPUBuffer = wxString(buf, wxConvUTF8);
+            strGPUBuffer.Printf(
+                wxT(" (%s)"),
+                wxString(proc_type_name(avp->gpu_type), wxConvUTF8).c_str()
+            );
         }
 
         appName->Printf(
@@ -884,7 +886,7 @@ wxString CSimpleTaskPanel::GetStatusString(RESULT* result) {
 
 void CSimpleTaskPanel::FindSlideShowFiles(TaskSelectionData *selData) {
     RESULT* state_result;
-    char urlDirectory[1024];
+    char proj_dir[1024];
     char fileName[1024];
     char resolvedFileName[1024];
     int j;
@@ -899,9 +901,9 @@ void CSimpleTaskPanel::FindSlideShowFiles(TaskSelectionData *selData) {
         state_result = pDoc->state.lookup_result(selData->result->project_url, selData->result->name);
     }
     if (state_result) {
-        url_to_project_dir(state_result->project->master_url, urlDirectory);
+        url_to_project_dir(state_result->project->master_url, proj_dir, sizeof(proj_dir));
         for(j=0; j<99; ++j) {
-            sprintf(fileName, "%s/slideshow_%s_%02d", urlDirectory, state_result->app->name, j);
+            snprintf(fileName, sizeof(fileName), "%s/slideshow_%s_%02d", proj_dir, state_result->app->name, j);
             if(boinc_resolve_filename(fileName, resolvedFileName, sizeof(resolvedFileName)) == 0) {
                 if (boinc_file_exists(resolvedFileName)) {
                     selData->slideShowFileNames.Add(wxString(resolvedFileName,wxConvUTF8));
@@ -913,7 +915,7 @@ void CSimpleTaskPanel::FindSlideShowFiles(TaskSelectionData *selData) {
 
         if ( selData->slideShowFileNames.size() == 0 ) {
             for(j=0; j<99; ++j) {
-                sprintf(fileName, "%s/slideshow_%02d", urlDirectory, j);
+                snprintf(fileName, sizeof(fileName), "%s/slideshow_%02d", proj_dir, j);
                 if(boinc_resolve_filename(fileName, resolvedFileName, sizeof(resolvedFileName)) == 0) {
                     if (boinc_file_exists(resolvedFileName)) {
                         selData->slideShowFileNames.Add(wxString(resolvedFileName,wxConvUTF8));
@@ -938,9 +940,11 @@ void CSimpleTaskPanel::UpdateTaskSelectionList(bool reskin) {
     std::vector<bool>is_alive;
     bool needRefresh = false;
     wxString resname;
+    CC_STATUS status;
     CMainDocument*      pDoc = wxGetApp().GetDocument();
     CSkinSimple* pSkinSimple = wxGetApp().GetSkinManager()->GetSimple();
-
+    wxASSERT(pDoc);
+    
     static bool bAlreadyRunning = false;
 
     wxASSERT(pDoc);
@@ -1012,8 +1016,8 @@ void CSimpleTaskPanel::UpdateTaskSelectionList(bool reskin) {
             
             selData = new TaskSelectionData;
             selData->result = result;
-            strncpy(selData->result_name, result->name, sizeof(selData->result_name));
-            strncpy(selData->project_url, result->project_url, sizeof(selData->project_url));
+            strlcpy(selData->result_name, result->name, sizeof(selData->result_name));
+            strlcpy(selData->project_url, result->project_url, sizeof(selData->project_url));
             selData->dotColor = -1;
             FindSlideShowFiles(selData);
             project = pDoc->state.lookup_project(result->project_url);
@@ -1087,16 +1091,23 @@ void CSimpleTaskPanel::UpdateTaskSelectionList(bool reskin) {
         }
     }
 
+    pDoc->GetCoreClientStatus(status);
+
     count = m_TaskSelectionCtrl->GetCount();
     for(j = 0; j < count; ++j) {
         selData = (TaskSelectionData*)m_TaskSelectionCtrl->GetClientData(j);
         ctrlResult = selData->result;
         if (isRunning(ctrlResult)) {
             newIcon = runningIcon;
-        } else if (ctrlResult->scheduler_state == CPU_SCHED_PREEMPTED) {
-            newIcon = waitingIcon;
-        } else {
+        } else if (Suspended() ||
+                    ctrlResult->suspended_via_gui ||
+                    ctrlResult->project_suspended_via_gui ||
+                    // kludge.  But ctrlResult->avp isn't populated.
+                    (status.gpu_suspend_reason && (strstr(ctrlResult->resources, "GPU") != NULL)))
+        {
             newIcon = suspendedIcon;
+        } else {
+            newIcon = waitingIcon;
         }
 
         if (reskin || (newIcon != selData->dotColor)) {
@@ -1175,7 +1186,7 @@ bool CSimpleTaskPanel::Suspended() {
     
     bool result = false;
     pDoc->GetCoreClientStatus(status);
-    if ( pDoc->IsConnected() && status.task_suspend_reason > 0 && status.task_suspend_reason != SUSPEND_REASON_DISK_SIZE &&  status.task_suspend_reason != SUSPEND_REASON_CPU_THROTTLE ) {
+    if ( pDoc->IsConnected() && status.task_suspend_reason > 0 && status.task_suspend_reason != SUSPEND_REASON_CPU_THROTTLE ) {
         result = true;
     }
     return result;
@@ -1223,6 +1234,8 @@ void CSimpleTaskPanel::DisplayIdleState() {
             UpdateStaticText(&m_StatusValueText, _("Processing Suspended:  Time of Day."));
         } else if ( status.task_suspend_reason & SUSPEND_REASON_BENCHMARKS ) {
             UpdateStaticText(&m_StatusValueText, _("Processing Suspended:  Benchmarks Running."));
+        } else if ( status.task_suspend_reason & SUSPEND_REASON_DISK_SIZE ) {
+            UpdateStaticText(&m_StatusValueText, _("Processing Suspended:  need disk space."));
         } else {
             UpdateStaticText(&m_StatusValueText, _("Processing Suspended."));
         }

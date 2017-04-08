@@ -46,6 +46,7 @@ using std::vector;
 #include "file_names.h"
 #include "gui_rpc_server.h"
 #include "gui_http.h"
+#include "project_init.h"
 #include "hostinfo.h"
 #include "miofile.h"
 #include "net_stats.h"
@@ -237,7 +238,7 @@ struct CLIENT_STATE {
 // --------------- acct_setup.cpp:
     PROJECT_INIT project_init;
     PROJECT_ATTACH project_attach;
-    void new_version_check();
+    void new_version_check(bool force = false);
     void all_projects_list_check();
     double new_version_check_time;
     double all_projects_list_check_time;
@@ -246,7 +247,6 @@ struct CLIENT_STATE {
 
 // --------------- client_state.cpp:
     CLIENT_STATE();
-    ~CLIENT_STATE();
     void show_host_info();
     bool is_new_client();
     int init();
@@ -560,6 +560,7 @@ extern THREAD throttle_thread;
 #define GUI_HTTP_POLL_PERIOD    1.0
 
 #define MEMORY_USAGE_PERIOD     10
+    // computer memory usage and check for exclusive apps this often
 
 //////// WORK FETCH
 
@@ -596,8 +597,19 @@ extern THREAD throttle_thread;
 #define DEADLINE_CUSHION    0
     // try to finish jobs this much in advance of their deadline
 
-#define MAX_EXIT_TIME   15
-    // if an app takes this long to exit, kill it
+/////// JOB CONTROL
+
+#define ABORT_TIMEOUT   60
+    // if we send app <abort> request, wait this long before killing it.
+    // This gives it time to download symbol files (which can be several MB)
+    // and write stack trace to stderr
+
+#define QUIT_TIMEOUT    60
+    // Same, for <quit>.
+    // Should be large enough that apps can finalize
+    // (e.g. write checkpoint file) in that time.
+    // In Nov 2015 we increased it from 15 to 60
+    // because CERN's VBox apps take a long time to save state.
 
 #define MAX_STARTUP_TIME    10
     // if app startup takes longer than this, quit loop
@@ -613,7 +625,7 @@ extern THREAD throttle_thread;
 
 //////// MISC
 
-#define EXCLUSIVE_APP_WAIT   30
+#define EXCLUSIVE_APP_WAIT   5
     // if "exclusive app" feature used,
     // wait this long after app exits before restarting jobs
 

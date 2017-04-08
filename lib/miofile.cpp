@@ -27,6 +27,7 @@
 #endif
 
 #include "error_numbers.h"
+#include "str_replace.h"
 
 #include "miofile.h"
 
@@ -34,6 +35,8 @@ using std::string;
 
 MIOFILE::MIOFILE() {
     mf = 0;
+    wbuf = 0;
+    len = 0;
     f = 0;
     buf = 0;
 }
@@ -130,14 +133,14 @@ int copy_element_contents(MIOFILE& in, const char* end_tag, char* p, int len) {
     char buf[256];
     int n;
 
-    strcpy(p, "");
+    strlcpy(p, "", len);
     while (in.fgets(buf, 256)) {
         if (strstr(buf, end_tag)) {
             return 0;
         }
         n = (int)strlen(buf);
         if (n >= len-1) return ERR_XML_PARSE;
-        strcat(p, buf);
+        strlcat(p, buf, len);
         len -= n;
     }
     return ERR_XML_PARSE;

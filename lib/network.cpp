@@ -18,7 +18,6 @@
 #if   defined(_WIN32) && !defined(__STDWX_H__)
 #include "boinc_win.h"
 #include <fcntl.h>
-
 #elif defined(_WIN32) && defined(__STDWX_H__)
 #include "stdwx.h"
 #else
@@ -36,6 +35,10 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
+#endif
+
+#ifdef _MSC_VER
+#define snprintf _snprintf
 #endif
 
 #include "error_numbers.h"
@@ -73,7 +76,7 @@ const char* socket_error_str() {
     case WSAENOTSOCK:
         return "not a socket";
     }
-    sprintf(buf, "error %d", e);
+    snprintf(buf, sizeof(buf), "error %d", e);
     return buf;
 #else
     switch (h_errno) {
@@ -87,11 +90,11 @@ const char* socket_error_str() {
         return "host not found or server failure";
 #ifdef NETDB_INTERNAL
     case NETDB_INTERNAL:
-        sprintf(buf,"network internal error %d",errno);
+        snprintf(buf, sizeof(buf), "network internal error %d", errno);
         return buf;
 #endif
     }
-    sprintf(buf, "error %d", h_errno);
+    snprintf(buf, sizeof(buf), "error %d", h_errno);
     return buf;
 #endif
 }
@@ -163,11 +166,15 @@ int resolve_hostname(const char* hostname, sockaddr_storage &ip_addr) {
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
+    char buf[512];
+    snprintf(buf, sizeof(buf), "%s getaddrinfo(%s)", time_to_string(dtime()), hostname);
     int retval = getaddrinfo(hostname, NULL, &hints, &res);
     if (retval) {
-        char buf[256];
-        sprintf(buf, "%s: getaddrinfo", time_to_string(dtime()));
-        perror(buf);
+        if (retval == EAI_SYSTEM) {
+            perror(buf);
+        } else {
+            fprintf(stderr, "%s: %s", buf, gai_strerror(retval));
+        }
         return ERR_GETADDRINFO;
     }
     struct addrinfo* aip = res;
@@ -220,12 +227,14 @@ int boinc_socket(int& fd, int protocol) {
     fd = (int)socket(protocol, SOCK_STREAM, 0);
     if (fd < 0) {
         char buf[256];
-        sprintf(buf, "%s: socket", time_to_string(dtime()));
-        perror("buf");
+        snprintf(buf, sizeof(buf), "%s socket()", time_to_string(dtime()));
+        perror(buf);
         return ERR_SOCKET;
     }
 #ifndef _WIN32
-    fcntl(fd, F_SETFD, FD_CLOEXEC);
+    if (-1 == fcntl(fd, F_SETFD, FD_CLOEXEC)) {
+        return ERR_FCNTL;
+    }
 #endif
     return 0;
 }
@@ -283,7 +292,9 @@ int get_socket_error(int fd) {
     n = getpeername(fd, (struct sockaddr *)&sin, &sinsz);
 #else
     socklen_t intsize = sizeof(int);
-    getsockopt(fd, SOL_SOCKET, SO_ERROR, (void*)&n, (socklen_t*)&intsize);
+    if (getsockopt(fd, SOL_SOCKET, SO_ERROR, (void*)&n, (socklen_t*)&intsize)) {
+        return errno;
+    }
 #endif
     return n;
 }
@@ -334,7 +345,11 @@ int boinc_get_port(bool is_remote, int& port) {
         return ERR_BIND;
     }
 
-    getsockname(sock, (sockaddr*)&addr, &addrsize);
+    retval = getsockname(sock, (sockaddr*)&addr, &addrsize);
+    if (retval) {
+        boinc_close_socket(sock);
+        return errno;
+    }
     port = ntohs(addr.sin_port);
 
     boinc_close_socket(sock);

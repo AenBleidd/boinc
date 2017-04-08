@@ -34,6 +34,10 @@
 #include <set>
 #endif
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #include "crypt.h"
 #include "error_numbers.h"
 #include "file_names.h"
@@ -330,21 +334,21 @@ int CLIENT_STATE::make_scheduler_request(PROJECT* p) {
             rp = results[i];
             double x = rp->estimated_runtime_remaining();
             if (x == 0) continue;
-            strcpy(buf, "");
+            safe_strcpy(buf, "");
             int rt = rp->avp->gpu_usage.rsc_type;
             if (rt) {
                 if (rt == rsc_index(GPU_TYPE_NVIDIA)) {
-                    sprintf(buf,
+                    snprintf(buf, sizeof(buf),
                         "        <ncudas>%f</ncudas>\n",
                         rp->avp->gpu_usage.usage
                     );
                 } else if (rt == rsc_index(GPU_TYPE_ATI)) {
-                    sprintf(buf,
+                    snprintf(buf, sizeof(buf),
                         "        <natis>%f</natis>\n",
                         rp->avp->gpu_usage.usage
                     );
                 } else if (rt == rsc_index(GPU_TYPE_INTEL)) {
-                    sprintf(buf,
+                    snprintf(buf, sizeof(buf),
                         "        <nintel_gpus>%f</nintel_gpus>\n",
                         rp->avp->gpu_usage.usage
                     );
@@ -553,7 +557,7 @@ int CLIENT_STATE::handle_scheduler_reply(
     unsigned int i;
     bool signature_valid, update_global_prefs=false, update_project_prefs=false;
     char buf[1024], filename[256];
-    std::string old_gui_urls = project->gui_urls;
+    string old_gui_urls = project->gui_urls;
     PROJECT* p2;
     vector<RESULT*>new_results;
 
@@ -565,7 +569,7 @@ int CLIENT_STATE::handle_scheduler_reply(
 
     get_sched_reply_filename(*project, filename, sizeof(filename));
 
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if (!f) return ERR_FOPEN;
     retval = sr.parse(f, project);
     fclose(f);
@@ -573,9 +577,9 @@ int CLIENT_STATE::handle_scheduler_reply(
 
     if (log_flags.sched_ops) {
         if (work_fetch.requested_work()) {
-            sprintf(buf, ": got %d new tasks", (int)sr.results.size());
+            snprintf(buf, sizeof(buf), ": got %d new tasks", (int)sr.results.size());
         } else {
-            strcpy(buf, "");
+            safe_strcpy(buf, "");
         }
         msg_printf(project, MSG_INFO, "Scheduler request completed%s", buf);
     }
@@ -605,8 +609,8 @@ int CLIENT_STATE::handle_scheduler_reply(
                     sr.master_url
                 );
             } else {
-                msg_printf(project, MSG_INFO,
-                    _("You used the wrong URL for this project.  When convenient, remove this project, then add %s"),
+                msg_printf(project, MSG_USER_ALERT,
+                    _("This project is using an old URL.  When convenient, remove the project, then add %s"),
                     sr.master_url
                 );
             }
@@ -675,10 +679,20 @@ int CLIENT_STATE::handle_scheduler_reply(
     // insert extra elements, write to disk, and parse
     //
     if (sr.global_prefs_xml) {
-        // skip this if we have host-specific prefs
-        // and we're talking to an old scheduler
-        //
-        if (!global_prefs.host_specific || sr.scheduler_version >= 507) {
+        // ignore prefs if we're using prefs from account mgr
+        // BAM! currently has mixed http, https; trim off
+        char* p = strchr(global_prefs.source_project, '/');
+        char* q = strchr(gstate.acct_mgr_info.master_url, '/');
+        if (gstate.acct_mgr_info.using_am() && p && q && !strcmp(p, q)) {
+            if (log_flags.sched_op_debug) {
+                msg_printf(project, MSG_INFO,
+                    "ignoring prefs from project; using prefs from AM"
+                );
+            }
+        } else if (!global_prefs.host_specific || sr.scheduler_version >= 507) {
+            // ignore prefs if we have host-specific prefs
+            // and we're talking to an old scheduler
+            //
             retval = save_global_prefs(
                 sr.global_prefs_xml, project->master_url, scheduler_url
             );
@@ -1151,7 +1165,7 @@ void CLIENT_STATE::check_project_timeout() {
         if (p->possibly_backed_off && now > p->min_rpc_time) {
             p->possibly_backed_off = false;
             char buf[256];
-            sprintf(buf, "Backoff ended for %s", p->get_project_name());
+            snprintf(buf, sizeof(buf), "Backoff ended for %s", p->get_project_name());
             request_work_fetch(buf);
         }
     }
@@ -1210,6 +1224,8 @@ PROJECT* CLIENT_STATE::next_project_sched_rpc_pending() {
             honor_suspend = false;
             break;
         case RPC_REASON_INIT:
+            // always do the initial RPC so we can get project name etc.
+            honor_suspend = false;
             break;
         case RPC_REASON_PROJECT_REQ:
             break;
@@ -1289,6 +1305,14 @@ PROJECT* CLIENT_STATE::find_project_with_overdue_results(
         }
 
         if (cc_config.report_results_immediately) {
+            return p;
+        }
+
+        if (p->report_results_immediately) {
+            return p;
+        }
+
+        if (r->app->report_results_immediately) {
             return p;
         }
 

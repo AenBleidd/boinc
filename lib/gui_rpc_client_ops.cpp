@@ -277,6 +277,8 @@ int PROJECT::parse(XML_PARSER& xp) {
     int retval;
     char buf[256];
 
+    safe_strcpy(buf, "");
+
     while (!xp.get_tag()) {
         if (xp.match_tag("/project")) {
             return 0;
@@ -460,7 +462,7 @@ void RSC_DESC::clear() {
 }
 
 void PROJECT::clear() {
-    strcpy(master_url, "");
+    safe_strcpy(master_url, "");
     resource_share = 0;
     project_name.clear();
     user_name.clear();
@@ -499,11 +501,11 @@ void PROJECT::clear() {
     last_rpc_time = 0;
     
     statistics.clear();
-    strcpy(venue, "");
+    safe_strcpy(venue, "");
     njobs_success = 0;
     njobs_error = 0;
     elapsed_time = 0;
-    strcpy(external_cpid, "");
+    safe_strcpy(external_cpid, "");
     
     flag_for_delete = false;
 }
@@ -522,8 +524,8 @@ int APP::parse(XML_PARSER& xp) {
 }
 
 void APP::clear() {
-    strcpy(name, "");
-    strcpy(user_friendly_name, "");
+    safe_strcpy(name, "");
+    safe_strcpy(user_friendly_name, "");
     project = NULL;
 }
 
@@ -604,8 +606,8 @@ int WORKUNIT::parse(XML_PARSER& xp) {
 }
 
 void WORKUNIT::clear() {
-    strcpy(name, "");
-    strcpy(app_name, "");
+    safe_strcpy(name, "");
+    safe_strcpy(app_name, "");
     version_num = 0;
     rsc_fpops_est = 0;
     rsc_fpops_bound = 0;
@@ -637,6 +639,7 @@ int RESULT::parse(XML_PARSER& xp) {
         }
         if (xp.parse_str("name", name, sizeof(name))) continue;
         if (xp.parse_str("wu_name", wu_name, sizeof(wu_name))) continue;
+        if (xp.parse_str("platform", platform, sizeof(platform))) continue;
         if (xp.parse_int("version_num", version_num)) continue;
         if (xp.parse_str("plan_class", plan_class, sizeof(plan_class))) continue;
         if (xp.parse_str("project_url", project_url, sizeof(project_url))) continue;
@@ -695,16 +698,17 @@ int RESULT::parse(XML_PARSER& xp) {
 }
 
 void RESULT::clear() {
-    strcpy(name, "");
-    strcpy(wu_name, "");
+    safe_strcpy(name, "");
+    safe_strcpy(wu_name, "");
     version_num = 0;
-    strcpy(plan_class, "");
-    strcpy(project_url, "");
-    strcpy(graphics_exec_path, "");
-    strcpy(web_graphics_url, "");
-    strcpy(remote_desktop_addr, "");
-    strcpy(slot_path, "");
-    strcpy(resources, "");
+    safe_strcpy(plan_class, "");
+    safe_strcpy(project_url, "");
+    safe_strcpy(platform, "");
+    safe_strcpy(graphics_exec_path, "");
+    safe_strcpy(web_graphics_url, "");
+    safe_strcpy(remote_desktop_addr, "");
+    safe_strcpy(slot_path, "");
+    safe_strcpy(resources, "");
     report_deadline = 0;
     received_time = 0;
     ready_to_report = false;
@@ -720,7 +724,7 @@ void RESULT::clear() {
     project_suspended_via_gui = false;
     coproc_missing = false;
     scheduler_wait = false;
-    strcpy(scheduler_wait_reason, "");
+    safe_strcpy(scheduler_wait_reason, "");
     network_wait = false;
 
     active_task = false;
@@ -794,6 +798,9 @@ void FILE_TRANSFER::clear() {
     project_url.clear();
     project_name.clear();
     nbytes = 0;
+    uploaded = false;
+    is_upload = false;
+    generated_locally = false;
     sticky = false;
     pers_xfer_active = false;
     xfer_active = false;
@@ -815,15 +822,10 @@ MESSAGE::MESSAGE() {
 }
 
 int MESSAGE::parse(XML_PARSER& xp) {
-    char buf[1024];
     while (!xp.get_tag()) {
         if (xp.match_tag("/msg")) return 0;
         if (xp.parse_string("project", project)) continue;
-        if (xp.match_tag("body")) {
-            xp.element_contents("</body>", buf, sizeof(buf));
-            body = buf;
-            continue;
-        }
+        if (xp.parse_string("body", body)) continue;
         if (xp.parse_int("pri", priority)) continue;
         if (xp.parse_int("time", timestamp)) continue;
         if (xp.parse_int("seqno", seqno)) continue;
@@ -834,6 +836,7 @@ int MESSAGE::parse(XML_PARSER& xp) {
 void MESSAGE::clear() {
     project.clear();
     priority = 0;
+    seqno = 0;
     timestamp = 0;
     body.clear();
 }
@@ -853,6 +856,7 @@ int GR_PROXY_INFO::parse(XML_PARSER& xp) {
         if (xp.parse_int("socks_server_port", socks_server_port)) continue;
         if (xp.parse_string("socks5_user_name", socks5_user_name)) continue;
         if (xp.parse_string("socks5_user_passwd", socks5_user_passwd)) continue;
+        if (xp.parse_bool("socks5_remote_dns", socks5_remote_dns)) continue;
         if (xp.parse_string("http_server_name", http_server_name)) continue;
         if (xp.parse_int("http_server_port", http_server_port)) continue;
         if (xp.parse_string("http_user_name", http_user_name)) continue;
@@ -877,6 +881,7 @@ void GR_PROXY_INFO::clear() {
     http_user_passwd.clear();
     socks5_user_name.clear();
     socks5_user_passwd.clear();
+    socks5_remote_dns = false;
 	noproxy_hosts.clear();
 }
 
@@ -966,13 +971,18 @@ int CC_STATE::parse(XML_PARSER& xp) {
             }
             result->app = result->wup->app;
             APP_VERSION* avp;
-            if (result->version_num) {
+            if (strlen(result->platform)) {
                 avp = lookup_app_version(
-                    project, result->app, result->version_num,
-                    result->plan_class
+                    project, result->app,
+                    result->platform, result->version_num, result->plan_class
+                );
+            } else if (result->version_num) {
+                avp = lookup_app_version(
+                    project, result->app,
+                    result->version_num, result->plan_class
                 );
             } else {
-                avp = lookup_app_version_old(
+                avp = lookup_app_version(
                     project, result->app, result->wup->version_num
                 );
             }
@@ -1055,7 +1065,24 @@ APP* CC_STATE::lookup_app(PROJECT* project, const char* name) {
 }
 
 APP_VERSION* CC_STATE::lookup_app_version(
-    PROJECT* project, APP* app, int version_num, char* plan_class
+    PROJECT* project, APP* app,
+    char* platform, int version_num, char* plan_class
+) {
+    unsigned int i;
+    for (i=0; i<app_versions.size(); i++) {
+        if (app_versions[i]->project != project) continue;
+        if (app_versions[i]->app != app) continue;
+        if (strcmp(app_versions[i]->platform, platform)) continue;
+        if (app_versions[i]->version_num != version_num) continue;
+        if (strcmp(app_versions[i]->plan_class, plan_class)) continue;
+        return app_versions[i];
+    }
+    return 0;
+}
+
+APP_VERSION* CC_STATE::lookup_app_version(
+    PROJECT* project, APP* app,
+    int version_num, char* plan_class
 ) {
     unsigned int i;
     for (i=0; i<app_versions.size(); i++) {
@@ -1068,7 +1095,7 @@ APP_VERSION* CC_STATE::lookup_app_version(
     return 0;
 }
 
-APP_VERSION* CC_STATE::lookup_app_version_old(
+APP_VERSION* CC_STATE::lookup_app_version(
     PROJECT* project, APP* app, int version_num
 ) {
     unsigned int i;
@@ -1254,7 +1281,9 @@ int PROJECT_INIT_STATUS::parse(XML_PARSER& xp) {
         if (xp.parse_string("url", url)) continue;
         if (xp.parse_string("name", name)) continue;
         if (xp.parse_string("team_name", team_name)) continue;
+        if (xp.parse_string("setup_cookie", setup_cookie)) continue;
         if (xp.parse_bool("has_account_key", has_account_key)) continue;
+        if (xp.parse_bool("embedded", embedded)) continue;
     }
     return ERR_XML_PARSE;
 }
@@ -1262,7 +1291,10 @@ int PROJECT_INIT_STATUS::parse(XML_PARSER& xp) {
 void PROJECT_INIT_STATUS::clear() {
     url.clear();
     name.clear();
+    team_name.clear();
+    setup_cookie.clear();
     has_account_key = false;
+    embedded = false;
 }
 
 PROJECT_CONFIG::PROJECT_CONFIG() {
@@ -1287,8 +1319,9 @@ int PROJECT_CONFIG::parse(XML_PARSER& xp) {
         if (xp.parse_string("error_msg", error_msg)) continue;
         if (xp.match_tag("terms_of_use")) {
             char buf[65536];
-            xp.element_contents("</terms_of_use>", buf, sizeof(buf));
-            terms_of_use = buf;
+            if (!xp.element_contents("</terms_of_use>", buf, sizeof(buf))) {
+                terms_of_use = buf;
+            }
             continue;
         }
         if (xp.parse_int("min_client_version", min_client_version)) continue;
@@ -1310,6 +1343,7 @@ void PROJECT_CONFIG::clear() {
     web_rpc_url_base.clear();
     error_msg.clear();
     terms_of_use.clear();
+    local_revision = 0;
     min_passwd_length = 6;
     account_manager = false;
     uses_username = false;
@@ -1332,7 +1366,9 @@ void ACCOUNT_IN::clear() {
     user_name.clear();
     passwd.clear();
     team_name.clear();
+    server_cookie.clear();
     ldap_auth = false;
+    server_assigned_cookie = false;
 }
 
 ACCOUNT_OUT::ACCOUNT_OUT() {
@@ -1402,6 +1438,7 @@ void CC_STATUS::clear() {
 	gpu_mode_delay = 0;
     disallow_attach = false;
     simple_gui_only = false;
+    max_event_log_lines = 0;
 }
 
 /////////// END OF PARSING FUNCTIONS.  RPCS START HERE ////////////////
@@ -1750,6 +1787,7 @@ int RPC_CLIENT::project_op(PROJECT& project, const char* op) {
     } else {
         return -1;
     }
+
     snprintf(buf, sizeof(buf),
         "<%s>\n"
         "  <project_url>%s</project_url>\n"
@@ -1759,6 +1797,7 @@ int RPC_CLIENT::project_op(PROJECT& project, const char* op) {
         tag
     );
     buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -1770,11 +1809,13 @@ int RPC_CLIENT::project_attach_from_file() {
     char buf[768];
     RPC rpc(this);
 
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "<project_attach>\n"
         "  <use_config_file/>\n"
         "</project_attach>\n"
     );
+    buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -1832,13 +1873,14 @@ int RPC_CLIENT::set_run_mode(int mode, double duration) {
     char buf[256];
     RPC rpc(this);
 
-    sprintf(buf, 
+    snprintf(buf, sizeof(buf), 
         "<set_run_mode>\n"
         "%s\n"
         "  <duration>%f</duration>\n"
         "</set_run_mode>\n",
         mode_name(mode), duration
     );
+    buf[sizeof(buf)-1] = 0;
 
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
@@ -1851,13 +1893,14 @@ int RPC_CLIENT::set_gpu_mode(int mode, double duration) {
     char buf[256];
     RPC rpc(this);
 
-    sprintf(buf, 
+    snprintf(buf, sizeof(buf),
         "<set_gpu_mode>\n"
         "%s\n"
         "  <duration>%f</duration>\n"
         "</set_gpu_mode>\n",
         mode_name(mode), duration
     );
+    buf[sizeof(buf)-1] = 0;
 
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
@@ -1870,13 +1913,15 @@ int RPC_CLIENT::set_network_mode(int mode, double duration) {
     char buf[256];
     RPC rpc(this);
 
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "<set_network_mode>\n"
         "%s\n"
         "  <duration>%f</duration>\n"
         "</set_network_mode>\n",
         mode_name(mode), duration
     );
+    buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -1934,6 +1979,7 @@ int RPC_CLIENT::set_proxy_settings(GR_PROXY_INFO& procinfo) {
         "        <socks_server_port>%d</socks_server_port>\n"
         "        <socks5_user_name>%s</socks5_user_name>\n"
         "        <socks5_user_passwd>%s</socks5_user_passwd>\n"		
+        "        <socks5_remote_dns>%d</socks5_remote_dns>\n"		
 		"        <no_proxy>%s</no_proxy>\n"
         "    </proxy_info>\n"
         "</set_proxy_settings>\n",
@@ -1948,9 +1994,11 @@ int RPC_CLIENT::set_proxy_settings(GR_PROXY_INFO& procinfo) {
         procinfo.socks_server_port,
         procinfo.socks5_user_name.c_str(),
         procinfo.socks5_user_passwd.c_str(),
+        procinfo.socks5_remote_dns?1:0,
 		procinfo.noproxy_hosts.c_str()
     );
     buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -1974,10 +2022,7 @@ int RPC_CLIENT::get_message_count(int& seqno) {
     char buf[256];
     RPC rpc(this);
 
-    sprintf(buf,
-        "<get_message_count/>\n"
-    );
-    retval = rpc.do_rpc(buf);
+    retval = rpc.do_rpc("<get_message_count/>");
     if (retval) return retval;
     while (rpc.fin.fgets(buf, 256)) {
         if (parse_int(buf, "<seqno>", seqno)) {
@@ -1993,7 +2038,7 @@ int RPC_CLIENT::get_messages(int seqno, MESSAGES& msgs, bool translatable) {
     char buf[256];
     RPC rpc(this);
 
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "<get_messages>\n"
         "  <seqno>%d</seqno>\n"
         "%s"
@@ -2001,6 +2046,7 @@ int RPC_CLIENT::get_messages(int seqno, MESSAGES& msgs, bool translatable) {
         seqno,
         translatable?"  <translatable/>\n":""
     );
+    buf[sizeof(buf)-1] = 0;
 
     retval = rpc.do_rpc(buf);
     if (!retval) {
@@ -2036,6 +2082,7 @@ int RPC_CLIENT::file_transfer_op(FILE_TRANSFER& ft, const char* op) {
     } else {
         return -1;
     }
+
     snprintf(buf, sizeof(buf),
         "<%s>\n"
         "   <project_url>%s</project_url>\n"
@@ -2047,6 +2094,7 @@ int RPC_CLIENT::file_transfer_op(FILE_TRANSFER& ft, const char* op) {
         tag
     );
     buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -2082,6 +2130,7 @@ int RPC_CLIENT::result_op(RESULT& result, const char* op) {
         tag
     );
     buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -2124,6 +2173,7 @@ int RPC_CLIENT::set_host_info(HOST_INFO& h) {
         h.product_name
     );
     buf[sizeof(buf)-1] = 0;
+
     int retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -2148,11 +2198,12 @@ int RPC_CLIENT::acct_mgr_rpc(
     RPC rpc(this);
 
     if (use_config_file) {
-        sprintf(buf,
+        snprintf(buf, sizeof(buf),
             "<acct_mgr_rpc>\n"
             "  <use_config_file/>\n"
             "</acct_mgr_rpc>\n"
         );
+        buf[sizeof(buf)-1] = 0;
     } else {
         snprintf(buf, sizeof(buf),
             "<acct_mgr_rpc>\n"
@@ -2164,6 +2215,7 @@ int RPC_CLIENT::acct_mgr_rpc(
         );
         buf[sizeof(buf)-1] = 0;
     }
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     return rpc.parse_reply();
@@ -2256,17 +2308,22 @@ int RPC_CLIENT::lookup_account(ACCOUNT_IN& ai) {
         downcase_string(ai.email_addr);
         passwd_hash = get_passwd_hash(ai.passwd, ai.email_addr);
     }
+
     snprintf(buf, sizeof(buf),
         "<lookup_account>\n"
         "   <url>%s</url>\n"
         "   <email_addr>%s</email_addr>\n"
         "   <passwd_hash>%s</passwd_hash>\n"
         "   <ldap_auth>%d</ldap_auth>\n"
+		"   <server_assigned_cookie>%d</server_assigned_cookie>\n"
+		"   <server_cookie>%s</server_cookie>\n"
         "</lookup_account>\n",
         ai.url.c_str(),
         ai.email_addr.c_str(),
         passwd_hash.c_str(),
-        ai.ldap_auth?1:0
+        ai.ldap_auth?1:0,
+		ai.server_assigned_cookie?1:0,
+	    ai.server_cookie.c_str()
     );
     buf[sizeof(buf)-1] = 0;
 
@@ -2295,6 +2352,7 @@ int RPC_CLIENT::create_account(ACCOUNT_IN& ai) {
 
     downcase_string(ai.email_addr);
     string passwd_hash = get_passwd_hash(ai.passwd, ai.email_addr);
+
     snprintf(buf, sizeof(buf),
         "<create_account>\n"
         "   <url>%s</url>\n"
@@ -2335,11 +2393,20 @@ int RPC_CLIENT::get_newer_version(std::string& version, std::string& version_dow
     RPC rpc(this);
 
     version = "";
+    version_download_url = "";
+
     retval = rpc.do_rpc("<get_newer_version/>\n");
     if (!retval) {
         while (rpc.fin.fgets(buf, 256)) {
-            parse_str(buf, "<newer_version>", version);
-            parse_str(buf, "<download_url>", version_download_url);
+            if (!version.empty() && !version_download_url.empty()) {
+                break;
+            }
+            if (parse_str(buf, "<newer_version>", version)) {
+                continue;
+            }
+            if (parse_str(buf, "<download_url>", version_download_url)) {
+                continue;
+            }
         }
     }
     return retval;
@@ -2557,6 +2624,7 @@ static int parse_notices(XML_PARSER& xp, NOTICES& notices) {
                 if (np->seqno == -1) {
                     notices.notices.clear();
                     notices.complete = true;
+                    delete np;
                 } else {
                     notices.notices.insert(notices.notices.begin(), np);
                 }
@@ -2574,12 +2642,15 @@ int RPC_CLIENT::get_notices(int seqno, NOTICES& notices) {
     RPC rpc(this);
     int retval;
 
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "<get_notices>\n"
         "   <seqno>%d</seqno>\n"
         "</get_notices>\n",
         seqno
     );
+    buf[sizeof(buf)-1] = 0;
+
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     notices.received = true;
@@ -2592,12 +2663,14 @@ int RPC_CLIENT::get_notices_public(int seqno, NOTICES& notices) {
     RPC rpc(this);
     int retval;
 
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "<get_notices_public>\n"
         "   <seqno>%d</seqno>\n"
         "</get_notices_public>\n",
         seqno
     );
+    buf[sizeof(buf)-1] = 0;
+
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     notices.received = true;
@@ -2620,8 +2693,15 @@ int RPC_CLIENT::set_language(const char* language) {
 	int retval;
 	char buf[256];
 
-	sprintf(buf, "<set_language>\n   <language>%s</language>\n</set_language>\n", language);
-	retval = rpc.do_rpc(buf);
+	snprintf(buf, sizeof(buf),
+        "<set_language>\n"
+        "    <language>%s</language>\n"
+        "</set_language>\n",
+        language
+    );
+    buf[sizeof(buf)-1] = 0;
+
+    retval = rpc.do_rpc(buf);
 	if (retval) return retval;
 	return rpc.parse_reply();
 }

@@ -11,10 +11,10 @@ AC_CONFIG_MACRO_DIR([m4])
 LIBBOINC_VERSION=`echo ${PACKAGE_VERSION} | sed 's/\./:/g'`
 AC_SUBST([LIBBOINC_VERSION])
 
-WRAPPER_RELEASE=26015
+WRAPPER_RELEASE=26016
 AC_SUBST([WRAPPER_RELEASE])
 
-VBOXWRAPPER_RELEASE=26178
+VBOXWRAPPER_RELEASE=26197
 AC_SUBST([VBOXWRAPPER_RELEASE])
 
 AC_CANONICAL_TARGET
@@ -200,6 +200,7 @@ configured_to_build=
 
 if test x$enable_client = xyes ; then
   configured_to_build="client"
+  enable_xss="yes"
 fi
 if test x$enable_manager = xyes ; then
   configured_to_build="${configured_to_build} manager"
@@ -437,19 +438,23 @@ if test "x${enable_fcgi}" = xyes ; then
 dnl m4/boinc_check_fcgi.m4
 BOINC_CHECK_FCGI
 fi
+dnl ---------- SSL (m4/check_ssl.m4)
+if [[ "x${enable_client}" = "xyes" -o "x${enable_server}" = "xyes" ]]
+then
+    CHECK_SSL
+fi
 
 dnl ---------- libcurl (m4/libcurl.m4) ------------------------------
+dnl curl is needed for client
 
-if test "${enable_client}" = yes; then
-   LIBCURL_CHECK_CONFIG([yes], [7.17.1], [haveCurl=yes], [haveCurl=no])
+if [[ "x${enable_client}" = "xyes" ]]
+then
+LIBCURL_CHECK_CONFIG([yes], [7.17.1], [haveCurl=yes], [haveCurl=no])
 
-   if test "${haveCurl}" != yes; then
-      AC_MSG_ERROR([
+if test "${haveCurl}" != yes; then
+   AC_MSG_ERROR([
 ================================================================================
 ERROR: could not find (recent enough) development-libs for libcurl.
-
-  This library is required to build the boinc-client.
-  (If you don't want to build the client, use --disable-client with configure.
 
   If libcurl-dev is installed on your system, make sure that the script
   'curl-config' is found in your PATH, and that
@@ -458,32 +463,25 @@ ERROR: could not find (recent enough) development-libs for libcurl.
   You can download libcurl from: http://curl.haxx.se/
 
 ================================================================================
-	])
-   else
-      ## add libcurl et al. to the list of statically linked libs
-      STATIC_LIB_LIST="${STATIC_LIB_LIST} curl idn ssh2 crypto ssl krb5 k5crypto gssapi_krb5 com_err resolv lber ldap socket nsl z rt gcrypt gpg-error"
-      CPPFLAGS="${CPPFLAGS} ${LIBCURL_CPPFLAGS}"
-      CURL_LIB_PATHS=`echo $LIBCURL | sed 's/[^[a-zA-Z]]*-l[^ ]*//g'`
+   ])
+else
+   ## add libcurl et al. to the list of statically linked libs
+   STATIC_LIB_LIST="${STATIC_LIB_LIST} curl idn ssh2 crypto ssl krb5 k5crypto gssapi_krb5 com_err resolv lber ldap socket nsl z rt gcrypt gpg-error"
+   CPPFLAGS="${CPPFLAGS} ${LIBCURL_CPPFLAGS}"
+   CURL_LIB_PATHS=`echo $LIBCURL | sed 's/[^[a-zA-Z]]*-l[^ ]*//g'`
 
-      if test "${enable_debug}" = yes; then
-         echo "LIBCURL = ${LIBCURL}"
-	 echo "LIBCURL_CPPFLAGS = ${LIBCURL_CPPFLAGS}"
-	 echo "CURL_LIB_PATHS = ${CURL_LIB_PATHS}"
-	 echo "LDFLAGS = ${LDFLAGS}"
-      fi
-      BOINC_EXTRA_LIBS="${BOINC_EXTRA_LIBS} ${LIBCURL}"
-
+   if test "${enable_debug}" = yes; then
+      echo "LIBCURL = ${LIBCURL}"
+      echo "LIBCURL_CPPFLAGS = ${LIBCURL_CPPFLAGS}"
+      echo "CURL_LIB_PATHS = ${CURL_LIB_PATHS}"
+      echo "LDFLAGS = ${LDFLAGS}"
    fi
-
+   BOINC_EXTRA_LIBS="${BOINC_EXTRA_LIBS} ${LIBCURL}"
+fi
 fi
 
-dnl ---------- SSL (m4/check_ssl.m4)
-if [[ "x${enable_client}" = "xyes" -o "x${enable_server}" = "xyes" ]]
-then
-    CHECK_SSL
-    if test "x${found_ssl}" = "xyes"; then
-       BOINC_EXTRA_LIBS="${BOINC_EXTRA_LIBS} ${SSL_LIBS}"
-    fi
+if test "x${found_ssl}" = "xyes"; then
+   BOINC_EXTRA_LIBS="${BOINC_EXTRA_LIBS} ${SSL_LIBS}"
 fi
 
 dnl save the libs, since SAH_CHECK_LIB() will change them
@@ -628,6 +626,15 @@ fi
 
 AM_CONDITIONAL(BUILD_GRAPHICS_API, [ test "$have_glut" = yes -a "$have_jpeg" = 1])
 
+dnl check for X screen saver lib (X-based idle detection on Linux)
+if test "$enable_xss" == yes; then
+    AC_CHECK_LIB([Xss], [XScreenSaverAllocInfo], [have_Xss="yes"], [have_Xss="no"])
+    AC_CHECK_HEADER([X11/extensions/scrnsaver.h], [have_Xss="yes"], [have_Xss="no"])
+    if test "$have_Xss" == no; then
+        AC_MSG_WARN([libxss missing, disabling X ScreenSaver user idle detection])
+    fi
+fi
+
 dnl --------------------------------------------------------------------------------
 dnl put double-inclusion protection into config.h
 AH_TOP([
@@ -669,7 +676,7 @@ AC_TYPE_SIGNAL
 if test "${isWIN32}" = "yes" ; then
   AC_CHECK_HEADERS(winsock2.h winsock.h windows.h ws2tcpip.h winternl.h crtdbg.h)
 fi
-AC_CHECK_HEADERS(sys/types.h sys/un.h arpa/inet.h dirent.h grp.h fcntl.h inttypes.h stdint.h memory.h netdb.h netinet/in.h netinet/tcp.h netinet/ether.h net/if.h net/if_arp.h signal.h strings.h sys/auxv.h sys/file.h sys/fcntl.h sys/ipc.h sys/ioctl.h sys/msg.h sys/param.h sys/resource.h sys/select.h sys/sem.h sys/shm.h sys/sockio.h sys/socket.h sys/stat.h sys/statvfs.h sys/statfs.h sys/systeminfo.h sys/time.h sys/types.h sys/utsname.h sys/vmmeter.h sys/wait.h unistd.h utmp.h errno.h procfs.h ieeefp.h setjmp.h float.h sal.h)
+AC_CHECK_HEADERS(sys/types.h sys/un.h arpa/inet.h dirent.h grp.h fcntl.h inttypes.h stdint.h memory.h netdb.h netinet/in.h netinet/tcp.h netinet/ether.h net/if.h net/if_arp.h signal.h strings.h sys/auxv.h sys/file.h sys/fcntl.h sys/ipc.h sys/ioctl.h sys/msg.h sys/param.h sys/resource.h sys/select.h sys/sem.h sys/shm.h sys/sockio.h sys/socket.h sys/stat.h sys/statvfs.h sys/statfs.h sys/systeminfo.h sys/time.h sys/types.h sys/utsname.h sys/vmmeter.h sys/wait.h unistd.h utmp.h errno.h procfs.h ieeefp.h setjmp.h float.h sal.h execinfo.h)
 
 save_cxxflags="${CXXFLAGS}"
 save_cppflags="${CPPFLAGS}"
@@ -1194,6 +1201,16 @@ if test "${ac_cv_func_res_init}" != "yes" ; then
 fi
 LIBS=$svlibs
 
+if (test "$enable_xss" == yes) && (test "$have_Xss" == yes); then
+    SAH_CHECK_LIB([Xss],[XScreenSaverAllocInfo],[
+        AC_DEFINE([HAVE_XSS],[1],[Define to 1 if you have xss library])
+        CLIENTLIBS="${sah_lib_last} ${CLIENTLIBS}"])
+    SAH_CHECK_LIB([X11],[XOpenDisplay],[
+        AC_DEFINE([HAVE_X11],[1],[Define to 1 if you have X11 library])
+        CLIENTLIBS="${sah_lib_last} ${CLIENTLIBS}"])
+    echo DEBUG: CLIENTLIBS=${CLIENTLIBS} >&5
+fi
+
 SAH_CHECK_LIB([resolv],[res_query],[
     AC_DEFINE([HAVE_RESOLV],[1],[Define to 1 if you have the resolv library])
     CLIENTLIBS="${sah_lib_last} ${CLIENTLIBS}"])
@@ -1223,17 +1240,12 @@ AC_SUBST(CLIENTLIBS)
 ## --------------------
 ## some more tweaking to turn non-standard libs into statically linked ones
 
-if test "${enable_debug}" = yes; then
+if test "${enable_debug}" = "yes" ; then
     CLIENTGUIFLAGS="${CLIENTGUIFLAGS} -D_DEBUG -DDEBUG"
+else
+    # disable wxWidgets debug support which is by default enabled since 2.9.1
+    CLIENTGUIFLAGS="${CLIENTGUIFLAGS} -DNDEBUG"
 fi
-
-AC_ARG_ENABLE(wx-debug,
-  AS_HELP_STRING([--enable-wx-debug],
-                 [ use wxWidgets debug libraries ]),
-  [enable_wx_debug="yes"
-   AC_DEFINE(USE_WX_DEBUG,[1],[Define to 1 to use the wxWidgets debug libraries])
-   ],
-  [enable_wx_debug="no"])
 
 CLIENTGUILIBS="${WX_LIBS} ${SQLITE3_LIBS}"
 

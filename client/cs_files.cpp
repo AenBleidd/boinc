@@ -30,8 +30,13 @@
 #include <sys/types.h>
 #endif
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #include "md5_file.h"
 #include "crypt.h"
+#include "str_replace.h"
 #include "str_util.h"
 #include "filesys.h"
 #include "cert_sig.h"
@@ -49,6 +54,7 @@
 using std::vector;
 
 // Decide whether to consider starting a new file transfer
+// for the given persistent file transfer
 //
 bool CLIENT_STATE::start_new_file_xfer(PERS_FILE_XFER& pfx) {
     unsigned int i;
@@ -63,6 +69,15 @@ bool CLIENT_STATE::start_new_file_xfer(PERS_FILE_XFER& pfx) {
     //
     for (i=0; i<file_xfers->file_xfers.size(); i++) {
         FILE_XFER* fxp = file_xfers->file_xfers[i];
+
+        // don't count user or project files
+        //
+        FILE_INFO* fip = fxp->fip;
+        if (fip->is_user_file) continue;
+        if (fip->is_project_file) continue;
+
+        // count transfers in the same direction as this
+        //
         if (pfx.is_upload == fxp->is_upload) {
             ntotal++;
             if (pfx.fip->project == fxp->fip->project) {
@@ -171,13 +186,13 @@ int FILE_INFO::verify_file(
 
     get_pathname(this, pathname, sizeof(pathname));
 
-    strcpy(cksum, "");
+    safe_strcpy(cksum, "");
 
     // see if we need to unzip it
     //
     if (download_gzipped && !boinc_file_exists(pathname)) {
         char gzpath[MAXPATHLEN];
-        sprintf(gzpath, "%s.gz", pathname);
+        snprintf(gzpath, sizeof(gzpath), "%s.gz", pathname);
         if (boinc_file_exists(gzpath) ) {
             if (allow_async && nbytes > ASYNC_FILE_THRESHOLD) {
                 ASYNC_VERIFY* avp = new ASYNC_VERIFY;
@@ -192,7 +207,7 @@ int FILE_INFO::verify_file(
             retval = gunzip(cksum);
             if (retval) return retval;
         } else {
-            strcat(gzpath, "t");
+            safe_strcat(gzpath, "t");
             if (!boinc_file_exists(gzpath)) {
                 status = FILE_NOT_PRESENT;
             }
@@ -403,8 +418,8 @@ bool CLIENT_STATE::create_and_delete_pers_file_xfers() {
                 if (fip->download_gzipped) {
                     char path[MAXPATHLEN], from_path[MAXPATHLEN], to_path[MAXPATHLEN];
                     get_pathname(fip, path, sizeof(path));
-                    sprintf(from_path, "%s.gzt", path);
-                    sprintf(to_path, "%s.gz", path);
+                    snprintf(from_path, sizeof(from_path), "%s.gzt", path);
+                    snprintf(to_path, sizeof(to_path), "%s.gz", path);
                     boinc_rename(from_path, to_path);
                 }
 

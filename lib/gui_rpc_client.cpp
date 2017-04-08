@@ -60,6 +60,10 @@ using std::vector;
 
 RPC_CLIENT::RPC_CLIENT() {
     sock = -1;
+    start_time = 0;
+    timeout = 0;
+    retry = 0;
+    memset(&addr, 0, sizeof(addr));
 }
 
 RPC_CLIENT::~RPC_CLIENT() {
@@ -200,7 +204,10 @@ int RPC_CLIENT::init_poll() {
     BOINCTRACE("init_poll(): sock = %d\n", sock);
 
     tv.tv_sec = tv.tv_usec = 0;
-    select(FD_SETSIZE, &read_fds, &write_fds, &error_fds, &tv);
+    if (-1 == select(FD_SETSIZE, &read_fds, &write_fds, &error_fds, &tv)) {
+        BOINCTRACE("init_poll(): select(): %s (%d)\n", strerror(errno), errno);
+        return ERR_SELECT;
+    }
     retval = 0;
     if (FD_ISSET(sock, &error_fds)) {
         retval =  ERR_CONNECT;
@@ -287,7 +294,7 @@ int RPC_CLIENT::authorize(const char* passwd) {
     n = snprintf(buf, sizeof(buf), "%s%s", nonce, passwd);
     if (n >= (int)sizeof(buf)) return ERR_AUTHENTICATOR;
     md5_block((const unsigned char*)buf, (int)strlen(buf), nonce_hash);
-    sprintf(buf, "<auth2>\n<nonce_hash>%s</nonce_hash>\n</auth2>\n", nonce_hash);
+    snprintf(buf, sizeof(buf), "<auth2>\n<nonce_hash>%s</nonce_hash>\n</auth2>\n", nonce_hash);
     retval = rpc.do_rpc(buf);
     if (retval) return retval;
     while (!xp.get_tag()) {
@@ -302,7 +309,9 @@ int RPC_CLIENT::authorize(const char* passwd) {
 
 int RPC_CLIENT::send_request(const char* p) {
     char buf[100000];
-    sprintf(buf,
+    snprintf(
+        buf,
+        sizeof(buf),
         "<boinc_gui_rpc_request>\n"
         "%s"
         "</boinc_gui_rpc_request>\n\003",

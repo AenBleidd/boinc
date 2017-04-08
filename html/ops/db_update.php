@@ -1015,11 +1015,30 @@ function workunit_big_ids() {
     ");
 }
 
-// run this is your projects uses HTTPS, to patch up the gravatar URLs
+// run this if your projects uses HTTPS, to patch up the gravatar URLs
 //
 function gravatar_update() {
     do_query("update forum_preferences
         SET avatar = REPLACE(avatar, 'http://www.gravatar.com', '//www.gravatar.com')
+    ");
+}
+
+function update_1_27_2016() {
+    do_query("alter table team add column mod_time timestamp default current_timestamp on update current_timestamp");
+}
+
+function update_2_17_2017() {
+    do_query("alter table job_file change md5 name varchar(255) not null");
+}
+
+function update_3_17_2017() {
+    do_query("alter table credit_user
+        add index cu_total(appid, total),
+        add index cu_avg(appid, expavg)
+    ");
+    do_query("alter table credit_team
+        add index ct_total(appid, total),
+        add index ct_avg(appid, expavg)
     ");
 }
 
@@ -1068,6 +1087,9 @@ $db_updates = array (
     array(27011, "update_8_15_2014"),
     array(27012, "update_10_8_2014"),
     array(27013, "update_4_15_2015"),
+    array(27014, "update_1_27_2016"),
+    array(27015, "update_2_17_2017"),
+    array(27016, "update_3_17_2017"),
 );
 
 ?>

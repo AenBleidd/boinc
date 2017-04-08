@@ -93,8 +93,8 @@ struct TIME_SPAN {
         Never,
         Between
     };
-    TIME_SPAN() : start_hour(0), end_hour(0) {}
-    TIME_SPAN(double start, double end) : start_hour(start), end_hour(end) {}
+    TIME_SPAN() : present(false), start_hour(0), end_hour(0) {}
+    TIME_SPAN(double start, double end) : present(false), start_hour(start), end_hour(end) {}
 
     bool suspended(double hour) const;
     TimeMode mode() const;

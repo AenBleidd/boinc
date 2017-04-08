@@ -89,7 +89,7 @@ function get_gpu_list($vendor, $alt_vendor=null) {
     $t = time() - 30*86400;
     //echo "start enum $vendor $av_ids\n";
     $results = BoincResult::enum(
-        "app_version_id in ($av_ids) and create_time > $t and elapsed_time>100 limit 500"
+        "app_version_id in ($av_ids) and create_time > $t and elapsed_time>100 limit 2000"
     );
     //echo "end enum\n";
     $total = array();
@@ -196,9 +196,12 @@ function show_vendor($vendor, $x) {
 }
 
 $d = get_cached_data(86400);
+$data = FALSE;
 if ($d) {
     $data = unserialize($d);
-} else {
+}
+
+if (!$data) {
     $data = get_gpu_lists();
     set_cached_data(86400, serialize($data));
 }

@@ -76,7 +76,7 @@ body {
 h1#site-name,
 div#site-name /* The name of the website */ {
   margin: 0 auto;
-  width: 960px;
+  max-width: 960px;
   font-size: 45px;
   line-height: 96px;
 }
@@ -452,7 +452,7 @@ ul.links li a {
  * Footer
  */
 #footer {
-  width: 960px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 50px 5px;
 }
@@ -805,8 +805,8 @@ table.user-projects {
   border-top: none;
 }
 #forum tr.sticky {
-  background-color: #f8f8f4;
 }
+
 #forum tr.sticky:hover {
   background-color: #f6f6f2;
 }
@@ -818,6 +818,9 @@ table.user-projects {
 }
 #forum tr.last td {
   border-bottom: 1px dotted #aaa;
+}
+#forum td.icon {
+    color: #5A5758;
 }
 #forum td.title a {
   color: #5A5758;

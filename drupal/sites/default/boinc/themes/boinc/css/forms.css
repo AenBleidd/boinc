@@ -219,6 +219,9 @@ form ul.tab-list {
   padding-bottom: 0;
   border-left: 1px dotted #aaa;
 }
+#comment-form .form-item input[type="text"] {
+  width: 100%;
+}
 
 
 /*
@@ -562,6 +565,21 @@ html.js fieldset.collapsible legend a,
 }
 .wysiwyg-toggle-wrapper a:after {
   content: ") ";
+}
+
+.standalone-image {
+}
+.image-left {
+  float: left;
+}
+.image-right {
+  float: right;
+}
+.caption {
+  font-size: .9em;
+  font-style: italic;
+  padding-bottom: 7px;
+  text-align: center;
 }
 
 /* Hide useless buttons */

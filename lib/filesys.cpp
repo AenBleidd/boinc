@@ -26,8 +26,9 @@
 #include <fcntl.h>
 #endif
 
-#ifdef _MSC_VER
-#define getcwd  _getcwd
+#if  defined(_MSC_VER) || defined(__MINGW32__)
+#define getcwd    _getcwd
+#define snprintf  _snprintf
 #endif
 
 #if !defined(_WIN32) || defined(__CYGWIN32__)
@@ -41,7 +42,6 @@
 #include <cerrno>
 #include <sys/stat.h>
 #include <sys/file.h>
-#include <ctime>
 #include <cstring>
 #include <cstdlib>
 #include <sys/time.h>
@@ -76,6 +76,10 @@
 
 #include "filesys.h"
 
+#ifdef __APPLE__
+#include "mac_spawn.h"
+#endif
+
 #ifdef _WIN32
 typedef BOOL (CALLBACK* FreeFn)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 #endif
@@ -88,24 +92,28 @@ char boinc_failed_file[MAXPATHLEN];
 
 int is_file(const char* path) {
 #ifdef _WIN32
-    struct __stat64 sbuf;
-    int retval = _stat64(path, &sbuf);
+    DWORD dwAttrib = GetFileAttributesA(path);
+    return (dwAttrib != INVALID_FILE_ATTRIBUTES
+        && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)
+    );
 #else
     struct stat sbuf;
     int retval = lstat(path, &sbuf);
-#endif
     return (!retval && (((sbuf.st_mode) & S_IFMT) == S_IFREG));
+#endif
 }
 
 int is_dir(const char* path) {
 #ifdef _WIN32
-    struct __stat64 sbuf;
-    int retval = _stat64(path, &sbuf);
+    DWORD dwAttrib = GetFileAttributesA(path);
+    return (dwAttrib != INVALID_FILE_ATTRIBUTES
+        && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)
+    );
 #else
     struct stat sbuf;
     int retval = lstat(path, &sbuf);
-#endif
     return (!retval && (((sbuf.st_mode) & S_IFMT) == S_IFDIR));
+#endif
 }
 
 #ifndef _WIN32
@@ -142,7 +150,7 @@ DIRREF dir_open(const char* p) {
     }
     dirp->first = true;
     safe_strcpy(dirp->path, p);
-    strcat(dirp->path, "\\*");
+    safe_strcat(dirp->path, "\\*");
     dirp->handle = INVALID_HANDLE_VALUE;
 #else
     dirp = opendir(p);
@@ -342,18 +350,24 @@ int boinc_delete_file(const char* path) {
 // get file size
 //
 int file_size(const char* path, double& size) {
-    int retval;
-
 #if defined(_WIN32) && !defined(__CYGWIN32__) && !defined(__MINGW32__)
-    struct __stat64 sbuf;
-    retval = _stat64(path, &sbuf);
+    HANDLE h = CreateFileA(path, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+    if (h == INVALID_HANDLE_VALUE) return ERR_STAT;
+    LARGE_INTEGER lisize;
+    if (GetFileSizeEx(h, &lisize)) {
+        size = (double) lisize.QuadPart;
+        CloseHandle(h);
+        return 0;
+    }
+    return ERR_STAT;
 #else
+    int retval;
     struct stat sbuf;
     retval = stat(path, &sbuf);
-#endif
     if (retval) return ERR_NOT_FOUND;
     size = (double)sbuf.st_size;
     return 0;
+#endif
 }
 
 int boinc_truncate(const char* path, double size) {
@@ -385,10 +399,13 @@ int clean_out_dir(const char* dirpath) {
     dirp = dir_open(dirpath);
     if (!dirp) return 0;    // if dir doesn't exist, it's empty
     while (1) {
-        strcpy(filename, "");
+        safe_strcpy(filename, "");
         retval = dir_scan(filename, dirp, sizeof(filename));
         if (retval) break;
-        sprintf(path, "%s/%s", dirpath,  filename);
+
+        snprintf(path, sizeof(path), "%s/%s", dirpath,  filename);
+        path[sizeof(path)-1] = 0;
+
         clean_out_dir(path);
         boinc_rmdir(path);
         retval = boinc_delete_file(path);
@@ -407,10 +424,15 @@ int clean_out_dir(const char* dirpath) {
 //
 int dir_size(const char* dirpath, double& size, bool recurse) {
 #ifdef WIN32
+    char buf[_MAX_PATH];
     char path2[_MAX_PATH];
-    sprintf(path2, "%s/*", dirpath);
-    size = 0.0;
+    double dsize = 0.0;
     WIN32_FIND_DATAA findData;
+
+    size = 0.0;
+    snprintf(path2, sizeof(path2), "%s/*", dirpath);
+    path2[sizeof(path2)-1] = 0;
+
     HANDLE hFind = ::FindFirstFileA(path2, &findData);
     if (INVALID_HANDLE_VALUE == hFind) return ERR_OPENDIR;
     do {
@@ -419,29 +441,34 @@ int dir_size(const char* dirpath, double& size, bool recurse) {
             if (!strcmp(findData.cFileName, ".")) continue;
             if (!strcmp(findData.cFileName, "..")) continue;
 
-            double dsize = 0;
-            char buf[_MAX_PATH];
-            ::sprintf(buf, "%s/%s", dirpath, findData.cFileName);
+            dsize = 0.0;
+
+            snprintf(buf, sizeof(buf), "%s/%s", dirpath, findData.cFileName);
+            buf[sizeof(buf)-1] = 0;
+
             dir_size(buf, dsize, true);
             size += dsize;
         } else {
             size += findData.nFileSizeLow + ((__int64)(findData.nFileSizeHigh) << 32);
         }
     } while (FindNextFileA(hFind, &findData));
-	::FindClose(hFind);
+
+    ::FindClose(hFind);
 #else
     char filename[MAXPATHLEN], subdir[MAXPATHLEN];
     int retval=0;
     DIRREF dirp;
     double x;
 
-    size = 0;
+    size = 0.0;
     dirp = dir_open(dirpath);
     if (!dirp) return ERR_OPENDIR;
     while (1) {
         retval = dir_scan(filename, dirp, sizeof(filename));
         if (retval) break;
-        sprintf(subdir, "%s/%s", dirpath, filename);
+
+        snprintf(subdir, sizeof(subdir), "%s/%s", dirpath, filename);
+        subdir[sizeof(subdir)-1] = 0;
 
         if (is_dir(subdir)) {
             if (recurse) {
@@ -504,40 +531,49 @@ FILE* boinc_fopen(const char* path, const char* mode) {
         }
     }
     if (f) {
-        fcntl(fileno(f), F_SETFD, FD_CLOEXEC);
+        if (-1 == fcntl(fileno(f), F_SETFD, FD_CLOEXEC)) {
+            fclose(f);
+            return 0;
+        }
     }
 #endif
     return f;
 }
 
-
+// returns true if anything (file, dir, whatever) exists at given path;
+// name is misleading.
+//
 int boinc_file_exists(const char* path) {
 #ifdef _WIN32
-    struct __stat64 buf;
-    if (_stat64(path, &buf)) {
+    // don't use _stat64 because it doesn't work with VS2015, XP client
+    DWORD dwAttrib = GetFileAttributesA(path);
+    return (dwAttrib != INVALID_FILE_ATTRIBUTES
+        && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)
+    );
 #else
     struct stat buf;
     if (stat(path, &buf)) {
-#endif
         return false;     // stat() returns zero on success
     }
     return true;
+#endif
 }
 
+#if 0
 // same, but doesn't traverse symlinks
 //
 int boinc_file_or_symlink_exists(const char* path) {
 #ifdef _WIN32
-    struct __stat64 buf;
-    if (_stat64(path, &buf)) {
+    return boinc_file_exists(path);
 #else
     struct stat buf;
     if (lstat(path, &buf)) {
-#endif
         return false;     // stat() returns zero on success
     }
     return true;
+#endif
 }
+#endif
 
 // returns zero on success, nonzero if didn't touch file
 //
@@ -565,7 +601,8 @@ int boinc_copy(const char* orig, const char* newf) {
     return 0;
 #elif defined(__EMX__)
     char cmd[2*MAXPATHLEN];
-    sprintf(cmd, "copy \"%s\" \"%s\"", orig, newf);
+    snprintf(cmd, sizeof(cmd), "copy \"%s\" \"%s\"", orig, newf);
+    cmd[sizeof(cmd)-1] = 0;
     return system(cmd);
 #else
     // POSIX requires that shells run from an application will use the 
@@ -574,10 +611,10 @@ int boinc_copy(const char* orig, const char* newf) {
     // system() invokes a shell, it may not properly copy the file's 
     // ownership or permissions when called from the BOINC Client 
     // under sandbox security, so we copy the file directly.
+    //
     FILE *src, *dst;
     int m, n;
     int retval = 0;
-    struct stat sbuf;
     unsigned char buf[65536];
     src = boinc_fopen(orig, "r");
     if (!src) return ERR_FOPEN;
@@ -588,26 +625,58 @@ int boinc_copy(const char* orig, const char* newf) {
     }
     while (1) {
         n = fread(buf, 1, sizeof(buf), src);
-        if (n <= 0) break;
+        if (n <= 0) {
+            // could be either EOF or an error.
+            // Check for error case.
+            //
+            if (!feof(src)) {
+                retval = ERR_FREAD;
+            }
+            break;
+        }
         m = fwrite(buf, 1, n, dst);
         if (m != n) {
             retval = ERR_FWRITE;
             break;
         }
     }
-    fclose(src);
-    fclose(dst);
-    // Copy file's ownership, permissions to the extent we are allowed
-    lstat(orig, &sbuf);             // Get source file's info
-    chown(newf, sbuf.st_uid, sbuf.st_gid);
-    chmod(newf, sbuf.st_mode);
+    if (fclose(src)){
+       fclose(dst);
+       return ERR_FCLOSE;
+    }
+
+    if (fclose(dst)){
+       return ERR_FCLOSE;
+    }
     return retval;
 #endif
 }
 
+#ifndef _WIN32
+// Copy file's ownership and permissions to the extent we are allowed
+//
+int boinc_copy_attributes(const char* orig, const char* newf) {
+    struct stat sbuf;
+
+    // Get source file's info
+    //
+    if (lstat(orig, &sbuf)) {
+        return ERR_STAT;
+    }
+    if (chmod(newf, sbuf.st_mode)) {
+        return ERR_CHMOD;
+    }
+    if (chown(newf, sbuf.st_uid, sbuf.st_gid)) {
+        return ERR_CHOWN;
+    }
+    return 0;
+}
+#endif
+
 static int boinc_rename_aux(const char* old, const char* newf) {
 #ifdef _WIN32
-    if (MoveFileExA(old, newf, MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH)) return 0;
+    // MOVEFILE_COPY_ALLOWED is needed if destination is on another volume (move is simulated by copy&delete)
+    if (MoveFileExA(old, newf, MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH)) return 0;
     return GetLastError();
 #else
     // rename() doesn't work between filesystems.
@@ -617,7 +686,13 @@ static int boinc_rename_aux(const char* old, const char* newf) {
     if (retval) {
         char buf[MAXPATHLEN+MAXPATHLEN];
         sprintf(buf, "mv \"%s\" \"%s\"", old, newf);
+#ifdef __APPLE__
+        // system() is deprecated in Mac OS 10.10.
+        // Apple says to call posix_spawn instead.
+        retval = callPosixSpawn(buf);
+#else
         retval = system(buf);
+#endif
     }
     if (retval) return ERR_RENAME;
     return 0;
@@ -700,7 +775,8 @@ int boinc_make_dirs(const char* dirpath, const char* filepath) {
         p = strchr(q, '/');
         if (!p) break;
         *p = 0;
-        sprintf(newpath, "%s/%s", oldpath, q);
+        snprintf(newpath, sizeof(newpath), "%s/%s", oldpath, q);
+        newpath[sizeof(newpath)-1] = 0;
         retval = boinc_mkdir(newpath);
         if (retval) return retval;
         safe_strcpy(oldpath, newpath);
@@ -711,14 +787,16 @@ int boinc_make_dirs(const char* dirpath, const char* filepath) {
 
 
 FILE_LOCK::FILE_LOCK() {
-#ifndef _WIN32
+#if defined(_WIN32) && !defined(__CYGWIN32__)
+  handle = INVALID_HANDLE_VALUE;
+#else
     fd = -1;
 #endif
     locked = false;
 }
 
 FILE_LOCK::~FILE_LOCK() {
-#ifndef _WIN32
+#if !defined(_WIN32) || defined(__CYGWIN32__)
     if (fd >= 0) close(fd);
 #endif
 }
@@ -746,7 +824,12 @@ int FILE_LOCK::lock(const char* filename) {
     fl.l_start = 0;
     fl.l_len = 0;
     if (fcntl(fd, F_SETLK, &fl) == -1) {
-        return ERR_FCNTL;
+        // ENOSYS means file locking is not implemented in this FS.
+        // In this case just return success (i.e. don't actually do locking)
+        //
+        if (errno != ENOSYS) {
+            return ERR_FCNTL;
+        }
     }
 #endif
     locked = true;
@@ -785,6 +868,7 @@ void relative_to_absolute(const char* relname, char* path) {
     }
 }
 
+
 #if defined(_WIN32)
 int boinc_allocate_file(const char* path, double size) {
     int retval = 0;
@@ -810,9 +894,42 @@ int boinc_allocate_file(const char* path, double size) {
     CloseHandle(h);
     return retval;
 }
+
+FILE* boinc_temp_file(
+    const char* dir, const char* prefix, char* temp_path, double size
+) {
+    GetTempFileNameA(dir, prefix, 0, temp_path);
+    boinc_allocate_file(temp_path, size);
+    return boinc_fopen(temp_path, "wb");
+}
+
+#else
+
+// Unix version: use mkstemp.  tempnam() prioritizes an env var
+// in deciding where to put temp file
+
+FILE* boinc_temp_file(const char* dir, const char* prefix, char* temp_path) {
+    sprintf(temp_path, "%s/%s_XXXXXX", dir, prefix);
+    int fd = mkstemp(temp_path);
+    if (fd < 0) {
+        return 0;
+    }
+    return fdopen(fd, "wb");
+}
+
 #endif
 
-// get total and free dpace on current filesystem (in bytes)
+void boinc_path_to_dir(const char* path, char* dir) {
+    strcpy(dir, path);
+    char* p = strrchr(dir, '/');
+    if (p) {
+        *p = 0;
+    } else {
+        strcpy(dir, ".");
+    }
+}
+
+// get total and free space on current filesystem (in bytes)
 //
 #ifdef _WIN32
 int get_filesystem_info(double &total_space, double &free_space, char*) {

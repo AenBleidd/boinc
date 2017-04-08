@@ -81,7 +81,6 @@
 #include "boinc_fcgi.h"
 #endif
 
-//#include "client_types.h"
 #include "miofile.h"
 #include "error_numbers.h"
 #include "parse.h"
@@ -129,6 +128,7 @@ struct PCI_INFO {
     int device_id;
     int domain_id;
 
+    PCI_INFO(): present(false), bus_id(0), device_id(0),domain_id(0) {}
     void write(MIOFILE&);
     int parse(XML_PARSER&);
 };
@@ -214,11 +214,13 @@ struct COPROC {
             device_nums[i] = 0;
             instance_has_opencl[i] = false;
             opencl_device_ids[i] = 0;
-			opencl_device_indexes[i] = 0;
+            opencl_device_indexes[i] = 0;
             running_graphics_app[i] = true;
         }
+        device_num = 0;
         memset(&opencl_prop, 0, sizeof(opencl_prop));
         memset(&pci_info, 0, sizeof(pci_info));
+        last_print_time = 0;
     }
     inline void clear_usage() {
         for (int i=0; i<count; i++) {
@@ -503,5 +505,7 @@ struct COPROCS {
         add(c);
     }
 };
+
+extern void fake_opencl_gpu(char*);
 
 #endif

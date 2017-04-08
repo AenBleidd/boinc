@@ -27,12 +27,6 @@
 #include "win_util.h"
 #endif
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
-#define snprintf    _snprintf
-#define strdate     _strdate
-#define strtime     _strtime
-#endif
-
 #ifndef __CYGWIN32__
 #include "stackwalker_win.h"
 #endif
@@ -40,6 +34,7 @@
 #include "diagnostics.h"
 #include "error_numbers.h"
 #include "str_util.h"
+#include "str_replace.h"
 #include "util.h"
 #include "version.h"
 
@@ -153,7 +148,7 @@ int diagnostics_init_thread_entry(PBOINC_THREADLISTENTRY entry) {
     entry->crash_state = 0;
     entry->crash_wait_reason = 0;
     entry->crash_exception_record = NULL;
-    strncpy(entry->crash_message, "", sizeof(entry->crash_message));
+    strlcpy(entry->crash_message, "", sizeof(entry->crash_message));
     return 0;
 }
 
@@ -311,7 +306,7 @@ int diagnostics_update_thread_list() {
             // Enumerate the threads
             for(uiSystemIndex = 0; uiSystemIndex < pProcesses->ThreadCount; uiSystemIndex++) {
                 pThread = &pProcesses->Threads[uiSystemIndex];
-                pThreadEntry = diagnostics_find_thread_entry((DWORD)pThread->ClientId.UniqueThread);
+                pThreadEntry = diagnostics_find_thread_entry((DWORD)(uintptr_t)pThread->ClientId.UniqueThread);
 
                 if (pThreadEntry) {
                     pThreadEntry->crash_kernel_time = (FLOAT)pThread->KernelTime.QuadPart;
@@ -325,12 +320,12 @@ int diagnostics_update_thread_list() {
                     hThread = OpenThread(
                         THREAD_ALL_ACCESS,
                         FALSE,
-                        (DWORD)(pThread->ClientId.UniqueThread)
+                        (DWORD)(uintptr_t)(pThread->ClientId.UniqueThread)
                     );
 
                     pThreadEntry = new BOINC_THREADLISTENTRY;
                     diagnostics_init_thread_entry(pThreadEntry);
-                    pThreadEntry->thread_id = (DWORD)(pThread->ClientId.UniqueThread);
+                    pThreadEntry->thread_id = (DWORD)(uintptr_t)(pThread->ClientId.UniqueThread);
                     pThreadEntry->thread_handle = hThread;
                     pThreadEntry->crash_kernel_time = (FLOAT)pThread->KernelTime.QuadPart;
                     pThreadEntry->crash_user_time = (FLOAT)pThread->UserTime.QuadPart;
@@ -1197,8 +1192,8 @@ int diagnostics_capture_foreground_window(PBOINC_WINDOWCAPTURE window_info) {
 
 
     // Initialize structure variables.
-	strcpy(window_info->window_name, "");
-	strcpy(window_info->window_class, "");
+	safe_strcpy(window_info->window_name, "");
+	safe_strcpy(window_info->window_class, "");
     window_info->hwnd = 0;
     window_info->window_process_id = 0;
     window_info->window_thread_id = 0;
@@ -1429,18 +1424,18 @@ int diagnostics_dump_exception_record(PEXCEPTION_POINTERS pExPtrs) {
             diagnostics_dump_generic_exception("Out Of Memory (C++ Exception)", exception_code, exception_address);
             break;
         case EXCEPTION_ACCESS_VIOLATION:
-            strcpy(status, "Access Violation");
-            strcpy(substatus, "");
+            safe_strcpy(status, "Access Violation");
+            safe_strcpy(substatus, "");
             if (pExPtrs->ExceptionRecord->NumberParameters == 2) {
                 switch(pExPtrs->ExceptionRecord->ExceptionInformation[0]) {
                 case 0: // read attempt
-                    sprintf(substatus,
+                    snprintf(substatus, sizeof(substatus),
                         "read attempt to address 0x%8.8X",
                         pExPtrs->ExceptionRecord->ExceptionInformation[1]
                     );
                     break;
                 case 1: // write attempt
-                    sprintf(substatus,
+                    snprintf(substatus, sizeof(substatus),
                         "write attempt to address 0x%8.8X",
                         pExPtrs->ExceptionRecord->ExceptionInformation[1]
                     );
@@ -1892,34 +1887,3 @@ LONG CALLBACK boinc_catch_signal(PEXCEPTION_POINTERS pExPtrs) {
     // We won't make it to this point, but make the compiler happy anyway.
     return EXCEPTION_CONTINUE_SEARCH;
 }
-
-
-// Starting with Visual Studio 2005 the C Runtime Library has really started to
-//   enforce parameter validation. Problem is that the parameter validation code
-//   uses its own structured exception handler and terminates without writing
-//   any useful output to stderr. Microsoft has created a hook an application
-//   developer can use to get more debugging information which is the purpose
-//   of this function. When an invalid parameter is passed to the C Runtime
-//   library this function will write whatever trace information it can and
-//   then throw a breakpoint exception to dump all the rest of the useful
-//   information.
-void boinc_catch_signal_invalid_parameter(
-    const wchar_t* expression, const wchar_t* function, const wchar_t* file, unsigned int line, uintptr_t /* pReserved */
-) {
-	fprintf(
-		stderr,
-        "ERROR: Invalid parameter detected in function %s. File: %s Line: %d\n",
-		function,
-		file,
-		line
-	);
-	fprintf(
-		stderr,
-		"ERROR: Expression: %s\n",
-		expression
-	);
-
-	// Cause a Debug Breakpoint.
-	DebugBreak();
-}
-

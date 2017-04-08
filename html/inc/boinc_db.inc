@@ -16,9 +16,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-$d = dirname(__FILE__);
-require_once("$d/db_conn.inc");
-require_once("$d/util_basic.inc");
+function incs() {
+    $d = dirname(__FILE__);
+    require_once("$d/db_conn.inc");
+    require_once("$d/util_basic.inc");
+}
+
+incs();
 
 class BoincDb extends DbConn {
     static $instance;
@@ -29,38 +33,84 @@ class BoincDb extends DbConn {
     // BoincDb::get(true);
     // at the top of it.
     //
-    static function get_aux($readonly) {
+    // Specify a $fallback_mode that is used when $readonly is true:
+    // 0: default, use db_user if no replica_db_user is specified,
+    //    first try replica_db_host (if specified) then db_host
+    // 1: only use replica_db_user, first try replica_db_host then db_host
+    // 2: only use replica_db_user, only try replica_db_host
+    // can be set projectwide using <replica_fallback_mode>
+    //
+    static function get_aux($readonly, $fallback_mode = 0) {
         $config = get_config();
         $user = parse_config($config, '<db_user>');
         $passwd = parse_config($config, '<db_passwd>');
         $host = parse_config($config, '<db_host>');
         $replica_host = parse_config($config, '<replica_db_host>');
         $name = parse_config($config, '<db_name>');
+        $fm = parse_config($config, '<replica_fallback_mode>');
+        if ($fm) {
+            // override parameter with config.xml setting
+            $fallback_mode = $fm;
+        }
         if ($host == null) {
             $host = "localhost";
         }
         $instance = new DbConn();
-        if ($readonly && $replica_host) {
-            $x = parse_config($config, '<replica_db_user>');
-            if ($x) $user = $x;
-            $x = parse_config($config, '<replica_db_passwd>');
-            if ($x) $passwd = $x;
-            $x = parse_config($config, '<replica_db_name>');
-            if ($x) $name = $x;
-            $retval = $instance->init_conn(
-                $user, $passwd, $replica_host, $name, true
-            );
-            if ($retval) {
+        if ($readonly) {
+            if (($fallback_mode > 0) && (!$replica_host)) {
+                error_log("BoincDb::get_aux(): <replica_db_host> required for \$fallback_mode > 0 (giving up)");
+                $instance = null;
                 self::$instance = $instance;
                 return $instance;
+            }
+            $u = parse_config($config, '<replica_db_user>');
+            $p = parse_config($config, '<replica_db_passwd>');
+            $n = parse_config($config, '<replica_db_name>');
+            if (($fallback_mode > 0) && (!$u || !$p || !$n)) {
+                error_log("BoincDb::get_aux(): <replica_db_*> required for \$fallback_mode > 0 (giving up)");
+                $instance = null;
+                self::$instance = $instance;
+                return $instance;
+            } else {
+                // use replica user if given or use normal user for $fallback_mode == 0
+                if ($u) $user = $u;
+                if ($p) $passwd = $p;
+                if ($n) $name = $n;
+            }
+            // skip this block if no $replica_host is specified for $fallback_mode == 0
+            if ($replica_host) {
+                $retval = $instance->init_conn(
+                    $user, $passwd, $replica_host, $name, true
+                );
+                if ($retval) {
+                    // needed for places where we do direct queries
+                    if (!$instance->do_query("use $name")) {
+                        error_log("BoincDb::get_aux(): Couldn't select database $name on $replica_host (giving up)");
+                        $instance = null;
+                    }
+                    self::$instance = $instance;
+                    return $instance;
+                } elseif ($fallback_mode == 2) {
+                    // no fallback to master in this case
+                    error_log("BoincDb::get_aux(): Couldn't connect to $user@$replica_host (giving up)");
+                    $instance = null;
+                    self::$instance = $instance;
+                    return $instance;
+                } else {
+                    error_log("BoincDb::get_aux(): Couldn't connect to $user@$replica_host (trying $user@$host next)");
+                }
             }
         }
         $retval = $instance->init_conn($user, $passwd, $host, $name, false);
         if (!$retval) {
             $instance = null;
+            error_log("BoincDb::get_aux(): Couldn't connect to $user@$host (giving up)");
         } else {
-            $instance->do_query("use $name");
-                // needed for places where we do direct queries
+            // needed for places where we do direct queries
+            if (!$instance->do_query("use $name")) {
+                error_log("BoincDb::get_aux(): Couldn't select database $name on $host (giving up)");
+                $instance = null;
+            }
         }
         self::$instance = $instance;
         return $instance;
@@ -70,7 +120,7 @@ class BoincDb extends DbConn {
     // 1) check for a cached connection
     // 2) check whether the "stop_web" trigger file is present
     //
-    static function get($readonly = false) {
+    static function get($readonly = false, $fallback_mode = 0) {
         global $generating_xml;
         if (!isset(self::$instance)) {
             if (web_stopped()) {
@@ -83,7 +133,7 @@ class BoincDb extends DbConn {
                     exit;
                 }
             }
-            self::get_aux($readonly);
+            self::get_aux($readonly, $fallback_mode);
             if (!self::$instance) {
                 if ($generating_xml) {
                     xml_error(-138, "the project's database server is down");
@@ -143,16 +193,12 @@ class BoincUser {
         $email_addr = BoincDb::escape_string($email_addr);
         return self::lookup("email_addr='$email_addr'");
     }
+    // name is not necessarily unique
+    //
     static function lookup_name($name) {
         $name = BoincDb::escape_string($name);
         $users = BoincUser::enum("name='$name'");
-        switch (sizeof($users)) {
-        case 1:
-            return $users[0];
-        case 0:
-            return null;
-        }
-        return -1;
+        return $users;
     }
     static function count($clause) {
         $db = BoincDb::get();
@@ -219,9 +265,9 @@ class BoincTeam {
         $db = BoincDb::get();
         return $db->update($this, 'team', $clause);
     }
-    static function enum($clause, $clause2=null) {
+    static function enum($where_clause, $order_clause=null) {
         $db = BoincDb::get();
-        return $db->enum('team', 'BoincTeam', $clause, $clause2);
+        return $db->enum('team', 'BoincTeam', $where_clause, $order_clause);
     }
     static function lookup($clause) {
         $db = BoincDb::get();
@@ -257,9 +303,9 @@ class BoincTeamDelta {
         $db = BoincDb::get();
         return $db->insert('team_delta', $clause);
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('team_delta', 'BoincTeamDelta', $clause);
+        return $db->enum('team_delta', 'BoincTeamDelta', $where_clause);
     }
 }
 
@@ -276,13 +322,30 @@ class BoincHost {
         $db = BoincDb::get();
         return $db->delete($this, 'host');
     }
-    static function enum($clause, $clause2=null) {
+    static function enum($where_clause, $order_clause=null) {
         $db = BoincDb::get();
-        return $db->enum('host', 'BoincHost', $clause, $clause2);
+        return $db->enum('host', 'BoincHost', $where_clause, $order_clause);
+    }
+    static function enum_fields($fields, $where_clause, $order_clause=null) {
+        $db = BoincDb::get();
+        return $db->enum_fields(
+            'host', 'BoincHost', $fields, $where_clause, $order_clause
+        );
     }
     static function count($clause) {
         $db = BoincDb::get();
         return $db->count('host', $clause);
+    }
+    static function lookup_cpid($cpid) {
+        $db = BoincDb::get();
+        $cpid = BoincDb::escape_string($cpid);
+        return $db->lookup('host', 'BoincHost', "host_cpid='$cpid'");
+    }
+    static function insert($clause) {
+        $db = BoincDb::get();
+        $ret = $db->insert('host', $clause);
+        if (!$ret) return $ret;
+        return $db->insert_id();
     }
 }
 
@@ -291,9 +354,9 @@ class BoincResult {
         $db = BoincDb::get();
         return $db->count('result', $clause);
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('result', 'BoincResult', $clause);
+        return $db->enum('result', 'BoincResult', $where_clause);
     }
 	static function enum_fields($fields, $where_clause, $order_clause) {
         $db = BoincDb::get();
@@ -337,9 +400,9 @@ class BoincWorkunit {
         if (!$ret) return $ret;
         return $db->insert_id();
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('workunit', 'BoincWorkunit', $clause);
+        return $db->enum('workunit', 'BoincWorkunit', $where_clause);
     }
     function update($clause) {
         $db = BoincDb::get();
@@ -364,9 +427,9 @@ class BoincApp {
         $db = BoincDb::get();
         return $db->lookup('app', 'BoincApp', $clause);
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('app', 'BoincApp', $clause);
+        return $db->enum('app', 'BoincApp', $where_clause);
     }
     static function insert($clause) {
         $db = BoincDb::get();
@@ -385,9 +448,9 @@ class BoincApp {
 }
 
 class BoincAppVersion {
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('app_version', 'BoincAppVersion', $clause);
+        return $db->enum('app_version', 'BoincAppVersion', $where_clause);
     }
     static function lookup($clause) {
         $db = BoincDb::get();
@@ -418,6 +481,14 @@ class BoincProfile {
         $db = BoincDb::get();
         return $db->lookup('profile', 'BoincProfile', $clause);
     }
+    static function lookup_userid($userid) {
+        $db = BoincDb::get();
+        return $db->lookup('profile', 'BoincProfile', 'userid='.$userid);
+    }
+    function update($clause) {
+        $db = BoincDb::get();
+        return $db->update_aux('profile', $clause.' where userid='.$this->userid);
+    }
     static function update_aux($clause) {
         $db = BoincDb::get();
         return $db->update_aux('profile', $clause);
@@ -426,15 +497,19 @@ class BoincProfile {
         $db = BoincDb::get();
         return $db->insert('profile', $clause);
     }
-    static function enum($clause=null, $clause2=null) {
+    static function enum($where_clause=null, $order_clause=null) {
         $db = BoincDb::get();
-        return $db->enum('profile', 'BoincProfile', $clause, $clause2);
+        return $db->enum('profile', 'BoincProfile', $where_clause, $order_clause);
     }
     static function enum_fields($fields, $where_clause=null, $order_clause=null) {
         $db = BoincDb::get();
         return $db->enum_fields('profile', 'BoincProfile', $fields, $where_clause, $order_clause);
     }
-    function delete_aux($clause) {
+    function delete() {
+        $db = BoincDb::get();
+        return $db->delete_aux('profile', 'userid='.$this->userid);
+    }
+    static function delete_aux($clause) {
         $db = BoincDb::get();
         return $db->delete_aux('profile', $clause);
     }
@@ -445,9 +520,9 @@ class BoincTeamAdmin {
         $db = BoincDb::get();
         return $db->insert('team_admin', $clause);
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('team_admin', 'BoincTeamAdmin', $clause);
+        return $db->enum('team_admin', 'BoincTeamAdmin', $where_clause);
     }
     static function delete($clause) {
         $db = BoincDb::get();
@@ -468,9 +543,9 @@ class BoincPrivateMessage {
         $db = BoincDb::get();
         return $db->update($this, 'private_messages', $clause);
     }
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('private_messages', 'BoincPrivateMessage', $clause);
+        return $db->enum('private_messages', 'BoincPrivateMessage', $where_clause);
     }
     static function insert($clause) {
         $db = BoincDb::get();
@@ -493,9 +568,9 @@ class BoincPrivateMessage {
 }
 
 class BoincPlatform {
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('platform', 'BoincPlatform', $clause);
+        return $db->enum('platform', 'BoincPlatform', $where_clause);
     }
     static function lookup_id($id) {
         $db = BoincDb::get();
@@ -516,9 +591,9 @@ class BoincPlatform {
 }
 
 class BoincHostAppVersion {
-    static function enum($clause) {
+    static function enum($where_clause) {
         $db = BoincDb::get();
-        return $db->enum('host_app_version', 'BoincHostAppVersion', $clause);
+        return $db->enum('host_app_version', 'BoincHostAppVersion', $where_clause);
     }
     static function lookup($host_id, $app_version_id) {
         $db = BoincDb::get();

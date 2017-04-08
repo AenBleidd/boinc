@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
 #ifdef _WIN32
     chdir_to_data_dir();
 #endif
-    strcpy(passwd_buf, "");
+    safe_strcpy(passwd_buf, "");
     read_gui_rpc_password(passwd_buf);
 
 #if defined(_WIN32) && defined(USE_WINSOCK)
@@ -589,9 +589,8 @@ int main(int argc, char** argv) {
         CC_STATUS cs;
         retval = rpc.get_cc_status(cs);
         if (!retval) {
-            retval = cs.network_status;
+            cs.print();
         }
-        cs.print();
     } else if (!strcmp(cmd, "--quit")) {
         retval = rpc.quit();
     } else {

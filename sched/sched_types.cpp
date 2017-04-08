@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+// Utility classes for the BOINC scheduler
+
 #include "config.h"
 #include <cstdlib>
 #include <cassert>
@@ -167,6 +169,64 @@ int CLIENT_PLATFORM::parse(XML_PARSER& xp) {
     return ERR_XML_PARSE;
 }
 
+// Parse user's project preferences.
+// TODO: use XML_PARSER
+//
+void PROJECT_PREFS::parse() {
+    char buf[8096];
+    std::string str;
+    unsigned int pos = 0;
+    int temp_int=0;
+    bool flag;
+
+    extract_venue(g_reply->user.project_prefs, g_reply->host.venue, buf, sizeof(buf));
+    str = buf;
+
+    // scan user's project prefs for elements of the form <app_id>N</app_id>,
+    // indicating the apps they want to run.
+    //
+    selected_apps.clear();
+    while (parse_int(str.substr(pos,str.length()-pos).c_str(), "<app_id>", temp_int)) {
+        APP_INFO ai;
+        ai.appid = temp_int;
+        ai.work_available = false;
+        selected_apps.push_back(ai);
+
+        pos = str.find("<app_id>", pos) + 1;
+    }
+    if (parse_bool(buf,"allow_non_selected_apps", flag)) {
+        allow_non_selected_apps = flag;
+    }
+    if (parse_bool(buf,"allow_beta_work", flag)) {
+        allow_beta_work = flag;
+    }
+    if (parse_bool(buf,"no_gpus", flag)) {
+        // deprecated, but need to handle
+        if (flag) {
+            for (int i=1; i<NPROC_TYPES; i++) {
+                dont_use_proc_type[i] = true;
+            }
+        }
+    }
+    if (parse_bool(buf,"no_cpu", flag)) {
+        dont_use_proc_type[PROC_TYPE_CPU] = flag;
+    }
+    if (parse_bool(buf,"no_cuda", flag)) {
+        dont_use_proc_type[PROC_TYPE_NVIDIA_GPU] = flag;
+    }
+    if (parse_bool(buf,"no_ati", flag)) {
+        dont_use_proc_type[PROC_TYPE_AMD_GPU] = flag;
+    }
+    if (parse_bool(buf,"no_intel_gpu", flag)) {
+        dont_use_proc_type[PROC_TYPE_INTEL_GPU] = flag;
+    }
+    if (parse_int(buf, "<max_cpus>", temp_int)) {
+        max_cpus = temp_int;
+    }
+    if (parse_int(buf, "<max_jobs>", temp_int)) {
+        max_jobs_in_progress = temp_int;
+    }
+}
 
 void WORK_REQ::add_no_work_message(const char* message) {
     for (unsigned int i=0; i<no_work_messages.size(); i++) {
@@ -175,6 +235,48 @@ void WORK_REQ::add_no_work_message(const char* message) {
         }
     }
     no_work_messages.push_back(USER_MESSAGE(message, "notice"));
+}
+
+SCHEDULER_REQUEST::SCHEDULER_REQUEST() {
+    clear();
+}
+
+void SCHEDULER_REQUEST::clear() {
+    strcpy(authenticator, "");
+    strcpy(cross_project_id, "");
+    hostid = 0;
+    core_client_major_version = 0;
+    core_client_minor_version = 0;
+    core_client_release = 0;
+    core_client_version = 0;
+    rpc_seqno = 0;
+    work_req_seconds = 0;
+    cpu_req_secs = 0;
+    cpu_req_instances = 0;
+    resource_share_fraction = 0;
+    rrs_fraction = 0;
+    prrs_fraction = 0;
+    cpu_estimated_delay = 0;
+    duration_correction_factor = 0;
+    uptime = 0;
+    previous_uptime = 0;
+    strcpy(global_prefs_xml, "");
+    strcpy(working_global_prefs_xml, "");
+    strcpy(code_sign_key, "");
+    dont_send_work = false;
+    strcpy(client_brand, "");
+    global_prefs.defaults();
+    strcpy(global_prefs_source_email_hash, "");
+    results_truncated = false;
+    have_other_results_list = false;
+    have_ip_results_list = false;
+    have_time_stats_log = false;
+    client_cap_plan_class = false;
+    sandbox = -1;
+    allow_multiple_clients = -1;
+    using_weak_auth = false;
+    last_rpc_dayofyear = 0;
+    current_rpc_dayofyear = 0;
 }
 
 // return an error message or NULL
@@ -220,7 +322,9 @@ const char* SCHEDULER_REQUEST::parse(XML_PARSER& xp) {
         return "xp.get_tag() failed";
     }
     if (xp.match_tag("?xml")) {
-        xp.get_tag();
+        if (xp.get_tag()) {
+            return "xp.get_tag() failed";
+        }
     }
     if (!xp.match_tag("scheduler_request")) return "no start tag";
     while (!xp.get_tag()) {
@@ -304,7 +408,8 @@ const char* SCHEDULER_REQUEST::parse(XML_PARSER& xp) {
             );
             if (retval) return "error copying global prefs";
             safe_strcat(global_prefs_xml, buf);
-            safe_strcat(global_prefs_xml, "</global_preferences>\n");
+            // xp.element_contents() strips the linebreak from buf so we add it back because it is essential
+            safe_strcat(global_prefs_xml, "\n</global_preferences>\n");
             continue;
         }
         if (xp.match_tag("working_global_preferences")) {
@@ -326,8 +431,12 @@ const char* SCHEDULER_REQUEST::parse(XML_PARSER& xp) {
             continue;
         }
         if (xp.match_tag("time_stats_log")) {
-            handle_time_stats_log(xp.f->f);
-            have_time_stats_log = true;
+            if (handle_time_stats_log(xp.f->f)) {
+                log_messages.printf(MSG_NORMAL,
+                    "SCHEDULER_REQUEST::parse(): Couldn't parse contents of <time_stats_log>. Ignoring it.");
+            } else {
+                have_time_stats_log = true;
+            }
             continue;
         }
         if (xp.match_tag("net_stats")) {

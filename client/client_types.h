@@ -32,6 +32,7 @@
 #endif
 
 #include "cc_config.h"
+#include "str_replace.h"
 #include "common_defs.h"
 #include "coproc.h"
 #include "cert_sig.h"
@@ -254,6 +255,7 @@ struct APP {
     bool non_cpu_intensive;
     bool fraction_done_exact;
     PROJECT* project;
+    bool report_results_immediately;
     int max_concurrent;
         // Limit on # of concurrent jobs of this app; 0 if none
         // Specified in app_config.xml
@@ -367,8 +369,8 @@ struct WORKUNIT {
     double rsc_disk_bound;
 
     WORKUNIT(){
-      strcpy(name, "");
-      strcpy(app_name, "");
+      safe_strcpy(name, "");
+      safe_strcpy(app_name, "");
       version_num = 0;
       command_line = "";
       input_files.clear();

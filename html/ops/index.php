@@ -129,11 +129,11 @@ echo "
     </td> 
     <td><b>User management</b>
     <ul>
-        <li><a href=".URL_BASE."/forum_index.php>Post news item</a></li>
+        <li><a href=".url_base()."/forum_index.php>Post news item</a></li>
         <li><a href=\"profile_screen_form.php\">Screen user profiles </a></li>
         <li><a href=\"badge_admin.php\">Badges</a></li>
         <li><a href=\"manage_special_users.php\">User privileges</a></li>
-        <li><a href=".URL_BASE."/manage_project.php>User job submission privileges</a></li>
+        <li><a href=".url_base()."/manage_project.php>User job submission privileges</a></li>
         <li><a href=\"mass_email.php\">Send mass email to a selected set of users</a></li>
         <li><form action=\"manage_user.php\">
             <input class=\"btn btn-default\" type=\"submit\" value=\"Manage user\">
@@ -197,7 +197,7 @@ if ($show_deprecated) {
 
 echo "<h3>Periodic tasks</h3>
 The following scripts should be run as periodic tasks, not via this web page
-(see <a href=\"http://boinc.berkeley.edu/trac/wiki/ProjectTasks\">http://boinc.berkeley.edu/trac/wiki/ProjectTasks</a>):
+(see <a href=\"https://boinc.berkeley.edu/trac/wiki/ProjectTasks\">https://boinc.berkeley.edu/trac/wiki/ProjectTasks</a>):
 <pre>
     update_forum_activities.php, update_profile_pages.php, update_uotd.php
 </pre>

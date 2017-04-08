@@ -92,7 +92,6 @@ function boincuser_admin_environment(&$form_state) {
     '#title' => t('BOINC config.xml directory'),
     '#default_value' => $default['boinc_config_xml_dir'],
     '#description' => t('The filesystem path that contains config.xml'),
-    '#disabled' => is_readable("{$default['boinc_config_xml_dir']}/config.xml")
   );
   $form['overrides']['boinc_html_inc_dir'] = array(
     '#type' => 'textfield',
@@ -100,7 +99,6 @@ function boincuser_admin_environment(&$form_state) {
     '#default_value' => $default['boinc_html_inc_dir'],
     '#description' => t('The filesystem path to the html/inc/ directory that
       contains util.inc'),
-    '#disabled' => is_readable("{$default['boinc_html_inc_dir']}/util.inc")
   );
   $form['overrides']['boinc_project_config_dir'] = array(
     '#type' => 'textfield',
@@ -108,14 +106,12 @@ function boincuser_admin_environment(&$form_state) {
     '#default_value' => $default['boinc_project_config_dir'],
     '#description' => t('The filesystem path to the project/ directory that
       contains project.inc'),
-    '#disabled' => is_readable("{$default['boinc_project_config_dir']}/project.inc")
   );
   $form['overrides']['boinc_user_image_dir'] = array(
     '#type' => 'textfield',
     '#title' => t('BOINC user profile image directory'),
     '#default_value' => $default['boinc_user_image_dir'],
     '#description' => t('The filesystem directory that contains user images'),
-    '#disabled' => is_dir($default['boinc_user_image_dir'])
   );
   $form['boinc_server_status_url'] = array(
     '#type' => 'textfield',
@@ -315,3 +311,39 @@ function boincuser_admin_scheduler_submit($form, &$form_state) {
 }
 
 
+/**
+  * Other BOINC options that don't fit elsewhere
+  */
+function boincuser_admin_other(&$form_state) {
+  $form = array();
+
+  //form defaults
+  $default = array(
+      'boinc_other_frontpage' => variable_get('boinc_other_frontpage', ''),
+  );
+  
+  // Define the form
+  $form['boinc_other_frontpage'] = array (
+    '#type' => 'textarea',
+    '#title' => bts('Message for site\'s Home Page'),
+    '#default_value' => $default['boinc_other_frontpage'],
+    '#cols' => 60,
+    '#rows' => 8,
+    '#description' => bts('Text to be displayed on the site\'s Home landing page.'),
+  );
+    
+  return system_settings_form($form);
+}
+
+/**
+  * Validate BOINC other form
+  */
+function boincuser_admin_other_validate($form, &$form_state) {
+}
+
+/**
+  * Submit BOINC other form
+  */
+function boincuser_admin_other_submit($form, &$form_state) {
+  drupal_set_message( bts("Status: BOINC other settings have been updated") );
+}

@@ -36,6 +36,10 @@
 #endif
 #endif
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #ifdef __EMX__
 #define INCL_DOS
 #include <os2.h>
@@ -119,8 +123,8 @@ CLIENT_STATE::CLIENT_STATE()
 #else
     core_client_version.prerelease = false;
 #endif
-    strcpy(language, "");
-    strcpy(client_brand, "");
+    safe_strcpy(language, "");
+    safe_strcpy(client_brand, "");
     exit_after_app_start_secs = 0;
     app_started = 0;
     exit_before_upload = false;
@@ -129,12 +133,12 @@ CLIENT_STATE::CLIENT_STATE()
     boinc_project_gid = 0;
 #endif
     show_projects = false;
-    strcpy(detach_project_url, "");
-    strcpy(reset_project_url, "");
-    strcpy(update_prefs_url, "");
-    strcpy(main_host_venue, "");
-    strcpy(attach_project_url, "");
-    strcpy(attach_project_auth, "");
+    safe_strcpy(detach_project_url, "");
+    safe_strcpy(reset_project_url, "");
+    safe_strcpy(update_prefs_url, "");
+    safe_strcpy(main_host_venue, "");
+    safe_strcpy(attach_project_url, "");
+    safe_strcpy(attach_project_auth, "");
     cpu_run_mode.set(RUN_MODE_AUTO, 0);
     gpu_run_mode.set(RUN_MODE_AUTO, 0);
     network_run_mode.set(RUN_MODE_AUTO, 0);
@@ -188,13 +192,6 @@ CLIENT_STATE::CLIENT_STATE()
 #endif
 }
 
-CLIENT_STATE::~CLIENT_STATE() {
-    delete pers_file_xfers;
-#ifndef SIM
-    delete scheduler_op;
-#endif
-}
-
 void CLIENT_STATE::show_host_info() {
     char buf[256], buf2[256];
 
@@ -222,25 +219,13 @@ void CLIENT_STATE::show_host_info() {
         "Processor features: %s", host_info.p_features
     );
 #ifdef __APPLE__
-    SInt32 temp;
-    int major, minor, rev;
-    OSStatus err = noErr;
-    
-    err = Gestalt(gestaltSystemVersionMajor, &temp);
-    major = temp;
-    if (!err) {
-    err = Gestalt(gestaltSystemVersionMinor, &temp);
-    minor = temp;
-    }
-    if (!err) {
-    err = Gestalt(gestaltSystemVersionBugFix, &temp);
-    rev = temp;
-    }
-    if (err) {
-        sscanf(host_info.os_version, "%d.%d.%d", &major, &minor, &rev);
-    }
+    buf[0] = '\0';
+    FILE *f = popen("sw_vers -productVersion", "r");
+    fgets(buf, sizeof(buf), f);
+    strip_whitespace(buf);
+    fclose(f);
     msg_printf(NULL, MSG_INFO,
-        "OS: Mac OS X %d.%d.%d (%s %s)", major, minor, rev, 
+        "OS: Mac OS X %s (%s %s)", buf,
         host_info.os_name, host_info.os_version
     );
 #else
@@ -307,6 +292,7 @@ const char* rsc_name_long(int i) {
 
 #ifndef SIM
 // alert user if any jobs need more RAM than available
+// (based on RAM estimate, not measured size)
 //
 static void check_too_large_jobs() {
     unsigned int i, j;
@@ -404,14 +390,14 @@ bool CLIENT_STATE::is_new_client() {
 }
 
 #ifdef _WIN32
-typedef DWORD (WINAPI *SPC)(HANDLE, DWORD);
+typedef DWORD (WINAPI *STP)(HANDLE, DWORD);
 #endif
 
 static void set_client_priority() {
 #ifdef _WIN32
-    SPC spc = (SPC) GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "SetPriorityClass");
-    if (!spc) return;
-    if (spc(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN)) {
+    STP stp = (STP) GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "SetThreadPriority");
+    if (!stp) return;
+    if (stp(GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN)) {
         msg_printf(NULL, MSG_INFO, "Running at background priority");
     } else {
         msg_printf(NULL, MSG_INFO, "Failed to set background priority");
@@ -419,7 +405,7 @@ static void set_client_priority() {
 #endif
 #ifdef __linux__
     char buf[1024];
-    sprintf(buf, "ionice -c 3 -n 7 -p %d", getpid());
+    snprintf(buf, sizeof(buf), "ionice -c 3 -p %d", getpid());
     system(buf);
 #endif
 }
@@ -467,7 +453,9 @@ int CLIENT_STATE::init() {
 
     msg_printf(NULL, MSG_INFO, "Libraries: %s", curl_version());
 
-    set_client_priority();
+    if (cc_config.lower_client_priority) {
+        set_client_priority();
+    }
 
     if (executing_as_daemon) {
 #ifdef _WIN32
@@ -517,7 +505,7 @@ int CLIENT_STATE::init() {
         }
         if (log_flags.coproc_debug) {
             for (i=0; i<warnings.size(); i++) {
-                msg_printf(NULL, MSG_INFO, "%s", warnings[i].c_str());
+                msg_printf(NULL, MSG_INFO, "[coproc] %s", warnings[i].c_str());
             }
         }
 #if 0
@@ -531,6 +519,9 @@ int CLIENT_STATE::init() {
 #if 0
         msg_printf(NULL, MSG_INFO, "Faking an Intel GPU");
         coprocs.intel_gpu.fake(512*MEGA, 256*MEGA, 2);
+#endif
+#if 0
+        fake_opencl_gpu("Mali-T628");
 #endif
     }
 
@@ -809,22 +800,27 @@ FDSET_GROUP all_fds;
 
 // Spend x seconds either doing I/O (if possible) or sleeping.
 //
-void CLIENT_STATE::do_io_or_sleep(double x) {
+void CLIENT_STATE::do_io_or_sleep(double max_time) {
     int n;
     struct timeval tv;
     set_now();
-    double end_time = now + x;
-    //int loops = 0;
+    double end_time = now + max_time;
+    double time_remaining = max_time;
 
     while (1) {
-        bool action = do_async_file_ops();
-
         curl_fds.zero();
         gui_rpc_fds.zero();
         http_ops->get_fdset(curl_fds);
         all_fds = curl_fds;
         gui_rpcs.get_fdset(gui_rpc_fds, all_fds);
-        double_to_timeval(action?0:x, tv);
+
+        bool have_async = have_async_file_op();
+
+        // prioritize network (including GUI RPC) over async file ops.
+        // if there's a pending asynch file op, do the select with zero timeout;
+        // otherwise do it for the remaining amount of time.
+
+        double_to_timeval(have_async?0:time_remaining, tv);
 #ifdef NEW_CPU_THROTTLE
         client_mutex.unlock();
 #endif
@@ -843,28 +839,24 @@ void CLIENT_STATE::do_io_or_sleep(double x) {
         // called pretty often, even if no descriptors are enabled.
         // So do the "if (n==0) break" AFTER the got_selects().
 
-        http_ops->got_select(all_fds, x);
+        http_ops->got_select(all_fds, time_remaining);
         gui_rpcs.got_select(all_fds);
 
-        if (!action && n==0) break;
-
-#if 0
-        // Limit number of times thru this loop.
-        // Can get stuck in while loop, if network isn't available,
-        // DNS lookups tend to eat CPU cycles.
-        //
-        if (loops++ > 99) {
-            boinc_sleep(.01);
-#ifdef __EMX__
-            DosSleep(0);
-#endif
-            break;
+        if (have_async) {
+            // do the async file op only if no network activity
+            //
+            if (n == 0) {
+                do_async_file_op();
+            }
+        } else {
+            if (n == 0) {
+                break;
+            }
         }
-#endif
 
         set_now();
         if (now > end_time) break;
-        x = end_time - now;
+        time_remaining = end_time - now;
     }
 }
 
@@ -1008,14 +1000,14 @@ bool CLIENT_STATE::poll_slow_events() {
         if (!old_network_suspend_reason) {
             char buf[256];
             if (network_suspended) {
-                sprintf(buf,
+                snprintf(buf, sizeof(buf),
                     "Suspending network activity - %s",
                     suspend_reason_string(network_suspend_reason)
                 );
                 request_schedule_cpus("network suspended");
                     // in case any "needs_network" jobs are running
             } else {
-                sprintf(buf,
+                snprintf(buf, sizeof(buf),
                     "Suspending file transfers - %s",
                     suspend_reason_string(network_suspend_reason)
                 );
@@ -1239,8 +1231,8 @@ int CLIENT_STATE::link_app_version(PROJECT* p, APP_VERSION* avp) {
 
 #ifndef SIM
 
-    strcpy(avp->graphics_exec_path, "");
-    strcpy(avp->graphics_exec_file, "");
+    safe_strcpy(avp->graphics_exec_path, "");
+    safe_strcpy(avp->graphics_exec_file, "");
 
     for (unsigned int i=0; i<avp->app_files.size(); i++) {
         FILE_REF& file_ref = avp->app_files[i];
@@ -1257,8 +1249,8 @@ int CLIENT_STATE::link_app_version(PROJECT* p, APP_VERSION* avp) {
             char relpath[MAXPATHLEN], path[MAXPATHLEN];
             get_pathname(fip, relpath, sizeof(relpath));
             relative_to_absolute(relpath, path);
-            strlcpy(avp->graphics_exec_path, path, sizeof(avp->graphics_exec_path));
-            strcpy(avp->graphics_exec_file, fip->name);
+            safe_strcpy(avp->graphics_exec_path, path);
+            safe_strcpy(avp->graphics_exec_file, fip->name);
         }
 
         // any file associated with an app version must be signed
@@ -2085,7 +2077,7 @@ int CLIENT_STATE::detach_project(PROJECT* project) {
 
     // delete statistics file
     //
-    get_statistics_filename(project->master_url, path);
+    get_statistics_filename(project->master_url, path, sizeof(path));
     retval = boinc_delete_file(path);
     if (retval) {
         msg_printf(project, MSG_INTERNAL_ERROR,
@@ -2095,7 +2087,7 @@ int CLIENT_STATE::detach_project(PROJECT* project) {
 
     // delete account file
     //
-    get_account_filename(project->master_url, path);
+    get_account_filename(project->master_url, path, sizeof(path));
     retval = boinc_delete_file(path);
     if (retval) {
         msg_printf(project, MSG_INTERNAL_ERROR,
@@ -2148,16 +2140,23 @@ int CLIENT_STATE::quit_activities() {
     //
     adjust_rec();
 
+    daily_xfer_history.write_file();
+    write_state_file();
+    gui_rpcs.close();
+    abort_cpu_benchmarks();
+    time_stats.quit();
+
+    // stop jobs.
+    // Do this last because it could take a long time,
+    // and the OS might kill us in the middle
+    //
     int retval = active_tasks.exit_tasks();
     if (retval) {
         msg_printf(NULL, MSG_INTERNAL_ERROR,
             "Couldn't exit tasks: %s", boincerror(retval)
         );
     }
-    write_state_file();
-    gui_rpcs.close();
-    abort_cpu_benchmarks();
-    time_stats.quit();
+
     return 0;
 }
 
@@ -2229,7 +2228,7 @@ void CLIENT_STATE::log_show_projects() {
         if (p->hostid) {
             sprintf(buf, "%d", p->hostid);
         } else {
-            strcpy(buf, "not assigned yet");
+            safe_strcpy(buf, "not assigned yet");
         }
         msg_printf(p, MSG_INFO,
             "URL %s; Computer ID %s; resource share %.0f",

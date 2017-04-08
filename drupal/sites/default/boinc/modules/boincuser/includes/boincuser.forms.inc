@@ -277,7 +277,7 @@ function boincuser_create_drupal_profile($account, $boinc_user) {
   node_save($profile_node);
   
   // Mark profile as approved if it has already been vetted somehow
-  if ($profile_approved) {
+  if ($profile_approved OR !$boinc_user->has_profile) {
     $profile_node->moderate = 0;
     node_save($profile_node);
   }
@@ -343,8 +343,7 @@ function boincuser_account_validate($edit, $account) {
   require_boinc('boinc_db');
   $boinc_user = BoincUser::lookup_email_addr($account->mail);
   $changing_email = ($edit['mail'] AND $edit['mail'] != $account->mail) ? true : false;
-  $changing_pass = ($edit['pass']['pass1']) ? true : false;
-  // 
+  $changing_pass = ($edit['pass']) ? true : false;
   if ($changing_email) {
     // E-mail address is set to change; check for an existing BOINC user
     $boinc_user_already_exists = BoincUser::lookup_email_addr($edit['mail']);
@@ -352,7 +351,9 @@ function boincuser_account_validate($edit, $account) {
       form_set_error('mail', bts('A BOINC account already exists for @email.', array('@email' => $edit['mail'])));
     }
   }
-  
+
+  // If user is changing email or password, require that the current
+  // password has been given as well.
   if (($changing_email OR $changing_pass) AND !user_access('administer users')) {
     // If changing email or password, require current password
     // (except in cases where password is being reset)
@@ -368,6 +369,12 @@ function boincuser_account_validate($edit, $account) {
         form_set_error('current_pass', bts('Password entered is not valid. Please verify that it is correct.'));
       }
     }
+  }
+
+  // If an admin tries to change the email and NOT the password, show
+  // error message. BOINC requires both to be changed together.
+  if ($changing_email AND !$changing_pass AND user_access('administer users')) {
+    form_set_error('pass', bts('If changing a user\'s email, you must also change the password simultaneously.'));
   }
   
   // Expansion required to allow account key in place of passwd...?

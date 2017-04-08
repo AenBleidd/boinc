@@ -39,12 +39,6 @@
 
 using std::string;
 
-#if defined(_MSC_VER)
-#define getcwd      _getcwd
-#define stricmp     _stricmp
-#define snprintf    _snprintf
-#endif
-
 #include "diagnostics.h"
 #include "filesys.h"
 #include "parse.h"
@@ -256,8 +250,13 @@ int VBOX_VM::create_vm() {
     //
     vboxlog_msg("Setting Boot Options for VM.");
     command  = "modifyvm \"" + vm_name + "\" ";
-    command += "--boot1 disk ";
-    command += "--boot2 dvd ";
+    if (boot_iso) {
+        command += "--boot1 dvd ";
+        command += "--boot2 disk ";        
+    } else {
+        command += "--boot1 disk ";
+        command += "--boot2 dvd ";
+    } 
     command += "--boot3 none ";
     command += "--boot4 none ";
 
@@ -327,6 +326,7 @@ int VBOX_VM::create_vm() {
 
     vbm_popen(command, output, "modifycom", false, false);
 
+#ifndef __APPLE__
     // Tweak the VM's LPT Port Support
     //
     vboxlog_msg("Disabling LPT Port Support for VM.");
@@ -335,6 +335,7 @@ int VBOX_VM::create_vm() {
     command += "--lpt2 off ";
 
     vbm_popen(command, output, "modifylpt", false, false);
+#endif
 
     // Tweak the VM's Audio Support
     //
@@ -792,7 +793,7 @@ int VBOX_VM::deregister_stale_vm() {
     //   In use by VMs:        test2 (UUID: 000ab2be-1254-4c6a-9fdc-1536a478f601)
     //   Location:             C:\Users\romw\VirtualBox VMs\test2\test2.vdi
     //
-    if (enable_isocontextualization && enable_isocontextualization) {
+    if (enable_isocontextualization) {
         command  = "showhdinfo \"" + virtual_machine_slot_directory + "/" + cache_disk_filename + "\" ";
         retval = vbm_popen(command, output, "get HDD info");
         if (retval) return retval;
@@ -1159,6 +1160,40 @@ int VBOX_VM::resume() {
     return 0;
 }
 
+int VBOX_VM::capture_screenshot() {
+    if (enable_screenshots_on_error) {
+        if (is_virtualbox_version_newer(5, 0, 0)) {
+
+            string command;
+            string output;
+            string virtual_machine_slot_directory;
+            int retval = BOINC_SUCCESS;
+
+            get_slot_directory(virtual_machine_slot_directory);
+
+            vboxlog_msg("Capturing screenshot.");
+
+            command = "controlvm \"" + vm_name + "\" ";
+            command += "keyboardputscancode 0x39";
+            vbm_popen(command, output, "put scancode", true, true, 0);
+            boinc_sleep(1);
+
+            command = "controlvm \"" + vm_name + "\" ";
+            command += "screenshotpng \"";
+	        command += virtual_machine_slot_directory;
+	        command += "/";
+	        command += SCREENSHOT_FILENAME;
+	        command += "\"";
+            retval = vbm_popen(command, output, "capture screenshot", true, true, 0);
+            if (retval) return retval;
+
+            vboxlog_msg("Screenshot completed.");
+
+        }
+    }
+	return 0;
+}
+
 int VBOX_VM::create_snapshot(double elapsed_time) {
     string command;
     string output;
@@ -1189,8 +1224,7 @@ int VBOX_VM::create_snapshot(double elapsed_time) {
     poll(false);
 
     // Delete stale snapshot(s), if one exists
-    retval = cleanup_snapshots(false);
-    if (retval) return retval;
+    cleanup_snapshots(false);
 
     vboxlog_msg("Checkpoint completed.");
 

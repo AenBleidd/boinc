@@ -1,6 +1,6 @@
 // This file is part of BOINC.
 // http://boinc.berkeley.edu
-// Copyright (C) 2008 University of California
+// Copyright (C) 2016 University of California
 //
 // BOINC is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License
@@ -43,6 +43,9 @@ class CSkinManager;
 class CDlgEventLog;
 class CRPCFinishedEvent;
 
+#ifdef __WXMAC__
+    OSErr               QuitAppleEventHandler(const AppleEvent *appleEvt, AppleEvent* reply, UInt32 refcon);
+#endif
 
 class CBOINCGUIApp : public wxApp {
 
@@ -52,8 +55,6 @@ protected:
     int                 OnExit();
 #ifndef __WXMAC__
     void                OnEndSession(wxCloseEvent& event);
-
-    void                OnFatalException(); 
 #endif
     
     void                OnInitCmdLine(wxCmdLineParser &parser);
@@ -104,13 +105,8 @@ protected:
     bool                m_bMultipleInstancesOK;
     bool                m_bFilterEvents;
     bool                m_bAboutDialogIsOpen;
-    bool                m_bRunDaemon;
-    bool                m_bNeedRunDaemon;
-
-#ifdef __WXMAC__
-    ProcessSerialNumber m_psnCurrentProcess;
-#endif
-
+    bool                m_bRunDaemon;  
+    bool                m_bNeedRunDaemon;  
 
     // The last value defined in the wxLanguage enum is wxLANGUAGE_USER_DEFINED.
     // defined in: wx/intl.h
@@ -167,12 +163,12 @@ public:
                                                     { m_iDisplayExitDialog = iDisplayExitMessage; }
 
     bool                GetRunDaemon()
-                                                    { return m_bRunDaemon; }
-    void                SetRunDaemon(bool bRunDaemon)
-                                                    { m_bRunDaemon = bRunDaemon; }
-
-    bool                GetNeedRunDaemon()
-                                                    { return m_bNeedRunDaemon; }
+                                                    { return m_bRunDaemon; }  
+    void                SetRunDaemon(bool bRunDaemon)  
+                                                    { m_bRunDaemon = bRunDaemon; }  
+  
+    bool                GetNeedRunDaemon()  
+                                                    { return m_bNeedRunDaemon; }  
 
     wxArrayString&      GetSupportedLanguages()     { return m_astrLanguages; }
     wxString            GetISOLanguageCode()        { return m_strISOLanguageCode; }
@@ -241,6 +237,7 @@ public:
 #ifdef __WXMAC__
     // The following Cocoa routines are in CBOINCGUIApp.mm
     //
+    bool                WasFileModifiedBeforeSystemBoot(char * filePath);
     void                HideThisApp(void);
 
 #if !wxCHECK_VERSION(3,0,1)

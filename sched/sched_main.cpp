@@ -294,7 +294,7 @@ void set_core_dump_size_limit() {
 
 void attach_to_feeder_shmem() {
     char path[MAXPATHLEN];
-    strncpy(path, config.project_dir, sizeof(path));
+    strlcpy(path, config.project_dir, sizeof(path));
     get_key(path, 'a', sema_key);
     int i, retval;
     void* p;
@@ -429,7 +429,9 @@ int main(int argc, char** argv) {
         }
     } else {
         char *stderr_buffer;
-        get_log_path(path, "scheduler.log");
+        if (get_log_path(path, "scheduler.log") == ERR_MKDIR) {
+            fprintf(stderr, "Can't create log directory '%s'  (errno: %d)\n", path, errno);
+        }
 #ifndef _USING_FCGI_
         char buf[256];
         if (!freopen(path, "a", stderr)) {

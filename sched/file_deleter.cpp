@@ -40,6 +40,7 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/resource.h>
 #if HAVE_STRINGS_H
 #include <strings.h>
 #endif
@@ -224,7 +225,7 @@ int wu_delete_files(WORKUNIT& wu) {
 
 int result_delete_files(RESULT& result) {
     char* p;
-    char filename[256], pathname[256], buf[BLOB_SIZE];
+    char filename[MAXPATHLEN], pathname[MAXPATHLEN], buf[BLOB_SIZE];
     bool no_delete=false;
     int count_deleted = 0, retval, mthd_retval = 0;
 
@@ -372,7 +373,7 @@ bool do_pass(bool retry_error) {
 
     if (xml_doc_like) {
         strcat(clause, " and xml_doc like '");
-        strcat(clause, xml_doc_like);
+        safe_strcat(clause, xml_doc_like);
         strcat(clause, "'");
     }
     sprintf(buf,
@@ -597,6 +598,7 @@ int main(int argc, char** argv) {
 
     bool retry_errors_now = !dont_retry_errors;
     double next_error_time=0;
+    // coverity[loop_top] - infinite loop is intended
     while (1) {
         bool got_any = do_pass(false);
         if (retry_errors_now) {

@@ -182,6 +182,142 @@ function boinccore_enable() {
 }
 
 /**
+ * Implementation of hook_boot()
+ * Caching for anonymous users in Drupal 6 is not language specific, so using
+ * the browser language without path prefix can result in mixed languages being
+ * present in the cache for pages with the default (no language given) path. 
+ * As a workaround, redirect anonymous users to a language prefix if they are
+ * on the default site path and the browser reports a non-default language.
+ * See: https://www.drupal.org/node/339958#comment-3012662
+ */
+function boinccore_boot() {
+  global $user, $language;
+  $cache = variable_get('cache', CACHE_DISABLED);
+  $language_negotiation = variable_get('language_negotiation', LANGUAGE_NEGOTIATION_NONE);
+
+  // If we have an anonymous user, page cache is enabled, the URL has no prefix
+  // and browser language negotiation is set, we perform a redirect to the
+  // prefixed URL. 
+  if (empty($user->uid) && $cache != CACHE_DISABLED && $language_negotiation == LANGUAGE_NEGOTIATION_PATH) {
+    $args = isset($_GET['q']) ? explode('/', $_GET['q']) : array();
+    $prefix = array_shift($args);
+
+    // Initialize language as we need the proper language negotiation to be
+    // performed.
+    drupal_bootstrap(DRUPAL_BOOTSTRAP_LANGUAGE);
+    
+    // But Drupal 6 language negotiation does not always work that well...
+    // so call this backported Drupal 7 language negotation function, which
+    // does both case insensitive and longest prefix matching
+    if (function_exists('locale_language_from_browser')) {
+      $language = locale_language_from_browser();
+    }
+
+    if (!empty($language->prefix) && $prefix != $language->prefix) {
+      // We need full path support to perform the redirect.
+      drupal_bootstrap(DRUPAL_BOOTSTRAP_PATH);
+
+      require_once './includes/common.inc';
+      $url = url($_GET['q'], array('query' => drupal_query_string_encode($_GET, array('q'))));
+      $code = variable_get('locale_redirect_http_code', 302);
+
+      // Since we are in a hook_boot() implementation cache mode is normal, so
+      // we can safely call hook_exit().
+      bootstrap_invoke_all('exit');
+      header("Location: $url", TRUE, $code);
+      exit;
+    }
+  }
+}
+
+
+if (!function_exists('locale_language_from_browser')) {
+/**
+ * Backport of locale_language_from_browser from Drupal 7
+ *
+ * The language_from_browser() function in Drupal 6 does not match the browser
+ * language preference case-insensitively or by longest prefix
+ *
+ * Obsolete in Drupal 7...
+ */
+  function locale_language_from_browser() {
+    if (empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+      return FALSE;
+    }
+    
+    $languages = language_list('enabled');
+    $languages = $languages[1];
+    
+    // The Accept-Language header contains information about the language
+    // preferences configured in the user's browser / operating system.
+    // RFC 2616 (section 14.4) defines the Accept-Language header as follows:
+    //   Accept-Language = "Accept-Language" ":"
+    //                  1#( language-range [ ";" "q" "=" qvalue ] )
+    //   language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" )
+    // Samples: "hu, en-us;q=0.66, en;q=0.33", "hu,en-us;q=0.5"
+    $browser_langcodes = array();
+    if (preg_match_all('@(?<=[, ]|^)([a-zA-Z-]+|\*)(?:;q=([0-9.]+))?(?:$|\s*,\s*)@', trim($_SERVER['HTTP_ACCEPT_LANGUAGE']), $matches, PREG_SET_ORDER)) {
+      foreach ($matches as $match) {
+        // We can safely use strtolower() here, tags are ASCII.
+        // RFC2616 mandates that the decimal part is no more than three digits,
+        // so we multiply the qvalue by 1000 to avoid floating point comparisons.
+        $langcode = strtolower($match[1]);
+        $qvalue = isset($match[2]) ? (float) $match[2] : 1;
+        $browser_langcodes[$langcode] = (int) ($qvalue * 1000);
+      }
+    }
+
+    // We should take pristine values from the HTTP headers, but Internet Explorer
+    // from version 7 sends only specific language tags (eg. fr-CA) without the
+    // corresponding generic tag (fr) unless explicitly configured. In that case,
+    // we assume that the lowest value of the specific tags is the value of the
+    // generic language to be as close to the HTTP 1.1 spec as possible.
+    // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4 and
+    // http://blogs.msdn.com/b/ie/archive/2006/10/17/accept-language-header-for-internet-explorer-7.aspx
+    asort($browser_langcodes);
+    foreach ($browser_langcodes as $langcode => $qvalue) {
+      $generic_tag = strtok($langcode, '-');
+      if (!isset($browser_langcodes[$generic_tag])) {
+        $browser_langcodes[$generic_tag] = $qvalue;
+      }
+    }
+
+    // Find the enabled language with the greatest qvalue, following the rules
+    // of RFC 2616 (section 14.4). If several languages have the same qvalue,
+    // prefer the one with the greatest weight.
+    $best_match_language = FALSE;
+    $max_qvalue = 0;
+    foreach ($languages as $langcode => $language) {
+      // Language tags are case insensitive (RFC2616, sec 3.10).
+      $langcode = strtolower($langcode);
+
+      // If nothing matches below, the default qvalue is the one of the wildcard
+      // language, if set, or is 0 (which will never match).
+      $qvalue = isset($browser_langcodes['*']) ? $browser_langcodes['*'] : 0;
+
+      // Find the longest possible prefix of the browser-supplied language
+      // ('the language-range') that matches this site language ('the language tag').
+      $prefix = $langcode;
+      do {
+        if (isset($browser_langcodes[$prefix])) {
+          $qvalue = $browser_langcodes[$prefix];
+          break;
+        }
+      } 
+       while ($prefix = substr($prefix, 0, strrpos($prefix, '-')));
+
+      // Find the best match.
+      if ($qvalue > $max_qvalue) {
+        $best_match_language = $language;
+        $max_qvalue = $qvalue;
+      }
+    }
+
+    return $best_match_language;
+  }
+}
+
+/**
  * Implementation of hook_cron()
  */
 function boinccore_cron() {
@@ -327,6 +463,7 @@ function boinccore_form_alter(&$form, $form_state, $form_id) {
     
   // Forum node form
   case 'forum_node_form':
+  case 'team_forum_node_form':
     $forum_id = key($form['#node']->taxonomy);
     $form['buttons']['separator_bottom'] = array(
       '#value' => '<div class="separator buttons"></div>',
@@ -362,14 +499,51 @@ function boinccore_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
+/**
+ * Implementation of hook_link_alter()
+ */
 function boinccore_link_alter(&$links, $node, $comment = NULL) {
   //echo '<pre>' . print_r($links, true) . '</pre>';
   foreach ($links as $module => $link) {
+    // Remove the ignore user link
     if (strstr($module, 'ignore_user')) {
-      // Remove the ignore user link
       unset($links[$module]);
     }
   }
+  // Node first, then comment: to be consistent with boinccore_link() function
+  if (!($comment)) {
+    // modify the comment_add link
+    if (isset($links['comment_add'])) {
+      $links['comment_add']['title'] = bts('reply');
+      $links['comment_add']['attributes'] = array(
+          'title' => bts('Reply to this comment')
+      );
+    }
+    // modify quote link
+    if (isset($links['quote'])) {
+      $links['quote']['attributes'] = array(
+          'title' => bts('Reply to this topic with a quote')
+      );
+    }
+  }
+  else {
+    // Standard EDIT, DELETE, and REPLY links are created by Drupal, but we want to alter them
+    if (isset($links['comment_delete'])) {
+      $links['comment_delete']['attributes'] = array(
+          'title' => bts('Delete this comment')
+      );
+    }
+    if (isset($links['comment_edit'])) {
+      $links['comment_edit']['attributes'] = array(
+          'title' => bts('Edit this comment')
+      );
+    }
+    if (isset($links['comment_reply'])) {
+      $links['comment_reply']['attributes'] = array(
+          'title' => bts('Reply to this comment')
+      );
+    }
+  }// if !$comment
 }
 
 /**
@@ -386,27 +560,132 @@ function boinccore_locale($op = 'groups', $group = NULL) {
   }
 }
 
-/*
+
+/**
+ * Implementation of hook_link()
+ */
 function boinccore_link($type, $object, $teaser = FALSE) {
   // Add custom links with this hook
-  $links = array();
-  if ($type == 'comment') {
-    if (user_access('administer comments')) {
-      $comment_control = "comment_control/{$object->cid}";
-      if ($object->status == 0) {
-        $links['hide'] = array(
-          'title' => bts('Hide'),
-          'href' => "{$comment_control}/hide",
-          'attributes' => array(
-            'title' => bts('Hide this comment')
-          )
-        );
-      }
+
+  if ($type=='node') {
+    if ( ($object->type=='forum') OR ($object->type=='team_forum') ) {
+      // Add topic moderator controls
+      if (user_access('edit any forum topic')) {
+        $node_control = "node_control/{$object->nid}";
+        if ($object->sticky) {
+          $links['make_unsticky'] = array(
+              'title' => bts('Make unsticky'),
+              'href' => "{$node_control}/unsticky",
+              'attributes' => array(
+                  'title' => bts('Remove sticky status from this topic')
+              )
+          );
+        }
+        else {
+          $links['make_sticky'] = array(
+              'title' => bts('Make sticky'),
+              'href' => "{$node_control}/sticky",
+              'attributes' => array(
+                  'title' => bts('Make this topic sticky')
+              )
+          );
+        }
+        if ($object->comment == COMMENT_NODE_READ_WRITE) {
+          $links['lock'] = array(
+              'title' => bts('Lock'),
+              'href' => "{$node_control}/lock",
+              'attributes' => array(
+                  'title' => bts('Lock this thread for comments')
+              )
+          );
+        }
+        else {
+          $links['unlock'] = array(
+              'title' => bts('Unlock'),
+              'href' => "{$node_control}/unlock",
+              'attributes' => array(
+                  'title' => bts('Unlock this thread for comments')
+              )
+          );
+        }
+        if ($object->status) {
+          $links['hide'] = array(
+              'title' => bts('Hide'),
+              'href' => "{$node_control}/hide",
+              'attributes' => array(
+                  'title' => bts('Hide this topic')
+              )
+          );
+        }
+        else {
+          $links['unhide'] = array(
+              'title' => bts('Unhide'),
+              'href' => "{$node_control}/unhide",
+              'attributes' => array(
+                  'title' => bts('Unhide this topic')
+              )
+          );
+        }
+      }// if user_access('edit any forum topic')
     }
   }
+  else if ($type=='comment') {
+    $node = node_load($object->nid);
+    $nid = $object->nid;
+    $cid = $object->cid;
+
+    // QUOTE
+    if ($node->comment == COMMENT_NODE_READ_WRITE) {
+        $links['quote'] = array(
+            'title' => bts('Quote'),
+            'href' => "comment/reply/{$nid}/{$cid}",
+            'attributes' => array(
+                'title' => bts('Reply to this comment with a quote')
+            ),
+            'fragment' => 'comment-form',
+            'query' => 'quote=1',
+        );
+    }
+    // HIDE and COVERT comment
+    // The following are moderator only links
+    if (user_access('administer comments')) {
+      $comment_control = "comment_control/{$cid}";
+      // Add link to convert comment into a new topic
+      $reply_count = db_result(db_query(' SELECT COUNT(*) FROM comments WHERE pid = %d', $cid ));
+      if ($reply_count == 0) {
+        $links['convert'] = array(
+            'title' => bts('Convert'),
+            'href' => "{$comment_control}/convert",
+            'attributes' => array(
+                'title' => bts('Convert this comment to a new topic')
+            )
+        );
+      }
+      // Add hide link
+      if ($object->status == 0) {
+        $links['hide'] = array(
+            'title' => bts('Hide'),
+            'href' => "{$comment_control}/hide",
+            'attributes' => array(
+                'title' => bts('Hide this comment')
+            )
+        );
+      }
+      else {
+        $links['unhide'] = array(
+            'title' => bts('Unhide'),
+            'href' => "{$comment_control}/unhide",
+            'attributes' => array(
+                'title' => bts('Unhide this comment')
+            )
+        );
+      }
+    }// if user_access('administer comments')
+  }//if $type
+
   return $links;
 }
-// */
+
 
 /*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
  * Page callbacks from hook_menu()
@@ -468,9 +747,15 @@ function boinccore_comment_control($cid = NULL, $action = NULL) {
   switch ($action) {
   case 'unhide':
     comment_publish_action($comment);
+    if (module_exists("boinc_solr_comments")) {
+      boinc_solr_comments_publish($comment);
+    }
     break;
   case 'hide':
     comment_unpublish_action($comment);
+    if (module_exists("boinc_solr_comments")) {
+      boinc_solr_comments_unpublish($comment);
+    }
     break;
   case 'convert':
     $node = new stdClass();
@@ -818,9 +1103,14 @@ function boinccore_team_email_list() {
   // See if the account has an approved profile in Drupal
   $boincteam_id = !empty($_POST['teamid']) ? $_POST['teamid'] : $_GET['teamid'];
   $account_key = !empty($_POST['account_key']) ? $_POST['account_key'] : $_GET['account_key'];
+  $credit_only = !empty($_POST['creditonly']) ? $_POST['creditonly'] : $_GET['creditonly'];
   $show_xml = !empty($_POST['xml']) ? $_POST['xml'] : $_GET['xml'];
+  if (!$show_xml) {
+      // creditonly does not affect non xml output in BOINC
+      $credit_only = FALSE;
+  }
   $admin_request = FALSE;
-  if ($boincteam_id) {
+  if ($boincteam_id && is_numeric($boincteam_id)) {
     if ($account_key) {
       // See if this is a team admin
       db_set_active('boinc');
@@ -838,41 +1128,68 @@ function boinccore_team_email_list() {
       $boincteam = boincteam_load($boincteam_id);
       $admin_request = is_team_admin($boincuser, $boincteam) OR is_team_founder($boincuser, $boincteam);
     }
-    $members = array();
-    db_set_active('boinc');
-    $result = db_query("
-      SELECT 
-        u.name, u.email_addr
-      FROM {user} u
-      WHERE u.teamid = %d
-      ORDER BY u.email_addr ASC",
-      $boincteam_id
-    );
-    db_set_active('default');
-    
-    while ($member = db_fetch_object($result)) {
-      $members[] = user_load(array('mail' => $member->email_addr));
-    }
-    
-    $xml = array('users' => array());
-    foreach ($members as $member) {
-      $content_profile = content_profile_load('profile', $member->uid);
-      $team_member = array(
-        'id' => $member->boincuser_id,
-        'cpid' => $member->boincuser_cpid,
-        'create_time' => $member->created,
-        'name' => $member->boincuser_name,
-        'country' => $content_profile->field_country[0]['value'],
-        'total_credit' => $member->boincuser_total_credit,
-        'expavg_credit' => $member->boincuser_expavg_credit,
-        'expavg_time' => $member->boincuser_expavg_time,
-        'url' => $content_profile->field_url[0]['value'],
-        'has_profile' => ($content_profile->status AND !$content_profile->moderate) ? 1 : 0,
+
+    if ($credit_only) {
+      db_set_active('boinc');
+      $result = db_query("
+        SELECT
+          u.id, u.name, u.cross_project_id, u.email_addr, u.total_credit, u.expavg_credit, u.expavg_time
+        FROM {user} u
+        WHERE u.teamid = %d and u.total_credit > 0",
+        $boincteam_id
       );
-      if ($admin_request) {
-        $team_member['email_addr'] = $member->mail;
+      db_set_active('default');
+
+      $xml = array('users' => array());
+      while ($member = db_fetch_object($result)) {
+        $team_member = array(
+          'id' => $member->id,
+          'cpid' => md5($member->cross_project_id.$member->email_addr),
+          'name' => htmlspecialchars($member->name),
+          'total_credit' => round($member->total_credit),
+          'expavg_credit' => round($member->expavg_credit),
+          'expavg_time' => round($member->expavg_time),
+        );
+        $xml['users']['user'][] = $team_member;
       }
-      $xml['users']['user'][] = $team_member;
+    }
+    else {
+      $members = array();
+      db_set_active('boinc');
+      $result = db_query("
+        SELECT
+          u.name, u.email_addr
+        FROM {user} u
+        WHERE u.teamid = %d
+        ORDER BY u.email_addr ASC",
+        $boincteam_id
+      );
+      db_set_active('default');
+
+      while ($member = db_fetch_object($result)) {
+        $members[] = user_load(array('mail' => $member->email_addr));
+      }
+
+      $xml = array('users' => array());
+      foreach ($members as $member) {
+        $content_profile = content_profile_load('profile', $member->uid);
+        $team_member = array(
+          'id' => $member->boincuser_id,
+          'cpid' => $member->boincuser_cpid,
+          'create_time' => $member->created,
+          'name' => $member->boincuser_name,
+          'country' => $content_profile->field_country[0]['value'],
+          'total_credit' => $member->boincuser_total_credit,
+          'expavg_credit' => $member->boincuser_expavg_credit,
+          'expavg_time' => $member->boincuser_expavg_time,
+          'url' => $content_profile->field_url[0]['value'],
+          'has_profile' => ($content_profile->status AND !$content_profile->moderate) ? 1 : 0,
+        );
+        if ($admin_request) {
+          $team_member['email_addr'] = $member->mail;
+        }
+        $xml['users']['user'][] = $team_member;
+      }
     }
   }
   else {
@@ -1140,12 +1457,78 @@ function boinccore_url_pagination_handler($type, $object_id = NULL) {
   $path = NULL;
   $params = array();
   switch ($type) {
+  case 'boinc-forum':
+    // Redirect requests to a BOINC forum to the Drupal forum
+    $forum_id = db_result(db_query('
+      SELECT tid
+      FROM {boincimport_temp_forum}
+      WHERE forum_id = %d',
+      $object_id
+    ));
+    if ($forum_id) {
+      drupal_goto("community/forum/{$forum_id}");
+    }
+    break;
+  case 'boinc-forum-index':
+    // Redirect requests to the top level BOINC forum to Drupal forums
+    drupal_goto("community/forum");
+    break;
+  case 'boinc-forum-post':
+    // Redirect requests to a BOINC forum post to the Drupal comment
+    $cid = db_result(db_query('
+      SELECT cid
+      FROM {boincimport_temp_post}
+      WHERE post_id = %d',
+      $object_id
+    ));
+    if ($cid) {
+      drupal_goto("goto/comment/{$cid}");
+    }
+    break;
+  case 'boinc-forum-topic':
+    // Redirect requests to a BOINC forum topic to the Drupal node
+    $nid = db_result(db_query('
+      SELECT nid
+      FROM {boincimport_temp_topic}
+      WHERE topic_id = %d',
+      $object_id
+    ));
+    if ($nid) {
+      drupal_goto("node/{$nid}");
+    }
+    break;
+  case 'boinc-host':
+    // Redirect requests to BOINC host details to the host page in Drupal
+    drupal_goto("host/{$object_id}");
+    break;
+  case 'boinc-hosts-user':
+    // Redirect requests to a BOINC user host list to the host list in Drupal
+    $uid = boincuser_lookup_uid($object_id);
+    if ($uid) {
+      drupal_goto("account/{$uid}/computers");
+    }
+    break;
+  case 'boinc-result':
+    // Redirect requests to BOINC task details to the task page in Drupal
+    drupal_goto("task/{$object_id}");
+  case 'boinc-results-host':
+    // Redirect requests to BOINC tasks by host to the host task page in Drupal
+    drupal_goto("host/{$object_id}/tasks");
+    break;
+  case 'boinc-results-user':
+    // Redirect requests to a BOINC user's tasks to the Drupal account tasks
+    drupal_goto("account/tasks");
+    break;
   case 'boinc-user':
     // Redirect requests to a BOINC user ID to the Drupal profile
     $uid = boincuser_lookup_uid($object_id);
     if ($uid) {
       drupal_goto("account/{$uid}");
     }
+    break;
+  case 'boinc-workunit':
+    // Redirect requests to BOINC workunits to the workunit page in Drupal
+    drupal_goto("workunit/{$object_id}");
     break;
   case 'comment':
     $object = _comment_load($object_id);

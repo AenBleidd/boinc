@@ -24,7 +24,6 @@ require_once("../inc/user.inc");
 require_once("../inc/translation.inc");
 require_once("../inc/text_transform.inc");
 require_once("../inc/forum.inc");
-require_once("../inc/recaptchalib.php");
 
 define('SMALL_IMG_WIDTH', 64);
 define('SMALL_IMG_HEIGHT', 64);
@@ -61,11 +60,11 @@ function profile_thumb_path($userid) {
 }
 
 function profile_image_url($userid) {
-    return URL_BASE.IMAGE_URL.$userid.'.jpg';
+    return url_base().IMAGE_URL.$userid.'.jpg';
 }
 
 function profile_thumb_url($userid) {
-    return URL_BASE.IMAGE_URL.$userid.'_sm.jpg';
+    return url_base().IMAGE_URL.$userid.'_sm.jpg';
 }
 
 function profile_user_thumb_url($user) {
@@ -176,13 +175,15 @@ function get_profile_summary($profile) {
     $description = "";
 
     if (strlen($profile->response1) != 0) {
-        $temp = output_transform($profile->response1);
+        $options = new output_options();
+        $options->htmlitems = false;
+        $temp = output_transform($profile->response1, $options);
         $temp = sanitize_tags($temp);
         $description = "(\"" . sub_sentence($temp, ' ', MAX_DESC_LENGTH, true) . "\")";
 
     }
 
-    $summary = "<a href=\"".URL_BASE."view_profile.php?userid=".$profile->userid."\">".$user->name."</a> ".$description;
+    $summary = "<a href=\"".url_base()."view_profile.php?userid=".$profile->userid."\">".$user->name."</a> ".$description;
     return $summary;
 }
 
@@ -216,7 +217,10 @@ function show_profile($user, $logged_in_user, $screen_mode = false) {
     $can_edit = $logged_in_user && $user->id == $logged_in_user->id;
 
     if ($can_edit) {
-        row1("<a href=\"create_profile.php\">".tra("Edit your profile")."</a>");
+        echo "<tr><td>";
+        show_button("create_profile.php", tra("Edit your profile"));
+        echo "</td></tr>
+        ";
     }
 
     // If screening is enabled, only show picture in certain situations
@@ -247,6 +251,7 @@ function show_profile($user, $logged_in_user, $screen_mode = false) {
     //
     BoincForumPrefs::lookup($logged_in_user);
     $options = get_output_options($logged_in_user);
+    $options->htmlitems = false;
 
     if (!empty($profile->response1)) {
         row1(show_profile_heading1());

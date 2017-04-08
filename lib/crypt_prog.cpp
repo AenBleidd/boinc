@@ -62,23 +62,23 @@ void die(const char* p) {
 
 void usage() {
     fprintf(stderr,
-        "Usage: crypt_prog options\n\n"
-        "Options:\n\n"
-        "-genkey n private_keyfile public_keyfile\n"
-        "    create an n-bit key pair\n"
-        "-sign file private_keyfile\n"
-        "    create a signature for a given file, write to stdout\n"
-        "-sign_string string private_keyfile\n"
-        "    create a signature for a given string\n"
-        "-verify file signature_file public_keyfile\n"
-        "    verify a signature\n"
-        "-test_crypt private_keyfile public_keyfile\n"
-        "    test encrypt/decrypt functions\n"
-        "-conkey o2b/b20 priv/pub input_file output_file\n"
-        "    convert keys between BOINC and OpenSSL format\n"
-        "-cert_verify file signature certificate_dir\n"
-        "    verify a signature using a directory of certificates\n"
-    );
+            "Usage: crypt_prog options\n\n"
+            "Options:\n\n"
+            "-genkey n private_keyfile public_keyfile\n"
+            "    create an n-bit key pair\n"
+            "-sign file private_keyfile\n"
+            "    create a signature for a given file, write to stdout\n"
+            "-sign_string string private_keyfile\n"
+            "    create a signature for a given string\n"
+            "-verify file signature_file public_keyfile\n"
+            "    verify a signature\n"
+            "-test_crypt private_keyfile public_keyfile\n"
+            "    test encrypt/decrypt functions\n"
+            "-convkey o2b/b2o priv/pub input_file output_file\n"
+            "    convert keys between BOINC and OpenSSL format\n"
+            "-cert_verify file signature certificate_dir\n"
+            "    verify a signature using a directory of certificates\n"
+           );
 }
 
 unsigned int random_int() {
@@ -93,7 +93,7 @@ unsigned int random_int() {
         die("Can't load ADVAPI32.DLL");
     }
     BOOLEAN (APIENTRY *pfn)(void*, ULONG) =
-    (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
+        (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
     if (pfn) {
         char buff[32];
         ULONG ulCbBuff = sizeof(buff);
@@ -108,7 +108,9 @@ unsigned int random_int() {
     if (!f) {
         die("can't open /dev/random\n");
     }
-    fread(&n, sizeof(n), 1, f);
+    if (1 != fread(&n, sizeof(n), 1, f)) {
+        die("couldn't read from /dev/random\n");
+    }
     fclose(f);
 #endif
     return n;
@@ -123,13 +125,18 @@ int main(int argc, char** argv) {
     unsigned char signature_buf[256], buf[256], buf2[256];
     FILE *f, *fpriv, *fpub;
     char cbuf[256];
+#ifdef HAVE_OPAQUE_RSA_DSA_DH
+    RSA *rsa_key = RSA_new();
+#else
     RSA rsa_key;
+#endif
     RSA *rsa_key_;
-	BIO *bio_out=NULL;
+    BIO *bio_out=NULL;
     BIO *bio_err=NULL;
     char *certpath;
     bool b2o=false; // boinc key to openssl key ?
     bool kpriv=false; // private key ?
+    BIGNUM *e;
 
     if (argc == 1) {
         usage();
@@ -144,7 +151,16 @@ int main(int argc, char** argv) {
         n = atoi(argv[2]);
 
         srand(random_int());
-        RSA* rp = RSA_generate_key(n,  65537, 0, 0);
+        e = BN_new();
+        retval = BN_set_word(e, (unsigned long)65537);
+        if (retval != 1) {
+            die("BN_set_word");
+        }
+        RSA *rp = RSA_new();
+        retval = RSA_generate_key_ex(rp, n, e, NULL);
+        if (retval != 1) {
+            die("RSA_generate_key_ex");
+        }
         openssl_to_keys(rp, n, private_key, public_key);
         fpriv = fopen(argv[3], "w");
         if (!fpriv) die("fopen");
@@ -187,6 +203,7 @@ int main(int argc, char** argv) {
         retval = scan_key_hex(fpub, (KEY*)&public_key, sizeof(public_key));
         if (retval) die("read_public_key");
         f = fopen(argv[3], "r");
+        if (!f) die("fopen");
         signature.data = signature_buf;
         signature.len = 256;
         retval = scan_hex_data(f, signature);
@@ -197,8 +214,8 @@ int main(int argc, char** argv) {
         retval = md5_file(argv[2], md5_buf, size);
         if (retval) die("md5_file");
         retval = check_file_signature(
-            md5_buf, public_key, signature, is_valid
-        );
+                     md5_buf, public_key, signature, is_valid
+                 );
         if (retval) die("check_file_signature");
         if (is_valid) {
             printf("file is valid\n");
@@ -233,6 +250,7 @@ int main(int argc, char** argv) {
             die("usage: crypt_prog -cert_verify file signature_file certificate_dir ca_dir \n");
 
         f = fopen(argv[3], "r");
+        if (!f) die("fopen");
         signature.data = signature_buf;
         signature.len = 256;
         retval = scan_hex_data(f, signature);
@@ -244,9 +262,9 @@ int main(int argc, char** argv) {
             printf("siganture verified using certificate '%s'.\n\n", certpath);
             free(certpath);
         }
-    // this converts, but an executable signed with sign_executable,
-    // and signature converted to OpenSSL format cannot be verified with
-    // OpenSSL
+        // this converts, but an executable signed with sign_executable,
+        // and signature converted to OpenSSL format cannot be verified with
+        // OpenSSL
     } else if (!strcmp(argv[1], "-convsig")) {
         if (argc < 5) {
             usage();
@@ -261,20 +279,24 @@ int main(int argc, char** argv) {
         }
         if (b2o) {
             f = fopen(argv[3], "r");
+            if (!f) die("fopen");
             signature.data = signature_buf;
             signature.len = 256;
             retval = scan_hex_data(f, signature);
             fclose(f);
             f = fopen(argv[4], "w+");
+            if (!f) die("fopen");
             print_raw_data(f, signature);
             fclose(f);
         } else {
             f = fopen(argv[3], "r");
+            if (!f) die("fopen");
             signature.data = signature_buf;
             signature.len = 256;
             retval = scan_raw_data(f, signature);
             fclose(f);
             f = fopen(argv[4], "w+");
+            if (!f) die("fopen");
             print_hex_data(f, signature);
             fclose(f);
         }
@@ -298,18 +320,18 @@ int main(int argc, char** argv) {
             die("either 'pub' or 'priv' must be defined for -convkey\n");
         }
         OpenSSL_add_all_algorithms();
-		ERR_load_crypto_strings();
-		ENGINE_load_builtin_engines();
-		if (bio_err == NULL) {
-		    bio_err = BIO_new_fp(stdout, BIO_NOCLOSE);
+        ERR_load_crypto_strings();
+        ENGINE_load_builtin_engines();
+        if (bio_err == NULL) {
+            bio_err = BIO_new_fp(stdout, BIO_NOCLOSE);
         }
         //enc=EVP_get_cipherbyname("des");
         //if (enc == NULL)
         //    die("could not get cypher.\n");
         // no encription yet.
         bio_out=BIO_new(BIO_s_file());
-		if (BIO_write_filename(bio_out,argv[5]) <= 0) {
-			perror(argv[5]);
+        if (BIO_write_filename(bio_out,argv[5]) <= 0) {
+            perror(argv[5]);
             die("could not create output file.\n");
         }
         if (b2o) {
@@ -319,40 +341,51 @@ int main(int argc, char** argv) {
                 if (!fpriv) {
                     die("fopen");
                 }
-                scan_key_hex(fpriv, (KEY*)&private_key, sizeof(private_key));
+                retval = scan_key_hex(fpriv, (KEY*)&private_key, sizeof(private_key));
                 fclose(fpriv);
+                if (retval) die("scan_key_hex\n");
+#ifdef HAVE_OPAQUE_RSA_DSA_DH
+                private_to_openssl(private_key, rsa_key);
+#else
                 private_to_openssl(private_key, &rsa_key);
+#endif
 
                 //i = PEM_write_bio_RSAPrivateKey(bio_out, &rsa_key,
-        		//				enc, NULL, 0, pass_cb, NULL);
-        		// no encryption yet.
-        		
+                //				enc, NULL, 0, pass_cb, NULL);
+                // no encryption yet.
+
                 //i = PEM_write_bio_RSAPrivateKey(bio_out, &rsa_key,
-        		//				NULL, NULL, 0, pass_cb, NULL);
+                //				NULL, NULL, 0, pass_cb, NULL);
                 fpriv = fopen(argv[5], "w+");
+                if (!fpriv) die("fopen");
+#ifdef HAVE_OPAQUE_RSA_DSA_DH
+                PEM_write_RSAPrivateKey(fpriv, rsa_key, NULL, NULL, 0, 0, NULL);
+#else
                 PEM_write_RSAPrivateKey(fpriv, &rsa_key, NULL, NULL, 0, 0, NULL);
+#endif
                 fclose(fpriv);
-    		    //if (i == 0) {
+                //if (i == 0) {
                 //    ERR_print_errors(bio_err);
                 //    die("could not write key file.\n");
-    		    //}
+                //}
             } else {
                 fpub = fopen(argv[4], "r");
                 if (!fpub) {
                     die("fopen");
                 }
-                scan_key_hex(fpub, (KEY*)&public_key, sizeof(public_key));
+                retval = scan_key_hex(fpub, (KEY*)&public_key, sizeof(public_key));
                 fclose(fpub);
+                if (retval) die("scan_key_hex\n");
                 fpub = fopen(argv[5], "w+");
                 if (!fpub) {
                     die("fopen");
                 }
                 public_to_openssl(public_key, rsa_key_);
-    		    i = PEM_write_RSA_PUBKEY(fpub, rsa_key_);
-    		    if (i == 0) {
+                i = PEM_write_RSA_PUBKEY(fpub, rsa_key_);
+                if (i == 0) {
                     ERR_print_errors(bio_err);
                     die("could not write key file.\n");
-    		    }
+                }
                 fclose(fpub);
             }
         } else {
@@ -363,6 +396,7 @@ int main(int argc, char** argv) {
             }
             if (kpriv) {
                 fpriv = fopen (argv[4], "r");
+                if (!fpriv) die("fopen");
                 rsa_key_ = PEM_read_RSAPrivateKey(fpriv, NULL, NULL, NULL);
                 fclose(fpriv);
                 if (rsa_key_ == NULL) {
@@ -377,6 +411,7 @@ int main(int argc, char** argv) {
                 print_key_hex(fpriv, (KEY*)&private_key, sizeof(private_key));
             } else {
                 fpub = fopen (argv[4], "r");
+                if (!fpub) die("fopen");
                 rsa_key_ = PEM_read_RSA_PUBKEY(fpub, NULL, NULL, NULL);
                 fclose(fpub);
                 if (rsa_key_ == NULL) {

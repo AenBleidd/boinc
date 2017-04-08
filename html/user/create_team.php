@@ -16,16 +16,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+// Disabled.  being used by spammers,
+// and I can't think of a legit use for this.
+
 require_once("../inc/boinc_db.inc");
 require_once("../inc/xml.inc");
 require_once("../inc/team.inc");
 require_once("../inc/team_types.inc");
+
+xml_error(-1, "Nope");
 
 if (DISABLE_TEAMS) xml_error(-1, "Teams are disabled");
 
 xml_header();
 $retval = db_init_xml();
 if ($retval) xml_error($retval);
+
+if (parse_bool(get_config(), "disable_team_creation")) {
+    xml_error(-1, "team creation disabled");
+}
 
 $auth = get_str("account_key");
 $user = BoincUser::lookup_auth($auth);

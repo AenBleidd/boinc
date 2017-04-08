@@ -27,6 +27,7 @@
 #include "win_util.h"
 #include "filesys.h"
 #include "error_numbers.h"
+#include "str_replace.h"
 #include "common_defs.h"
 #include "util.h"
 #include "parse.h"
@@ -70,7 +71,7 @@ GetAccountSid(
         //
         *Sid = (PSID)HeapAlloc(GetProcessHeap(), 0, cbSid);
 
-        if(*Sid == NULL) throw;
+        if(*Sid == NULL) throw 0;
 
         ReferencedDomain = (LPSTR)HeapAlloc(
                         GetProcessHeap(),
@@ -78,7 +79,7 @@ GetAccountSid(
                         cchReferencedDomain * sizeof(CHAR)
                         );
 
-        if(ReferencedDomain == NULL) throw;
+        if(ReferencedDomain == NULL) throw 0;
 
         //
         // Obtain the SID of the specified account on the specified system.
@@ -102,7 +103,7 @@ GetAccountSid(
                             *Sid,
                             cbSid
                             );
-                if(*Sid == NULL) throw;
+                if(*Sid == NULL) throw 0;
 
                 ReferencedDomain = (LPSTR)HeapReAlloc(
                             GetProcessHeap(),
@@ -110,9 +111,9 @@ GetAccountSid(
                             ReferencedDomain,
                             cchReferencedDomain * sizeof(CHAR)
                             );
-                if(ReferencedDomain == NULL) throw;
+                if(ReferencedDomain == NULL) throw 0;
             }
-            else throw;
+            else throw 0;
         }
 
         //
@@ -295,17 +296,17 @@ void get_sandbox_account_service_token() {
                     dwSize + 1);
 
                 if (pszUserName == NULL)
-                    throw;
+                    throw 0;
 
                 if (!GetUserNameEx(
                         NameSamCompatible,
                         pszUserName,
                         &dwSize)
                 )
-                    throw;
+                    throw 0;
             }
             else
-                throw;
+                throw 0;
 
             // Obtain the SID for the current user name.
 
@@ -314,7 +315,7 @@ void get_sandbox_account_service_token() {
                     pszUserName,
                     &pBOINCMasterSID)
             )
-                throw;
+                throw 0;
 
             // Obtain the DACL for the service token.
 
@@ -335,7 +336,7 @@ void get_sandbox_account_service_token() {
                     dwSizeNeeded);
 
                 if (pTokenDefaultDACL == NULL)
-                    throw;
+                    throw 0;
 
                 dwSize = dwSizeNeeded;
 
@@ -346,10 +347,10 @@ void get_sandbox_account_service_token() {
                         dwSize,
                         &dwSizeNeeded)
                 )
-                    throw;
+                    throw 0;
             }
             else
-                throw;
+                throw 0;
 
             //
             pOldAcl = pTokenDefaultDACL->DefaultDacl;
@@ -370,7 +371,7 @@ void get_sandbox_account_service_token() {
                     sizeof(ACL_SIZE_INFORMATION),
                     AclSizeInformation)
                 )
-                   throw;
+                   throw 0;
             }
 
             // Compute the size of the new ACL.
@@ -388,12 +389,12 @@ void get_sandbox_account_service_token() {
                 dwNewAclSize);
 
             if (pNewAcl == NULL)
-                throw;
+                throw 0;
 
             // Initialize the new DACL.
 
             if (!InitializeAcl(pNewAcl, dwNewAclSize, ACL_REVISION))
-                throw;
+                throw 0;
 
             // If DACL is present, copy it to a new DACL.
 
@@ -406,7 +407,7 @@ void get_sandbox_account_service_token() {
                     {
                         // Get an ACE.
                         if (!GetAce(pOldAcl, i, &pTempAce))
-                            throw;
+                            throw 0;
 
                         // Add the ACE to the new ACL.
                         if (!AddAce(
@@ -416,7 +417,7 @@ void get_sandbox_account_service_token() {
                                 pTempAce,
                             ((PACE_HEADER)pTempAce)->AceSize)
                         )
-                            throw;
+                            throw 0;
                     }
                 }
             }
@@ -430,7 +431,7 @@ void get_sandbox_account_service_token() {
             );
 
             if (pace1 == NULL)
-                throw;
+                throw 0;
 
             pace1->Header.AceType  = ACCESS_ALLOWED_ACE_TYPE;
             pace1->Header.AceFlags = CONTAINER_INHERIT_ACE |
@@ -442,7 +443,7 @@ void get_sandbox_account_service_token() {
             pace1->Mask            = PROCESS_ALL_ACCESS;
 
             if (!CopySid(GetLengthSid(pBOINCProjectSID), &pace1->SidStart, pBOINCProjectSID))
-                throw;
+                throw 0;
 
             // Add an ACE to the process.
 
@@ -453,7 +454,7 @@ void get_sandbox_account_service_token() {
                 (LPVOID)pace1,
                 pace1->Header.AceSize)
             )
-                throw;
+                throw 0;
 
             // Add the second ACE to the process.
 
@@ -464,7 +465,7 @@ void get_sandbox_account_service_token() {
             );
 
             if (pace2 == NULL)
-                throw;
+                throw 0;
 
             pace2->Header.AceType  = ACCESS_ALLOWED_ACE_TYPE;
             pace2->Header.AceFlags = CONTAINER_INHERIT_ACE |
@@ -476,7 +477,7 @@ void get_sandbox_account_service_token() {
             pace2->Mask            = PROCESS_ALL_ACCESS;
 
             if (!CopySid(GetLengthSid(pBOINCMasterSID), &pace2->SidStart, pBOINCMasterSID))
-                throw;
+                throw 0;
 
             // Add an ACE to the process.
 
@@ -487,7 +488,7 @@ void get_sandbox_account_service_token() {
                 (LPVOID)pace2,
                 pace2->Header.AceSize)
             )
-                throw;
+                throw 0;
 
             // Set a new Default DACL for the token.
             pTokenDefaultDACL->DefaultDacl = pNewAcl;
@@ -498,7 +499,7 @@ void get_sandbox_account_service_token() {
                 pTokenDefaultDACL,
                 dwNewAclSize)
             )
-                throw;
+                throw 0;
 
             // Indicate success.
             fprintf(stderr, "New Token ACL Success!!!\n");
@@ -552,11 +553,11 @@ int run_app_windows(
     memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
-    strcpy(cmdline, "");
+    safe_strcpy(cmdline, "");
     for (int i=0; i<argc; i++) {
-        strcat(cmdline, argv[i]);
+        safe_strcat(cmdline, argv[i]);
         if (i<argc-1) {
-            strcat(cmdline, " ");
+            safe_strcat(cmdline, " ");
         }
     }
 

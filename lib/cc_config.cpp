@@ -80,6 +80,7 @@ int LOG_FLAGS::parse(XML_PARSER& xp) {
         if (xp.parse_bool("heartbeat_debug", heartbeat_debug)) continue;
         if (xp.parse_bool("http_debug", http_debug)) continue;
         if (xp.parse_bool("http_xfer_debug", http_xfer_debug)) continue;
+	if (xp.parse_bool("idle_detection_debug", idle_detection_debug)) continue;
         if (xp.parse_bool("mem_usage_debug", mem_usage_debug)) continue;
         if (xp.parse_bool("network_status_debug", network_status_debug)) continue;
         if (xp.parse_bool("notice_debug", notice_debug)) continue;
@@ -127,6 +128,7 @@ int LOG_FLAGS::write(MIOFILE& out) {
         "        <heartbeat_debug>%d</heartbeat_debug>\n"
         "        <http_debug>%d</http_debug>\n"
         "        <http_xfer_debug>%d</http_xfer_debug>\n"
+	"        <idle_detection_debug>%d</idle_detection_debug>\n"
         "        <mem_usage_debug>%d</mem_usage_debug>\n"
         "        <network_status_debug>%d</network_status_debug>\n"
         "        <notice_debug>%d</notice_debug>\n"
@@ -167,6 +169,7 @@ int LOG_FLAGS::write(MIOFILE& out) {
         heartbeat_debug ? 1 : 0,
         http_debug ? 1 : 0,
         http_xfer_debug ? 1 : 0,
+	idle_detection_debug ? 1 : 0,
         mem_usage_debug ? 1 : 0,
         network_status_debug ? 1 : 0,
         notice_debug ? 1 : 0,
@@ -192,6 +195,7 @@ int LOG_FLAGS::write(MIOFILE& out) {
 }
 
 CC_CONFIG::CC_CONFIG() {
+    defaults();
 }
 
 // this is called first thing by client
@@ -201,13 +205,14 @@ void CC_CONFIG::defaults() {
     allow_multiple_clients = false;
     allow_remote_gui_rpc = false;
     alt_platforms.clear();
-    client_download_url = "http://boinc.berkeley.edu/download.php";
+    client_download_url = "https://boinc.berkeley.edu/download.php";
     client_new_version_text = "";
-    client_version_check_url = "http://boinc.berkeley.edu/download.php?xml=1";
+    client_version_check_url = "https://boinc.berkeley.edu/download.php?xml=1";
     config_coprocs.clear();
     disallow_attach = false;
     dont_check_file_sizes = false;
     dont_contact_ref_site = false;
+    lower_client_priority = false;
     dont_suspend_nci = false;
     dont_use_vbox = false;
     exclude_gpus.clear();
@@ -232,10 +237,11 @@ void CC_CONFIG::defaults() {
     max_stdout_file_size = 0;
     max_tasks_reported = 0;
     ncpus = -1;
-    network_test_url = "http://www.google.com/";
+    network_test_url = "https://www.google.com/";
     no_alt_platform = false;
     no_gpus = false;
     no_info_fetch = false;
+    no_opencl = false;
     no_priority_change = false;
     os_random_only = false;
     process_priority = -1;
@@ -341,6 +347,7 @@ int CC_CONFIG::parse_options(XML_PARSER& xp) {
         if (xp.parse_bool("disallow_attach", disallow_attach)) continue;
         if (xp.parse_bool("dont_check_file_sizes", dont_check_file_sizes)) continue;
         if (xp.parse_bool("dont_contact_ref_site", dont_contact_ref_site)) continue;
+        if (xp.parse_bool("lower_client_priority", lower_client_priority)) continue;
         if (xp.parse_bool("dont_suspend_nci", dont_suspend_nci)) continue;
         if (xp.parse_bool("dont_use_vbox", dont_use_vbox)) continue;
         if (xp.match_tag("exclude_gpu")) {
@@ -405,6 +412,7 @@ int CC_CONFIG::parse_options(XML_PARSER& xp) {
         if (xp.parse_bool("no_alt_platform", no_alt_platform)) continue;
         if (xp.parse_bool("no_gpus", no_gpus)) continue;
         if (xp.parse_bool("no_info_fetch", no_info_fetch)) continue;
+        if (xp.parse_bool("no_opencl", no_opencl)) continue;
         if (xp.parse_bool("no_priority_change", no_priority_change)) continue;
         if (xp.parse_bool("os_random_only", os_random_only)) continue;
         if (xp.parse_int("process_priority", process_priority)) continue;
@@ -547,11 +555,13 @@ int CC_CONFIG::write(MIOFILE& out, LOG_FLAGS& log_flags) {
         "        <disallow_attach>%d</disallow_attach>\n"
         "        <dont_check_file_sizes>%d</dont_check_file_sizes>\n"
         "        <dont_contact_ref_site>%d</dont_contact_ref_site>\n"
+        "        <lower_client_priority>%d</lower_client_priority>\n"
         "        <dont_suspend_nci>%d</dont_suspend_nci>\n"
         "        <dont_use_vbox>%d</dont_use_vbox>\n",
         disallow_attach,
         dont_check_file_sizes,
         dont_contact_ref_site,
+        lower_client_priority,
         dont_suspend_nci,
         dont_use_vbox
     );
@@ -628,6 +638,7 @@ int CC_CONFIG::write(MIOFILE& out, LOG_FLAGS& log_flags) {
         "        <no_alt_platform>%d</no_alt_platform>\n"
         "        <no_gpus>%d</no_gpus>\n"
         "        <no_info_fetch>%d</no_info_fetch>\n"
+        "        <no_opencl>%d</no_opencl>\n"
         "        <no_priority_change>%d</no_priority_change>\n"
         "        <os_random_only>%d</os_random_only>\n"
         "        <process_priority>%d</process_priority>\n"
@@ -643,6 +654,7 @@ int CC_CONFIG::write(MIOFILE& out, LOG_FLAGS& log_flags) {
         no_alt_platform,
         no_gpus,
         no_info_fetch,
+        no_opencl,
         no_priority_change,
         os_random_only,
         process_priority,

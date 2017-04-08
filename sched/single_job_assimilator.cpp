@@ -25,6 +25,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <sys/resource.h>
 
 #include "boinc_db.h"
 #include "error_numbers.h"
@@ -39,8 +40,7 @@
 using std::vector;
 using std::string;
 
-int assimilate_handler_init(int argc, char** argv) {
-    // handle project specific arguments here
+int assimilate_handler_init(int, char**) {
     return 0;
 }
 
@@ -56,7 +56,7 @@ int assimilate_handler(
     WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canonical_result
 ) {
     int retval;
-    char buf[1024], filename[256], job_dir[256], job_dir_file[256];
+    char buf[1024], filename[MAXPATHLEN], job_dir[MAXPATHLEN], job_dir_file[MAXPATHLEN];
     unsigned int i;
 
     // delete the template files
@@ -72,11 +72,11 @@ int assimilate_handler(
     );
     FILE* f = fopen(job_dir_file, "r");
     if (!f) {
-        log_messages.printf(MSG_CRITICAL, "Can't open job file %s\n", buf);
+        log_messages.printf(MSG_CRITICAL, "Can't open job file %s\n", job_dir_file);
         return 0;
     }
     if (!fgets(buf, 1024, f)) {
-        log_messages.printf(MSG_CRITICAL, "Can't read job file %s\n", buf);
+        log_messages.printf(MSG_CRITICAL, "Can't read job file %s\n", job_dir_file);
         fclose(f);
         return 0;
     }
@@ -102,6 +102,10 @@ int assimilate_handler(
     //
     sprintf(filename, "%s/job_summary_%lu", job_dir, wu.id);
     f = fopen(filename, "w");
+    if (!f) {
+        log_messages.printf(MSG_CRITICAL, "Can't open job summary file %s\n", filename);
+        return ERR_FOPEN;
+    }
 
     // If job was successful, copy the output files
     //

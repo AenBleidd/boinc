@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-// A very crude interface for parsing XML files;
-// assumes all elements are either single-line or
+// This file contains two XML parsers:
+//
+// 1) a very crude one, which assumes all elements are either single-line or
 // have start and end tags on separate lines.
 // This is meant to be used ONLY for parsing XML files produced
 // by the BOINC scheduling server or client.
-// Could replace this with a more general parser.
+//
+// 2) a better one (class XML_PARSER) which parses arbitrary XML
 
 #if   defined(_WIN32) && !defined(__STDWX_H__)
 #include "boinc_win.h"
@@ -37,10 +39,6 @@
 #if HAVE_IEEEFP_H
 #include <ieeefp.h>
 #endif
-#endif
-
-#ifdef _MSC_VER
-#define strdup _strdup
 #endif
 
 #ifdef _USING_FCGI_
@@ -68,13 +66,13 @@ bool parse_bool(const char* buf, const char* tag, bool& result) {
     if (!strstr(buf, tag)) {
         return false;
     }
-    sprintf(tag2, "<%s/>", tag);
-    sprintf(tag3, "<%s />", tag);
+    snprintf(tag2, sizeof(tag2), "<%s/>", tag);
+    snprintf(tag3, sizeof(tag3), "<%s />", tag);
     if (match_tag(buf, tag2) || match_tag(buf, tag3)) {
         result = true;
         return true;
     }
-    sprintf(tag2, "<%s>", tag);
+    snprintf(tag2, sizeof(tag2), "<%s>", tag);
     if (parse_int(buf, tag2, x)) {
         result = (x != 0);
         return true;
@@ -97,6 +95,7 @@ bool parse_str(const char* buf, const char* tag, char* dest, int destlen) {
     p = strstr(buf, tag);
     if (!p) return false;
     p = strchr(p, '>');
+    if (!p) return false;
     p++;
     const char* q = strchr(p, '<');
     if (!q) return false;
@@ -147,12 +146,15 @@ int copy_stream(FILE* in, FILE* out) {
 }
 
 // append to a malloc'd string
+// If reallocation fails, the pointer p remains unchanged, and the data will
+// not be freed. (strong exception safety)
 //
 int strcatdup(char*& p, char* buf) {
-    p = (char*)realloc(p, strlen(p) + strlen(buf)+1);
-    if (!p) {
+    char* new_p = (char*)realloc(p, strlen(p) + strlen(buf)+1);
+    if (!new_p) {
         return ERR_MALLOC;
     }
+    p = new_p;
     strcat(p, buf);
     return 0;
 }
@@ -197,21 +199,28 @@ int dup_element(FILE* in, const char* tag_name, char** pp) {
     char buf[256], end_tag[256];
     int retval;
 
-    sprintf(buf, "<%s>\n", tag_name);
-    sprintf(end_tag, "</%s>", tag_name);
+    snprintf(buf, sizeof(buf), "<%s>\n", tag_name);
+    snprintf(end_tag, sizeof(end_tag), "</%s>", tag_name);
 
     char* p = strdup(buf);
     while (fgets(buf, 256, in)) {
         if (strstr(buf, end_tag)) {
-            sprintf(buf, "</%s>\n", tag_name);
+            snprintf(buf, sizeof(buf), "</%s>\n", tag_name);
             retval = strcatdup(p, buf);
-            if (retval) return retval;
+            if (retval) {
+                free(p);
+                return retval;
+            }
             *pp = p;
             return 0;
         }
         retval = strcatdup(p, buf);
-        if (retval) return retval;
+        if (retval) {
+            free(p);
+            return retval;
+        }
     }
+    free(p);
     return ERR_XML_PARSE;
 }
 
@@ -312,7 +321,7 @@ void extract_venue(const char* in, const char* venue_name, char* out, int len) {
     const char* p, *q;
     char* wp;
     char buf[256];
-    sprintf(buf, "<venue name=\"%s\">", venue_name);
+    snprintf(buf, sizeof(buf), "<venue name=\"%s\">", venue_name);
     p = strstr(in, buf);
     if (p) {
         // prefs contain the specified venue
@@ -364,7 +373,7 @@ void non_ascii_escape(const char* in, char* out, int len) {
         int x = (int) *in;
         x &= 0xff;   // just in case
         if (x>127) {
-            sprintf(buf, "&#%d;", x);
+            snprintf(buf, sizeof(buf), "&#%d;", x);
             strcpy(p, buf);
             p += strlen(buf);
         } else {
@@ -395,7 +404,7 @@ void xml_escape(const char* in, char* out, int len) {
             strcpy(p, "&amp;");
             p += 5;
         } else if (x>127) {
-            sprintf(buf, "&#%d;", x);
+            snprintf(buf, sizeof(buf), "&#%d;", x);
             strcpy(p, buf);
             p += strlen(buf);
         } else if (x<32) {
@@ -403,7 +412,7 @@ void xml_escape(const char* in, char* out, int len) {
             case 9:
             case 10:
             case 13:
-                sprintf(buf, "&#%d;", x);
+                snprintf(buf, sizeof(buf), "&#%d;", x);
                 strcpy(p, buf);
                 p += strlen(buf);
                 break;
@@ -499,6 +508,8 @@ int skip_unrecognized(char* buf, MIOFILE& fin) {
 }
 
 XML_PARSER::XML_PARSER(MIOFILE* _f) {
+    strcpy(parsed_tag, "");
+    is_tag = false;
     f = _f;
 }
 
@@ -810,7 +821,7 @@ bool XML_PARSER::parse_bool(const char* start_tag, bool& b) {
 
     // handle the archaic form <tag/>, which means true
     //
-    strcpy(tag, start_tag);
+    safe_strcpy(tag, start_tag);
     strcat(tag, "/");
     if (!strcmp(parsed_tag, tag)) {
         b = true;
@@ -875,7 +886,7 @@ void XML_PARSER::skip_unexpected(
         );
     }
     if (strchr(start_tag, '/')) return;
-    sprintf(end_tag, "/%s", start_tag);
+    snprintf(end_tag, sizeof(end_tag), "/%s", start_tag);
 
     while (1) {
         int c;
@@ -909,7 +920,7 @@ int XML_PARSER::copy_element(string& out) {
     out = "<";
     out += parsed_tag;
     out += ">";
-    sprintf(end_tag, "</%s>", parsed_tag);
+    snprintf(end_tag, sizeof(end_tag), "</%s>", parsed_tag);
     int retval = element_contents(end_tag, buf, sizeof(buf));
     if (retval) return retval;
     out += buf;

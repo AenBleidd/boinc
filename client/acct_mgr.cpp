@@ -1,6 +1,6 @@
 // This file is part of BOINC.
 // http://boinc.berkeley.edu
-// Copyright (C) 2011 University of California
+// Copyright (C) 2017 University of California
 //
 // BOINC is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License
@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+// code for communicating with account managers (AMs)
+
 #include "cpp.h"
 
 #ifdef _WIN32
@@ -22,6 +24,10 @@
 #else
 #include "config.h"
 #include <cstring>
+#endif
+
+#ifdef _MSC_VER
+#define snprintf _snprintf
 #endif
 
 #include "crypt.h"
@@ -47,7 +53,7 @@ static const char *run_mode_name[] = {"", "always", "auto", "never"};
 // if URL is null, detach from current account manager
 //
 int ACCT_MGR_OP::do_rpc(
-    std::string _url, std::string name, std::string password_hash,
+    string _url, string name, string password_hash,
     bool _via_gui
 ) {
     int retval;
@@ -129,7 +135,7 @@ int ACCT_MGR_OP::do_rpc(
             fprintf(f,"   <gui_rpc_port>%d</gui_rpc_port>\n", GUI_RPC_PORT);
         }
         if (boinc_file_exists(GUI_RPC_PASSWD_FILE)) {
-            strcpy(password, "");
+            safe_strcpy(password, "");
             pwdf = fopen(GUI_RPC_PASSWD_FILE, "r");
             if (pwdf) {
                 if (fgets(password, 256, pwdf)) {
@@ -149,7 +155,6 @@ int ACCT_MGR_OP::do_rpc(
             "      <url>%s</url>\n"
             "      <project_name>%s</project_name>\n"
             "      <suspended_via_gui>%d</suspended_via_gui>\n"
-            "      <account_key>%s</account_key>\n"
             "      <hostid>%d</hostid>\n"
             "      <not_started_dur>%f</not_started_dur>\n"
             "      <in_progress_dur>%f</in_progress_dur>\n"
@@ -158,11 +163,15 @@ int ACCT_MGR_OP::do_rpc(
             "      <detach_when_done>%d</detach_when_done>\n"
             "      <ended>%d</ended>\n"
             "      <resource_share>%f</resource_share>\n"
-            "   </project>\n",
+            "      <cpu_ec>%f</cpu_ec>\n"
+            "      <cpu_time>%f</cpu_time>\n"
+            "      <gpu_ec>%f</gpu_ec>\n"
+            "      <gpu_time>%f</gpu_time>\n"
+            "      <njobs_success>%d</njobs_success>\n"
+            "      <njobs_error>%d</njobs_error>\n",
             p->master_url,
             p->project_name,
             p->suspended_via_gui?1:0,
-            p->authenticator,
             p->hostid,
             not_started_dur,
             in_progress_dur,
@@ -170,7 +179,22 @@ int ACCT_MGR_OP::do_rpc(
             p->dont_request_more_work?1:0,
             p->detach_when_done?1:0,
             p->ended?1:0,
-            p->resource_share
+            p->resource_share,
+            p->cpu_ec,
+            p->cpu_time,
+            p->gpu_ec,
+            p->gpu_time,
+            p->njobs_success,
+            p->njobs_error
+        );
+        if (p->attached_via_acct_mgr) {
+            fprintf(f,
+                "      <account_key>%s</account_key>\n",
+                p->authenticator
+            );
+        }
+        fprintf(f,
+            "   </project>\n"
         );
     }
     MIOFILE mf;
@@ -201,7 +225,7 @@ int ACCT_MGR_OP::do_rpc(
     gstate.net_stats.write(mf);
     fprintf(f, "</acct_mgr_request>\n");
     fclose(f);
-    sprintf(buf, "%srpc.php", url);
+    snprintf(buf, sizeof(buf), "%srpc.php", url);
     retval = gui_http->do_rpc_post(
         this, buf, ACCT_MGR_REQUEST_FILENAME, ACCT_MGR_REPLY_FILENAME, true
     );
@@ -234,7 +258,7 @@ int AM_ACCOUNT::parse(XML_PARSER& xp) {
     suspend.init();
     abort_not_started.init();
     url = "";
-    strcpy(url_signature, "");
+    safe_strcpy(url_signature, "");
     authenticator = "";
     resource_share.init();
 
@@ -256,7 +280,7 @@ int AM_ACCOUNT::parse(XML_PARSER& xp) {
         if (xp.match_tag("url_signature")) {
             retval = xp.element_contents("</url_signature>", url_signature, sizeof(url_signature));
             if (retval) return retval;
-            strcat(url_signature, "\n");
+            safe_strcat(url_signature, "\n");
             continue;
         }
         if (xp.parse_string("authenticator", authenticator)) continue;
@@ -307,6 +331,12 @@ int AM_ACCOUNT::parse(XML_PARSER& xp) {
             abort_not_started.set(btemp);
             continue;
         }
+        if (xp.parse_string("sci_keywords", sci_keywords)) {
+            continue;
+        }
+        if (xp.parse_string("loc_keywords", loc_keywords)) {
+            continue;
+        }
         if (log_flags.unparsed_xml) {
             msg_printf(NULL, MSG_INFO,
                 "[unparsed_xml] AM_ACCOUNT: unrecognized %s", xp.parsed_tag
@@ -330,8 +360,8 @@ int ACCT_MGR_OP::parse(FILE* f) {
     error_str = "";
     error_num = 0;
     repeat_sec = 0;
-    strcpy(host_venue, "");
-    strcpy(ami.opaque, "");
+    safe_strcpy(host_venue, "");
+    safe_strcpy(ami.opaque, "");
     ami.no_project_notices = false;
     rss_feeds.clear();
     if (!xp.parse_start("acct_mgr_reply")) return ERR_XML_PARSE;
@@ -509,12 +539,20 @@ void ACCT_MGR_OP::handle_reply(int http_op_retval) {
     }
 
     if (sig_ok) {
+        // if the AM RPC had an error, some items may be missing; don't copy
+        //
+        if (strlen(ami.project_name)) {
+            safe_strcpy(gstate.acct_mgr_info.project_name, ami.project_name);
+        }
+        if (strlen(ami.signing_key)) {
+            safe_strcpy(gstate.acct_mgr_info.signing_key, ami.signing_key);
+        }
+        if (strlen(ami.opaque)) {
+            safe_strcpy(gstate.acct_mgr_info.opaque, ami.opaque);
+        }
         safe_strcpy(gstate.acct_mgr_info.master_url, ami.master_url);
-        safe_strcpy(gstate.acct_mgr_info.project_name, ami.project_name);
-        safe_strcpy(gstate.acct_mgr_info.signing_key, ami.signing_key);
         safe_strcpy(gstate.acct_mgr_info.login_name, ami.login_name);
         safe_strcpy(gstate.acct_mgr_info.password_hash, ami.password_hash);
-        safe_strcpy(gstate.acct_mgr_info.opaque, ami.opaque);
         gstate.acct_mgr_info.no_project_notices = ami.no_project_notices;
 
         // process projects
@@ -614,8 +652,12 @@ void ACCT_MGR_OP::handle_reply(int http_op_retval) {
                     for (int j=0; j<MAX_RSC; j++) {
                         pp->no_rsc_ams[j] = acct.no_rsc[j];
                     }
+                    pp->sci_keywords = acct.sci_keywords;
+                    pp->loc_keywords = acct.loc_keywords;
                 }
             } else {
+                // here we don't already have the project.
+                //
                 if (acct.authenticator.empty()) {
                     msg_printf(NULL, MSG_INFO,
                         "Account manager reply missing authenticator for %s",
@@ -624,7 +666,6 @@ void ACCT_MGR_OP::handle_reply(int http_op_retval) {
                     continue;
                 }
 
-                // here we don't already have the project.
                 // Attach to it, unless the acct mgr is telling us to detach
                 //
                 if (!acct.detach && !(acct.detach_when_done.present && acct.detach_when_done.value)) {
@@ -641,6 +682,9 @@ void ACCT_MGR_OP::handle_reply(int http_op_retval) {
                         }
                         if (acct.dont_request_more_work.present) {
                             pp->dont_request_more_work = acct.dont_request_more_work.value;
+                        }
+                        if (acct.suspend.present && acct.suspend.value) {
+                            pp->suspend();
                         }
                     } else {
                         msg_printf(NULL, MSG_INTERNAL_ERROR,
@@ -752,14 +796,14 @@ int ACCT_MGR_INFO::write_info() {
 }
 
 void ACCT_MGR_INFO::clear() {
-    strcpy(project_name, "");
-    strcpy(master_url, "");
-    strcpy(login_name, "");
-    strcpy(password_hash, "");
-    strcpy(signing_key, "");
-    strcpy(previous_host_cpid, "");
-    strcpy(opaque, "");
-    strcpy(cookie_failure_url, "");
+    safe_strcpy(project_name, "");
+    safe_strcpy(master_url, "");
+    safe_strcpy(login_name, "");
+    safe_strcpy(password_hash, "");
+    safe_strcpy(signing_key, "");
+    safe_strcpy(previous_host_cpid, "");
+    safe_strcpy(opaque, "");
+    safe_strcpy(cookie_failure_url, "");
     next_rpc_time = 0;
     nfailures = 0;
     send_gui_rpc_info = false;
@@ -779,7 +823,9 @@ int ACCT_MGR_INFO::parse_login_file(FILE* p) {
     mf.init_file(p);
     XML_PARSER xp(&mf);
     if (!xp.parse_start("acct_mgr_login")) {
-        //
+        msg_printf(NULL, MSG_INTERNAL_ERROR,
+            "missing start tag in account manager login file"
+        );
     }
     while (!xp.get_tag()) {
         if (!xp.is_tag) {
@@ -814,6 +860,9 @@ int ACCT_MGR_INFO::parse_login_file(FILE* p) {
     return 0;
 }
 
+// called at client startup.
+// If currently using an AM, read its URL and login files
+//
 int ACCT_MGR_INFO::init() {
     MIOFILE mf;
     FILE*   p;
@@ -832,7 +881,7 @@ int ACCT_MGR_INFO::init() {
     }
     mf.init_file(p);
     XML_PARSER xp(&mf);
-    if (!xp.parse_start("acct_mgr_login")) {
+    if (!xp.parse_start("acct_mgr")) {
         //
     }
     while (!xp.get_tag()) {

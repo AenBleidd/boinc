@@ -244,6 +244,7 @@ struct RESULT {
     char name[256];
     char wu_name[256];
     char project_url[256];
+    char platform[256];
     int version_num;
     char plan_class[64];
     double report_deadline;
@@ -363,6 +364,7 @@ struct GR_PROXY_INFO {
     int socks_server_port;
     std::string socks5_user_name;
     std::string socks5_user_passwd;
+    bool socks5_remote_dns;
 
 	std::string noproxy_hosts;
 
@@ -396,8 +398,13 @@ struct CC_STATE {
 
     PROJECT* lookup_project(const char* url);
     APP* lookup_app(PROJECT*, const char* name);
-    APP_VERSION* lookup_app_version(PROJECT*, APP*, int, char* plan_class);
-    APP_VERSION* lookup_app_version_old(PROJECT*, APP*, int);
+    APP_VERSION* lookup_app_version(PROJECT*, APP*,
+        char* platform, int vnum, char* plan_class
+    );
+    APP_VERSION* lookup_app_version(PROJECT*, APP*,
+        int vnum, char* plan_class
+    );
+    APP_VERSION* lookup_app_version(PROJECT*, APP*, int vnum);
     WORKUNIT* lookup_wu(PROJECT*, const char* name);
     RESULT* lookup_result(PROJECT*, const char* name);
     RESULT* lookup_result(const char* url, const char* name);
@@ -511,7 +518,9 @@ struct PROJECT_INIT_STATUS {
     std::string url;
     std::string name;
     std::string team_name;
+    std::string setup_cookie;
     bool has_account_key;
+    bool embedded;
 
     PROJECT_INIT_STATUS();
 
@@ -559,7 +568,9 @@ struct ACCOUNT_IN {
     std::string user_name;
     std::string passwd;
     std::string team_name;
+    std::string server_cookie;
     bool ldap_auth;
+    bool server_assigned_cookie;
 
     ACCOUNT_IN();
 

@@ -24,12 +24,6 @@
 #include "stdwx.h"
 #endif
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
-#define snprintf    _snprintf
-#define strdate     _strdate
-#define strtime     _strtime
-#endif
-
 #ifdef __EMX__
 #include <sys/stat.h>
 #endif
@@ -52,7 +46,7 @@
 #include "mac_backtrace.h"
 #endif
 
-#ifdef __GLIBC__
+#ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
 #endif
 
@@ -62,6 +56,8 @@
 #include "util.h"
 #include "str_replace.h"
 #include "parse.h"
+#include "str_replace.h"
+
 
 #include "diagnostics.h"
 
@@ -108,10 +104,50 @@ static double      stdout_file_size = 0;
 static double      max_stdout_file_size = 2048*1024;
 
 #ifdef ANDROID
-static void *libhandle;
+static void*       libhandle;
 #endif
 
-#if defined(_WIN32) && defined(_DEBUG)
+#ifdef _WIN32
+
+// Starting with Visual Studio 2005 the C Runtime Library has really started to
+//   enforce parameter validation. Problem is that the parameter validation code
+//   uses its own structured exception handler and terminates without writing
+//   any useful output to stderr. Microsoft has created a hook an application
+//   developer can use to get more debugging information which is the purpose
+//   of this function. When an invalid parameter is passed to the C Runtime
+//   library this function will write whatever trace information it can and
+//   then throw a breakpoint exception to dump all the rest of the useful
+//   information.
+void boinc_catch_signal_invalid_parameter(
+    const wchar_t* expression, const wchar_t* function, const wchar_t* file, unsigned int line, uintptr_t /* pReserved */
+) {
+	fprintf(
+		stderr,
+        "ERROR: Invalid parameter detected in function %s. File: %s Line: %d\n",
+		function,
+		file,
+		line
+	);
+	fprintf(
+		stderr,
+		"ERROR: Expression: %s\n",
+		expression
+	);
+
+	// Cause a Debug Breakpoint.
+	DebugBreak();
+}
+
+// Override default terminate and abort functions, call DebugBreak instead.
+//
+void boinc_term_func() {
+
+    // Cause a Debug Breakpoint.
+    DebugBreak();
+
+}
+
+#ifdef _DEBUG
 
 // Trap ASSERTs and TRACEs from the CRT and spew them to stderr.
 //
@@ -125,12 +161,12 @@ int __cdecl boinc_message_reporting(int reportType, char *szMsg, int *retVal){
     case _CRT_ERROR:
 
         if (flags & BOINC_DIAG_TRACETOSTDERR) {
-            n = fprintf(stderr, szMsg);
+            n = fprintf(stderr, "%s", szMsg);
             if (n > 0) stderr_file_size += n;
         }
 
         if (flags & BOINC_DIAG_TRACETOSTDOUT) {
-            n = fprintf(stdout, szMsg);
+            n = fprintf(stdout, "%s", szMsg);
             if (n > 0) stdout_file_size += n;
         }
 
@@ -148,7 +184,8 @@ int __cdecl boinc_message_reporting(int reportType, char *szMsg, int *retVal){
     return(TRUE);
 }
 
-#endif // _WIN32 && _DEBUG
+#endif //  _DEBUG
+#endif // _WIN32
 
 
 // initialize the app diagnostic environment.
@@ -215,15 +252,15 @@ int diagnostics_init(
     // Setup initial values
     //
     flags = _flags;
-    strcpy(stdout_log, "");
-    strcpy(stdout_archive, "");
-    strcpy(stderr_log, "");
-    strcpy(stderr_archive, "");
-    strcpy(boinc_dir, "");
-    strcpy(boinc_install_dir, "");
+    safe_strcpy(stdout_log, "");
+    safe_strcpy(stdout_archive, "");
+    safe_strcpy(stderr_log, "");
+    safe_strcpy(stderr_archive, "");
+    safe_strcpy(boinc_dir, "");
+    safe_strcpy(boinc_install_dir, "");
     boinc_proxy_enabled = 0;
-    strcpy(boinc_proxy, "");
-    strcpy(symstore, "");
+    safe_strcpy(boinc_proxy, "");
+    safe_strcpy(symstore, "");
 
     
     // Check for invalid parameter combinations
@@ -244,13 +281,13 @@ int diagnostics_init(
 
 #if   defined(_WIN32)
         snprintf(user_dir, sizeof(user_dir), "%s", getenv("APPDATA"));
-        strncat(user_dir, "/BOINC", sizeof(user_dir) - strlen(user_dir)-1);
+        safe_strcat(user_dir, "/BOINC");
 #elif defined(__APPLE__)
         snprintf(user_dir, sizeof(user_dir), "%s", getenv("HOME"));
-        strncat(user_dir, "/Library/Application Support/BOINC", sizeof(user_dir) - strlen(user_dir)-1);
+        safe_strcat(user_dir, "/Library/Application Support/BOINC");
 #else
         snprintf(user_dir, sizeof(user_dir), "%s", getenv("HOME"));
-        strncat(user_dir, "/.BOINC", sizeof(user_dir) - strlen(user_dir)-1);
+        safe_strcat(user_dir, "/.BOINC");
 #endif
 
         // Check to see if the directory exists
@@ -326,6 +363,15 @@ int diagnostics_init(
 
 
 #if defined(_WIN32)
+
+    //_set_abort_behavior(NULL, _WRITE_ABORT_MSG);
+#ifdef __MINGW32__
+    std::set_terminate(boinc_term_func);
+    std::set_unexpected(boinc_term_func);
+#else
+    set_terminate(boinc_term_func);
+    set_unexpected(boinc_term_func);
+#endif
 
 #if defined(_DEBUG)
 
@@ -404,8 +450,8 @@ int diagnostics_init(
         DWORD   dwSize = 0;
 #endif
 
-        strcpy(buf, "");
-        strcpy(proxy_address, "");
+        safe_strcpy(buf, "");
+        safe_strcpy(proxy_address, "");
         proxy_port = 0;
 
 #ifndef _USING_FCGI_
@@ -704,10 +750,14 @@ static char *xtoa(size_t x) {
 #endif
 
 #ifdef HAVE_SIGACTION
+#ifdef ANDROID
 void boinc_catch_signal(int signal, struct siginfo *siginfo, void *sigcontext) {
 #else
+void boinc_catch_signal(int signal, struct siginfo *, void *) {
+#endif  // ANDROID
+#else
 void boinc_catch_signal(int signal) {
-#endif
+#endif  // HAVE_SIGACTION
     switch(signal) {
     case SIGHUP: fprintf(stderr, "SIGHUP: terminal line hangup\n");
          return;
@@ -725,7 +775,7 @@ void boinc_catch_signal(int signal) {
     default: fprintf(stderr, "unknown signal %d\n", signal); break;
     }
 
-#ifdef __GLIBC__
+#ifdef HAVE_EXECINFO_H
     void *array[64];
     size_t size;
     size = backtrace (array, 64);
@@ -752,24 +802,32 @@ void boinc_catch_signal(int signal) {
 #endif
 
 #ifdef ANDROID
-    // this is some dark undocumented Android voodoo that uses libcorkscrew.so
-    // minimal use of library functions because they may not work in an signal
+    // this is some dark undocumented Android voodoo that uses libcorkscrew.so.
+    // Minimal use of library functions because they may not work in a signal
     // handler.
+    //
 #define DUMP_LINE_LEN 256
     static backtrace_frame_t backtrace[64];
     static backtrace_symbol_t backtrace_symbols[64]; 
     if (unwind_backtrace_signal_arch != NULL) {
-        map_info_t *map_info=acquire_my_map_info_list();
-        ssize_t size=unwind_backtrace_signal_arch(siginfo,sigcontext,map_info,backtrace,0,64);
-        get_backtrace_symbols(backtrace,size,backtrace_symbols);
+        map_info_t *map_info = acquire_my_map_info_list();
+        ssize_t size = unwind_backtrace_signal_arch(
+            siginfo, sigcontext, map_info, backtrace, 0, 64
+        );
+        get_backtrace_symbols(backtrace, size, backtrace_symbols);
         char line[DUMP_LINE_LEN];
-        for (int i=0;i<size;i++) {
-            format_backtrace_line(i,&backtrace[i],&backtrace_symbols[i],line,DUMP_LINE_LEN);
-            line[DUMP_LINE_LEN-1]=0;
+        for (int i=0; i<size; i++) {
+            format_backtrace_line(
+                i, &backtrace[i], &backtrace_symbols[i], line, DUMP_LINE_LEN
+            );
+            line[DUMP_LINE_LEN-1] = 0;
             if (backtrace_symbols[i].symbol_name) {
                 strlcat(line," ",DUMP_LINE_LEN);
                 if (backtrace_symbols[i].demangled_name) {
-                   strlcat(line,backtrace_symbols[i].demangled_name,DUMP_LINE_LEN);
+                    strlcat(
+                        line, backtrace_symbols[i].demangled_name,
+                        DUMP_LINE_LEN
+                    );
                 }
             } else {
                 symbol_table_t* symbols = NULL;
@@ -784,24 +842,28 @@ void boinc_catch_signal(int signal) {
                 }
                 if (symbol) {
                     int offset = backtrace[i].absolute_pc - symbol->start;
-                    strlcat(line," (",DUMP_LINE_LEN);
-                    strlcat(line,symbol->name,DUMP_LINE_LEN);
-                    strlcat(line,"+",DUMP_LINE_LEN);
-                    strlcat(line,xtoa(offset),DUMP_LINE_LEN);
-                    strlcat(line,")",DUMP_LINE_LEN);
-                    line[DUMP_LINE_LEN-1]=0;
+                    strlcat(line, " (", DUMP_LINE_LEN);
+                    strlcat(line, symbol->name, DUMP_LINE_LEN);
+                    strlcat(line, "+", DUMP_LINE_LEN);
+                    strlcat(line, xtoa(offset), DUMP_LINE_LEN);
+                    strlcat(line, ")", DUMP_LINE_LEN);
+                    line[DUMP_LINE_LEN-1] = 0;
                 } else {
-                    strlcat(line, " (\?\?\?)",DUMP_LINE_LEN);
+                    strlcat(line, " (\?\?\?)", DUMP_LINE_LEN);
                 }
                 if (symbols) free_symbol_table(symbols);
             }
             if (backtrace[i].absolute_pc) {
-              strlcat(line," [",DUMP_LINE_LEN);
-              strlcat(line,xtoa(*reinterpret_cast<unsigned int *>(backtrace[i].absolute_pc)),DUMP_LINE_LEN);
-              strlcat(line,"]",DUMP_LINE_LEN);
+                strlcat(line, " [", DUMP_LINE_LEN);
+                strlcat(
+                    line,
+                    xtoa(*reinterpret_cast<unsigned int *>(backtrace[i].absolute_pc)),
+                    DUMP_LINE_LEN
+                );
+                strlcat(line, "]", DUMP_LINE_LEN);
             }
-            strlcat(line,"\n",DUMP_LINE_LEN);
-            write(fileno(stderr),line,strlen(line));
+            strlcat(line, "\n", DUMP_LINE_LEN);
+            write(fileno(stderr),line, strlen(line));
             fflush(stderr);
         }
     }

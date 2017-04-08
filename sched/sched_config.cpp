@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-// Parse a server configuration file
+// Parse a project configuration file (config.xml)
 
 #ifdef _USING_FCGI_
 #include "boinc_fcgi.h"
@@ -374,9 +374,9 @@ int SCHED_CONFIG::download_path(const char* filename, char* path) {
 
 static bool is_project_dir(const char* dir) {
     char buf[1024];
-    sprintf(buf, "%s/%s", dir, CONFIG_FILE);
+    snprintf(buf, sizeof(buf), "%s/%s", dir, CONFIG_FILE);
     if (!is_file_follow_symlinks(buf)) return false;
-    sprintf(buf, "%s/cgi-bin", dir);
+    snprintf(buf, sizeof(buf), "%s/cgi-bin", dir);
     if (!is_dir_follow_symlinks(buf)) return false;
     return true;
 }

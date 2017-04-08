@@ -15,6 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifdef _WIN32
+#include "boinc_win.h"
+#else
+#include "config.h"
+#include <math.h>
+#endif
+
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
+#include "str_replace.h"
 #include "parse.h"
 
 #include "client_msgs.h"
@@ -24,7 +36,7 @@
 #include "result.h"
 
 int RESULT::parse_name(XML_PARSER& xp, const char* end_tag) {
-    strcpy(name, "");
+    safe_strcpy(name, "");
     while (!xp.get_tag()) {
         if (xp.match_tag(end_tag)) return 0;
         if (xp.parse_str("name", name, sizeof(name))) continue;
@@ -40,13 +52,13 @@ int RESULT::parse_name(XML_PARSER& xp, const char* end_tag) {
 }
 
 void RESULT::clear() {
-    strcpy(name, "");
-    strcpy(wu_name, "");
+    safe_strcpy(name, "");
+    safe_strcpy(wu_name, "");
     received_time = 0;
     report_deadline = 0;
     version_num = 0;
-    strcpy(plan_class, "");
-    strcpy(platform, "");
+    safe_strcpy(plan_class, "");
+    safe_strcpy(platform, "");
     avp = NULL;
     output_files.clear();
     ready_to_report = false;
@@ -87,9 +99,9 @@ void RESULT::clear() {
     unfinished_time_slice = false;
     seqno = 0;
     edf_scheduled = false;
-    strcpy(resources, "");
+    safe_strcpy(resources, "");
     schedule_backoff = 0;
-    strcpy(schedule_backoff_reason, "");
+    safe_strcpy(schedule_backoff_reason, "");
 }
 
 // parse a <result> element from scheduling server.
@@ -191,6 +203,8 @@ int RESULT::parse_state(XML_PARSER& xp) {
     return ERR_XML_PARSE;
 }
 
+// write result descriptor to state file, GUI RPC reply, or sched request
+//
 int RESULT::write(MIOFILE& out, bool to_server) {
     unsigned int i;
     FILE_INFO* fip;
@@ -322,11 +336,16 @@ int RESULT::write(MIOFILE& out, bool to_server) {
 
 #ifndef SIM
 
+static const char* cpu_string(double ncpus) {
+    return (ncpus==1)?"CPU":"CPUs";
+}
+
 int RESULT::write_gui(MIOFILE& out) {
     out.printf(
         "<result>\n"
         "    <name>%s</name>\n"
         "    <wu_name>%s</wu_name>\n"
+        "    <platform>%s</platform>\n"
         "    <version_num>%d</version_num>\n"
         "    <plan_class>%s</plan_class>\n"
         "    <project_url>%s</project_url>\n"
@@ -339,6 +358,7 @@ int RESULT::write_gui(MIOFILE& out) {
         "    <estimated_cpu_time_remaining>%f</estimated_cpu_time_remaining>\n",
         name,
         wu_name,
+        platform,
         version_num,
         plan_class,
         project->master_url,
@@ -377,39 +397,59 @@ int RESULT::write_gui(MIOFILE& out) {
         //
         if (avp->gpu_usage.rsc_type) {
             if (avp->gpu_usage.usage == 1) {
-                sprintf(resources,
-                    "%.3g CPUs + 1 %s",
+                snprintf(resources, sizeof(resources),
+                    "%.3g %s + 1 %s",
                     avp->avg_ncpus,
+                    cpu_string(avp->avg_ncpus),
                     rsc_name_long(avp->gpu_usage.rsc_type)
                 );
             } else {
-                sprintf(resources,
-                    "%.3g CPUs + %.3g %ss",
+                snprintf(resources, sizeof(resources),
+                    "%.3g %s + %.3g %ss",
                     avp->avg_ncpus,
+                    cpu_string(avp->avg_ncpus),
                     avp->gpu_usage.usage,
                     rsc_name_long(avp->gpu_usage.rsc_type)
                 );
             }
         } else if (avp->missing_coproc) {
-            sprintf(resources, "%.3g CPUs + %s GPU (missing)",
-                avp->avg_ncpus, avp->missing_coproc_name
+            snprintf(resources, sizeof(resources),
+                "%.3g %s + %s GPU (missing)",
+                avp->avg_ncpus,
+                cpu_string(avp->avg_ncpus),
+                avp->missing_coproc_name
             );
         } else if (!project->non_cpu_intensive && (avp->avg_ncpus != 1)) {
-            sprintf(resources, "%.3g CPUs", avp->avg_ncpus);
+            snprintf(resources, sizeof(resources),
+                "%.3g %s",
+                avp->avg_ncpus,
+                cpu_string(avp->avg_ncpus)
+            );
         } else {
-            strcpy(resources, " ");
+            safe_strcpy(resources, " ");
         }
     }
     if (strlen(resources)>1) {
         char buf[256];
-        strcpy(buf, "");
+        safe_strcpy(buf, "");
         if (atp && atp->scheduler_state == CPU_SCHED_SCHEDULED) {
             if (avp->gpu_usage.rsc_type) {
                 COPROC& cp = coprocs.coprocs[avp->gpu_usage.rsc_type];
                 if (cp.count > 1) {
-                    sprintf(buf, " (device %d)",
-                        cp.device_nums[coproc_indices[0]]
-                    );
+                    // if there are multiple GPUs of this type,
+                    // show the user which one(s) are being used
+                    //
+                    int n = (int)ceil(avp->gpu_usage.usage);
+                    safe_strcpy(buf, n>1?" (devices ":" (device ");
+                    for (int i=0; i<n; i++) {
+                        char buf2[256];
+                        sprintf(buf2, "%d", cp.device_nums[coproc_indices[i]]);
+                        if (i > 0) {
+                            safe_strcat(buf, ", ");
+                        }
+                        safe_strcat(buf, buf2);
+                    }
+                    safe_strcat(buf, ")");
                 }
             }
         }
@@ -664,9 +704,9 @@ void add_old_result(RESULT& r) {
         }
     }
     OLD_RESULT ores;
-    strcpy(ores.project_url, r.project->master_url);
-    strcpy(ores.result_name, r.name);
-    strcpy(ores.app_name, r.app->name);
+    safe_strcpy(ores.project_url, r.project->master_url);
+    safe_strcpy(ores.result_name, r.name);
+    safe_strcpy(ores.app_name, r.app->name);
     ores.elapsed_time = r.final_elapsed_time;
     ores.cpu_time = r.final_cpu_time;
     ores.completed_time = r.completed_time;

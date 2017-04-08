@@ -20,6 +20,7 @@
 
 require_once("../inc/profile.inc");
 require_once("../inc/akismet.inc");
+require_once("../inc/recaptchalib.php");
 
 if (DISABLE_PROFILES) error_page("Profiles are disabled");
 
@@ -31,7 +32,7 @@ check_get_args(array());
 // it will be selected by default.
 //
 function show_combo_box($name, $filename, $selection=null) {
-    echo "<select name=\"$name\">\n";
+    echo "<select name=\"$name\" class=\"form-control\">\n";
 
     $file = fopen($filename, "r");
 
@@ -109,7 +110,7 @@ function show_submit() {
     if ($publickey) {
         table_row(boinc_recaptcha_get_html($publickey));
     }
-    table_row("<p><input class=\"btn btn-primary\" type=\"submit\" value=\"".tra("Create/edit profile") ."\" name=\"submit\">");
+    table_row("<p><input class=\"btn btn-default\" type=\"submit\" value=\"".tra("Create/edit profile") ."\" name=\"submit\">");
 }
 
 // Returns an array containing:
@@ -185,7 +186,7 @@ function show_questions($profile) {
 }
 
 function show_textarea($name, $text) {
-    rowify("<textarea name=\"$name\" cols=80 rows=20>" . $text . "</textarea>");
+    rowify("<textarea name=\"$name\" class=\"form-control\" rows=\"10\">" . $text . "</textarea>");
 }
 
 // $profile is null if user doesn't already have a profile.
@@ -200,9 +201,7 @@ function process_create_profile($user, $profile) {
 
     $privatekey = parse_config($config, "<recaptcha_private_key>");
     if ($privatekey) {
-        $recaptcha = new ReCaptcha($privatekey);
-        $resp = $recaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
-        if (!$resp->success) {
+        if (!boinc_recaptcha_isValidated($privatekey)) {
             $profile->response1 = $response1;
             $profile->response2 = $response2;
             show_profile_form($profile,
@@ -314,9 +313,9 @@ function process_create_profile($user, $profile) {
 
 function show_profile_form($profile, $warning=null) {
     if ($profile) {
-        page_head(tra("Edit your profile"), null, null, null, recaptcha_get_head_extra());
+        page_head(tra("Edit your profile"), null, null, null, boinc_recaptcha_get_head_extra());
     } else {
-        page_head(tra("Create a profile"), null, null, null, recaptcha_get_head_extra());
+        page_head(tra("Create a profile"), null, null, null, boinc_recaptcha_get_head_extra());
     }
 
     if ($warning) {
@@ -327,7 +326,7 @@ function show_profile_form($profile, $warning=null) {
     echo "
         <form action=", $_SERVER['PHP_SELF'], " method=\"POST\", ENCTYPE=\"multipart/form-data\">
     ";
-    start_table_noborder();
+    start_table();
     show_description();
     show_questions($profile);
     show_picture_option($profile);

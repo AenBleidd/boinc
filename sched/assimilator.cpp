@@ -17,7 +17,7 @@
 
 // Main program for an assimilator.
 // Link this with an application-specific function assimilate_handler()
-// See http://boinc.berkeley.edu/trac/wiki/AssimilateIntro
+// See https://boinc.berkeley.edu/trac/wiki/AssimilateIntro
 
 #include "config.h"
 #include <cstring>
@@ -54,7 +54,7 @@ void usage(char* name) {
     fprintf(stderr,
         "This program is an 'assimilator'; it handles completed jobs.\n"
         "Normally it is run as a daemon from config.xml.\n"
-        "See: http://boinc.berkeley.edu/trac/wiki/BackendPrograms\n\n"
+        "See: https://boinc.berkeley.edu/trac/wiki/BackendPrograms\n\n"
     );
 
     fprintf(stderr, "usage: %s [options]\n"
@@ -318,6 +318,7 @@ int main(int argc, char** argv) {
     log_messages.printf(MSG_NORMAL, "Starting assimilator handler\n");
 
     install_stop_signal_handler();
+    // coverity[loop_top] - infinite loop is intended
     do {
         if (!do_pass(app)) {
             if (!one_pass) {

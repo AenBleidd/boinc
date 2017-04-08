@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 # This file is part of BOINC.
 # http://boinc.berkeley.edu
-# Copyright (C) 2014 University of California
+# Copyright (C) 2015 University of California
 #
 # BOINC is free software; you can redistribute it and/or modify it
 # under the terms of the GNU Lesser General Public License
@@ -19,8 +19,8 @@
 #
 #
 # Master script to build Universal Binary libraries needed by BOINC:
-# curl-7.26.0 with c-ares-1.9.1, openssl-1.0.1e, wxWidgets-3.0.0,
-# sqlite3.7.14.1, FreeType-2.4.10 and FTGL-2.1.3
+# curl-7.47.1 with c-ares-1.10.0, openssl-1.1.0, wxWidgets-3.0.0,
+# sqlite-3.11.0, FreeType-2.4.10 and FTGL-2.1.3
 #
 # by Charlie Fenton 7/21/06
 # Updated 10/18/11 for OS 10.7 lion and XCode 4.2
@@ -34,11 +34,16 @@
 # Updated 2/11/14 for c-ares 1.10.0, curl 7.35.0, openssl 1.0.1f, sqlite 3.8.3
 # Updated 9/2/14 for openssl 1.0.1h
 # Updated 4/8/15 for curl 7.39.0, openssl 1.0.1j
+# Updated 11/30/15 to allow putting third party packages in ../mac3rdParty/
+# Updated 11/30/15 to return error code indicating which builds failed
+# Updated 1/6/16 for curl 7.46.0, openssl 1.0.2e, sqlite 3.9.2, FreeType-2.6.2
+# Updated 3/2/16 for curl 7.47.1, openssl 1.0.2g, sqlite 3.11.0
+# Updated 9/10/16 for c-ares 1.11.0, curl 7.50.2, openssl 1.1.0
 #
-# Download these seven packages and place them in a common parent 
-# directory with the BOINC source tree.
+# Download these seven packages and place them in a common parent directory
+# with the BOINC source tree.
 #
-## In Terminal, cd to the mac_build directory of the boinc tree; for 
+## In Terminal, cd to the mac_build directory of the boinc tree; for
 ## example:
 ##     cd [path]/boinc/mac_build/
 ## then run this script:
@@ -62,48 +67,17 @@ wxWidgetsOK="NO"
 sqlite3OK="NO"
 freetypeOK="NO"
 ftglOK="NO"
+finalResult=0
 
 SCRIPT_DIR=`pwd`
 
 echo ""
 echo "----------------------------------"
-echo "------- BUILD C-ARES-1.10.0 ------"
+echo "----- BUILD OPENSSL-1.1.0 -------"
 echo "----------------------------------"
 echo ""
 
-cd ../../c-ares-1.10.0/
-if [  $? -eq 0 ]; then
-    source "${SCRIPT_DIR}/buildc-ares.sh" ${cleanit}
-    if [  $? -eq 0 ]; then
-        caresOK="YES"
-    fi
-fi
-
-echo ""
-echo "----------------------------------"
-echo "------- BUILD CURL-7.39.0 --------"
-echo "----------------------------------"
-echo ""
-
-cd "${SCRIPT_DIR}"
-
-cd ../../curl-7.39.0/
-if [  $? -eq 0 ]; then
-    source "${SCRIPT_DIR}/buildcurl.sh" ${cleanit}
-    if [  $? -eq 0 ]; then
-        curlOK="YES"
-    fi
-fi
-
-echo ""
-echo "----------------------------------"
-echo "----- BUILD OPENSSL-1.0.1j -------"
-echo "----------------------------------"
-echo ""
-
-cd "${SCRIPT_DIR}"
-
-cd ../../openssl-1.0.1j/
+cd ../../openssl-1.1.0/
 if [  $? -eq 0 ]; then
     source "${SCRIPT_DIR}/buildopenssl.sh" ${cleanit}
     if [  $? -eq 0 ]; then
@@ -111,13 +85,45 @@ if [  $? -eq 0 ]; then
     fi
 fi
 
+cd "${SCRIPT_DIR}"
+
+echo ""
+echo "----------------------------------"
+echo "------- BUILD C-ARES-1.11.0 ------"
+echo "----------------------------------"
+echo ""
+
+cd ../../c-ares-1.11.0/
+if [  $? -eq 0 ]; then
+    source "${SCRIPT_DIR}/buildc-ares.sh" ${cleanit}
+    if [  $? -eq 0 ]; then
+        caresOK="YES"
+    fi
+fi
+
+cd "${SCRIPT_DIR}"
+
+echo ""
+echo "----------------------------------"
+echo "------- BUILD CURL-7.50.2 --------"
+echo "----------------------------------"
+echo ""
+
+cd ../../curl-7.50.2/
+if [  $? -eq 0 ]; then
+    source "${SCRIPT_DIR}/buildcurl.sh" ${cleanit}
+    if [  $? -eq 0 ]; then
+        curlOK="YES"
+    fi
+fi
+
+cd "${SCRIPT_DIR}"
+
 echo ""
 echo "----------------------------------"
 echo "----- BUILD wxWidgets-3.0.0 ------"
 echo "----------------------------------"
 echo ""
-
-cd "${SCRIPT_DIR}"
 
 cd ../../wxWidgets-3.0.0/
 if [  $? -eq 0 ]; then
@@ -127,15 +133,15 @@ if [  $? -eq 0 ]; then
     fi
 fi
 
-echo ""
-echo "----------------------------------"
-echo "------- BUILD sqlite-3.8.3 -------"
-echo "----------------------------------"
-echo ""
-
 cd "${SCRIPT_DIR}"
 
-cd ../../sqlite-autoconf-3080300/
+echo ""
+echo "----------------------------------"
+echo "------- BUILD sqlite-3.11.0 -------"
+echo "----------------------------------"
+echo ""
+
+cd ../../sqlite-autoconf-3110000/
 if [  $? -eq 0 ]; then
     source "${SCRIPT_DIR}/buildsqlite3.sh" ${cleanit}
     if [  $? -eq 0 ]; then
@@ -143,15 +149,15 @@ if [  $? -eq 0 ]; then
     fi
 fi
 
-echo ""
-echo "----------------------------------"
-echo "----- BUILD FreeType-2.4.10 ------"
-echo "----------------------------------"
-echo ""
-
 cd "${SCRIPT_DIR}"
 
-cd ../../freetype-2.4.10/
+echo ""
+echo "----------------------------------"
+echo "----- BUILD FreeType-2.6.2 ------"
+echo "----------------------------------"
+echo ""
+
+cd ../../freetype-2.6.2/
 if [  $? -eq 0 ]; then
     source "${SCRIPT_DIR}/buildfreetype.sh" ${cleanit}
     if [  $? -eq 0 ]; then
@@ -159,13 +165,13 @@ if [  $? -eq 0 ]; then
     fi
 fi
 
+cd "${SCRIPT_DIR}"
+
 echo ""
 echo "----------------------------------"
 echo "------ BUILD FTGL-2.1.3~rc5 ------"
 echo "----------------------------------"
 echo ""
-
-cd "${SCRIPT_DIR}"
 
 cd ../../ftgl-2.1.3~rc5/
 if [  $? -eq 0 ]; then
@@ -175,14 +181,18 @@ if [  $? -eq 0 ]; then
     fi
 fi
 
+cd "${SCRIPT_DIR}"
+
 if [ "${caresOK}" = "NO" ]; then
     echo ""
     echo "-----------------------------------"
     echo "------------ WARNING --------------"
     echo "------------         --------------"
-    echo "-- COULD NOT BUILD C-ARES-1.10.0 --"
+    echo "-- COULD NOT BUILD C-ARES-1.11.0 --"
     echo "-----------------------------------"
     echo ""
+
+    finalResult=$[ finalResult | 1 ]
 fi
 
 if [ "${curlOK}" = "NO" ]; then
@@ -190,9 +200,11 @@ if [ "${curlOK}" = "NO" ]; then
     echo "-----------------------------------"
     echo "------------ WARNING --------------"
     echo "------------         --------------"
-    echo "--- COULD NOT BUILD CURL-7.39.0 ---"
+    echo "--- COULD NOT BUILD CURL-7.50.2 ---"
     echo "-----------------------------------"
     echo ""
+
+    finalResult=$[ finalResult | 2 ]
 fi
 
 if [ "${opensslOK}" = "NO" ]; then
@@ -200,9 +212,11 @@ if [ "${opensslOK}" = "NO" ]; then
     echo "----------------------------------"
     echo "------------ WARNING -------------"
     echo "------------         -------------"
-    echo "- COULD NOT BUILD OPENSSL-1.0.1j -"
+    echo "- COULD NOT BUILD OPENSSL-1.1.0 -"
     echo "----------------------------------"
     echo ""
+    
+    finalResult=$[ finalResult | 4 ]
 fi
 
 if [ "${wxWidgetsOK}" = "NO" ]; then
@@ -213,6 +227,8 @@ if [ "${wxWidgetsOK}" = "NO" ]; then
     echo "- COULD NOT BUILD wxWidgets-3.0.0 -"
     echo "-----------------------------------"
     echo ""
+    
+    finalResult=$[ finalResult | 8 ]
 fi
 
 if [ "${sqlite3OK}" = "NO" ]; then
@@ -220,9 +236,11 @@ if [ "${sqlite3OK}" = "NO" ]; then
     echo "----------------------------------"
     echo "------------ WARNING -------------"
     echo "------------         -------------"
-    echo "-- COULD NOT BUILD sqlite-3.8.3 --"
+    echo "-- COULD NOT BUILD sqlite-3.11.0 -"
     echo "----------------------------------"
     echo ""
+    
+    finalResult=$[ finalResult | 16 ]
 fi
 
 if [ "${freetypeOK}" = "NO" ]; then
@@ -230,9 +248,11 @@ if [ "${freetypeOK}" = "NO" ]; then
     echo "-----------------------------------"
     echo "------------ WARNING --------------"
     echo "------------         --------------"
-    echo "- COULD NOT BUILD FreeType-2.4.10 -"
+    echo "- COULD NOT BUILD FreeType-2.6.2 -"
     echo "-----------------------------------"
     echo ""
+    
+    finalResult=$[ finalResult | 32 ]
 fi
 
 if [ "${ftglOK}" = "NO" ]; then
@@ -243,9 +263,10 @@ if [ "${ftglOK}" = "NO" ]; then
     echo "- COULD NOT BUILD FTGL-2.1.3~rc5 --"
     echo "-----------------------------------"
     echo ""
+    
+    finalResult=$[ finalResult | 64 ]
 fi
 
 echo ""
-cd "${SCRIPT_DIR}"
 
-return 0
+return $finalResult

@@ -41,8 +41,9 @@ SELECT
        case
            when INSTR(host.os_name, 'Linux') then 
                case
-                   when INSTR(LEFT(host.os_version, 6), '-') then LEFT(host.os_version, (INSTR(LEFT(host.os_version, 6), '-') - 1))
-                   else LEFT(host.os_version, 6)
+                   when RIGHT(host.os_version, 1) = ']' then REVERSE(SUBSTR(REVERSE(host.os_version), 2, INSTR(REVERSE(host.os_version), '[') - 2))
+                   when INSTR(LEFT(host.os_version, 10), '-') then LEFT(host.os_version, (INSTR(LEFT(host.os_version, 10), '-') - 1))
+                   else LEFT(host.os_version, 8)
                end
            else host.os_version
        end AS OS_Version,
@@ -72,7 +73,7 @@ table_header(
 while ($res = _mysql_fetch_object($result)) {
     table_row(
         app_version_desc($res->app_version_id),
-        "<a href=".URL_BASE."show_host_detail.php?hostid=$res->Host_ID>$res->Host_ID</a>",
+        "<a href=".url_base()."show_host_detail.php?hostid=$res->Host_ID>$res->Host_ID</a>",
         $res->OS_Version, $res->Results_Today,
         "<a href=db_action.php?table=result&detail=low&hostid=$res->Host_ID&app_version_id=$res->app_version_id&server_state=5&outcome=3>$res->error_count</a>"
     );

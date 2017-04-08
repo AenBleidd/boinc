@@ -143,7 +143,7 @@ int ndays_to_string (double x, int smallest_timescale, char *buf) {
     } else if (years > 1 && smallest_timescale < 4) {
         sprintf( year_buf, "%d yr ", (int)years );
     } else {
-        strcpy( year_buf, "" );
+        safe_strcpy( year_buf, "" );
     }
 
     if (smallest_timescale==3) {
@@ -151,7 +151,7 @@ int ndays_to_string (double x, int smallest_timescale, char *buf) {
     } else if (days > 1 && smallest_timescale < 3) {
         sprintf( day_buf, "%d day%s ", (int)days, (days>1?"s":"") );
     } else {
-        strcpy( day_buf, "" );
+        safe_strcpy( day_buf, "" );
     }
 
     if (smallest_timescale==2) {
@@ -159,7 +159,7 @@ int ndays_to_string (double x, int smallest_timescale, char *buf) {
     } else if (hours > 1 && smallest_timescale < 2) {
         sprintf( hour_buf, "%d hr ", (int)hours );
     } else {
-        strcpy( hour_buf, "" );
+        safe_strcpy( hour_buf, "" );
     }
 
     if (smallest_timescale==1) {
@@ -167,7 +167,7 @@ int ndays_to_string (double x, int smallest_timescale, char *buf) {
     } else if (minutes > 1 && smallest_timescale < 1) {
         sprintf( min_buf, "%d min ", (int)minutes );
     } else {
-        strcpy( min_buf, "" );
+        safe_strcpy( min_buf, "" );
     }
 
     if (smallest_timescale==0) {
@@ -175,7 +175,7 @@ int ndays_to_string (double x, int smallest_timescale, char *buf) {
     } else if (seconds > 1 && smallest_timescale < 0) {
         sprintf( sec_buf, "%d sec ", (int)seconds );
     } else {
-        strcpy( sec_buf, "" );
+        safe_strcpy( sec_buf, "" );
     }
     // the "-0.05" below is to prevent it from printing 60.0 sec
     // when the real value is e.g. 59.91
@@ -297,24 +297,6 @@ int parse_command_line(char* p, char** argv) {
 
 // remove whitespace from start and end of a string
 //
-void strip_whitespace(char *str) {
-    char *s = str;
-    while (*s) {
-        if (!isascii(*s)) break;
-        if (!isspace(*s)) break;
-        s++;
-    }
-    if (s != str) strcpy_overlap(str, s);
-
-    size_t n = strlen(str);
-    while (n>0) {
-        n--;
-        if (!isascii(str[n])) break;
-        if (!isspace(str[n])) break;
-        str[n] = 0;
-    }
-}
-
 void strip_whitespace(string& str) {
     while (1) {
         if (str.length() == 0) break;
@@ -332,10 +314,100 @@ void strip_whitespace(string& str) {
     str.erase(n, str.length()-n);
 }
 
+void strip_whitespace(char *str) {
+    string s = str;
+    strip_whitespace(s);
+    strcpy(str, s.c_str());
+}
+
+// remove whitespace and quotes from start and end of a string
+//
+void strip_quotes(string& str) {
+    while (1) {
+        if (str.length() == 0) break;
+        if (str[0] == '"' || str[0] == '\'') {
+            str.erase(0, 1);
+            continue;
+        }
+        if (!isascii(str[0])) break;
+        if (!isspace(str[0])) break;
+        str.erase(0, 1);
+    }
+
+    int n = (int) str.length();
+    while (n>0) {
+        if (str[n-1] == '"' || str[n-1] == '\'') {
+            if (str[n-2] != '\\') {
+                n--;
+                continue;
+            }
+        }
+        if (!isascii(str[n-1])) break;
+        if (!isspace(str[n-1])) break;
+        n--;
+    }
+    str.erase(n, str.length()-n);
+}
+
+void strip_quotes(char *str) {
+    string s = str;
+    strip_quotes(s);
+    strcpy(str, s.c_str());
+}
+
+// This only unescapes some special shell characters used in /etc/os-release
+// see https://www.freedesktop.org/software/systemd/man/os-release.html
+void unescape_os_release(char* buf) {
+    char* out = buf;
+    char* in = buf;
+    while (*in) {
+        if (*in != '\\') {
+            *out++ = *in++;
+        } else if (*(in+1) == '$') {
+            *out++ = '$';
+            in += 2;
+        } else if (*(in+1) == '\'') {
+            *out++ = '\'';
+            in += 2;
+        } else if (*(in+1) == '"') {
+            *out++ = '"';
+            in += 2;
+        } else if (*(in+1) == '\\') {
+            *out++ = '\\';
+            in += 2;
+        } else if (*(in+1) == '`') {
+            *out++ = '`';
+            in += 2;
+        } else {
+            *out++ = *in++;
+        }
+    }
+    *out = 0;
+}
+
+// collapse multiple whitespace into one (will not strip_whitespace)
+//
+void collapse_whitespace(string& str) {
+    int n = (int) str.length();
+    if (n<2) return;
+    for (int i=1; i<n; i++) {
+        if (isspace(str[i-1]) && isspace(str[i])) {
+            str.erase(i, 1);
+            n--; i--;
+        }
+    }
+}
+
+void collapse_whitespace(char *str) {
+    string s = str;
+    collapse_whitespace(s);
+    strcpy(str, s.c_str());
+}
+
 char* time_to_string(double t) {
     static char buf[100];
     if (!t) {
-        strcpy(buf, "---");
+        safe_strcpy(buf, "---");
     } else {
         time_t x = (time_t)t;
         struct tm* tm = localtime(&x);
@@ -359,7 +431,7 @@ char* precision_time_to_string(double t) {
 
     strftime(buf, sizeof(buf)-1, "%Y-%m-%d %H:%M:%S", tm);
     sprintf(finer, ".%04d", hundreds_of_microseconds);
-    strcat(buf, finer);
+    safe_strcat(buf, finer);
     return buf;
 }
 
@@ -493,6 +565,7 @@ const char* boincerror(int which_error) {
         case ERR_RESULT_START: return "result start failed";
         case ERR_RESULT_DOWNLOAD: return "result download failed";
         case ERR_RESULT_UPLOAD: return "result upload failed";
+        case ERR_BAD_USER_NAME: return "bad username";
         case ERR_INVALID_URL: return "invalid URL";
         case ERR_MAJOR_VERSION: return "bad major version";
         case ERR_NO_OPTION: return "no option";
@@ -511,15 +584,20 @@ const char* boincerror(int which_error) {
         case ERR_SHMEM_NAME: return "can't get shared mem segment name";
         case ERR_NO_NETWORK_CONNECTION: return "no available network connection";
         case ERR_IN_PROGRESS: return "operation in progress";
+        case ERR_NONUNIQUE_EMAIL: return "email already registered";
         case ERR_ACCT_CREATION_DISABLED: return "account creation disabled";
         case ERR_ATTACH_FAIL_INIT: return "Couldn't start master page download";
         case ERR_ATTACH_FAIL_DOWNLOAD: return "Couldn't download master page";
         case ERR_ATTACH_FAIL_PARSE: return "Couldn't parse master page";
         case ERR_ATTACH_FAIL_BAD_KEY: return "Invalid account key";
         case ERR_ATTACH_FAIL_FILE_WRITE: return "Couldn't write account file";
+        case ERR_ATTACH_FAIL_SERVER_ERROR: return "Couldn't attach because of server error";
+        case ERR_SIGNING_KEY: return "signing key failure";
         case ERR_FFLUSH: return "fflush() failed";
         case ERR_FSYNC: return "fsync() failed";
         case ERR_TRUNCATE: return "truncate() failed";
+        case ERR_WRONG_URL: return "wrong URL";
+        case ERR_DUP_NAME: return "coprocs with duplicate names detected";
         case ERR_GETGRNAM: return "getgrnam() failed";
         case ERR_CHOWN: return "chown() failed";
         case ERR_HTTP_PERMANENT: return "permanent HTTP error";
@@ -532,8 +610,12 @@ const char* boincerror(int which_error) {
         case ERR_CRYPTO: return "encryption error";
         case ERR_ABORTED_ON_EXIT: return "job was aborted on client exit";
         case ERR_PROC_PARSE: return "a /proc entry was not parsed correctly";
+        case ERR_STATFS: return "statfs() failed";
         case ERR_PIPE: return "pipe() failed";
         case ERR_NEED_HTTPS: return "HTTPS needed";
+        case ERR_CHMOD : return "chmod() failed";
+        case ERR_STAT : return "stat() failed";
+        case ERR_FCLOSE : return "fclose() failed";
         case HTTP_STATUS_NOT_FOUND: return "HTTP file not found";
         case HTTP_STATUS_PROXY_AUTH_REQ: return "HTTP proxy authentication failure";
         case HTTP_STATUS_RANGE_REQUEST_ERROR: return "HTTP range request error";
@@ -686,7 +768,7 @@ int string_substitute(
             break;
         }
         if (!strncmp(&haystack[i], needle, needle_len)){
-            strcpy(out+j, target);
+            strlcpy(out+j, target, out_len-((out+j)-out));
             i += needle_len;
             j += target_len;
         } else {
@@ -755,4 +837,60 @@ vector<string> split(string s, char delim) {
         result.push_back(item);
     }
     return result;
+}
+
+// check whether filename is legit
+// - can't start with /
+// - can't have control chars
+// - can't have ..
+//
+bool is_valid_filename(const char* name) {
+    size_t n = strlen(name);
+    for (size_t i=0; i<n; i++) {
+        if (iscntrl(name[i])) {
+            return false;
+        }
+    }
+    if (strstr(name, "..")) {
+        return false;
+    }
+    if (name[0] == '/') {
+        return false;
+    }
+    return true;
+}
+
+// get the name part of a filepath
+// returns:
+//   0 on success
+//  -1 when fpath is empty
+//  -2 when fpath is a directory
+int path_to_filename(string fpath, string& fname) {
+    std::string::size_type n;
+    if (fpath.size() == 0) {
+        return -1;
+    }
+    n = fpath.rfind("/");
+    if (n == std::string::npos) {
+        fname = fpath;
+    } else if (n == fpath.size()-1) {
+        return -2;
+    } else {
+        fname = fpath.substr(n+1);
+    }
+    return 0;
+}
+
+// get the name part of a filepath
+//
+// wrapper for path_to_filename(string, string&)
+int path_to_filename(string fpath, char* &fname) {
+    string name;
+    int retval = path_to_filename(fpath, name);
+    if (retval) {
+        return retval;
+    }
+    fname = new char[name.size()+1];
+    strcpy(fname, name.c_str());
+    return 0;
 }

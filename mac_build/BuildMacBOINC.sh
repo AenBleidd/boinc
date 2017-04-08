@@ -2,7 +2,7 @@
 
 # This file is part of BOINC.
 # http://boinc.berkeley.edu
-# Copyright (C) 2014 University of California
+# Copyright (C) 2015 University of California
 #
 # BOINC is free software; you can redistribute it and/or modify it
 # under the terms of the GNU Lesser General Public License
@@ -26,6 +26,9 @@
 # Updated for OS 10.7 Lion and XCode 4.2 on 10/19/11
 # Updated 7/9/12 for Xcode 4.3 and later which are not at a fixed address
 # Updated 2/7/14 to also build libboinc_zip.a
+# Updated 11/28/15 to build ScreenSaver with ARC under Xcode 6 or later
+# Updated 2/15/16 to allow optional use of libc++ and C++11 dialect
+# Updated 3/11/16 to remove obsolete targets MakeAppIcon_h & WaitPermissions
 #
 ## This script requires OS 10.8 or later
 #
@@ -39,10 +42,10 @@
 ##     cd [path]/boinc/mac_build
 ##
 ## then invoke this script as follows:
-##      source BuildMacBOINC.sh [-dev] [-noclean] [-all] [-lib] [-client] [-help]
+##      source BuildMacBOINC.sh [-dev] [-noclean] [-libc++] [-c++11] [-all] [-lib] [-client] [-help]
 ## or
 ##      chmod +x BuildMacBOINC.sh
-##      ./BuildMacBOINC.sh [-dev] [-noclean] [-all] [-lib] [-client] [-help]
+##      ./BuildMacBOINC.sh [-dev] [-noclean] [-libc++] [-c++11] [-all] [-lib] [-client] [-help]
 ##
 ## optional arguments
 ## -dev         build the development (debug) version. 
@@ -51,13 +54,16 @@
 ## -noclean     don't do a "clean" of each target before building.
 ##              default is to clean all first.
 ##
+## -libc++      build using libc++ instead of libstdc++ (requires OS 10.7)
+##
+## -c++11       build using c++11 language dialect instead of default (requires libc++)
+##
 ##  The following arguments determine which targets to build
 ##
 ## -all         build all targets (i.e. target "Build_All" -- this is the default)
 ##
 ## -lib         build the six libraries: libboinc_api.a, libboinc_graphics2.a,
-##              libboinc.a, libboinc_opencl.a, libboinc_zip.a, jpeglib.a and the
-##              utility application MakeAppIcon_h.
+##              libboinc.a, libboinc_opencl.a, libboinc_zip.a, jpeglib.a
 ##
 ## -client      build two targets: boinc client and command-line utility boinc_cmd
 ##              (also builds libboinc.a if needed, since boinc_cmd requires it.)
@@ -67,15 +73,27 @@
 
 targets=""
 doclean="clean"
+cplusplus11dialect=""
+uselibcplusplus=""
 buildall=0
 buildlibs=0
 buildclient=0
 style="Deployment"
+isXcode6orLater=0
+
+xcodeversion=`xcodebuild -version`
+xcodeMajorVersion=`echo $xcodeversion | cut -d ' ' -f 2 | cut -d '.' -f 1`
+
+if [ "$xcodeMajorVersion" -gt "5" ]; then
+isXcode6orLater=1
+fi
 
 while [ $# -gt 0 ]; do
   case "$1" in 
     -noclean ) doclean="" ; shift 1 ;;
     -dev ) style="Development" ; shift 1 ;;
+    -libc++ ) uselibcplusplus="CLANG_CXX_LIBRARY=libc++ MACOSX_DEPLOYMENT_TARGET=10.7" ; shift 1 ;;
+    -c++11 ) cplusplus11dialect="CLANG_CXX_LANGUAGE_STANDARD=c++11" ; shift 1 ;;
     -all ) buildall=1 ; shift 1 ;;
     -lib ) buildlibs=1 ; shift 1 ;;
     -client ) buildclient=1 ; shift 1 ;;
@@ -88,7 +106,7 @@ if [ "${doclean}" = "clean" ]; then
 fi
 
 if [ "${buildlibs}" = "1" ]; then
-    targets="$targets -target libboinc -target gfx2libboinc -target api_libboinc -target boinc_opencl -target jpeg -target MakeAppIcon_h"
+    targets="$targets -target libboinc -target gfx2libboinc -target api_libboinc -target boinc_opencl -target jpeg"
 fi
 
 if [ "${buildclient}" = "1" ]; then
@@ -97,7 +115,13 @@ fi
 
 ## "-all" overrides "-lib" and "-client" since it includes those targets
 if [ "${buildall}" = "1" ] || [ "${targets}" = "" ]; then
-    targets="-target Build_All"
+    if [ $isXcode6orLater = 0 ]; then
+        ## We can build the screensaver using our standard settings (with Garbage Collection)
+        targets="-target Build_All"
+    else
+        ## We must modify the build settings for the screensaver only, to build it with ARC
+        targets="-target SetVersion -target libboinc -target gfx2libboinc -target api_libboinc -target boinc_opencl -target jpeg -target BOINC_Client -target switcher -target setprojectgrp -target cmd_boinc -target mgr_boinc -target Install_BOINC -target PostInstall -target Uninstaller -target SetUpSecurity -target AddRemoveUser -target ss_app -target gfx_switcher"
+    fi
 fi
 
 version=`uname -r`;
@@ -133,7 +157,23 @@ echo ""
 
 SDKPATH=`xcodebuild -version -sdk macosx Path`
 
-xcodebuild -project boinc.xcodeproj ${targets} -configuration ${style} -sdk "${SDKPATH}" ${doclean} build
+if [ $isXcode6orLater = 0 ]; then
+    ## echo "Xcode version < 6"
+    ## Build the screensaver using our standard settings (with Garbage Collection)
+    xcodebuild -project boinc.xcodeproj ${targets} -configuration ${style} -sdk "${SDKPATH}" ${doclean} build ${uselibcplusplus} ${cplusplus11dialect}
+else
+    ## echo "Xcode version > 5"
+    ## We must modify the build settings for the screensaver only, to build it with ARC
+    xcodebuild -project boinc.xcodeproj ${targets} -configuration ${style} -sdk "${SDKPATH}" ${doclean}  build ${uselibcplusplus} ${cplusplus11dialect}
+
+    result=$?
+
+    if [ "${buildall}" = "1" ] || [ "${targets}" = "" ]; then
+        if [ $result -eq 0 ]; then
+            xcodebuild -project boinc.xcodeproj -target ScreenSaver -configuration ${style} -sdk "${SDKPATH}" ${doclean} build ARCHS=x86_64 GCC_ENABLE_OBJC_GC=unsupported ${uselibcplusplus} ${cplusplus11dialect}
+        fi
+    fi
+fi
 
 result=$?
 
@@ -141,7 +181,7 @@ if [ $result -eq 0 ]; then
     # build ibboinc_zip.a for -all or -lib or default, where
     # default is none of { -all, -lib, -client }
     if [ "${buildall}" = "1" ] || [ "${buildlibs}" = "1" ] || [ "${buildclient}" = "0" ]; then
-        xcodebuild -project ../zip/boinc_zip.xcodeproj -target boinc_zip -configuration ${style} -sdk "${SDKPATH}" ${doclean} build
+        xcodebuild -project ../zip/boinc_zip.xcodeproj -target boinc_zip -configuration ${style} -sdk "${SDKPATH}" ${doclean} build  ${uselibcplusplus} ${cplusplus11dialect}
 
         result=$?
     fi

@@ -60,7 +60,7 @@ using std::perror;
 #endif
 
 int COPROC_REQ::parse(XML_PARSER& xp) {
-    strcpy(type, "");
+    safe_strcpy(type, "");
     count = 0;
     while (!xp.get_tag()) {
         if (xp.match_tag("/coproc")) {
@@ -136,7 +136,7 @@ void COPROC::write_request(MIOFILE& f) {
 
 int COPROC::parse(XML_PARSER& xp) {
     char buf[256];
-    strcpy(type, "");
+    safe_strcpy(type, "");
     clear();
     for (int i=0; i<MAX_COPROC_INSTANCES; i++) {
         device_nums[i] = i;
@@ -147,6 +147,10 @@ int COPROC::parse(XML_PARSER& xp) {
             if (!strlen(type)) return ERR_XML_PARSE;
             clear_usage();
             return 0;
+        }
+        if (xp.match_tag("coproc_opencl")) {
+            opencl_prop.parse(xp, "/coproc_opencl");
+            continue;
         }
         if (xp.parse_str("type", type, sizeof(type))) continue;
         if (xp.parse_int("count", count)) continue;
@@ -167,10 +171,13 @@ int COPROC::parse(XML_PARSER& xp) {
     return ERR_XML_PARSE;
 }
 
+// return a string, to be stored in host.serialnum,
+// describing the host's coprocessors
+//
 void COPROCS::summary_string(char* buf, int len) {
     char buf2[1024];
 
-    strcpy(buf, "");
+    strlcpy(buf, "", len);
     if (nvidia.count) {
         int mem = (int)(nvidia.prop.totalGlobalMem/MEGA);
         snprintf(buf2, sizeof(buf2),
@@ -200,6 +207,25 @@ void COPROCS::summary_string(char* buf, int len) {
         );
         strlcat(buf, buf2, len);
     }
+
+    // add OpenCL devices other than nvidia/amd/intel
+    //
+    for (int i=1; i<n_rsc; i++) {
+        COPROC& cp = coprocs[i];
+        int type = coproc_type_name_to_num(cp.type);
+        if (type == PROC_TYPE_NVIDIA_GPU) continue;
+        if (type == PROC_TYPE_AMD_GPU) continue;
+        if (type == PROC_TYPE_INTEL_GPU) continue;
+        if (!strlen(cp.opencl_prop.name)) continue;
+        snprintf(buf2, sizeof(buf2),
+            "[opencl_gpu|%s|%d|%dMB|%d]",
+            cp.type,
+            cp.count,
+            (int)(cp.opencl_prop.global_mem_size/MEGA),
+            cp.opencl_prop.opencl_device_version_int
+        );
+        strlcat(buf, buf2, len);
+    }
 }
 
 int COPROCS::parse(XML_PARSER& xp) {
@@ -207,7 +233,7 @@ int COPROCS::parse(XML_PARSER& xp) {
 
     clear();
     n_rsc = 1;
-    strcpy(coprocs[0].type, "CPU");
+    safe_strcpy(coprocs[0].type, "CPU");
     while (!xp.get_tag()) {
         if (xp.match_tag("/coprocs")) {
             return 0;
@@ -252,8 +278,11 @@ int COPROCS::parse(XML_PARSER& xp) {
     return ERR_XML_PARSE;
 }
 
+#ifdef _USING_FCGI_
+void COPROCS::write_xml(MIOFILE&, bool) {
+}
+#else
 void COPROCS::write_xml(MIOFILE& mf, bool scheduler_rpc) {
-#ifndef _USING_FCGI_
     mf.printf("    <coprocs>\n");
     
     for (int i=1; i<n_rsc; i++) {
@@ -273,8 +302,8 @@ void COPROCS::write_xml(MIOFILE& mf, bool scheduler_rpc) {
     }
     
     mf.printf("    </coprocs>\n");
-#endif
 }
+#endif
 
 void COPROC_NVIDIA::description(char* buf, int buflen) {
     char vers[256], cuda_vers[256];
@@ -283,21 +312,21 @@ void COPROC_NVIDIA::description(char* buf, int buflen) {
      	int maj = display_driver_version >> 16;
     	int min = (display_driver_version >> 8) & 0xff;
     	int rev = display_driver_version & 0xff;
-        sprintf(vers, "%d.%d.%d", maj, min, rev);
+        snprintf(vers, sizeof(vers), "%d.%d.%d", maj, min, rev);
 #else
         int maj = display_driver_version/100;
         int min = display_driver_version%100;
-        sprintf(vers, "%d.%02d", maj, min);
+        snprintf(vers, sizeof(vers), "%d.%02d", maj, min);
 #endif
     } else {
-        strcpy(vers, "unknown");
+        safe_strcpy(vers, "unknown");
     }
     if (cuda_version) {
         int maj = cuda_version/1000;
         int min = (cuda_version%1000)/10;
-        sprintf(cuda_vers, "%d.%d", maj, min);
+        snprintf(cuda_vers, sizeof(cuda_vers), "%d.%d", maj, min);
     } else {
-        strcpy(cuda_vers, "unknown");
+        safe_strcpy(cuda_vers, "unknown");
     }
     snprintf(buf, buflen,
         "%s (driver version %s, CUDA version %s, compute capability %d.%d, %.0fMB, %.0fMB available, %.0f GFLOPS peak)",
@@ -383,8 +412,8 @@ void COPROC_NVIDIA::clear() {
     estimated_delay = -1;   // mark as absent
     cuda_version = 0;
     display_driver_version = 0;
-    strcpy(prop.name, "");
-    prop.totalGlobalMem = 0;
+    safe_strcpy(prop.name, "");
+    prop.totalGlobalMem = 0.0;
     prop.sharedMemPerBlock = 0;
     prop.regsPerBlock = 0;
     prop.warpSize = 0;
@@ -403,6 +432,7 @@ void COPROC_NVIDIA::clear() {
     prop.textureAlignment = 0;
     prop.deviceOverlap = 0;
     prop.multiProcessorCount = 0;
+    is_used = COPROC_USED;
 }
 
 int COPROC_NVIDIA::parse(XML_PARSER& xp) {
@@ -414,7 +444,7 @@ int COPROC_NVIDIA::parse(XML_PARSER& xp) {
     while (!xp.get_tag()) {
         if (xp.match_tag("/coproc_cuda")) {
             if (!peak_flops) {
-				set_peak_flops();
+                set_peak_flops();
             }
             if (!available_ram) {
                 available_ram = prop.totalGlobalMem;
@@ -493,16 +523,23 @@ int COPROC_NVIDIA::parse(XML_PARSER& xp) {
 
 void COPROC_NVIDIA::set_peak_flops() {
     double x=0;
-    if (prop.clockRate) {
-        int flops_per_clock=0, cores_per_proc=0;
-        switch (prop.major) {
+    int flops_per_clock=0, cores_per_proc=0;
+
+    if (prop.major || opencl_prop.nv_compute_capability_major) {
+        int major = prop.major;
+        int minor = prop.minor;
+
+        if (opencl_prop.nv_compute_capability_major) major = opencl_prop.nv_compute_capability_major;
+        if (opencl_prop.nv_compute_capability_minor) minor = opencl_prop.nv_compute_capability_minor;
+
+        switch (major) {
         case 1:
             flops_per_clock = 3;
             cores_per_proc = 8;
             break;
         case 2:
             flops_per_clock = 2;
-            switch (prop.minor) {
+            switch (minor) {
             case 0:
                 cores_per_proc = 32;
                 break;
@@ -521,9 +558,26 @@ void COPROC_NVIDIA::set_peak_flops() {
             cores_per_proc = 128;
             break;
         }
+
+    }
+
+    if (prop.clockRate) {
         // clock rate is scaled down by 1000
         //
         x = (1000.*prop.clockRate) * prop.multiProcessorCount * cores_per_proc * flops_per_clock;
+    } else if (opencl_prop.nv_compute_capability_major) {
+
+        // OpenCL w/ cl_nv_device_attribute_query extension
+        // Per: https://www.khronos.org/registry/cl/extensions/nv/cl_nv_device_attribute_query.txt
+        //
+        // The theoretical single-precision processing power of a Maxwell GPU in GFLOPS is computed as 2 (operations per FMA instruction per CUDA core per cycle) × number of CUDA cores × core clock speed (in GHz).
+        // Per: https://en.wikipedia.org/wiki/Maxwell_(microarchitecture)#Performance
+        // Per: https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units
+        //
+        // clock is in MHz
+        //
+        x = opencl_prop.max_compute_units * cores_per_proc * flops_per_clock * (opencl_prop.max_clock_frequency * 1e6);
+
     } else if (opencl_prop.max_compute_units) {
         // OpenCL doesn't give us compute capability.
         // assume CC 2: cores_per_proc is 48 and flops_per_clock is 2
@@ -538,7 +592,7 @@ void COPROC_NVIDIA::set_peak_flops() {
 void COPROC_NVIDIA::fake(
     int driver_version, double ram, double avail_ram, int n
 ) {
-   strcpy(type, proc_type_name_xml(PROC_TYPE_NVIDIA_GPU));
+   safe_strcpy(type, proc_type_name_xml(PROC_TYPE_NVIDIA_GPU));
    count = n;
    for (int i=0; i<count; i++) {
        device_nums[i] = i;
@@ -648,13 +702,14 @@ void COPROC_ATI::clear() {
     COPROC::clear();
     safe_strcpy(type, proc_type_name_xml(PROC_TYPE_AMD_GPU));
     estimated_delay = -1;
-    strcpy(name, "");
-    strcpy(version, "");
+    safe_strcpy(name, "");
+    safe_strcpy(version, "");
     atirt_detected = false;
     amdrt_detected = false;
     memset(&attribs, 0, sizeof(attribs));
     memset(&info, 0, sizeof(info));
     version_num = 0;
+    is_used = COPROC_USED;
 }
 
 int COPROC_ATI::parse(XML_PARSER& xp) {
@@ -771,6 +826,22 @@ void COPROC_ATI::set_peak_flops() {
     if (attribs.numberOfSIMD) {
         x = attribs.numberOfSIMD * attribs.wavefrontSize * 5 * attribs.engineClock * 1.e6;
         // clock is in MHz
+    } else if (opencl_prop.amd_simd_per_compute_unit) {
+
+        // OpenCL w/ cl_amd_device_attribute_query extension
+        // Per: https://www.khronos.org/registry/cl/extensions/amd/cl_amd_device_attribute_query.txt
+        //
+        // Single precision performance is calculated as two times the number of shaders multiplied by the base core clock speed.
+        // Per: https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units
+        //
+        // clock is in MHz
+        x = opencl_prop.max_compute_units * 
+            opencl_prop.amd_simd_per_compute_unit * 
+            opencl_prop.amd_simd_width *
+            opencl_prop.amd_simd_instruction_width *
+            2 *
+            (opencl_prop.max_clock_frequency * 1.e6);
+
     } else if (opencl_prop.max_compute_units) {
         // OpenCL gives us only:
         // - max_compute_units
@@ -840,8 +911,10 @@ void COPROC_INTEL::clear() {
     COPROC::clear();
     safe_strcpy(type, proc_type_name_xml(PROC_TYPE_INTEL_GPU));
     estimated_delay = -1;
-    strcpy(name, "");
-    strcpy(version, "");
+    safe_strcpy(name, "");
+    safe_strcpy(version, "");
+    global_mem_size = 0;
+    is_used = COPROC_USED;
 }
 
 int COPROC_INTEL::parse(XML_PARSER& xp) {

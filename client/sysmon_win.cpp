@@ -17,6 +17,10 @@
 
 #include "boinc_win.h"
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #include "diagnostics.h"
 #include "error_numbers.h"
 #include "filesys.h"
@@ -175,7 +179,7 @@ static LRESULT CALLBACK WindowsMonitorSystemPowerWndProc(
         //     PBT_APMBATTERYLOW
         //     PBT_APMPOWERSTATUSCHANGE
         //     PBT_APMOEMEVENT
-        //     PBT_APMRESUMEAUTOMATIC 
+        //     PBT_APMRESUMEAUTOMATIC
         case WM_POWERBROADCAST:
             switch(wParam) {
                 // System is preparing to suspend.  This is valid on
@@ -273,6 +277,7 @@ static DWORD WINAPI WindowsMonitorSystemPowerThread( LPVOID  ) {
 }
 
 // Detect any proxy configuration settings automatically.
+//
 static void windows_detect_autoproxy_settings() {
     if (log_flags.proxy_debug) {
         post_sysmon_msg("[proxy] automatic proxy check in progress");
@@ -306,7 +311,7 @@ static void windows_detect_autoproxy_settings() {
     );
 
     char msg[1024], buf[1024];
-    strcpy(msg, "[proxy] ");
+    safe_strcpy(msg, "[proxy] ");
 
     if (WinHttpGetProxyForUrl(hWinHttp, network_test_url.c_str(), &autoproxy_options, &proxy_info)) {
 
@@ -320,15 +325,15 @@ static void windows_detect_autoproxy_settings() {
             std::string new_proxy;
 
             if (log_flags.proxy_debug) {
-                strcat(msg, "proxy list: ");
-                strcat(msg, proxy.c_str());
+                safe_strcat(msg, "proxy list: ");
+                safe_strcat(msg, proxy.c_str());
             }
 
             if (!proxy.empty()) {
                 // Trim string if more than one proxy is defined
                 // proxy list is defined as:
                 //   ([<scheme>=][<scheme>"://"]<server>[":"<port>])
-                
+
                 // Find and erase first delimeter type.
                 pos = proxy.find(';');
                 if (pos != -1 ) {
@@ -357,8 +362,8 @@ static void windows_detect_autoproxy_settings() {
                 }
 
                 if (log_flags.proxy_debug) {
-                    sprintf(buf, "proxy detected %s:%d", purl.host, purl.port);
-                    strcat(msg, buf);
+                    snprintf(buf, sizeof(buf), "proxy detected %s:%d", purl.host, purl.port);
+                    safe_strcat(msg, buf);
                 }
             }
         }
@@ -370,10 +375,10 @@ static void windows_detect_autoproxy_settings() {
         // We can get here if the user is switching from a network that
         // requires a proxy to one that does not require a proxy.
         working_proxy_info.autodetect_protocol = 0;
-        strcpy(working_proxy_info.autodetect_server_name, "");
+        safe_strcpy(working_proxy_info.autodetect_server_name, "");
         working_proxy_info.autodetect_port = 0;
         if (log_flags.proxy_debug) {
-            strcat(msg, "no automatic proxy detected");
+            safe_strcat(msg, "no automatic proxy detected");
         }
     }
     if (hWinHttp) WinHttpCloseHandle(hWinHttp);
@@ -420,14 +425,16 @@ int initialize_system_monitor(int /*argc*/, char** /*argv*/) {
         }
     }
 
-    // Create a window to receive system power events.
+    // Create a thread to receive system power events.
+    //
     g_hWindowsMonitorSystemPowerThread = CreateThread(
         NULL,
         0,
         WindowsMonitorSystemPowerThread,
         NULL,
         0,
-        NULL);
+        NULL
+    );
 
     if (!g_hWindowsMonitorSystemPowerThread) {
         g_hWindowsMonitorSystemPowerThread = NULL;
@@ -435,16 +442,20 @@ int initialize_system_monitor(int /*argc*/, char** /*argv*/) {
     }
 
     // Create a thread to handle proxy auto-detection.
-    g_hWindowsMonitorSystemProxyThread = CreateThread(
-        NULL,
-        0,
-        WindowsMonitorSystemProxyThread,
-        NULL,
-        0,
-        NULL);
+    //
+    if (!cc_config.proxy_info.no_autodetect) {
+        g_hWindowsMonitorSystemProxyThread = CreateThread(
+            NULL,
+            0,
+            WindowsMonitorSystemProxyThread,
+            NULL,
+            0,
+            NULL
+        );
 
-    if (!g_hWindowsMonitorSystemProxyThread) {
-        g_hWindowsMonitorSystemProxyThread = NULL;
+        if (!g_hWindowsMonitorSystemProxyThread) {
+            g_hWindowsMonitorSystemProxyThread = NULL;
+        }
     }
 
     return 0;
@@ -521,14 +532,17 @@ void WINAPI BOINCServiceMain(DWORD /*dwArgc*/, LPTSTR * /*lpszArgv*/) {
     // register our service control handler:
     //
     sshStatusHandle = RegisterServiceCtrlHandler( TEXT(SZSERVICENAME), BOINCServiceCtrl);
-    if (!sshStatusHandle)
+    if (!sshStatusHandle) {
         goto cleanup;
+    }
 
     if (!ReportStatus(
         SERVICE_RUNNING,       // service state
         ERROR_SUCCESS,         // exit code
-        0))                    // wait hint
+        0)                    // wait hint
+    ){
         goto cleanup;
+    }
 
     dwErr = boinc_main_loop();
 
@@ -634,10 +648,11 @@ BOOL ReportStatus(
     static DWORD dwCheckPoint = 1;
     BOOL fResult = TRUE;
 
-    if (dwCurrentState == SERVICE_START_PENDING)
+    if (dwCurrentState == SERVICE_START_PENDING) {
         ssStatus.dwControlsAccepted = 0;
-    else
+    } else {
         ssStatus.dwControlsAccepted = SERVICE_ACCEPTED_ACTIONS;
+    }
 
     ssStatus.dwCurrentState = dwCurrentState;
     ssStatus.dwWin32ExitCode = dwWin32ExitCode;
@@ -687,7 +702,7 @@ VOID LogEventErrorMessage(LPTSTR lpszMsg) {
     //
     hEventSource = RegisterEventSource(NULL, TEXT(SZSERVICENAME));
 
-    _stprintf(szMsg, TEXT("%s error: %d"), TEXT(SZSERVICENAME), dwErr);
+    _stprintf_s(szMsg, TEXT("%s error: %d"), TEXT(SZSERVICENAME), dwErr);
     lpszStrings[0] = szMsg;
     lpszStrings[1] = lpszMsg;
 
@@ -741,7 +756,8 @@ VOID LogEventWarningMessage(LPTSTR lpszMsg) {
             2,                    // strings in lpszStrings
             0,                    // no bytes of raw data
             (LPCSTR*)lpszStrings, // array of error strings
-            NULL);                // no raw data
+            NULL                  // no raw data
+        );
 
         (VOID) DeregisterEventSource(hEventSource);
     }
@@ -781,9 +797,9 @@ VOID LogEventInfoMessage(LPTSTR lpszMsg) {
             2,                    // strings in lpszStrings
             0,                    // no bytes of raw data
             (LPCSTR*)lpszStrings, // array of error strings
-            NULL);                // no raw data
+            NULL                  // no raw data
+        );
 
         (VOID) DeregisterEventSource(hEventSource);
     }
 }
-

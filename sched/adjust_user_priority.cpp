@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-// adjust_user_priority [--no_update] --user userid --flops flop_count --app app_name
+// adjust_user_priority [--no_update] --user userid --flops N --app app_name
 //
 // adjust user priority (i.e. logical start time)
 // to reflect a certain amount of computing
-// and write the new value to stdout
+// and write the new value to stdout.
+// For use by multi-user projects quotas.
 //
 // --no_update: don't update DB
 
@@ -80,7 +81,7 @@ int main(int argc, char** argv) {
     }
 
     DB_APP app;
-    sprintf(buf, "where name='%s'", app_name);
+    snprintf(buf, sizeof(buf), "where name='%s'", app_name);
     retval = app.lookup(buf);
     if (retval) {
         fprintf(stderr, "no such app %s\n", argv[3]);

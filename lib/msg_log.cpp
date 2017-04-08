@@ -27,6 +27,7 @@
 #endif
 
 #include "str_util.h"
+#include "str_replace.h"
 #include "util.h"
 
 #include "msg_log.h"
@@ -62,11 +63,14 @@ using std::string;
 // See sched/sched_msg_log.C and client/client_msg_log.C for those classes.
 
 MSG_LOG::MSG_LOG(FILE* output_) {
+    debug_level = 0;
     output = output_;
     indent_level = 0;
-    spaces[0] = 0;
     pid = 0;
-    strcpy(spaces+1, "                                                                              ");
+    spaces[0] = 0;
+    for (int i=1; i<80; i++) {
+        spaces[i] = 0;
+    }
 }
 
 void MSG_LOG::enter_level(int diff) {

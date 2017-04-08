@@ -29,6 +29,7 @@
 #include "str_replace.h"
 #include "util.h"
 
+#include "str_util.h"
 #include "sched_util.h"
 #include "sched_config.h"
 #include "sched_msgs.h"
@@ -74,6 +75,9 @@ int get_output_file_info(RESULT const& result, OUTPUT_FILE_INFO& fi) {
             if (retval) return retval;
             if (standalone) {
                 safe_strcpy(path, fi.name.c_str());
+                if (!path_to_filename(fi.name, name)) {
+                    fi.name = name;
+                }
             } else {
                 dir_hier_path(
                     fi.name.c_str(), config.upload_dir,
@@ -89,8 +93,8 @@ int get_output_file_info(RESULT const& result, OUTPUT_FILE_INFO& fi) {
 
 int get_output_file_infos(RESULT const& result, vector<OUTPUT_FILE_INFO>& fis) {
     char path[MAXPATHLEN];
-    MIOFILE mf;
     string name;
+    MIOFILE mf;
     mf.init_buf_read(result.xml_doc_in);
     XML_PARSER xp(&mf);
     fis.clear();
@@ -102,13 +106,16 @@ int get_output_file_infos(RESULT const& result, vector<OUTPUT_FILE_INFO>& fis) {
             if (retval) return retval;
             if (standalone) {
                 safe_strcpy(path, fi.name.c_str());
+                if (!path_to_filename(fi.name, name)) {
+                    fi.name = name;
+                }
             } else {
                 dir_hier_path(
                     fi.name.c_str(), config.upload_dir,
                     config.uldl_dir_fanout, path
                 );
             }
-            fi.path = path;
+			fi.path = path;
             fis.push_back(fi);
         }
     }
@@ -132,6 +139,25 @@ int get_output_file_paths(RESULT const& result, vector<string>& paths) {
         paths.push_back(fis[i].path);
     }
     return 0;
+}
+
+// remove the random part of an output filename:
+// given a name of the form "xxx_resultnum_r123123_filenum",
+// return "xxx_resultnum_filenum"
+//
+void remove_random_from_filename(const char* in, char* out) {
+    strcpy(out, in);
+    const char* p_in = strrchr(in, 'r');
+    if (!p_in) return;
+    if (p_in == in) return;
+    if (*(--p_in) != '_') return;
+    char* p_out = out + (p_in - in);
+    const char *q = strchr(p_in+1, '_');
+    if (q) {
+        strcpy(p_out, q);
+    } else {
+        strcpy(p_out, "");
+    }
 }
 
 struct FILE_REF {
@@ -189,7 +215,7 @@ int get_credit_from_wu(WORKUNIT& wu, vector<RESULT>&, double& credit) {
     double x;
     int retval;
     DB_WORKUNIT dbwu;
-    
+
     dbwu.id = wu.id;
     retval = dbwu.get_field_str("xml_doc", dbwu.xml_doc, sizeof(dbwu.xml_doc));
     if (!retval) {

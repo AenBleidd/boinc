@@ -41,20 +41,23 @@ function boinc_standard_default_wysiwyg() {
         'removeformat' => 1,
         'charmap' => 1,
       ),
+      'advimage' => array(
+        'advimage' => 1,
+      ),
       'emotions' => array(
         'emotions' => 1,
       ),
       'font' => array(
         'formatselect' => 1,
       ),
+      'paste' => array(
+        'pastetext' => 1,
+      ),
       'media' => array(
         'media' => 1,
       ),
-      'imce' => array(
-        'imce' => 1,
-      ),
       'drupal' => array(
-        'convert_linebreaks' => 1,
+        'linebreaks' => 1,
       ),
     ),
     'toolbar_loc' => 'top',
@@ -64,13 +67,15 @@ function boinc_standard_default_wysiwyg() {
     'verify_html' => 1,
     'preformatted' => 0,
     'convert_fonts_to_spans' => 1,
-    'remove_linebreaks' => 0,
+    'remove_linebreaks' => 1,
     'apply_source_formatting' => 0,
-    'paste_auto_cleanup_on_paste' => 0,
+    'paste_auto_cleanup_on_paste' => 1,
     'block_formats' => 'p,code,pre,h2,h3,h4,h5,h6,div,address',
     'css_setting' => 'theme',
     'css_path' => '',
-    'css_classes' => '',
+    'css_classes' => 'Image with caption=standalone-image
+Float left with caption=image-left
+Float right with caption=image-right',
   );
   $wysiwyg->machine = 'rich_text';
   $export['rich_text'] = $wysiwyg;

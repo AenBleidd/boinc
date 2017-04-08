@@ -1,6 +1,6 @@
 // This file is part of BOINC.
 // http://boinc.berkeley.edu
-// Copyright (C) 2008 University of California
+// Copyright (C) 2017 University of California
 //
 // BOINC is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License
@@ -23,9 +23,7 @@
 #include <Carbon/Carbon.h>
 #include "filesys.h"
 #include "util.h"
-#if (defined(SANDBOX) && defined(_DEBUG))
-#include "SetupSecurity.h"
-#endif
+#include "mac_util.h"
 #include "sandbox.h"
 #endif
 
@@ -53,50 +51,6 @@
 
 
 bool s_bSkipExitConfirmation = false;
-
-
-#ifdef __WXMAC__
-
-// Set s_bSkipExitConfirmation to true if cancelled because of logging out or shutting down
-OSErr QuitAppleEventHandler( const AppleEvent *appleEvt, AppleEvent* reply, UInt32 refcon ) {
-    DescType            senderType;
-    Size                actualSize;
-    ProcessSerialNumber SenderPSN;
-    ProcessInfoRec      pInfo;
-    FSSpec              fileSpec;
-    OSStatus            anErr;
-
-    // Refuse to quit if a modal dialog is open.  
-    // Unfortunately, I know of no way to disable the Quit item in our Dock menu
-    if (wxGetApp().IsModalDialogDisplayed()) {
-        SysBeep(4);
-        return userCanceledErr;
-    }
-    
-    anErr = AEGetAttributePtr(appleEvt, keyAddressAttr, typeProcessSerialNumber,
-                                &senderType, &SenderPSN, sizeof(SenderPSN), &actualSize);
-
-    if (anErr == noErr) {
-        pInfo.processInfoLength = sizeof( ProcessInfoRec );
-        pInfo.processName = NULL;
-        pInfo.processAppSpec = &fileSpec;
-
-        anErr = GetProcessInformation(&SenderPSN, &pInfo);
-
-        // Consider a Quit command from our Dock menu as coming from this application
-        if ( (pInfo.processSignature != 'dock') && (pInfo.processSignature != 'BNC!') ) {
-            s_bSkipExitConfirmation = true; // Not from our app, our dock icon or our taskbar icon
-            // The following may no longer be needed under wxCocoa-3.0.0
-            wxGetApp().ExitMainLoop();  // Prevents wxMac from issuing events to closed frames
-        }
-    }
-    
-    wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, wxID_EXIT);
-    wxGetApp().GetFrame()->GetEventHandler()->AddPendingEvent(evt);
-    return noErr;
-}
-
-#endif
 
 
 DEFINE_EVENT_TYPE(wxEVT_RPC_FINISHED)
@@ -172,18 +126,11 @@ bool CBOINCGUIApp::OnInit() {
     bool     success = false;
 
 
-#ifndef __WXMAC__
-    // call this to tell the library to call our OnFatalException()
-    wxHandleFatalExceptions();
-#endif
-
     // Configure wxWidgets platform specific code
 #ifdef __WXMSW__
     wxSystemOptions::SetOption(wxT("msw.staticbox.optimized-paint"), 0);
 #endif
 #ifdef __WXMAC__
-    bool launchedFromLogin = false;
-    
     // In wxMac-2.8.7, default wxListCtrl::RefreshItem() does not work
     // so use traditional generic implementation.
     // This has been fixed in wxMac-2.8.8, but the Mac native implementation:
@@ -193,9 +140,6 @@ bool CBOINCGUIApp::OnInit() {
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), 1);
 
     AEInstallEventHandler( kCoreEventClass, kAEQuitApplication, NewAEEventHandlerUPP((AEEventHandlerProcPtr)QuitAppleEventHandler), 0, false );
-
-    // Cache the current process serial number
-    GetCurrentProcess(&m_psnCurrentProcess);
 #endif
 
 
@@ -348,19 +292,21 @@ bool CBOINCGUIApp::OnInit() {
 
 #ifdef SANDBOX
     // Make sure owners, groups and permissions are correct for the current setting of g_use_sandbox
+    //
+    // NOTE: GDB and LLDB can't attach to applications which are running as
+    // a different user or group.
+    // Normally, the Mac Development (Debug) builds do not define SANDBOX, so
+    // check_security() is never called. However, it is possible to use GDB
+    // or LLDB on sandbox-specific code, as long as the code is run as the
+    // current user (i.e., not as boinc_master or boinc_project), and the
+    // current user is a member of both groups boinc_master and boinc_project.
+    // However, this has not been thoroughly tested. Please see the comments
+    // in SetupSecurity.cpp and check_security.cpp for more details.
+    //
     char path_to_error[MAXPATHLEN];
     path_to_error[0] = '\0';
     
     if (!iErrorCode) {
-#if (defined(__WXMAC__) && defined(_DEBUG))     // TODO: implement this for other platforms
-        // GDB can't attach to applications which are running as a different user   
-        //  or group, so fix up data with current user and group during debugging
-        if (check_security(g_use_sandbox, true, NULL, 0)) {
-            CreateBOINCUsersAndGroups();
-            SetBOINCDataOwnersGroupsAndPermissions();
-            SetBOINCAppOwnersGroupsAndPermissions(NULL);
-        }
-#endif
         iErrorCode = check_security(
             g_use_sandbox, true, path_to_error, sizeof(path_to_error)
         );
@@ -371,11 +317,18 @@ bool CBOINCGUIApp::OnInit() {
         ShowApplication(true);
 
         if (iErrorCode == -1099) {
+#if (defined(__WXMAC__) && defined (_DEBUG))
+            strDialogMessage.Printf(
+                "To debug with sandbox security enabled, the current user\n"
+                "must be a member of both groups boinc_master and boinc_project."
+            );
+#else   // ! (defined(__WXMAC__) && defined (_DEBUG))
             strDialogMessage.Printf(
                 _("You currently are not authorized to manage the client.\n\nTo run %s as this user, please:\n  - reinstall %s answering \"Yes\" to the question about\n     non-administrative users\n or\n  - contact your administrator to add you to the 'boinc_master'\n     user group."),
                 m_pSkinManager->GetAdvanced()->GetApplicationShortName().c_str(),
                 m_pSkinManager->GetAdvanced()->GetApplicationShortName().c_str()
             );
+#endif  // ! (defined(__WXMAC__) && defined (_DEBUG))
         } else {
             strDialogMessage.Printf(
                 _("%s ownership or permissions are not set properly; please reinstall %s.\n(Error code %d"),
@@ -428,31 +381,15 @@ bool CBOINCGUIApp::OnInit() {
 #endif
 
 #ifdef __WXMAC__
-    ProcessSerialNumber psn;
-    ProcessInfoRec pInfo;
-    OSStatus err;
-    
-    memset(&pInfo, 0, sizeof(pInfo));
-    pInfo.processInfoLength = sizeof( ProcessInfoRec );
-    err = GetProcessInformation(&m_psnCurrentProcess, &pInfo);
-    if (!err) {
-        psn = pInfo.processLauncher;
-        memset(&pInfo, 0, sizeof(pInfo));
-        pInfo.processInfoLength = sizeof( ProcessInfoRec );
-        err = GetProcessInformation(&psn, &pInfo);
-    }
-    // Don't open main window if we were started automatically at login
-    if (pInfo.processSignature == 'lgnw') {  // Login Window app
-        launchedFromLogin = true;
-        
-        // Prevent a situation where wxSingleInstanceChecker lock file
-        // from last login auto start (with same pid) was not deleted.
-        // This path must match that in DetectDuplicateInstance()
-        wxString lockFilePath = wxString(wxFileName::GetHomeDir() +
-                                            "/Library/Application Support/BOINC/" +
-                                            wxTheApp->GetAppName() +
-                                            '-' + wxGetUserId()
+    // Prevent a situation where wxSingleInstanceChecker lock file
+    // from last login auto start (with same pid) was not deleted.
+    // This path must match that in DetectDuplicateInstance()
+    wxString lockFilePath = wxString(wxFileName::GetHomeDir() +
+                                        "/Library/Application Support/BOINC/" +
+                                        wxTheApp->GetAppName() +
+                                        '-' + wxGetUserId()
                                         );
+    if (WasFileModifiedBeforeSystemBoot((char *)(const char*)lockFilePath.utf8_str())) {
         boinc_delete_file(lockFilePath.utf8_str());
     }
 #endif
@@ -505,9 +442,12 @@ bool CBOINCGUIApp::OnInit() {
     IdleTrackerAttach();
     
 #ifdef __WXMAC__
-    if (launchedFromLogin) {
-        m_bGUIVisible = false;
+    // Don't open main window if we were started automatically at login
+    // We are launched hidden if started from our login item (except if
+    // we had windows open at logout, the system "restores" them.)
+    m_bGUIVisible = IsApplicationVisible();
 
+    if (getTimeSinceBoot() < 30.) {
         // If the system was just started, we usually get a "Connection
         // failed" error if we try to connect too soon, so delay a bit.
         sleep(10);
@@ -634,29 +574,6 @@ void CBOINCGUIApp::OnEndSession(wxCloseEvent& ) {
     pFrame->OnExit(evt);
     OnExit();
 }
-
-
-void CBOINCGUIApp::OnFatalException() {
-#ifdef wxUSE_DEBUGREPORT 
-    wxDebugReportCompress* report = new wxDebugReportCompress;
-
-    if (report->IsOk()) {
-        report->AddAll(wxDebugReport::Context_Exception);
-
-        if (report->Process())
-        {
-            fprintf(
-                stderr,
-                "ASSERT: Report generated in \"%s\".\n",
-                (const char*)report->GetCompressedFileName().mb_str()
-            );
-            report->Reset();
-        }
-    }
-
-    delete report;
-#endif
-}
 #endif
 
 
@@ -684,28 +601,24 @@ void CBOINCGUIApp::SaveState() {
 ///
 void CBOINCGUIApp::OnInitCmdLine(wxCmdLineParser &parser) {
     wxApp::OnInitCmdLine(parser);
-    static const wxCmdLineEntryDesc cmdLineDesc[] = {
-        { wxCMD_LINE_SWITCH, "a", "autostart", _("BOINC Manager was started by the operating system automatically")},
+    parser.AddSwitch("a", "autostart", _("BOINC Manager was started by the operating system automatically"));
 #if defined(__WXMSW__) || defined(__WXMAC__)
-        { wxCMD_LINE_SWITCH, "s", "systray", _("Startup BOINC so only the system tray icon is visible")},
+    parser.AddSwitch("s", "systray", _("Startup BOINC so only the system tray icon is visible"));
 #else
-        { wxCMD_LINE_OPTION, "e", "clientdir", _("Directory containing the BOINC Client executable")},
-        { wxCMD_LINE_OPTION, "d", "datadir", _("BOINC data directory")},
+    parser.AddOption("e", "clientdir", _("Directory containing the BOINC Client executable"));
+    parser.AddOption("d", "datadir", _("BOINC data directory"));
 #endif
-        { wxCMD_LINE_OPTION, "n", "namehost", _("Host name or IP address")},
-        { wxCMD_LINE_OPTION, "g", "gui_rpc_port", _("GUI RPC port number")},
-        { wxCMD_LINE_OPTION, "p", "password", _("Password")},
-        { wxCMD_LINE_OPTION, "b", "boincargs", _("Startup BOINC with these optional arguments")},
-        { wxCMD_LINE_SWITCH, "i","insecure", _("disable BOINC security users and permissions")},
-        { wxCMD_LINE_SWITCH, "c", "checkskins", _("set skin debugging mode to enable skin manager error messages")},
-        { wxCMD_LINE_SWITCH, "m", "multiple", _("multiple instances of BOINC Manager allowed")},
+    parser.AddOption("n", "namehost", _("Host name or IP address"));
+    parser.AddOption("g", "gui_rpc_port", _("GUI RPC port number"));
+    parser.AddOption("p", "password", _("Password"));
+    parser.AddOption("b", "boincargs", _("Startup BOINC with these optional arguments"));
+    parser.AddSwitch("i","insecure", _("disable BOINC security users and permissions"));
+    parser.AddSwitch("c", "checkskins", _("set skin debugging mode to enable skin manager error messages"));
+    parser.AddSwitch("m", "multiple", _("multiple instances of BOINC Manager allowed"));
 #if (defined(__WXMAC__) && defined(_DEBUG))
-        { wxCMD_LINE_OPTION, "NSDocumentRevisionsDebugMode", NULL, _("Not used: workaround for bug in XCode 4.2")},
+    parser.AddLongOption("NSDocumentRevisionsDebugMode", _("Not used: workaround for bug in XCode 4.2"));
 #endif
-        { wxCMD_LINE_SWITCH, "nd", "no-daemon", _("Not run the daemon")},
-        { wxCMD_LINE_NONE}  //DON'T forget this line!!
-    };
-    parser.SetDesc(cmdLineDesc);
+    parser.AddSwitch("nd", "no-daemon", _("Not run the daemon"));
 }
 
 
@@ -1124,6 +1037,7 @@ bool CBOINCGUIApp::SetActiveGUI(int iGUISelection, bool bShowWindow) {
     wxInt32          iLeft = 0;
     wxInt32          iHeight = 0;
     wxInt32          iWidth = 0;
+    bool             bWindowMaximized = false;
 
 
     // Create the new window
@@ -1137,6 +1051,7 @@ bool CBOINCGUIApp::SetActiveGUI(int iGUISelection, bool bShowWindow) {
             m_pConfig->Read(wxT("XPos"), &iLeft, 30);
             m_pConfig->Read(wxT("Width"), &iWidth, 800);
             m_pConfig->Read(wxT("Height"), &iHeight, 600);
+            m_pConfig->Read(wxT("WindowMaximized"), &bWindowMaximized, false);
             // Guard against a rare situation where registry values are zero
             if (iWidth < 50) iWidth = 800;
             if (iHeight < 50) iHeight = 600;
@@ -1243,6 +1158,9 @@ bool CBOINCGUIApp::SetActiveGUI(int iGUISelection, bool bShowWindow) {
             }
             if (m_pFrame->IsIconized()) {
                 m_pFrame->Maximize(false);
+            }
+            else if (BOINC_ADVANCEDGUI == iGUISelection && bWindowMaximized) {
+                m_pFrame->Maximize();
             }
             m_pFrame->Raise();
 
