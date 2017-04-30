@@ -523,7 +523,6 @@ int CMainDocument::OnInit() {
 
 
 int CMainDocument::OnExit() {
-    wxString         strConnectedCompter = wxEmptyString;
     int              iRetVal = 0;
 
     if (m_pClientManager) {
@@ -2376,7 +2375,6 @@ int CMainDocument::GetStatisticsCount() {
 
 int CMainDocument::GetProxyConfiguration() {
     int     iRetVal = 0;
-    wxString    strEmpty = wxEmptyString;
 
     iRetVal = rpc.get_proxy_settings(proxy_info);
     if (iRetVal) {

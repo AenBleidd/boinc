@@ -700,7 +700,6 @@ void CTaskBarIcon::UpdateTaskbarStatus() {
 #else
     wxString       strMachineName       = wxEmptyString;
     wxString       strMessage           = wxEmptyString;
-    wxString       strBuffer            = wxEmptyString;
     wxIcon         icnIcon;
 
     pDoc->GetConnectedComputerName(strMachineName);
