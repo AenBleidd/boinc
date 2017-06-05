@@ -22,15 +22,19 @@ require_once("inc/fah.inc");
 xml_header();
 
 echo "<project_config>
-    <name>Folding@home</name>
+    <name>$project_name</name>
     <master_url>$wrapper_server_url</master_url>
     <web_rpc_url_base>$wrapper_server_url</web_rpc_url_base>
     <web_stopped>0</web_stopped>
     <account_creation_disabled/>
-    <sched_stopped>0</sched_stopped>
+    <sched_stopped>1</sched_stopped>
     <uses_username/>
-";
-
-echo "</project_config>";
+    <platforms>
+        <platform>
+            <platform_name>windows_intelx86</platform_name>
+            <user_friendly_name>Microsoft Windows (98 or later) running on an Intel x86-compatible CPU</user_friendly_name>
+        </platform>
+    </platforms>
+</project_config>";
 
 ?>

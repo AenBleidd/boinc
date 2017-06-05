@@ -16,5 +16,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-phpinfo()
+require_once("inc/fah.inc");
+
 ?>
+<html>
+<head>
+    <title>$project_name</title>
+    
+<?php
+
+echo "
+<!--
+<scheduler>$wrapper_server_url/scheduler</scheduler>
+<link rel='boinc_scheduler' href='$wrapper_server_url/scheduler'>
+-->
+";
+
+?>
+
+</head>
+<body>
+    <h1>It works!</h1>
+</body>
+
+</html>

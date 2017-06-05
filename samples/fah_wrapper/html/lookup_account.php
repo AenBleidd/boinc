@@ -17,10 +17,15 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once("inc/xml.inc");
+require_once("inc/fah.inc");
+
+xml_header();
 
 // For now return success to every credentials
-echo "<account_out>\n";
-echo "   <success/>\n";
-echo "</account_out>\n";
+echo "
+<account_out>
+    <authenticator>$project_key</authenticator>
+</account_out>
+";
 
 ?>

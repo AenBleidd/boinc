@@ -16,8 +16,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-$wrapper_server_url = "127.0.0.1";
-$project_name = "Folding@home";
-$project_key = "0123456789abcdef"
+require_once("../inc/xml.inc");
+require_once("../inc/fah.inc");
+
+xml_header();
+
+echo "
+<scheduler_reply>
+    <master_url>$wrapper_server_url</master_url>
+    <request_delay>300</request_delay>
+    <message priority='low'>Project is temporarily shut down for maintenance</message>
+    <project_name>$project_name</project_name>
+    <project_is_down/>
+</scheduler_reply>
+";
 
 ?>
