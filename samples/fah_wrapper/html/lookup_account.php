@@ -17,20 +17,10 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once("inc/xml.inc");
-require_once("inc/fah.inc");
 
-xml_header();
-
-echo "<project_config>
-    <name>Folding@home</name>
-    <master_url>$wrapper_server_url</master_url>
-    <web_rpc_url_base>$wrapper_server_url</web_rpc_url_base>
-    <web_stopped>0</web_stopped>
-    <account_creation_disabled/>
-    <sched_stopped>0</sched_stopped>
-    <uses_username/>
-";
-
-echo "</project_config>";
+// For now return success to every credentials
+echo "<account_out>\n";
+echo "   <success/>\n";
+echo "</account_out>\n";
 
 ?>
