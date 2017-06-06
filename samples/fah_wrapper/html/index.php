@@ -21,9 +21,10 @@ require_once("inc/fah.inc");
 ?>
 <html>
 <head>
-    <title>$project_name</title>
-    
+
 <?php
+
+echo "<title>$project_name</title>";
 
 echo "
 <!--
@@ -36,7 +37,18 @@ echo "
 
 </head>
 <body>
-    <h1>It works!</h1>
+
+<?php
+
+ echo "
+   <p><b>Configuration:</b></p>
+   <p><b>Server URL: </b>$wrapper_server_url</p>
+   <p><b>Project Name: </b>$project_name</p>
+   <p><b>Project Key: </b>$project_key</p>
+   ";
+
+?>  
+
 </body>
 
 </html>
