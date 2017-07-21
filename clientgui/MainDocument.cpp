@@ -1293,16 +1293,20 @@ void CMainDocument::CheckForVersionUpdate(bool showMessage) {
     title.Printf(_("Version Update"));
     wxString applicationName = wxGetApp().GetSkinManager()->GetAdvanced()->GetApplicationName();
     if (IsConnected()) {
-        rpc.get_newer_version(version, url);
+        int retval = rpc.get_newer_version(version, url);
 
         if (!showMessage)
             return;
 
-        if (!version.empty() && !url.empty()) {
-            message.Printf(_("A new version of %s is available. You can download it here: %s"), applicationName, url);
-        }
-        else {
-            message.Printf(_("There is no new version of %s available for download."), applicationName);
+        if (!retval) {
+            message.Printf(_("Unable to check for available updates. Please try again later."));
+        } else {
+            if (!version.empty() && !url.empty()) {
+                message.Printf(_("A new version of %s is available. You can download it here: %s"), applicationName, url);
+            }
+            else {
+                message.Printf(_("There is no new version of %s available for download."), applicationName);
+            }
         }
     }
     else {
