@@ -23,6 +23,8 @@
 #include <string.h>
 #include <errno.h>
 
+#include "config.h"
+
 #include "miofile.h"
 #include "error_numbers.h"
 #include "str_util.h"
@@ -36,12 +38,15 @@
 #define XML_PARSE_DATA      5
 #define XML_PARSE_OVERFLOW  6
 
-#define TAG_BUF_LEN         256
+#define TAG_BUF_LEN         4096
+    // max tag length
+#define ELEMENT_BUF_LEN     65536
+    // max element length (matches BLOB_SIZE, max size of XML fields in DB)
 
 struct XML_PARSER {
     int scan_comment();
     int scan_cdata(char*, int);
-    char parsed_tag[4096];
+    char parsed_tag[TAG_BUF_LEN];
     bool is_tag;
     MIOFILE* f;
     XML_PARSER(MIOFILE*);
@@ -178,13 +183,13 @@ struct XML_PARSER {
             if (isascii(c) && isspace(c)) {
                 if (found_space && attr_buf) {
                     if (--attr_len > 0) {
-                        *attr_buf++ = c;
+                        *attr_buf++ = (char)c;
                     }
                 }
                 found_space = true;
             } else if (c == '/') {
                 if (--tag_len > 0) {
-                    *buf++ = c;
+                    *buf++ = (char)c;
                 } else {
                     return XML_PARSE_OVERFLOW;
                 }
@@ -192,12 +197,12 @@ struct XML_PARSER {
                 if (found_space) {
                     if (attr_buf) {
                         if (--attr_len > 0) {
-                            *attr_buf++ = c;
+                            *attr_buf++ = (char)c;
                         }
                     }
                 } else {
                     if (--tag_len > 0) {
-                        *buf++ = c;
+                        *buf++ = (char)c;
                     } else {
                         return XML_PARSE_OVERFLOW;
                     }
@@ -217,7 +222,7 @@ struct XML_PARSER {
 
     // copy everything up to (but not including) the given end tag.
     // The copied text may include XML tags.
-    // strips whitespace.
+    // strips start/end whitespace.
     //
     inline int element_contents(const char* end_tag, char* buf, int buflen) {
         int n=0;
@@ -232,7 +237,7 @@ struct XML_PARSER {
                 retval = ERR_XML_PARSE;
                 break;
             }
-            buf[n++] = c;
+            buf[n++] = (char)c;
             buf[n] = 0;
             char* p = strstr(buf, end_tag);
             if (p) {
@@ -348,7 +353,7 @@ extern int copy_stream(FILE* in, FILE* out);
 extern int strcatdup(char*& p, char* buf);
 extern int dup_element_contents(FILE* in, const char* end_tag, char** pp);
 extern int dup_element(FILE* in, const char* end_tag, char** pp);
-extern int copy_element_contents(FILE* in, const char* end_tag, char* p, int len);
+extern int copy_element_contents(FILE* in, const char* end_tag, char* p, size_t len);
 extern int copy_element_contents(FILE* in, const char* end_tag, std::string&);
 extern void replace_element_contents(
     char* buf, const char* start, const char* end, const char* replacement

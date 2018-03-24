@@ -139,11 +139,6 @@ wxListItemAttr* CDlgEventLogListCtrl::OnGetItemAttr(long item) const {
 }
 
 
-wxColour CDlgEventLogListCtrl::GetBackgroundColour() {
-    return *wxWHITE;
-}
-
-
 void CDlgEventLogListCtrl::OnMouseUp(wxMouseEvent& event) {
     m_pParentView->UpdateButtons();
     event.Skip();

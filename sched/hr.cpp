@@ -65,7 +65,7 @@ inline int os(HOST& host){
     else if (strcasestr(host.os_name, "FreeBSD")) return freebsd;
     else if (strcasestr(host.os_name, "Android")) return android;
     else return noos;
-};
+}
 
 inline int cpu_coarse(HOST& host){
     if (strcasestr(host.p_vendor, "Intel")) return Intel;
@@ -129,7 +129,7 @@ inline int cpu_fine(HOST& host){
     if (strcasestr(host.p_vendor, "Macintosh")) return Macintosh;
     if (strcasestr(host.p_vendor, "ARM")) return ARM;
     return nocpu;
-};
+}
 
 // call this ONLY if hr_unknown_class() returns false
 

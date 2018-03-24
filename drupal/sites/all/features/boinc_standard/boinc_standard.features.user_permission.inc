@@ -355,6 +355,15 @@ function boinc_standard_user_default_permissions() {
     ),
   );
 
+  // Exported permission: delete own account
+  $permissions['delete own account'] = array(
+    'name' => 'delete own account',
+    'roles' => array(
+      '0' => 'administrator',
+      '1' => 'authenticated user',
+    ),
+  );
+
   // Exported permission: delete own page content
   $permissions['delete own page content'] = array(
     'name' => 'delete own page content',
@@ -491,6 +500,21 @@ function boinc_standard_user_default_permissions() {
     'roles' => array(
       '0' => 'administrator',
     ),
+  );
+
+  // Exported permission: upload files
+  $permissions['upload files'] = array(
+    'name' => 'upload files',
+    'roles' => array(
+      '0' => 'administrator',
+      '1' => 'content editor',
+    ),
+  );
+
+  // Exported permission: view uploaded files
+  $permissions['view uploaded files'] = array(
+    'name' => 'view uploaded files',
+    'roles' => array(),
   );
 
   // Exported permission: use PHP for block visibility

@@ -99,4 +99,4 @@ void perror(const char *s) {
     return FCGI_perror(s);
 }
 
-};  // end of namespace FCGI
+} // end of namespace FCGI

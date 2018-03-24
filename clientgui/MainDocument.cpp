@@ -171,7 +171,6 @@ void CNetworkConnection::Poll() {
             if (!retval) {
                 wxLogTrace(wxT("Function Status"), wxT("CNetworkConnection::Poll - Connection Success"));
                 SetStateSuccess(m_strNewComputerName, m_strNewComputerPassword);
-                m_pDocument->CheckForVersionUpdate();
             } else if (ERR_AUTHENTICATOR == retval) {
                 wxLogTrace(wxT("Function Status"), wxT("CNetworkConnection::Poll - RPC Authorization - ERR_AUTHENTICATOR"));
                 SetStateErrorAuthentication();
@@ -480,6 +479,9 @@ int CMainDocument::OnInit() {
     m_pClientManager = new CBOINCClientManager();
     wxASSERT(m_pClientManager);
 
+    // client may auto-attach only when first launched
+    m_bAutoAttaching = autoattach_in_progress();
+    
     m_RPCWaitDlg = NULL;
     m_bWaitingForRPC = false;
     m_bNeedRefresh = false;
@@ -1237,6 +1239,7 @@ int CMainDocument::CoreClientQuit() {
 bool CMainDocument::IsUserAuthorized() {
 #ifndef _WIN32
 #ifdef SANDBOX
+#ifndef __WXMAC__   // Currently unauthorized users can't run Manager, so this would be redundant
     static bool         sIsAuthorized = false;
     group               *grp;
     gid_t               rgid, boinc_master_gid;
@@ -1283,6 +1286,7 @@ bool CMainDocument::IsUserAuthorized() {
     }       // if (g_use_sandbox)
 #endif      // SANDBOX
 #endif      // #ifndef _WIN32
+#endif      // #ifndef __WXMAC__
 
     return true;
 }
@@ -2025,8 +2029,10 @@ int CMainDocument::ResetNoticeState() {
 // Replace CRLFs and LFs with HTML breaks.
 //
 void eol_to_br(wxString& strMessage) {
-    strMessage.Replace(wxT("\r\n"), wxT("<BR>"));
-    strMessage.Replace(wxT("\n"), wxT("<BR>"));
+    strMessage.Replace(wxT("\r\n"), wxT("<br>"));
+    strMessage.Replace(wxT("\n"), wxT("<br>"));
+    strMessage.Replace(wxT("<br />"), wxT("<br>"));
+    strMessage.Replace(wxT("<br><br>"), wxT("<br>"));
 }
 
 // Remove CRLFs and LFs
@@ -2109,17 +2115,10 @@ done:
 
 
 MESSAGE* CMainDocument::message(unsigned int i) {
-    MESSAGE* pMessage = NULL;
+    if (messages.messages.empty() || messages.messages.size() <= i)
+        return NULL;
 
-    try {
-        if (!messages.messages.empty())
-            pMessage = messages.messages.at(i);
-    }
-    catch (std::out_of_range e) {
-        pMessage = NULL;
-    }
-
-    return pMessage;
+    return messages.messages.at(i);
 }
 
 
@@ -2717,4 +2716,10 @@ wxString FormatTime(double secs) {
 wxString format_number(double x, int nprec) {
     return wxNumberFormatter::ToString(x, nprec);
 
+}
+
+// the autoattach process deletes the installer filename file when done
+//
+bool autoattach_in_progress() {
+    return boinc_file_exists(ACCOUNT_DATA_FILENAME) != 0;
 }

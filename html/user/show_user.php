@@ -89,20 +89,21 @@ if ($format=="xml"){
     page_head($user->name);
     start_table();
     echo "<tr><td valign=top>";
-    start_table();
+    start_table("table-striped");
     show_user_summary_public($user);
     end_table();
     project_user_summary($user);
     show_other_projects($user, false);
     echo "</td><td valign=top>";
-    start_table();
+    start_table("table-striped");
     show_badges_row(true, $user);
     if (!DISABLE_PROFILES) {
         show_profile_link($user);
     }
     community_links($community_links, $logged_in_user);
     end_table();
-    echo "</td></tr></table>";
+    echo "</td></tr>";
+    end_table();
     page_tail(true);
 }
 

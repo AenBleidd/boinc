@@ -377,9 +377,10 @@ int wu_is_infeasible_fast(
 
 // Do checks that require DB access for whether we can send this job,
 // and return:
-// 0 if OK to send
-// 1 if can't send to this host
-// 2 if can't send to ANY host
+// CHECK_OK if OK to send
+// CHECK_NO_HOST if can't send to this host
+// CHECK_NO_ANY if can't send to ANY host
+//  e.g. WU error mask is nonzero
 //
 int slow_check(
     WU_RESULT& wu_result,       // the job cache entry.
@@ -404,7 +405,7 @@ int slow_check(
             log_messages.printf(MSG_CRITICAL,
                 "send_work: can't get result count (%s)\n", boincerror(retval)
             );
-            return 1;
+            return CHECK_NO_HOST;
         } else {
             if (n>0) {
                 if (config.debug_send_job) {
@@ -413,7 +414,7 @@ int slow_check(
                         g_reply->user.id, n, wu.id
                     );
                 }
-                return 1;
+                return CHECK_NO_HOST;
             }
         }
     } else if (config.one_result_per_host_per_wu) {
@@ -428,7 +429,7 @@ int slow_check(
             log_messages.printf(MSG_CRITICAL,
                 "send_work: can't get result count (%s)\n", boincerror(retval)
             );
-            return 1;
+            return CHECK_NO_HOST;
         } else {
             if (n>0) {
                 if (config.debug_send_job) {
@@ -437,7 +438,7 @@ int slow_check(
                         g_reply->host.id, n, wu.id
                     );
                 }
-                return 1;
+                return CHECK_NO_HOST;
             }
         }
     }
@@ -456,13 +457,13 @@ int slow_check(
             log_messages.printf(MSG_CRITICAL,
                 "can't get fields for [WU#%lu]: %s\n", db_wu.id, boincerror(retval)
             );
-            return 1;
+            return CHECK_NO_HOST;
         }
 
         // check wu.error_mask
         //
         if (vals[2] != 0) {
-            return 2;
+            return CHECK_NO_ANY;
         }
 
         if (app_hr_type(*app)) {
@@ -479,7 +480,7 @@ int slow_check(
                 // are processed first.
                 //
                 wu_result.infeasible_count++;
-                return 1;
+                return CHECK_NO_HOST;
             }
         }
         if (app->homogeneous_app_version) {
@@ -493,11 +494,11 @@ int slow_check(
                     );
                 }
                 wu_result.infeasible_count++;
-                return 1;
+                return CHECK_NO_HOST;
             }
         }
     }
-    return 0;
+    return CHECK_OK;
 }
 
 // Check for pathological conditions that mean

@@ -603,6 +603,10 @@ int WORKUNIT::parse(XML_PARSER& xp) {
         if (xp.parse_double("rsc_fpops_bound", rsc_fpops_bound)) continue;
         if (xp.parse_double("rsc_memory_bound", rsc_memory_bound)) continue;
         if (xp.parse_double("rsc_disk_bound", rsc_disk_bound)) continue;
+        if (xp.match_tag("job_keywords")) {
+            job_keywords.parse(xp);
+            continue;
+        }
     }
     return ERR_XML_PARSE;
 }
@@ -2608,10 +2612,58 @@ int RPC_CLIENT::set_cc_config(CC_CONFIG& config, LOG_FLAGS& log_flags) {
     mf.init_buf_write(buf, sizeof(buf));
     config.write(mf, log_flags);
 
-    retval = rpc.do_rpc(buf);
+    string x = string("<set_cc_config>\n")+buf+string("</set_cc_config>\n");
+    retval = rpc.do_rpc(x.c_str());
     if (retval) return retval;
     return rpc.parse_reply();
 }
+
+int RPC_CLIENT::get_app_config(const char* url, APP_CONFIGS& config) {
+    int retval;
+    static LOG_FLAGS log_flags;
+    SET_LOCALE sl;
+    RPC rpc(this);
+    MSG_VEC mv;
+    char buf[1024];
+
+    sprintf(buf,
+        "<get_app_config>\n"
+        "    <url>%s</url>\n"
+        "</get_app_config>\n",
+        url
+    );
+    retval = rpc.do_rpc(buf);
+    if (retval) return retval;
+
+    while (!rpc.xp.get_tag()) {
+        if (rpc.xp.match_tag("app_config")) {
+            return config.parse(rpc.xp, mv, log_flags);
+        } else if (rpc.xp.match_tag("error")) {
+            rpc.xp.element_contents("</error>", buf, sizeof(buf));
+            printf("get_app_config error: %s\n", buf);
+            return -1;
+        }
+    }
+    return ERR_XML_PARSE;
+}
+
+int RPC_CLIENT::set_app_config(const char* url, APP_CONFIGS& config) {
+    SET_LOCALE sl;
+    char buf[64000];
+    MIOFILE mf;
+    int retval;
+    RPC rpc(this);
+
+    mf.init_buf_write(buf, sizeof(buf));
+    mf.printf("<url>%s</url>\n", url);
+    config.write(mf);
+
+    string x = string("<set_app_config>\n")+buf+string("</set_app_config>\n");
+    retval = rpc.do_rpc(x.c_str());
+    if (retval) return retval;
+    return rpc.parse_reply();
+}
+
 
 static int parse_notices(XML_PARSER& xp, NOTICES& notices) {
     int retval;

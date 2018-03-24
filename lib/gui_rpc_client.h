@@ -39,6 +39,7 @@
 #include "common_defs.h"
 #include "filesys.h"
 #include "hostinfo.h"
+#include "keyword.h"
 #include "miofile.h"
 #include "network.h"
 #include "notice.h"
@@ -232,6 +233,7 @@ struct WORKUNIT {
     double rsc_disk_bound;
     PROJECT* project;
     APP* app;
+    JOB_KEYWORDS job_keywords;
 
     WORKUNIT();
 
@@ -491,6 +493,7 @@ struct ACCT_MGR_INFO {
     ACCT_MGR_INFO();
 
     int parse(XML_PARSER&);
+    void print();
     void clear();
 };
 
@@ -752,6 +755,8 @@ struct RPC_CLIENT {
     int set_global_prefs_override_struct(GLOBAL_PREFS&, GLOBAL_PREFS_MASK&);
     int get_cc_config(CC_CONFIG& config, LOG_FLAGS& log_flags);
     int set_cc_config(CC_CONFIG& config, LOG_FLAGS& log_flags);
+    int get_app_config(const char* url, APP_CONFIGS& conf);
+    int set_app_config(const char* url, APP_CONFIGS& conf);
     int get_daily_xfer_history(DAILY_XFER_HISTORY&);
 	int set_language(const char*);
 };
@@ -805,7 +810,9 @@ struct RPC {
 
 #elif defined(__APPLE__) && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_4)
 // uselocale() is not available in OS 10.3.9 so use weak linking
+#if HAVE_XLOCALE_H
 #include <xlocale.h>
+#endif
 extern int		freelocale(locale_t) __attribute__((weak_import));
 extern locale_t	newlocale(int, __const char *, locale_t) __attribute__((weak_import));
 extern locale_t	uselocale(locale_t) __attribute__((weak_import));

@@ -25,6 +25,7 @@
 #include "common_defs.h"
 #include "md5_file.h"
 #include "coproc.h"
+#include "keyword.h"
 
 #include "edf_sim.h"
 
@@ -65,7 +66,6 @@ struct HOST_USAGE {
     double gpu_usage;
     double gpu_ram;
     double avg_ncpus;
-    double max_ncpus;
     double mem_usage;
         // mem usage if specified by the plan class
         // (overrides wu.rsc_memory_bound)
@@ -85,7 +85,6 @@ struct HOST_USAGE {
         gpu_usage = 0;
         gpu_ram = 0;
         avg_ncpus = 1;
-        max_ncpus = 1;
         mem_usage = 0;
         projected_flops = 0;
         peak_flops = 0;
@@ -97,7 +96,6 @@ struct HOST_USAGE {
         gpu_usage = 0;
         gpu_ram = 0;
         avg_ncpus = 1;
-        max_ncpus = 1;
         mem_usage = 0;
         if (flops <= 0) flops = 1e9;
         projected_flops = flops;
@@ -345,7 +343,7 @@ struct SCHEDULER_REQUEST {
         // Don't modify user prefs or CPID
     int last_rpc_dayofyear;
     int current_rpc_dayofyear;
-    std::string client_opaque;
+    USER_KEYWORDS user_keywords;
 
     SCHEDULER_REQUEST();
     ~SCHEDULER_REQUEST(){};
@@ -367,7 +365,7 @@ struct DISK_LIMITS {
 struct PROJECT_PREFS {
     std::vector<APP_INFO> selected_apps;
     bool dont_use_proc_type[NPROC_TYPES];
-    bool allow_non_selected_apps;
+    bool allow_non_preferred_apps;
     bool allow_beta_work;
     int max_jobs_in_progress;
     int max_cpus;
@@ -376,7 +374,7 @@ struct PROJECT_PREFS {
 
     PROJECT_PREFS() {
         memset(&dont_use_proc_type, 0, sizeof(dont_use_proc_type));
-        allow_non_selected_apps = false;
+        allow_non_preferred_apps = false;
         allow_beta_work = false;
         max_jobs_in_progress = 0;
         max_cpus = 0;

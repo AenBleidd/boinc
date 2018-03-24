@@ -32,8 +32,23 @@
 IMPLEMENT_DYNAMIC_CLASS(CDlgItemProperties, wxDialog)
 
 BEGIN_EVENT_TABLE(CDlgItemProperties, wxDialog)
+    EVT_BUTTON(ID_COPYSELECTED, CDlgItemProperties::OnCopySelected)
+    EVT_BUTTON(ID_COPYALL, CDlgItemProperties::OnCopyAll)
 
 END_EVENT_TABLE()
+
+typedef enum _ITEM_TYPE {
+    ItemTypeSection,
+    ItemTypeProperty
+} ITEM_TYPE;
+
+struct ITEM {
+    ITEM(ITEM_TYPE _item_type, const wxString &_name, const wxString &_value = wxEmptyString) :
+        item_type(_item_type), name(_name), value(_value) {}
+    ITEM_TYPE item_type;
+    wxString name;
+    wxString value;
+};
 
 /* Constructor */
 CDlgItemProperties::CDlgItemProperties(wxWindow* parent) : 
@@ -48,33 +63,30 @@ CDlgItemProperties::CDlgItemProperties(wxWindow* parent) :
     
     m_bSizer1 = new wxBoxSizer( wxVERTICAL );
     
-    m_scrolledWindow = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-    m_scrolledWindow->SetScrollRate( 5, 5 );
-    wxBoxSizer* m_bSizer2;
-    m_bSizer2 = new wxBoxSizer( wxVERTICAL );
+    const long style = wxBORDER_NONE;
+    m_txtInformation = new wxHtmlWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, style, wxEmptyString );
+    m_txtInformation->Bind(wxEVT_LEFT_DOWN, &CDlgItemProperties::OnMouseButtonEvent, this);
+    m_txtInformation->Bind(wxEVT_LEFT_UP, &CDlgItemProperties::OnMouseButtonEvent, this);
     
-    m_gbSizer = new wxGridBagSizer( 0, 0 );
-    m_gbSizer->SetCols(2);
-    m_gbSizer->AddGrowableCol( 1 );
-    m_gbSizer->SetFlexibleDirection( wxBOTH );
-    m_gbSizer->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+    m_bSizer1->Add( m_txtInformation, 1, wxEXPAND | wxALL, 5 );
     
-    m_bSizer2->Add( m_gbSizer, 1, wxEXPAND, 5 );
-    
-    m_scrolledWindow->SetSizer( m_bSizer2 );
-    m_scrolledWindow->Layout();
-    m_bSizer2->Fit( m_scrolledWindow );
-    m_bSizer1->Add( m_scrolledWindow, 1, wxEXPAND | wxALL, 5 );
-    
+    wxBoxSizer *bSizer2 = new wxBoxSizer(wxHORIZONTAL);
+    m_bSizer1->Add(bSizer2, 0, wxALIGN_BOTTOM | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 12);
+
+    m_pCopyAllButton = new wxButton(this, ID_COPYALL, _("Copy &All"), wxDefaultPosition, wxDefaultSize);
+    bSizer2->Add(m_pCopyAllButton, 0, wxALIGN_BOTTOM | wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
+
+    m_pCopySelectedButton = new wxButton(this, ID_COPYSELECTED, _("Copy &Selected"), wxDefaultPosition, wxDefaultSize);
+    bSizer2->Add(m_pCopySelectedButton, 0, wxALIGN_BOTTOM | wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
+    m_pCopySelectedButton->Enable(false);
+
     m_btnClose = new wxButton( this, wxID_OK, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
     m_btnClose->SetDefault(); 
-    m_bSizer1->Add( m_btnClose, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    bSizer2->Add( m_btnClose, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
     
     SetSizer( m_bSizer1 );
     Layout();
     
-    m_current_row=0;
-
     int currentTabView = pFrame->GetCurrentViewPage();
     switch(currentTabView) {
     case VW_PROJ:
@@ -350,8 +362,7 @@ void CDlgItemProperties::renderInfos(PROJECT* project_in) {
         dt.Set((time_t)project->last_rpc_time);
         addProperty(_("Last scheduler reply"), dt.Format());
     }
-    m_gbSizer->Layout();
-    m_scrolledWindow->FitInside();
+    renderInfos();
 }
 
 // show task properties
@@ -387,6 +398,22 @@ void CDlgItemProperties::renderInfos(RESULT* result) {
         addProperty(_("Estimated computation size"),
             wxString::Format(wxT("%s GFLOPs"), format_number(wup->rsc_fpops_est/1e9, 0))
         );
+        if (!wup->job_keywords.empty()) {
+            bool first = true;
+            std::string buf;
+            for (unsigned int i=0; i<wup->job_keywords.keywords.size(); i++) {
+                KEYWORD& kw = wup->job_keywords.keywords[i];
+                if (first) {
+                    first = false;
+                } else {
+                    buf += std::string(", ");
+                }
+                buf += kw.name;
+            }
+            addProperty(_("Keywords"),
+                wxString(buf.c_str(), wxConvUTF8)
+            );
+        }
     }
     if (result->active_task) {
         addProperty(_("CPU time"), FormatTime(result->current_cpu_time));
@@ -422,8 +449,7 @@ void CDlgItemProperties::renderInfos(RESULT* result) {
     if (avp) {
         addProperty(_("Executable"), wxString(avp->exec_filename, wxConvUTF8));
     }
-    m_gbSizer->Layout();
-    m_scrolledWindow->FitInside();
+    renderInfos();
 }
 
 //
@@ -497,24 +523,78 @@ wxString CDlgItemProperties::FormatApplicationName(RESULT* result ) {
 }
 
 
+void CDlgItemProperties::renderInfos() {
+    wxString str_bg;
+    str_bg.Printf(wxT("#%x"), this->GetBackgroundColour().GetRGB());
+    wxString str_fg;
+    str_fg.Printf(wxT("#%x"), this->GetForegroundColour().GetRGB());
+
+    std::string content;
+    content += "<html>";
+    content += "<body bgcolor='" + str_bg + "'>";
+    content += "<font";
+    content += " color='" + str_fg + "' ";
+    content += " face='" + this->GetFont().GetFaceName() + "' ";
+    content += ">";
+    content += "<table width='100%'>";
+    for (size_t i = 0; i < m_items.size(); ++i) {
+        if (m_items[i].item_type == ItemTypeSection) {
+            content += "<tr>";
+            content += "<td colspan='2' nowrap>";
+            content += "<b>";
+            content += m_items[i].name;
+            content += "</b>";
+            content += "</td>";
+            content += "</tr>";
+        } else if (m_items[i].item_type == ItemTypeProperty) {
+            content += "<tr>";
+            content += "<td nowrap>";
+            content += m_items[i].name;
+            content += "</td>";
+            content += "<td nowrap>";
+            content += m_items[i].value;
+            content += "</td>";
+            content += "</tr>";
+        }        
+    }
+    content += "</table>";
+    content += "</font>";
+    content += "</body>";
+    content += "</html>";
+    m_txtInformation->SetPage(content);
+}
+
+
 // adds a title section label to the dialog 
 void CDlgItemProperties::addSection(const wxString& title) {
-    wxStaticText* staticText = new wxStaticText(m_scrolledWindow, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, 0);
-    staticText->Wrap(-1);
-    staticText->SetFont(wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString));    
-    m_gbSizer->Add(staticText, wxGBPosition( m_current_row, 0), wxGBSpan(1, 2), wxALL|wxEXPAND, 3);
-    m_current_row++;
+    m_items.push_back(ITEM(ItemTypeSection, title));
 }
 
 // adds a property row to the dialog 
 void CDlgItemProperties::addProperty(const wxString& name, const wxString& value) {
-    
-    wxStaticText* staticText = new wxStaticText( m_scrolledWindow, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, 0 );
-    staticText->Wrap( -1 );
-    m_gbSizer->Add( staticText, wxGBPosition( m_current_row, 0 ), wxGBSpan( 1, 1 ), wxALL, 3 );
-    
-    staticText = new wxStaticText( m_scrolledWindow, wxID_ANY, value, wxDefaultPosition, wxDefaultSize, 0 );
-    staticText->Wrap( -1 );
-    m_gbSizer->Add( staticText, wxGBPosition( m_current_row, 1 ), wxGBSpan( 1, 1 ), wxALL|wxEXPAND, 3 );
-    m_current_row++;
+    m_items.push_back(ITEM(ItemTypeProperty, name, value));
+}
+
+void CDlgItemProperties::copyTextToClipboard(const wxString& text) {
+    if (wxTheClipboard->Open()) {
+#if defined(__WXGTK__) || defined(__WXQT__)
+        wxTheClipboard->UsePrimarySelection(false);
+#endif
+        wxTheClipboard->Clear();
+        wxTheClipboard->SetData(new wxTextDataObject(text));
+        wxTheClipboard->Close();
+    }
+}
+
+void CDlgItemProperties::OnMouseButtonEvent(wxMouseEvent& event) {
+    m_pCopySelectedButton->Enable(m_txtInformation->SelectionToText() != wxEmptyString);
+    event.Skip();
+}
+
+void CDlgItemProperties::OnCopySelected( wxCommandEvent& ) {
+    copyTextToClipboard(m_txtInformation->SelectionToText());
+}
+
+void CDlgItemProperties::OnCopyAll( wxCommandEvent& ) {
+    copyTextToClipboard(m_txtInformation->ToText());
 }

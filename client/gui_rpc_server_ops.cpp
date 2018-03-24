@@ -927,6 +927,18 @@ static void handle_project_attach_poll(GUI_RPC_CONN& grc) {
     );
 }
 
+// This RPC, regrettably, serves 3 purposes
+// - to join an account manager
+//   pass URL of account manager and account name/passwd
+// - to trigger an RPC to the current account manager
+//   either
+//   pass URL/name/passwd hash of current AM
+//      TODO: get rid of this option;
+//      the manager shouldn't have to keep track of this info
+//   or pass <use_config_file/> flag: do RPC to current AM
+// - to quit an account manager
+//   url/name/passwd args are null
+//
 static void handle_acct_mgr_rpc(GUI_RPC_CONN& grc) {
     string url, name, password;
     string password_hash, name_lc;
@@ -949,7 +961,20 @@ static void handle_acct_mgr_rpc(GUI_RPC_CONN& grc) {
         }
         if (grc.xp.parse_bool("use_config_file", use_config_file)) continue;
     }
-    if (!use_config_file) {
+    if (use_config_file) {
+        // really means: use current AM
+        //
+        if (!gstate.acct_mgr_info.using_am()) {
+            bad_arg = true;
+            msg_printf(NULL, MSG_INTERNAL_ERROR,
+                "Not using account manager"
+            );
+        } else {
+            url = gstate.acct_mgr_info.master_url;
+            name = gstate.acct_mgr_info.login_name;
+            password_hash = gstate.acct_mgr_info.password_hash;
+        }
+    } else {
         bad_arg = !url_found || !name_found || !password_found;
         if (!bad_arg) {
             name_lc = name;
@@ -961,20 +986,15 @@ static void handle_acct_mgr_rpc(GUI_RPC_CONN& grc) {
                 password_hash = password.substr(5);
             }
         }
-    } else {
-        if (!strlen(gstate.acct_mgr_info.master_url)) {
-            bad_arg = true;
-            msg_printf(NULL, MSG_INTERNAL_ERROR,
-                "Account manager info missing from config file"
-            );
-        } else {
-            url = gstate.acct_mgr_info.master_url;
-            name = gstate.acct_mgr_info.login_name;
-            password_hash = gstate.acct_mgr_info.password_hash;
-        }
     }
+
     if (bad_arg) {
         grc.mfout.printf("<error>bad arg</error>\n");
+    } else if (gstate.acct_mgr_info.using_am()
+        && !url.empty()
+        && !gstate.acct_mgr_info.same_am(url.c_str(), name.c_str(), password_hash.c_str())
+    ){
+        grc.mfout.printf("<error>attached to a different AM - detach first</error>\n");
     } else {
         gstate.acct_mgr_op.do_rpc(url, name, password_hash, true);
         grc.mfout.printf("<success/>\n");
@@ -1065,15 +1085,6 @@ static void handle_set_global_prefs_override(GUI_RPC_CONN& grc) {
     }
 }
 
-static void handle_get_cc_config(GUI_RPC_CONN& grc) {
-    string s;
-    int retval = read_file_string(CONFIG_FILE, s);
-    if (!retval) {
-        strip_whitespace(s);
-        grc.mfout.printf("%s\n", s.c_str());
-    }
-}
-
 static void read_all_projects_list_file(GUI_RPC_CONN& grc) {
     string s;
     int retval = read_file_string(ALL_PROJECTS_LIST_FILENAME, s);
@@ -1087,6 +1098,38 @@ static void read_all_projects_list_file(GUI_RPC_CONN& grc) {
 
 static void handle_get_state(GUI_RPC_CONN& grc) {
     gstate.write_state_gui(grc.mfout);
+}
+
+static void handle_get_cc_config(GUI_RPC_CONN& grc) {
+    string s;
+    int retval = read_file_string(CONFIG_FILE, s);
+    if (!retval) {
+        strip_whitespace(s);
+        grc.mfout.printf("%s\n", s.c_str());
+    }
+}
+
+static void handle_get_app_config(GUI_RPC_CONN& grc) {
+    string url;
+    string s;
+    char path[MAXPATHLEN];
+    while (!grc.xp.get_tag()) {
+        if (grc.xp.parse_string("url", url)) continue;
+    }
+    PROJECT* p = gstate.lookup_project(url.c_str());
+    if (!p) {
+        grc.mfout.printf("<error>no such project</error>");
+        return;
+    }
+    sprintf(path, "%s/%s", p->project_dir(), APP_CONFIG_FILE_NAME);
+    printf("path: %s\n", path);
+    int retval = read_file_string(path, s);
+    if (retval) {
+        grc.mfout.printf("<error>app_config.xml not found</error>\n");
+    } else {
+        strip_whitespace(s);
+        grc.mfout.printf("%s\n", s.c_str());
+    }
 }
 
 static void handle_set_cc_config(GUI_RPC_CONN& grc) {
@@ -1115,6 +1158,48 @@ static void handle_set_cc_config(GUI_RPC_CONN& grc) {
         grc.mfout.printf("<success/>\n");
     }
 }
+
+static void handle_set_app_config(GUI_RPC_CONN& grc) {
+    APP_CONFIGS ac;
+    string url;
+    MSG_VEC mv;
+    LOG_FLAGS lf;
+    int parse_retval = -1;
+    while (!grc.xp.get_tag()) {
+        if (grc.xp.match_tag("app_config")) {
+            lf.init();
+            parse_retval = ac.parse(grc.xp, mv, lf);
+        } else if (grc.xp.parse_string("url", url)) {
+            continue;
+        }
+    }
+    if (parse_retval) {
+        grc.mfout.printf("<error>XML parse failed<error/>\n");
+        return;
+    }
+    PROJECT* p = gstate.lookup_project(url.c_str());
+    if (!p) {
+        grc.mfout.printf("<error>no such project<error/>\n");
+        return;
+    }
+    char path[MAXPATHLEN];
+    sprintf(path, "%s/app_config.xml", p->project_dir());
+    FILE* f = boinc_fopen(path, "w");
+    if (!f) {
+        msg_printf(p, MSG_INTERNAL_ERROR,
+            "Can't open app config file %s", path
+        );
+        grc.mfout.printf("<error>can't open app_config.xml file<error/>\n");
+        return;
+
+    }
+    MIOFILE mf;
+    mf.init_file(f);
+    ac.write(mf);
+    fclose(f);
+    grc.mfout.printf("<success/>\n");
+}
+
 
 static void handle_get_notices(GUI_RPC_CONN& grc) {
     int seqno = 0;
@@ -1333,6 +1418,7 @@ GUI_RPC gui_rpcs[] = {
     GUI_RPC("abort_file_transfer", handle_abort_file_transfer,      true,   false,  false),
     GUI_RPC("abort_result", handle_abort_result,                    true,   false,  false),
     GUI_RPC("acct_mgr_info", handle_acct_mgr_info,                  true,   false,  true),
+    GUI_RPC("get_app_config", handle_get_app_config,                true,   false,  false),
     GUI_RPC("get_cc_config", handle_get_cc_config,                  true,   false,  false),
     GUI_RPC("get_global_prefs_file", handle_get_global_prefs_file,  true,   false,  false),
     GUI_RPC("get_global_prefs_override", handle_get_global_prefs_override,
@@ -1360,6 +1446,7 @@ GUI_RPC gui_rpcs[] = {
     GUI_RPC("report_device_status", handle_report_device_status,    true,   false,  false),
     GUI_RPC("resume_result", handle_resume_result,                  true,   false,  false),
     GUI_RPC("run_benchmarks", handle_run_benchmarks,                true,   false,  false),
+    GUI_RPC("set_app_config", handle_set_app_config,                true,   false,  false),
     GUI_RPC("set_cc_config", handle_set_cc_config,                  true,   false,  false),
     GUI_RPC("set_global_prefs_override", handle_set_global_prefs_override,
                                                                     true,   false,  false),

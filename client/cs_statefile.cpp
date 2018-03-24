@@ -752,7 +752,7 @@ int CLIENT_STATE::write_state(MIOFILE& f) {
             }
         }
         for (i=0; i<workunits.size(); i++) {
-            if (workunits[i]->project == p) workunits[i]->write(f);
+            if (workunits[i]->project == p) workunits[i]->write(f, false);
         }
         for (i=0; i<results.size(); i++) {
             if (results[i]->project == p) results[i]->write(f, false);
@@ -847,7 +847,7 @@ void CLIENT_STATE::check_anonymous() {
         retval = parse_app_info(p, f);
         if (retval) {
             msg_printf_notice(p, false,
-                "http://boinc.berkeley.edu/manager_links.php?target=notice&controlid=app_info",
+                "https://boinc.berkeley.edu/manager_links.php?target=notice&controlid=app_info",
                 "%s",
                 _("Syntax error in app_info.xml")
             );
@@ -999,7 +999,7 @@ int CLIENT_STATE::write_state_gui(MIOFILE& f) {
             if (app_versions[i]->project == p) app_versions[i]->write(f);
         }
         for (i=0; i<workunits.size(); i++) {
-            if (workunits[i]->project == p) workunits[i]->write(f);
+            if (workunits[i]->project == p) workunits[i]->write(f, true);
         }
         for (i=0; i<results.size(); i++) {
             if (results[i]->project == p) results[i]->write_gui(f);

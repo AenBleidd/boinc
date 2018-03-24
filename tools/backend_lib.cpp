@@ -53,7 +53,8 @@
 
 using std::string;
 
-// the random part of output filenames needs to be hard to guess
+// Initialize RNG based on time and PID
+// (the random part of output filenames needs to be hard to guess)
 //
 static struct random_init {
     random_init() {
@@ -61,6 +62,8 @@ static struct random_init {
     }
 } random_init;
 
+// read file into buffer
+//
 int read_file(FILE* f, char* buf, int len) {
     int n = fread(buf, 1, len, f);
     buf[n] = 0;
@@ -270,7 +273,9 @@ int create_work2(
     DB_WORKUNIT& wu,
     const char* _wu_template,
     const char* result_template_filename,
-    const char* result_template_filepath,
+        // relative to project root; stored in DB
+    const char* /* result_template_filepath*/,
+        // deprecated
     vector<INFILE_DESC> &infiles,
     SCHED_CONFIG& config_loc,
     const char* command_line,
@@ -278,7 +283,6 @@ int create_work2(
     char* query_string
 ) {
     int retval;
-    char _result_template[BLOB_SIZE];
     char wu_template[BLOB_SIZE];
 
 #if 0
@@ -299,13 +303,13 @@ int create_work2(
         return retval;
     }
 
-    retval = read_filename(
-        result_template_filepath, _result_template, sizeof(_result_template)
-    );
-    if (retval) {
+    // check for presence of result template.
+    // we don't need to actually look at it.
+    //
+    const char* p = config_loc.project_path(result_template_filename);
+    if (!boinc_file_exists(p)) {
         fprintf(stderr,
-            "create_work: can't read result template file %s\n",
-            result_template_filepath
+            "create_work: result template file %s doesn't exist\n", p
         );
         return retval;
     }
