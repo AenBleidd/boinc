@@ -19,12 +19,30 @@ SetCompressor /SOLID lzma
 
 !include "MUI2.nsh"
 
-!define version "7.15.0"
-!define arch "intelx86"
-;var arch "x86_64"
-!define outfile "boinc_${version}_${arch}.exe"
+!include "include\boinc_configuration_page.nsh"
 
-OutFile ${outfile}
+!define product_name "BOINC"
+!define product_version "7.15.0"
+!define product_arch "intelx86"
+!define license_file "redist\0409\eula.rtf"
+!define setup_icon "redist\setup.ico"
+;var arch "x86_64"
+!define out_file "boinc_${product_version}_${product_arch}.exe"
+
+!define MUI_ABORTWARNING
+
+!define MUI_ICON "${setup_icon}"
+!define MUI_UNICON "${setup_icon}"
+
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "${license_file}"
+!insertmacro BOINC_PAGE_CONFIGURATION
+
+!insertmacro MUI_LANGUAGE "English"
+
+Name "${product_name}"
+Caption "${product_name}"
+OutFile "${out_file}"
 
 Section
 
