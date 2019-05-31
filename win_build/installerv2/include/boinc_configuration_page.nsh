@@ -18,11 +18,12 @@
 !macro BOINC_CONFIGURATIONPAGE_INTERFACE
     !ifndef BOINC_CONFIGURATIONPAGE_INTERFACE
         !define BOINC_CONFIGURATIONPAGE_INTERFACE
-    !endif
-  
-    !insertmacro MUI_DEFAULT BOINC_${MUI_PAGE_UNINSTALLER_PREFIX}BOINCCONFIGURATIONPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\win.bmp"
-    !if "${BOINC_${MUI_PAGE_UNINSTALLER_PREFIX}BOINCCONFIGURATIONPAGE_BITMAP}" == ""
-        !error "Invalid BOINC_${MUI_PAGE_UNINSTALLER_PREFIX}BOINCCONFIGURATIONPAGE_BITMAP"
+
+        !insertmacro MUI_DEFAULT MUI_LICENSEPAGE_BGCOLOR "/windows"    
+        LicenseBkColor "${MUI_LICENSEPAGE_BGCOLOR}"
+
+        Var boinc.configuration_page
+
     !endif
 !macroend
 
@@ -56,16 +57,15 @@
 
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
-        !insertmacro MUI_PAGE_FUNCTION_CUSTOM PRE
+        !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "These are the current installation options"
 
-        nsDialogs::Create 1044
+        nsDialogs::Create 1018
+        Pop $boinc.configuration_page
         nsDialogs::SetRTL $(^RTL)
 
-        Call ${MUI_PAGE_UNINSTALLER_FUNCPREFIX}muiPageLoadFullWindow
-        !insertmacro MUI_PAGE_FUNCTION_CUSTOM SHOW
+
+
         nsDialogs::Show
-        !insertmacro MUI_PAGE_FUNCTION_CUSTOM DESTROYED
-        Call ${MUI_PAGE_UNINSTALLER_FUNCPREFIX}muiPageUnloadFullWindow    
 
     FunctionEnd
 

@@ -26,6 +26,7 @@ SetCompressor /SOLID lzma
 !define product_arch "intelx86"
 !define license_file "redist\0409\eula.rtf"
 !define setup_icon "redist\setup.ico"
+!define setup_splash "redist\setup.bmp"
 ;var arch "x86_64"
 !define out_file "boinc_${product_version}_${product_arch}.exe"
 
@@ -43,6 +44,16 @@ SetCompressor /SOLID lzma
 Name "${product_name}"
 Caption "${product_name}"
 OutFile "${out_file}"
+
+XPStyle on
+
+Function .onInit
+        InitPluginsDir
+        File /oname=$PLUGINSDIR\splash.bmp "${setup_splash}"
+        advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
+        Pop $0
+        Delete $PLUGINSDIR\splash.bmp
+FunctionEnd
 
 Section
 
