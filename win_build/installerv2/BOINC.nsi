@@ -27,6 +27,7 @@ SetCompressor /SOLID lzma
 !define license_file "redist\0409\eula.rtf"
 !define setup_icon "redist\setup.ico"
 !define setup_splash "redist\setup.bmp"
+!define folder_icon "redist\folder.ico"
 ;var arch "x86_64"
 !define out_file "boinc_${product_version}_${product_arch}.exe"
 

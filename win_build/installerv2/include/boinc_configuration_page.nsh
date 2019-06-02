@@ -15,6 +15,9 @@
 ; You should have received a copy of the GNU Lesser General Public License
 ; along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+!include nsDialogs.nsh
+!include LogicLib.nsh
+
 !macro BOINC_CONFIGURATIONPAGE_INTERFACE
     !ifndef BOINC_CONFIGURATIONPAGE_INTERFACE
         !define BOINC_CONFIGURATIONPAGE_INTERFACE
@@ -57,16 +60,24 @@
 
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
+        Var /GLOBAL folder_image_handle
         !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "These are the current installation options"
+
+        InitPluginsDir
+        File /oname=$PLUGINSDIR\folder.ico ${folder_icon}
 
         nsDialogs::Create 1018
         Pop $boinc.configuration_page
         nsDialogs::SetRTL $(^RTL)
 
-
+        ${NSD_CreateIcon} 0 0 32 32 ""
+        Pop $0
+        ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
 
         nsDialogs::Show
 
+        ${NSD_FreeImage} $folder_image_handle
+        Delete $PLUGINSDIR\folder.ico
     FunctionEnd
 
     Function "${LEAVE}"
