@@ -26,7 +26,8 @@
         LicenseBkColor "${MUI_LICENSEPAGE_BGCOLOR}"
 
         Var boinc.configuration_page
-
+        Var boinc.configuration_page.use_screensaver_checkbox
+        Var boinc.configuration_page.service_install
     !endif
 !macroend
 
@@ -73,6 +74,30 @@
         ${NSD_CreateIcon} 0 0 32 32 ""
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
+        ${NSD_CreateLabel} 50 0 100% 11u "Program directory:"
+        ${NSD_CreateLabel} 50 11u 100% 11u "[INSTALLDIR]"
+
+        ${NSD_CreateIcon} 0 26u 32 32 ""
+        Pop $0
+        ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
+        ${NSD_CreateLabel} 50 26u 100% 11u "Data directory:"
+        ${NSD_CreateLabel} 50 37u 100% 11u "[DATADIR]"
+
+        ${NSD_CreateCheckBox} 0 60u 100% 11u "Use BOINC Screensaver"
+        Pop $boinc.configuration_page.use_screensaver_checkbox
+        ${NSD_Check} $boinc.configuration_page.use_screensaver_checkbox
+        EnableWindow $boinc.configuration_page.use_screensaver_checkbox 0
+
+        ${NSD_CreateCheckBox} 0 73u 100% 11u "Service Install"
+        Pop $boinc.configuration_page.service_install
+        ${NSD_Uncheck} $boinc.configuration_page.service_install
+        EnableWindow $boinc.configuration_page.service_install 0
+        ${NSD_CreateLabel} 11u 84u 100% 11u "This option is now disabled by defaut."
+        Pop $0
+        EnableWindow $0 0
+        ${NSD_CreateLabel} 11u 95u 100% 11u "A reboot may be required."
+        Pop $0
+        EnableWindow $0 0
 
         nsDialogs::Show
 
