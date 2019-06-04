@@ -49,11 +49,11 @@ OutFile "${out_file}"
 XPStyle on
 
 Function .onInit
-        InitPluginsDir
-        File /oname=$PLUGINSDIR\splash.bmp "${setup_splash}"
-        advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
-        Pop $0
-        Delete $PLUGINSDIR\splash.bmp
+    InitPluginsDir
+    File /oname=$PLUGINSDIR\splash.bmp "${setup_splash}"
+    advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
+    Pop $0
+    Delete $PLUGINSDIR\splash.bmp
 FunctionEnd
 
 Section
