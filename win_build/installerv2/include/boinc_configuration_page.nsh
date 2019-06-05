@@ -29,6 +29,7 @@
         Var boinc.configuration_page.use_screensaver_checkbox
         Var boinc.configuration_page.service_install
         Var boinc.configuration_page.all_users
+        Var boinc.configuration_page.show_advanced
     !endif
 !macroend
 
@@ -62,6 +63,11 @@
 
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
+        ${If} $boinc.configuration_page.show_advanced == "-1"
+            ${Abort}
+        ${EndIf}
+        StrCpy $boinc.configuration_page.show_advanced "-1"
+
         Var /GLOBAL folder_image_handle
         !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "These are the current installation options"
 
@@ -105,8 +111,12 @@
         ${NSD_Check} $boinc.configuration_page.all_users
         EnableWindow $boinc.configuration_page.all_users 0
 
-        ${NSD_CreateLabel} 0 122u 100% 11u "Click Next to use these options."
-        ${NSD_CreateLabel} 0 131u 100% 11u "Click Advanced to customize options."
+        ${NSD_CreateLabel} 0 122u 50% 11u "Click Next to use these options."
+        ${NSD_CreateLabel} 0 131u 50% 11u "Click Advanced to customize options."
+
+        ${NSD_CreateButton} 82% 125u 18% 15u "Advanced"
+        Pop $0
+        ${NSD_OnClick} $0 OnAdvanced
 
         nsDialogs::Show
 
@@ -118,3 +128,7 @@
         !insertmacro MUI_PAGE_FUNCTION_CUSTOM LEAVE
     FunctionEnd
 !macroend
+
+Function OnAdvanced
+    StrCpy $boinc.configuration_page.show_advanced "1"
+FunctionEnd
