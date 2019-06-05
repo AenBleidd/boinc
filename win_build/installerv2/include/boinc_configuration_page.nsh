@@ -28,6 +28,7 @@
         Var boinc.configuration_page
         Var boinc.configuration_page.use_screensaver_checkbox
         Var boinc.configuration_page.service_install
+        Var boinc.configuration_page.all_users
     !endif
 !macroend
 
@@ -95,9 +96,17 @@
         ${NSD_CreateLabel} 11u 84u 100% 11u "This option is now disabled by defaut."
         Pop $0
         EnableWindow $0 0
-        ${NSD_CreateLabel} 11u 95u 100% 11u "A reboot may be required."
+        ${NSD_CreateLabel} 11u 92u 100% 11u "A reboot may be required."
         Pop $0
         EnableWindow $0 0
+
+        ${NSD_CreateCheckBox} 0 105u 100% 11u "Allow all users on this computer to control BOINC"
+        Pop $boinc.configuration_page.all_users
+        ${NSD_Check} $boinc.configuration_page.all_users
+        EnableWindow $boinc.configuration_page.all_users 0
+
+        ${NSD_CreateLabel} 0 122u 100% 11u "Click Next to use these options."
+        ${NSD_CreateLabel} 0 131u 100% 11u "Click Advanced to customize options."
 
         nsDialogs::Show
 
