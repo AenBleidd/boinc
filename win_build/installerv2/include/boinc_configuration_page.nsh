@@ -25,11 +25,10 @@
         !insertmacro MUI_DEFAULT MUI_LICENSEPAGE_BGCOLOR "/windows"    
         LicenseBkColor "${MUI_LICENSEPAGE_BGCOLOR}"
 
-        Var boinc.configuration_page
-        Var boinc.configuration_page.use_screensaver_checkbox
-        Var boinc.configuration_page.service_install
-        Var boinc.configuration_page.all_users
-        Var boinc.configuration_page.show_advanced
+        Var configuration_page
+        Var use_screensaver_checkbox
+        Var service_install
+        Var all_users
     !endif
 !macroend
 
@@ -63,11 +62,6 @@
 
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
-        ${If} $boinc.configuration_page.show_advanced == "-1"
-            ${Abort}
-        ${EndIf}
-        StrCpy $boinc.configuration_page.show_advanced "-1"
-
         Var /GLOBAL folder_image_handle
         !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "These are the current installation options"
 
@@ -75,7 +69,7 @@
         File /oname=$PLUGINSDIR\folder.ico ${folder_icon}
 
         nsDialogs::Create 1018
-        Pop $boinc.configuration_page
+        Pop $configuration_page
         nsDialogs::SetRTL $(^RTL)
 
         ${NSD_CreateIcon} 0 0 32 32 ""
@@ -91,14 +85,14 @@
         ${NSD_CreateLabel} 50 37u 100% 11u "[DATADIR]"
 
         ${NSD_CreateCheckBox} 0 60u 100% 11u "Use BOINC Screensaver"
-        Pop $boinc.configuration_page.use_screensaver_checkbox
-        ${NSD_Check} $boinc.configuration_page.use_screensaver_checkbox
-        EnableWindow $boinc.configuration_page.use_screensaver_checkbox 0
+        Pop $use_screensaver_checkbox
+        ${NSD_Check} $use_screensaver_checkbox
+        EnableWindow $use_screensaver_checkbox 0
 
         ${NSD_CreateCheckBox} 0 73u 100% 11u "Service Install"
-        Pop $boinc.configuration_page.service_install
-        ${NSD_Uncheck} $boinc.configuration_page.service_install
-        EnableWindow $boinc.configuration_page.service_install 0
+        Pop $service_install
+        ${NSD_Uncheck} $service_install
+        EnableWindow $service_install 0
         ${NSD_CreateLabel} 11u 84u 100% 11u "This option is now disabled by defaut."
         Pop $0
         EnableWindow $0 0
@@ -107,9 +101,9 @@
         EnableWindow $0 0
 
         ${NSD_CreateCheckBox} 0 105u 100% 11u "Allow all users on this computer to control BOINC"
-        Pop $boinc.configuration_page.all_users
-        ${NSD_Check} $boinc.configuration_page.all_users
-        EnableWindow $boinc.configuration_page.all_users 0
+        Pop $all_users
+        ${NSD_Check} $all_users
+        EnableWindow $all_users 0
 
         ${NSD_CreateLabel} 0 122u 50% 11u "Click Next to use these options."
         ${NSD_CreateLabel} 0 131u 50% 11u "Click Advanced to customize options."
@@ -130,5 +124,4 @@
 !macroend
 
 Function OnAdvanced
-    StrCpy $boinc.configuration_page.show_advanced "1"
 FunctionEnd
