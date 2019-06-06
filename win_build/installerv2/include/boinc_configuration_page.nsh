@@ -70,7 +70,7 @@ Var advanced_button
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
         Var /GLOBAL folder_image_handle
-        !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "These are the current installation options"
+        !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "Customize how BOINC is installed on your computer"
 
         InitPluginsDir
         File /oname=$PLUGINSDIR\folder.ico ${folder_icon}
