@@ -38,6 +38,8 @@ SetCompressor /SOLID lzma
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "${license_file}"
+!insertmacro MUI_PAGE_COMPONENTS
+!insertmacro MUI_PAGE_DIRECTORY
 !insertmacro BOINC_PAGE_CONFIGURATION
 
 !insertmacro MUI_LANGUAGE "English"

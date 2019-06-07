@@ -18,17 +18,12 @@
 !include nsDialogs.nsh
 !include LogicLib.nsh
 
-Var configuration_page
-Var installdir_change_button
-Var datadir_change_button
-Var use_screensaver_checkbox
-Var service_install
-Var service_label_disable_line
-Var service_label_description_line
-Var service_label_reboot_line
-Var all_users
-Var advanced_label
-Var advanced_button
+Var boinc_configuration_page_data_dir_label
+Var boinc_configuration_page_service_install_checkbox
+Var boinc_configuration_page_all_users_checkbox
+Var boinc_configuration_page_data_dir
+Var boinc_configuration_page_service_install
+Var boinc_configuration_page_all_users
 
 !macro BOINC_CONFIGURATIONPAGE_INTERFACE
     !ifndef BOINC_CONFIGURATIONPAGE_INTERFACE
@@ -76,60 +71,27 @@ Var advanced_button
         File /oname=$PLUGINSDIR\folder.ico ${folder_icon}
 
         nsDialogs::Create 1018
-        Pop $configuration_page
         nsDialogs::SetRTL $(^RTL)
 
         ${NSD_CreateIcon} 0 0 32 32 ""
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
-        ${NSD_CreateLabel} 50 0 65% 11u "Program directory:"
-        ${NSD_CreateLabel} 50 11u 65% 11u "[INSTALLDIR]"
+        ${NSD_CreateLabel} 50 0 65% 11u "Data directory:"
+        ${NSD_CreateLabel} 50 11u 65% 11u "[DATADIR]"
+        Pop $boinc_configuration_page_data_dir_label
 
         ${NSD_CreateButton} 82% 7u 18% 15u "Change..."
-        Pop $installdir_change_button
-        ShowWindow $installdir_change_button ${SW_HIDE}
-
-        ${NSD_CreateIcon} 0 26u 32 32 ""
         Pop $0
-        ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
-        ${NSD_CreateLabel} 50 26u 65% 11u "Data directory:"
-        ${NSD_CreateLabel} 50 37u 65% 11u "[DATADIR]"
+        ${NSD_OnClick} $0 OnDataDirChange
 
-        ${NSD_CreateButton} 82% 33u 18% 15u "Change..."
-        Pop $datadir_change_button
-        ShowWindow $datadir_change_button ${SW_HIDE}
+        ${NSD_CreateCheckBox} 0 26u 100% 11u "Service Install"
+        Pop $boinc_configuration_page_service_install_checkbox
+        ${NSD_CreateLabel} 11u 37u 100% 24u "Run project applications under an unprivileged account. This provides increased protection from faulty applications, and on Windows, it will prevent the use of applications that use graphics chips (GPUs)"
+        ${NSD_CreateLabel} 11u 45u 100% 11u "A reboot may be required."
 
-        ${NSD_CreateCheckBox} 0 50u 100% 11u "Use BOINC Screensaver"
-        Pop $use_screensaver_checkbox
-        ${NSD_Check} $use_screensaver_checkbox
-        EnableWindow $use_screensaver_checkbox 0
-
-        ${NSD_CreateCheckBox} 0 63u 100% 11u "Service Install"
-        Pop $service_install
-        ${NSD_Uncheck} $service_install
-        EnableWindow $service_install 0
-        ${NSD_CreateLabel} 11u 74u 100% 11u "This option is disabled by defaut."
-        Pop $service_label_disable_line
-        EnableWindow $service_label_disable_line 0
-        ${NSD_CreateLabel} 11u 82u 100% 24u "Run project applications under an unprivileged account. This provides increased protection from faulty applications, and on Windows, it will prevent the use of applications that use graphics chips (GPUs)"
-        Pop $service_label_description_line
-        EnableWindow $service_label_description_line 0
-        ${NSD_CreateLabel} 11u 106u 100% 11u "A reboot may be required."
-        Pop $service_label_reboot_line
-        EnableWindow $service_label_reboot_line 0
-
-        ${NSD_CreateCheckBox} 0 117u 75% 11u "Allow all users on this computer to control BOINC"
-        Pop $all_users
-        ${NSD_Check} $all_users
-        EnableWindow $all_users 0
-
-        ; ${NSD_CreateLabel} 0 128u 50% 11u "Click Next to use these options."
-        ${NSD_CreateLabel} 0 130u 75% 11u "Click Advanced to customize options."
-        Pop $advanced_label
-
-        ${NSD_CreateButton} 82% 125u 18% 15u "Advanced"
-        Pop $advanced_button
-        ${NSD_OnClick} $advanced_button OnAdvanced
+        ${NSD_CreateCheckBox} 0 69u 75% 11u "Allow all users on this computer to control BOINC"
+        Pop $boinc_configuration_page_all_users_checkbox
+        ${NSD_Check} $boinc_configuration_page_all_users_checkbox
 
         nsDialogs::Show
 
@@ -139,18 +101,12 @@ Var advanced_button
 
     Function "${LEAVE}"
         !insertmacro MUI_PAGE_FUNCTION_CUSTOM LEAVE
+
+        ${NSD_GetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
+        ${NSD_GetState} $boinc_configuration_page_service_install_checkbox $boinc_configuration_page_service_install
+        ${NSD_GetState} $boinc_configuration_page_all_users_checkbox $boinc_configuration_page_all_users
     FunctionEnd
 !macroend
 
-Function OnAdvanced
-    ShowWindow $installdir_change_button ${SW_SHOW}
-    ShowWindow $datadir_change_button ${SW_SHOW}
-    EnableWindow $use_screensaver_checkbox 1
-    EnableWindow $service_install 1
-    EnableWindow $service_label_disable_line 1
-    EnableWindow $service_label_description_line 1
-    EnableWindow $service_label_reboot_line 1
-    EnableWindow $all_users 1
-    ShowWindow $advanced_label ${SW_HIDE}
-    ShowWindow $advanced_button ${SW_HIDE}
+Function OnDataDirChange
 FunctionEnd
