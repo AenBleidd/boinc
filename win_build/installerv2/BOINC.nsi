@@ -30,6 +30,12 @@ SetCompressor /SOLID lzma
 !define folder_icon "redist\folder.ico"
 ;var arch "x86_64"
 !define out_file "boinc_${product_version}_${product_arch}.exe"
+!if ${product_arch} == "intelx86"
+    !define arch_path "Win32"
+!else
+    !define arch_path "x64"
+!endif
+!define boinc_release_path "..\Build\${arch_path}\Release"
 
 !define MUI_ABORTWARNING
 
@@ -58,6 +64,41 @@ Function .onInit
     Delete $PLUGINSDIR\splash.bmp
 FunctionEnd
 
-Section
+Section "-Common"
+    SetOutPath $INSTDIR
+    File "..\..\curl\ca-bundle.crt"
+    File "..\..\COPYING"
+    File "..\..\COPYING.LESSER"
+    File "..\..\COPYRIGHT"
+SectionEnd
 
+SectionGroup "BOINC Client"
+    Section "Client"
+        SetOutPath $INSTDIR
+        File "${boinc_release_path}\boinc.exe"
+
+        SetOutPath $boinc_configuration_page_data_dir
+        File "redist\all_projects_list.xml"
+
+        CreateDirectory "$boinc_configuration_page_data_dir\projects"
+
+        CreateDirectory "$boinc_configuration_page_data_dir\slots"
+    SectionEnd
+    Section "Command line tool"
+        SetOutPath $INSTDIR
+        File "${boinc_release_path}\boinccmd.exe"
+    SectionEnd
+    Section "Service controller"
+        SetOutPath $INSTDIR
+    SectionEnd
+    Section "Tray utility"
+        SetOutPath $INSTDIR
+    SectionEnd
+SectionGroupEnd
+
+Section "BOINC Manager"
+    SetOutPath $INSTDIR
+SectionEnd
+
+Section "BOINC Screensaver"
 SectionEnd
