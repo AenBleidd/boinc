@@ -102,7 +102,6 @@ Var boinc_configuration_page_all_users
     Function "${LEAVE}"
         !insertmacro MUI_PAGE_FUNCTION_CUSTOM LEAVE
 
-        ${NSD_GetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
         ${NSD_GetState} $boinc_configuration_page_service_install_checkbox $boinc_configuration_page_service_install
         ${NSD_GetState} $boinc_configuration_page_all_users_checkbox $boinc_configuration_page_all_users
 
