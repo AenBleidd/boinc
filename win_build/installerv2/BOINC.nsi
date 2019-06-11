@@ -36,6 +36,11 @@ SetCompressor /SOLID lzma
     !define arch_path "x64"
 !endif
 !define boinc_release_path "..\Build\${arch_path}\Release"
+!define boinc_dependencies_path "..\..\..\boinc_depends_win_vs2013"
+!define boinc_dependencies_curl_path "${boinc_dependencies_path}\curl\mswin\${arch_path}\Release\bin"
+!define boinc_dependencies_openssl_path "${boinc_dependencies_path}\openssl\mswin\${arch_path}\Release\bin"
+!define boinc_dependencies_zlib_path "${boinc_dependencies_path}\zlib\mswin\${arch_path}\Release\bin"
+!define boinc_msvc_path "..\Build\${arch_path}\Release"
 
 !define MUI_ABORTWARNING
 
@@ -66,16 +71,22 @@ FunctionEnd
 
 Section "-Common"
     SetOutPath $INSTDIR
-    File "..\..\curl\ca-bundle.crt"
     File "..\..\COPYING"
     File "..\..\COPYING.LESSER"
     File "..\..\COPYRIGHT"
+    File "${boinc_msvc_path}\msvcp100.dll"
+    File "${boinc_msvc_path}\msvcr100.dll"
 SectionEnd
 
 SectionGroup "BOINC Client"
     Section "Client"
         SetOutPath $INSTDIR
         File "${boinc_release_path}\boinc.exe"
+        File "${boinc_dependencies_curl_path}\libcurl.dll"
+        File "${boinc_dependencies_openssl_path}\libeay32.dll"
+        File "${boinc_dependencies_openssl_path}\ssleay32.dll"
+        File "${boinc_dependencies_zlib_path}\zlib1.dll"
+        File "..\..\curl\ca-bundle.crt"
 
         SetOutPath $boinc_configuration_page_data_dir
         File "redist\all_projects_list.xml"
@@ -83,13 +94,14 @@ SectionGroup "BOINC Client"
         CreateDirectory "$boinc_configuration_page_data_dir\projects"
 
         CreateDirectory "$boinc_configuration_page_data_dir\slots"
+
+        ${If} $boinc_configuration_page_service_install == "1"
+          File "${boinc_release_path}\boincsvcctrl.exe"
+        ${EndIf}
     SectionEnd
     Section "Command line tool"
         SetOutPath $INSTDIR
         File "${boinc_release_path}\boinccmd.exe"
-    SectionEnd
-    Section "Service controller"
-        SetOutPath $INSTDIR
     SectionEnd
     Section "Tray utility"
         SetOutPath $INSTDIR
