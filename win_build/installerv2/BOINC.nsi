@@ -65,22 +65,6 @@ OutFile "${out_file}"
 
 XPStyle on
 
-Function .onInit
-    InitPluginsDir
-    File /oname=$PLUGINSDIR\splash.bmp "${setup_splash}"
-    advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
-    Pop $0
-    Delete $PLUGINSDIR\splash.bmp
-
-    !if ${product_arch} == "intelx86"
-        StrCpy $INSTDIR $PROGRAMFILES\${product_name}
-    !else
-        StrCpy $INSTDIR $PROGRAMFILES64\${product_name}
-    !endif
-    SetShellVarContext all
-    StrCpy $boinc_configuration_page_data_dir $APPDATA
-FunctionEnd
-
 Section "-Common"
     SetOutPath $INSTDIR
     File "${boinc_src_path}\COPYING"
@@ -90,7 +74,7 @@ Section "-Common"
     File "${boinc_msvc_path}\msvcr100.dll"
 SectionEnd
 
-Section "BOINC Client"
+Section "BOINC Client" sec_boinc_client
     SetOutPath $INSTDIR
     File "${boinc_release_path}\boinc.exe"
     File "${boinc_dependencies_curl_path}\libcurl.dll"
@@ -137,3 +121,21 @@ Section "BOINC Screensaver"
     SetOutPath $SYSDIR
     File "${boinc_release_path}\boinc.scr"
 SectionEnd
+
+Function .onInit
+    InitPluginsDir
+    File /oname=$PLUGINSDIR\splash.bmp "${setup_splash}"
+    advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
+    Pop $0
+    Delete $PLUGINSDIR\splash.bmp
+
+    !if ${product_arch} == "intelx86"
+        StrCpy $INSTDIR $PROGRAMFILES\${product_name}
+    !else
+        StrCpy $INSTDIR $PROGRAMFILES64\${product_name}
+    !endif
+    SetShellVarContext all
+    StrCpy $boinc_configuration_page_data_dir $APPDATA
+
+    StrCpy $sec_boinc_client_name ${sec_boinc_client}
+FunctionEnd

@@ -24,6 +24,7 @@ Var boinc_configuration_page_all_users_checkbox
 Var boinc_configuration_page_data_dir
 Var boinc_configuration_page_service_install
 Var boinc_configuration_page_all_users
+Var sec_boinc_client_name
 
 !macro BOINC_CONFIGURATIONPAGE_INTERFACE
     !ifndef BOINC_CONFIGURATIONPAGE_INTERFACE
@@ -64,6 +65,14 @@ Var boinc_configuration_page_all_users
 
 !macro BOINC_FUNCTION_CONFIGURATIONPAGE PRE LEAVE
     Function "${PRE}"
+        SectionGetFlags $sec_boinc_client_name $R0
+        IntOp $R0 $R0 & ${SF_SELECTED}
+        IntCmp $R0 ${SF_SELECTED} show
+
+        Abort
+
+        show:
+
         Var /GLOBAL folder_image_handle
         !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "Customize how BOINC is installed on your computer"
 
