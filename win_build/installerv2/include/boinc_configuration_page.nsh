@@ -105,8 +105,17 @@ Var boinc_configuration_page_all_users
         ${NSD_GetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
         ${NSD_GetState} $boinc_configuration_page_service_install_checkbox $boinc_configuration_page_service_install
         ${NSD_GetState} $boinc_configuration_page_all_users_checkbox $boinc_configuration_page_all_users
+
+        !if $boinc_configuration_page_all_users == "1"
+            SetShellVarContext all
+        !else
+            SetShellVarContext current
+        !endif
     FunctionEnd
 !macroend
 
 Function OnDataDirChange
+    nsDialogs::SelectFolderDialog "Select Data folder location" $boinc_configuration_page_data_dir
+    Pop $boinc_configuration_page_data_dir
+    ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
 FunctionEnd
