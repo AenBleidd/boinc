@@ -39,8 +39,11 @@ SetCompressor /SOLID lzma
 !define boinc_dependencies_path "..\..\..\boinc_depends_win_vs2013"
 !define boinc_dependencies_curl_path "${boinc_dependencies_path}\curl\mswin\${arch_path}\Release\bin"
 !define boinc_dependencies_openssl_path "${boinc_dependencies_path}\openssl\mswin\${arch_path}\Release\bin"
+!define boinc_dependencies_sqlite3_path "${boinc_dependencies_path}\sqlite3\mswin\${arch_path}\Release\bin"
 !define boinc_dependencies_zlib_path "${boinc_dependencies_path}\zlib\mswin\${arch_path}\Release\bin"
 !define boinc_msvc_path "..\Build\${arch_path}\Release"
+!define boinc_skin_name "Default"
+!define boinc_skin_path "..\..\clientgui\skins\${boinc_skin_name}"
 
 !define MUI_ABORTWARNING
 
@@ -78,38 +81,42 @@ Section "-Common"
     File "${boinc_msvc_path}\msvcr100.dll"
 SectionEnd
 
-SectionGroup "BOINC Client"
-    Section "Client"
-        SetOutPath $INSTDIR
-        File "${boinc_release_path}\boinc.exe"
-        File "${boinc_dependencies_curl_path}\libcurl.dll"
-        File "${boinc_dependencies_openssl_path}\libeay32.dll"
-        File "${boinc_dependencies_openssl_path}\ssleay32.dll"
-        File "${boinc_dependencies_zlib_path}\zlib1.dll"
-        File "..\..\curl\ca-bundle.crt"
+Section "BOINC Client"
+    SetOutPath $INSTDIR
+    File "${boinc_release_path}\boinc.exe"
+    File "${boinc_dependencies_curl_path}\libcurl.dll"
+    File "${boinc_dependencies_openssl_path}\libeay32.dll"
+    File "${boinc_dependencies_openssl_path}\ssleay32.dll"
+    File "${boinc_dependencies_zlib_path}\zlib1.dll"
+    File "..\..\curl\ca-bundle.crt"
 
-        SetOutPath $boinc_configuration_page_data_dir
-        File "redist\all_projects_list.xml"
+    SetOutPath $boinc_configuration_page_data_dir
+    File "redist\all_projects_list.xml"
 
-        CreateDirectory "$boinc_configuration_page_data_dir\projects"
+    CreateDirectory "$boinc_configuration_page_data_dir\projects"
 
-        CreateDirectory "$boinc_configuration_page_data_dir\slots"
+    CreateDirectory "$boinc_configuration_page_data_dir\slots"
 
-        ${If} $boinc_configuration_page_service_install == "1"
-          File "${boinc_release_path}\boincsvcctrl.exe"
-        ${EndIf}
-    SectionEnd
-    Section "Command line tool"
-        SetOutPath $INSTDIR
-        File "${boinc_release_path}\boinccmd.exe"
-    SectionEnd
-    Section "Tray utility"
-        SetOutPath $INSTDIR
-    SectionEnd
-SectionGroupEnd
+    ${If} $boinc_configuration_page_service_install == "1"
+        File "${boinc_release_path}\boincsvcctrl.exe"
+    ${EndIf}
+
+    SetOutPath $INSTDIR\locale
+    File /r "..\..\locale\BOINC-Client.mo"
+    File "${boinc_release_path}\boinccmd.exe"
+    File "${boinc_release_path}\boinctray.exe"
+SectionEnd
 
 Section "BOINC Manager"
     SetOutPath $INSTDIR
+    File "${boinc_release_path}\boincmgr.exe"
+    File "${boinc_dependencies_sqlite3_path}\sqlite3.dll"
+
+    SetOutPath $INSTDIR\Skins\${boinc_skin_name}
+    File "${boinc_skin_path}\*"
+
+    SetOutPath $INSTDIR\locale
+    File /r "..\..\locale\BOINC-Manager.mo"
 SectionEnd
 
 Section "BOINC Screensaver"
