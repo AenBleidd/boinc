@@ -35,15 +35,16 @@ SetCompressor /SOLID lzma
 !else
     !define arch_path "x64"
 !endif
-!define boinc_release_path "..\Build\${arch_path}\Release"
-!define boinc_dependencies_path "..\..\..\boinc_depends_win_vs2013"
+!define boinc_src_path "..\.."
+!define boinc_release_path "${boinc_src_path}\win_build\Build\${arch_path}\Release"
+!define boinc_dependencies_path "${boinc_src_path}\..\boinc_depends_win_vs2013"
 !define boinc_dependencies_curl_path "${boinc_dependencies_path}\curl\mswin\${arch_path}\Release\bin"
 !define boinc_dependencies_openssl_path "${boinc_dependencies_path}\openssl\mswin\${arch_path}\Release\bin"
 !define boinc_dependencies_sqlite3_path "${boinc_dependencies_path}\sqlite3\mswin\${arch_path}\Release\bin"
 !define boinc_dependencies_zlib_path "${boinc_dependencies_path}\zlib\mswin\${arch_path}\Release\bin"
-!define boinc_msvc_path "..\Build\${arch_path}\Release"
+!define boinc_msvc_path "${boinc_src_path}\win_build\Build\${arch_path}\Release"
 !define boinc_skin_name "Default"
-!define boinc_skin_path "..\..\clientgui\skins\${boinc_skin_name}"
+!define boinc_skin_path "${boinc_src_path}\clientgui\skins\${boinc_skin_name}"
 
 !define MUI_ABORTWARNING
 
@@ -74,9 +75,9 @@ FunctionEnd
 
 Section "-Common"
     SetOutPath $INSTDIR
-    File "..\..\COPYING"
-    File "..\..\COPYING.LESSER"
-    File "..\..\COPYRIGHT"
+    File "${boinc_src_path}\COPYING"
+    File "${boinc_src_path}\COPYING.LESSER"
+    File "${boinc_src_path}\COPYRIGHT"
     File "${boinc_msvc_path}\msvcp100.dll"
     File "${boinc_msvc_path}\msvcr100.dll"
 SectionEnd
@@ -88,10 +89,10 @@ Section "BOINC Client"
     File "${boinc_dependencies_openssl_path}\libeay32.dll"
     File "${boinc_dependencies_openssl_path}\ssleay32.dll"
     File "${boinc_dependencies_zlib_path}\zlib1.dll"
-    File "..\..\curl\ca-bundle.crt"
+    File "${boinc_src_path}\curl\ca-bundle.crt"
 
     SetOutPath $boinc_configuration_page_data_dir
-    File "redist\all_projects_list.xml"
+    File "${boinc_src_path}\win_build\installerv2\redist\all_projects_list.xml"
 
     CreateDirectory "$boinc_configuration_page_data_dir\projects"
 
@@ -102,7 +103,7 @@ Section "BOINC Client"
     ${EndIf}
 
     SetOutPath $INSTDIR\locale
-    File /r "..\..\locale\BOINC-Client.mo"
+    File /r "${boinc_src_path}\locale\BOINC-Client.mo"
     File "${boinc_release_path}\boinccmd.exe"
     File "${boinc_release_path}\boinctray.exe"
 SectionEnd
@@ -116,8 +117,15 @@ Section "BOINC Manager"
     File "${boinc_skin_path}\*"
 
     SetOutPath $INSTDIR\locale
-    File /r "..\..\locale\BOINC-Manager.mo"
+    File /r "${boinc_src_path}\locale\BOINC-Manager.mo"
 SectionEnd
 
 Section "BOINC Screensaver"
+    SetOutPath $INSTDIR
+    File "${boinc_src_path}\clientscr\res\boinc_logo_black.jpg"
+    File "${boinc_release_path}\boincscr.exe"
+    File "${boinc_src_path}\api\ttf\liberation-fonts-ttf-2.00.0\LiberationSans-Regular.ttf"
+
+    SetOutPath $SYSDIR
+    File "${boinc_release_path}\boinc.scr"
 SectionEnd
