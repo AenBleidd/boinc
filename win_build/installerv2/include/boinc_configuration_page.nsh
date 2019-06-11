@@ -77,7 +77,7 @@ Var boinc_configuration_page_all_users
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
         ${NSD_CreateLabel} 50 0 65% 11u "Data directory:"
-        ${NSD_CreateLabel} 50 11u 65% 11u "[DATADIR]"
+        ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir
         Pop $boinc_configuration_page_data_dir_label
 
         ${NSD_CreateButton} 82% 7u 18% 15u "Change..."
@@ -87,9 +87,9 @@ Var boinc_configuration_page_all_users
         ${NSD_CreateCheckBox} 0 26u 100% 11u "Service Install"
         Pop $boinc_configuration_page_service_install_checkbox
         ${NSD_CreateLabel} 11u 37u 100% 24u "Run project applications under an unprivileged account. This provides increased protection from faulty applications, and on Windows, it will prevent the use of applications that use graphics chips (GPUs)"
-        ${NSD_CreateLabel} 11u 45u 100% 11u "A reboot may be required."
+        ${NSD_CreateLabel} 11u 69u 100% 11u "A reboot may be required."
 
-        ${NSD_CreateCheckBox} 0 69u 75% 11u "Allow all users on this computer to control BOINC"
+        ${NSD_CreateCheckBox} 0 93u 75% 11u "Allow all users on this computer to control BOINC"
         Pop $boinc_configuration_page_all_users_checkbox
         ${NSD_Check} $boinc_configuration_page_all_users_checkbox
 

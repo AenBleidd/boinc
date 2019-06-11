@@ -71,6 +71,14 @@ Function .onInit
     advsplash::show 1000 600 400 -1 $PLUGINSDIR\splash
     Pop $0
     Delete $PLUGINSDIR\splash.bmp
+
+    !if ${product_arch} == "intelx86"
+        StrCpy $INSTDIR $PROGRAMFILES\${product_name}
+    !else
+        StrCpy $INSTDIR $PROGRAMFILES64\${product_name}
+    !endif
+    SetShellVarContext all
+    StrCpy $boinc_configuration_page_data_dir $APPDATA
 FunctionEnd
 
 Section "-Common"
