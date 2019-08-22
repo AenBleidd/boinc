@@ -120,6 +120,7 @@ struct CLIENT_STATE {
     RUN_MODE network_run_mode;
     bool started_by_screensaver;
     bool check_all_logins;
+    bool userdir_specified;
     bool user_active;       // there has been recent mouse/kbd input
     int cmdline_gui_rpc_port;
     bool show_projects;

@@ -153,6 +153,8 @@ void CLIENT_STATE::parse_cmdline(int argc, char** argv) {
                 if (chdir(argv[++i])) {
                     perror("chdir");
                     exit(1);
+                } else {
+                    userdir_specified = true;
                 }
             }
         } else if (ARG(exit_after_app_start)) {

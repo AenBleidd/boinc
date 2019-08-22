@@ -105,6 +105,7 @@ CLIENT_STATE::CLIENT_STATE()
     old_release = 0;
     clock_change = false;
     check_all_logins = false;
+    userdir_specified = false;
     user_active = false;
     cmdline_gui_rpc_port = 0;
     run_cpu_benchmarks = false;
