@@ -190,7 +190,7 @@ static void init_core_client(int argc, char** argv) {
     gstate.now = dtime();
 
 #ifdef _WIN32
-    if (!cc_config.allow_multiple_clients) {
+    if (!cc_config.allow_multiple_clients && !gstate.userdir_specified) {
         chdir_to_data_dir();
     }
 #endif

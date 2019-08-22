@@ -1627,9 +1627,13 @@ ACTIVE_TASK* CLIENT_STATE::get_task(RESULT* rp) {
 void CLIENT_STATE::set_ncpus() {
     int ncpus_old = ncpus;
 
-    if (cc_config.ncpus>0) {
+    if (cc_config.ncpus == -1) {
+        ncpus = host_info.p_ncpus_original;
+        host_info.p_ncpus = ncpus;
+    } else if (cc_config.ncpus>0) {
         ncpus = cc_config.ncpus;
         host_info.p_ncpus = ncpus;
+    /* The following case means: if cc_config.ncpus is not set or <-1 or =0 then don't change the current value */
     } else if (host_info.p_ncpus>0) {
         ncpus = host_info.p_ncpus;
     } else {
