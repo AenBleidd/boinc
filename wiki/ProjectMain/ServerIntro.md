@@ -1,12 +1,12 @@
 # Setting up a BOINC server
 
-You can set up a BOINC server in a commercial cloud, such as [Amazon](CloudServer) or Google. The hardware and most of the software issues are taken care of for you. You'll have to pay, but it may be cheaper than using your own hardware.
+You can set up a BOINC server in a commercial cloud, such as [Amazon](CloudServer.md) or Google. The hardware and most of the software issues are taken care of for you. You'll have to pay, but it may be cheaper than using your own hardware.
 
 If you choose to use your own hardware, there are several software options:
 
 * Use [a set of Docker containers](https://github.com/marius311/boinc-server-docker) developed by Marius Millea.
 
-* Use a [BOINC server VM](VmServer) that we've created, with all the necessary software already installed. You can run this virtual machine using [VirtualBox](https://www.virtualbox.org/) on any Intel-based computer (Windows, Linux, or Mac OS X).
+* Use a [BOINC server VM](VmServer.md) that we've created, with all the necessary software already installed. You can run this virtual machine using [VirtualBox](https://www.virtualbox.org/) on any Intel-based computer (Windows, Linux, or Mac OS X).
 
 * Debian and Ubuntu offer a "boinc-server-maker" package to create BOINC projects more easily on local or remote machines. This ongoing effort is described [here](http://wiki.debian.org/BOINC/ServerGuide).
 
@@ -22,7 +22,7 @@ For experimentation and debugging, you can use almost any computer as a BOINC se
 * Put it behind a firewall; allow access via port 80 (HTTP) and optionally 443 (HTTPS).
 * Make it secure; turn off any unneeded network services, especially those that use plaintext passwords (like FTP or Telnet).
 
-Info on increasing capacity and reliability is [here](MultiHost).
+Info on increasing capacity and reliability is [here](MultiHost.md).
 
 ## Installing the BOINC server on Unix
 ### Groups and permissions
@@ -36,7 +36,7 @@ The project owner may be your existing account, or you can create a new account 
 
 **Do not use root as the project owner**.
 
-By default, the directories created by the apache web server user (on Fedora this is user '`apache`'; on Ubuntu or Debian it's '`www-data`') are not world-writable. This causes problems: for example, when the file upload handler creates a directory in the [upload hierarchy](DirHierarchy), on Fedora it's owned by (`apache`, `apache`), and the [file deleter](FileDeleter) (which runs as `boincadm`) won't be able to delete the files there.
+By default, the directories created by the apache web server user (on Fedora this is user '`apache`'; on Ubuntu or Debian it's '`www-data`') are not world-writable. This causes problems: for example, when the file upload handler creates a directory in the [upload hierarchy](DirHierarchy.md), on Fedora it's owned by (`apache`, `apache`), and the [file deleter](FileDeleter.md) (which runs as `boincadm`) won't be able to delete the files there.
 
 To solve this problem on Fedora, add `apache` to the to group `boincadm` using
 
@@ -64,7 +64,7 @@ Apache will need to be restarted for this to take effect.
 
 Both `boincadm` and `apache` or `www-data` (depending on your linux flavour) should have [umasks](http://en.wikipedia.org/wiki/Umask) that allow group read and write. The place to set this depends on what distribution is used. Normally you can use a umask of 0002 or 0007.
 
-When you create a BOINC project using [make_project](MakeProject), the critical directories are owned by `boincadm` and have the set-GID bit set; this means that any directories or files created by `apache` or  `www-data` in those directories will have group `boincadm` (not group `apache` or `www-data`). The BOINC software makes all directories group read/write. Thus, both `boincadm` and `apache`  or `www-data`  will have read/write access to all directories and files, but other users will have no access.
+When you create a BOINC project using [make_project](MakeProject.md), the critical directories are owned by `boincadm` and have the set-GID bit set; this means that any directories or files created by `apache` or  `www-data` in those directories will have group `boincadm` (not group `apache` or `www-data`). The BOINC software makes all directories group read/write. Thus, both `boincadm` and `apache`  or `www-data`  will have read/write access to all directories and files, but other users will have no access.
 
 To fix permissions on an existing project, do:
 
@@ -81,12 +81,12 @@ You may also need to change the ownership of these directories and all their sub
 When serving your project files from Apache, note that all directories up to and including the `html` directory must have execute permissions. For example, if you use `make_project` to create the project template in your home directory, your home directory must have 711 permissions as opposed to the default of 700. If this is not corrected, you will receive a `403 Forbidden` error when attempted to browse to your project page. See [more information on dealing with Apache permissions problems](http://httpd.apache.org/docs/1.3/misc/FAQ.html#forbidden).
 
 ### Installing BOINC software
-* Download and install the needed [software prerequisites](SoftwarePrereqsUnix).
-* [Download](SourceCodeGit) the BOINC software.
-* [Configure and build](BuildSystem) the BOINC software.
+* Download and install the needed [software prerequisites](SoftwarePrereqsUnix.md).
+* [Download](SourceCodeGit.md) the BOINC software.
+* [Configure and build](BuildSystem.md) the BOINC software.
 
 ### Make Project
-After installation the BOINC software, you should run the [make_project](MakeProject) script to create the project.
+After installation the BOINC software, you should run the [make_project](MakeProject.md) script to create the project.
 
 After creating a project, a check_project script is available to check your installation. The script will try to check the permissions of various directories as well as the installation of specific PHP modules which are needed for project operations.
 
@@ -110,7 +110,7 @@ Other notes:
 * Set boincadm's `PATH` environment variable to include MySQL programs (typically `/usr/local/mysql` and `/usr/local/mysql/bin`).
 * You'll want to back up your database periodically. Generally this requires stopping the project, making a copy or snapshot, and restarting. An example is [here](https://boinc.berkeley.edu/mysql_backup.txt).
 * BOINC gets MySQL compiler and linker flags from a program called `mysql_config` which comes with your MySQL distribution. This sometimes references libraries that are not part of your base system installation, such as `-lnsl` or `-lnss_files`. You may need to install additional packages (often you can use something called `mysql-dev` or `mysql-devel`) or fiddle with Makefiles.
-* MySQL can be the bottleneck in a BOINC server. To optimize its performance, read about [configuring MySQL for BOINC](MysqlConfig).
+* MySQL can be the bottleneck in a BOINC server. To optimize its performance, read about [configuring MySQL for BOINC](MysqlConfig.md).
 * [Notes on running MySQL on a cluster](https://boinc.berkeley.edu/mysql_cluster.txt).
 
 ### MySQLclient notes
@@ -223,7 +223,7 @@ Please follow these recipes only for your basic orientation. The Debian landscap
 
 ### Install software prerequisites
 
-Common packages for building BOINC (based on [Software prerequisites (Unix/Linux)](SoftwarePrereqsUnix)):
+Common packages for building BOINC (based on [Software prerequisites (Unix/Linux)](SoftwarePrereqsUnix.md)):
 
 ```
 m4

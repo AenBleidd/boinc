@@ -1,29 +1,29 @@
 # The `make_project` script
 
 The `make_project` script creates the server components of a BOINC project.
-To use it, [set up a BOINC server](ServerIntro).
+To use it, [set up a BOINC server](ServerIntro.md).
 Then, for example, type:
 ```bash
 cd BOINC_SOURCE/tools
 ./make_project --db_passwd xxx --test_app cplan
 ```
 where 'xxx' is the MySQL password of boincadm.
-This creates a project with [master URL](ServerComponents) `http://HOSTNAME/cplan/`
+This creates a project with [master URL](ServerComponents.md) `http://HOSTNAME/cplan/`
 whose directory structure is rooted at `$HOME/projects/cplan`.
 
 More specifically, `make_project` does the following:
 
-* Create the [project directory and its subdirectories](ServerDirs).
+* Create the [project directory and its subdirectories](ServerDirs.md).
 * Create the project's encryption keys if necessary. NOTE: before making the project visible to the public, you must move the code-signing private key to a highly secure (preferably non-networked) host, and delete it from the server host.
-* Create and initialize the [MySQL database](DataBase).
+* Create and initialize the [MySQL database](DataBase.md).
 * Copy source and executable files.
-* Generate the project's [configuration file](ProjectConfigFile).
+* Generate the project's [configuration file](ProjectConfigFile.md).
 
 With the `--test_app` option,
-the project will have a [test application](ExampleApps) (uppercase)
+the project will have a [test application](ExampleApps.md) (uppercase)
 and daemons to generate and handle work for this application.
 This lets you quickly check that the project is working;
-you can remove the test application later by marking it deprecated in your [administrative web interface](HtmlOps).
+you can remove the test application later by marking it deprecated in your [administrative web interface](HtmlOps.md).
 
 The following steps complete the project setup:
 
@@ -32,7 +32,7 @@ The following steps complete the project setup:
 sudo ln -s /home/boincadm/projects/cplan/cplan.httpd.conf /etc/apache2/sites-enabled
 ```
 
-* Generate a username/password file for your [administrative web interface](HtmlOps) using:
+* Generate a username/password file for your [administrative web interface](HtmlOps.md) using:
 ```bash
 htpasswd -cb ~/projects/cplan/html/ops/.htpasswd username password
 ```
@@ -45,8 +45,8 @@ htpasswd -cb ~/projects/cplan/html/ops/.htpasswd username password
  $ crontab ~/projects/cplan/cplan.cronjob
 ```
 (if cron cannot run 'start', try using a helper script to set the `PATH` and `PYTHONPATH` environment variables)
-* Run [bin/xadd](XaddTool) and [UpdateVersions bin/update_versions] in the project's home directory.
-* Run [bin/start](StartTool).
+* Run [bin/xadd](XaddTool.md) and [UpdateVersions bin/update_versions] in the project's home directory.
+* Run [bin/start](StartTool.md).
 
 The script prints instructions for these steps.
 

@@ -5,7 +5,7 @@
 A **project** is an entity that does distributed computing using BOINC.
 Projects are independent; each one has its own applications, database, web site, and servers,
 and is not affected by the status of other projects.
-Each project is identified by a [master URL](ServerComponents),
+Each project is identified by a [master URL](ServerComponents.md),
 the URL of its web site.
 Multiple projects can coexist on a single server computer.
 
@@ -20,7 +20,7 @@ Each type of entity has a corresponding database table.
 ### Application
 
 An **application** includes several programs (for different platforms)
-and a set of [workunits and results](JobIn).
+and a set of [workunits and results](JobIn.md).
 A project can include multiple applications.
 
 ### Platform
