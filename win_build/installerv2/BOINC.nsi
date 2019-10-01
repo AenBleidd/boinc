@@ -56,6 +56,7 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro BOINC_PAGE_CONFIGURATION
+!insertmacro MUI_PAGE_INSTFILES
 
 !insertmacro MUI_LANGUAGE "English"
 
@@ -66,7 +67,7 @@ OutFile "${out_file}"
 XPStyle on
 
 Section "-Common"
-    SetOutPath $INSTDIR
+    SetOutPath "$INSTDIR"
     File "${boinc_src_path}\COPYING"
     File "${boinc_src_path}\COPYING.LESSER"
     File "${boinc_src_path}\COPYRIGHT"
@@ -75,50 +76,49 @@ Section "-Common"
 SectionEnd
 
 Section "BOINC Client" sec_boinc_client
-    SetOutPath $INSTDIR
+    SetOutPath "$INSTDIR"
     File "${boinc_release_path}\boinc.exe"
+    File "${boinc_release_path}\boinccmd.exe"
+    File "${boinc_release_path}\boinctray.exe"
     File "${boinc_dependencies_curl_path}\libcurl.dll"
     File "${boinc_dependencies_openssl_path}\libeay32.dll"
     File "${boinc_dependencies_openssl_path}\ssleay32.dll"
     File "${boinc_dependencies_zlib_path}\zlib1.dll"
     File "${boinc_src_path}\curl\ca-bundle.crt"
-
-    SetOutPath $boinc_configuration_page_data_dir
-    File "${boinc_src_path}\win_build\installerv2\redist\all_projects_list.xml"
-
-    CreateDirectory "$boinc_configuration_page_data_dir\projects"
-
-    CreateDirectory "$boinc_configuration_page_data_dir\slots"
-
     ${If} $boinc_configuration_page_service_install == "1"
         File "${boinc_release_path}\boincsvcctrl.exe"
     ${EndIf}
 
-    SetOutPath $INSTDIR\locale
+    SetOutPath "$boinc_configuration_page_data_dir\BOINC"
+    File "${boinc_src_path}\win_build\installerv2\redist\all_projects_list.xml"
+
+    CreateDirectory "$boinc_configuration_page_data_dir\BOINC\projects"
+    CreateDirectory "$boinc_configuration_page_data_dir\BOINC\slots"
+
+    SetOutPath "$INSTDIR\locale"
     File /r "${boinc_src_path}\locale\BOINC-Client.mo"
-    File "${boinc_release_path}\boinccmd.exe"
-    File "${boinc_release_path}\boinctray.exe"
+
 SectionEnd
 
 Section "BOINC Manager"
-    SetOutPath $INSTDIR
+    SetOutPath "$INSTDIR"
     File "${boinc_release_path}\boincmgr.exe"
     File "${boinc_dependencies_sqlite3_path}\sqlite3.dll"
 
-    SetOutPath $INSTDIR\Skins\${boinc_skin_name}
+    SetOutPath "$INSTDIR\Skins\${boinc_skin_name}"
     File "${boinc_skin_path}\*"
 
-    SetOutPath $INSTDIR\locale
+    SetOutPath "$INSTDIR\locale"
     File /r "${boinc_src_path}\locale\BOINC-Manager.mo"
 SectionEnd
 
 Section "BOINC Screensaver"
-    SetOutPath $INSTDIR
+    SetOutPath "$INSTDIR"
     File "${boinc_src_path}\clientscr\res\boinc_logo_black.jpg"
     File "${boinc_release_path}\boincscr.exe"
     File "${boinc_src_path}\api\ttf\liberation-fonts-ttf-2.00.0\LiberationSans-Regular.ttf"
 
-    SetOutPath $SYSDIR
+    SetOutPath "$SYSDIR"
     File "${boinc_release_path}\boinc.scr"
 SectionEnd
 

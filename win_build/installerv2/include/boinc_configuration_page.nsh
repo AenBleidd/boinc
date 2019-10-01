@@ -97,10 +97,19 @@ Var sec_boinc_client_name
         Pop $boinc_configuration_page_service_install_checkbox
         ${NSD_CreateLabel} 11u 37u 100% 24u "Run project applications under an unprivileged account. This provides increased protection from faulty applications, and on Windows, it will prevent the use of applications that use graphics chips (GPUs)"
         ${NSD_CreateLabel} 11u 69u 100% 11u "A reboot may be required."
+        ; unchecked by default
+        ${If} $boinc_configuration_page_service_install == "1"
+            ${NSD_Check} $boinc_configuration_page_service_install_checkbox
+        ${EndIf}
 
         ${NSD_CreateCheckBox} 0 93u 75% 11u "Allow all users on this computer to control BOINC"
         Pop $boinc_configuration_page_all_users_checkbox
-        ${NSD_Check} $boinc_configuration_page_all_users_checkbox
+        ; checked by default
+        ${If} $boinc_configuration_page_all_users == "0"
+            ${NSD_Uncheck} $boinc_configuration_page_all_users_checkbox
+        ${Else}
+            ${NSD_Check} $boinc_configuration_page_all_users_checkbox
+        ${EndIf}
 
         nsDialogs::Show
 
@@ -114,16 +123,18 @@ Var sec_boinc_client_name
         ${NSD_GetState} $boinc_configuration_page_service_install_checkbox $boinc_configuration_page_service_install
         ${NSD_GetState} $boinc_configuration_page_all_users_checkbox $boinc_configuration_page_all_users
 
-        !if $boinc_configuration_page_all_users == "1"
+        ${If} $boinc_configuration_page_all_users == "1"
             SetShellVarContext all
-        !else
+        ${Else}
             SetShellVarContext current
-        !endif
+        ${EndIf}
     FunctionEnd
 !macroend
 
 Function OnDataDirChange
     nsDialogs::SelectFolderDialog "Select Data folder location" $boinc_configuration_page_data_dir
-    Pop $boinc_configuration_page_data_dir
-    ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
+    Pop $R0
+    ${If} $R0 != "error"
+        ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
+    ${EndIf}
 FunctionEnd
