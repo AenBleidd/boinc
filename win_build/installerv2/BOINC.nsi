@@ -15,6 +15,9 @@
 ; You should have received a copy of the GNU Lesser General Public License
 ; along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+Unicode true
+XPStyle on
+
 SetCompressor /SOLID lzma
 
 !include "MUI2.nsh"
@@ -58,13 +61,27 @@ SetCompressor /SOLID lzma
 !insertmacro BOINC_PAGE_CONFIGURATION
 !insertmacro MUI_PAGE_INSTFILES
 
+!define MUI_LANGDLL_ALLLANGUAGES
+
+;--------------------------------
+;Language Selection Dialog Settings
+
+  ;Remember the installer language
+;   !define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
+;   !define MUI_LANGDLL_REGISTRY_KEY "Software\Modern UI Test" 
+;   !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
+
 !insertmacro MUI_LANGUAGE "English"
+
+!include "include\l10n\English.nsh"
+
+!insertmacro MUI_RESERVEFILE_LANGDLL
 
 Name "${product_name}"
 Caption "${product_name}"
 OutFile "${out_file}"
 
-XPStyle on
+!define MUI_COMPONENTSPAGE_NODESC
 
 Section "-Common"
     SetOutPath "$INSTDIR"
@@ -129,6 +146,8 @@ Function .onInit
     Pop $0
     Delete $PLUGINSDIR\splash.bmp
 
+    !insertmacro MUI_LANGDLL_DISPLAY
+
     !if ${product_arch} == "intelx86"
         StrCpy $INSTDIR $PROGRAMFILES\${product_name}
     !else
@@ -139,3 +158,12 @@ Function .onInit
 
     StrCpy $sec_boinc_client_name ${sec_boinc_client}
 FunctionEnd
+
+;--------------------------------
+;Uninstaller Functions
+
+; Function un.onInit
+
+;   !insertmacro MUI_UNGETLANGUAGE
+  
+; FunctionEnd

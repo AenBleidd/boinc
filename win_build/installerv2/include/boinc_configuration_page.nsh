@@ -74,7 +74,7 @@ Var sec_boinc_client_name
         show:
 
         Var /GLOBAL folder_image_handle
-        !insertmacro MUI_HEADER_TEXT "${product_name} Configuration" "Customize how BOINC is installed on your computer"
+        !insertmacro MUI_HEADER_TEXT "${product_name} $(BOINC_CONFIGURATION_PAGE_CONFIGURATION_HEADER)" "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_HEADER_TEXT)"
 
         InitPluginsDir
         File /oname=$PLUGINSDIR\folder.ico ${folder_icon}
@@ -85,25 +85,25 @@ Var sec_boinc_client_name
         ${NSD_CreateIcon} 0 0 32 32 ""
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
-        ${NSD_CreateLabel} 50 0 65% 11u "Data directory:"
+        ${NSD_CreateLabel} 50 0 65% 11u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_DATA_DIRECTORY_TEXT):"
         ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir\BOINC
         Pop $boinc_configuration_page_data_dir_label
 
-        ${NSD_CreateButton} 82% 7u 18% 15u "Change..."
+        ${NSD_CreateButton} 82% 7u 18% 15u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_CHANGE_BUTTON_TEXT)..."
         Pop $0
         ${NSD_OnClick} $0 OnDataDirChange
 
-        ${NSD_CreateCheckBox} 0 26u 100% 11u "Service Install"
+        ${NSD_CreateCheckBox} 0 26u 100% 11u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_SERVICE_INSTALL_TEXT)"
         Pop $boinc_configuration_page_service_install_checkbox
-        ${NSD_CreateLabel} 11u 37u 100% 24u "Run project applications under an unprivileged account. This provides increased protection from faulty applications, and on Windows, it will prevent the use of applications that use graphics chips (GPUs)"
-        ${NSD_CreateLabel} 11u 69u 100% 11u "A reboot may be required."
+        ${NSD_CreateLabel} 11u 37u 100% 24u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_SERVICE_INSTALL_DESCRIPTION1)"
+        ${NSD_CreateLabel} 11u 69u 100% 11u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_SERVICE_INSTALL_DESCRIPTION2)"
         ; unchecked by default
         ${If} $boinc_configuration_page_service_install == "1"
             ${NSD_Check} $boinc_configuration_page_service_install_checkbox
         ${EndIf}
         ${NSD_OnClick} $boinc_configuration_page_service_install_checkbox OnServiceInstallChange
 
-        ${NSD_CreateCheckBox} 0 93u 75% 11u "Allow all users on this computer to control BOINC"
+        ${NSD_CreateCheckBox} 0 93u 75% 11u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_ALL_USERS_TEXT)"
         Pop $boinc_configuration_page_all_users_checkbox
         ; checked by default
         ${If} $boinc_configuration_page_all_users == "0"
@@ -134,7 +134,7 @@ Var sec_boinc_client_name
 !macroend
 
 Function OnDataDirChange
-    nsDialogs::SelectFolderDialog "Select Data folder location" $boinc_configuration_page_data_dir
+    nsDialogs::SelectFolderDialog "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_ALL_SELECT_DATA_FOLDER_LOCATION_TEXT)" $boinc_configuration_page_data_dir
     Pop $R0
     ${If} $R0 != "error"
         StrCpy $boinc_configuration_page_data_dir $R0
