@@ -86,7 +86,7 @@ Var sec_boinc_client_name
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
         ${NSD_CreateLabel} 50 0 65% 11u "Data directory:"
-        ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir
+        ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir\BOINC
         Pop $boinc_configuration_page_data_dir_label
 
         ${NSD_CreateButton} 82% 7u 18% 15u "Change..."
@@ -101,6 +101,7 @@ Var sec_boinc_client_name
         ${If} $boinc_configuration_page_service_install == "1"
             ${NSD_Check} $boinc_configuration_page_service_install_checkbox
         ${EndIf}
+        ${NSD_OnClick} $boinc_configuration_page_service_install_checkbox OnServiceInstallChange
 
         ${NSD_CreateCheckBox} 0 93u 75% 11u "Allow all users on this computer to control BOINC"
         Pop $boinc_configuration_page_all_users_checkbox
@@ -110,6 +111,7 @@ Var sec_boinc_client_name
         ${Else}
             ${NSD_Check} $boinc_configuration_page_all_users_checkbox
         ${EndIf}
+        ${NSD_OnClick} $boinc_configuration_page_all_users_checkbox OnAllUsersChange
 
         nsDialogs::Show
 
@@ -135,6 +137,15 @@ Function OnDataDirChange
     nsDialogs::SelectFolderDialog "Select Data folder location" $boinc_configuration_page_data_dir
     Pop $R0
     ${If} $R0 != "error"
-        ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
+        StrCpy $boinc_configuration_page_data_dir $R0
+        ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir\BOINC
     ${EndIf}
+FunctionEnd
+
+Function OnServiceInstallChange
+    ${NSD_GetState} $boinc_configuration_page_service_install_checkbox $boinc_configuration_page_service_install
+FunctionEnd
+
+Function OnAllUsersChange
+    ${NSD_GetState} $boinc_configuration_page_all_users_checkbox $boinc_configuration_page_all_users
 FunctionEnd
