@@ -17,6 +17,9 @@
 
 !include nsDialogs.nsh
 !include LogicLib.nsh
+!include StrFunc.nsh
+
+${StrStr}
 
 Var boinc_configuration_page_data_dir_label
 Var boinc_configuration_page_service_install_checkbox
@@ -86,7 +89,7 @@ Var sec_boinc_client_name
         Pop $0
         ${NSD_SetIcon} $0 $PLUGINSDIR\folder.ico $folder_image_handle
         ${NSD_CreateLabel} 50 0 65% 11u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_DATA_DIRECTORY_TEXT):"
-        ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir\BOINC
+        ${NSD_CreateLabel} 50 11u 65% 11u $boinc_configuration_page_data_dir
         Pop $boinc_configuration_page_data_dir_label
 
         ${NSD_CreateButton} 82% 7u 18% 15u "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_CHANGE_BUTTON_TEXT)..."
@@ -137,8 +140,15 @@ Function OnDataDirChange
     nsDialogs::SelectFolderDialog "$(BOINC_CONFIGURATION_PAGE_CONFIGURATION_ALL_SELECT_DATA_FOLDER_LOCATION_TEXT)" $boinc_configuration_page_data_dir
     Pop $R0
     ${If} $R0 != "error"
-        StrCpy $boinc_configuration_page_data_dir $R0
-        ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir\BOINC
+        
+        ${StrStr} $0 $R0 "BOINC"
+        ${If} $0 == "BOINC"
+            ${OrIf} $0 == "BOINC\"
+                StrCpy $boinc_configuration_page_data_dir $R0
+        ${Else}
+            StrCpy $boinc_configuration_page_data_dir $R0\BOINC
+        ${EndIf}
+        ${NSD_SetText} $boinc_configuration_page_data_dir_label $boinc_configuration_page_data_dir
     ${EndIf}
 FunctionEnd
 

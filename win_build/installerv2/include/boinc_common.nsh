@@ -20,10 +20,12 @@ XPStyle on
 
 SetCompressor /SOLID lzma
 
-!include "MUI2.nsh"
+!define MUI_COMPONENTSPAGE_NODESC
 
-!include "include\boinc_configuration_page.nsh"
+!include MUI2.nsh
+!include Sections.nsh
 
+!include "include\custom_pages\boinc_configuration_page.nsh"
 
 !define license_file "redist\0409\eula.rtf"
 !define setup_icon "redist\setup.ico"
@@ -44,6 +46,7 @@ SetCompressor /SOLID lzma
 !define boinc_dependencies_zlib_path "${boinc_dependencies_path}\zlib\mswin\${arch_path}\Release\bin"
 !define boinc_msvc_path "${boinc_src_path}\win_build\Build\${arch_path}\Release"
 !define boinc_skin_path "${boinc_src_path}\clientgui\skins\${boinc_skin_name}"
+!define boinc_registry_key_root "Space Sciences Laboratory, U.C. Berkeley"
 
 !define MUI_ABORTWARNING
 
@@ -77,8 +80,6 @@ Name "${product_name}"
 Caption "${product_name}"
 OutFile "${out_file}"
 
-!define MUI_COMPONENTSPAGE_NODESC
-
 Section "-Common"
     SetOutPath "$INSTDIR"
     File "${boinc_src_path}\COPYING"
@@ -88,7 +89,7 @@ Section "-Common"
     File "${boinc_msvc_path}\msvcr100.dll"
 SectionEnd
 
-Section "BOINC Client" sec_boinc_client
+Section "${product_name} Client" sec_boinc_client
     SetOutPath "$INSTDIR"
     File "${boinc_release_path}\boinc.exe"
     File "${boinc_release_path}\boinccmd.exe"
@@ -102,18 +103,18 @@ Section "BOINC Client" sec_boinc_client
         File "${boinc_release_path}\boincsvcctrl.exe"
     ${EndIf}
 
-    SetOutPath "$boinc_configuration_page_data_dir\BOINC"
+    SetOutPath "$boinc_configuration_page_data_dir"
     File "${boinc_src_path}\win_build\installerv2\redist\all_projects_list.xml"
 
-    CreateDirectory "$boinc_configuration_page_data_dir\BOINC\projects"
-    CreateDirectory "$boinc_configuration_page_data_dir\BOINC\slots"
+    CreateDirectory "$boinc_configuration_page_data_dir\projects"
+    CreateDirectory "$boinc_configuration_page_data_dir\slots"
 
     SetOutPath "$INSTDIR\locale"
     File /r "${boinc_src_path}\locale\BOINC-Client.mo"
 
 SectionEnd
 
-Section "BOINC Manager"
+Section "${product_name} Manager" sec_boinc_manager
     SetOutPath "$INSTDIR"
     File "${boinc_release_path}\boincmgr.exe"
     File "${boinc_dependencies_sqlite3_path}\sqlite3.dll"
@@ -125,7 +126,7 @@ Section "BOINC Manager"
     File /r "${boinc_src_path}\locale\BOINC-Manager.mo"
 SectionEnd
 
-Section "BOINC Screensaver"
+Section "${product_name} Screensaver" sec_boinc_screensaver
     SetOutPath "$INSTDIR"
     File "${boinc_src_path}\clientscr\res\boinc_logo_black.jpg"
     File "${boinc_release_path}\boincscr.exe"
@@ -149,10 +150,64 @@ Function .onInit
     !else
         StrCpy $INSTDIR $PROGRAMFILES64\${product_name}
     !endif
+
     SetShellVarContext all
-    StrCpy $boinc_configuration_page_data_dir $APPDATA
 
     StrCpy $sec_boinc_client_name ${sec_boinc_client}
+
+; Setup registry values
+; BOINC_MASTER_USERNAME
+; BOINC_PROJECT_USERNAME
+; ENABLELAUNCHATLOGON
+; LAUNCHPROGRAM
+; REBOOTPROMPT
+; RETURN_BOINC_MASTER_USERNAME
+; RETURN_BOINC_PROJECT_USERNAME
+; RETURN_REBOOTREQUESTED
+; RETURN_VALIDATEINSTALL
+; SETUPSTATESTORED
+; UpgradingTo
+
+    ReadRegStr $0 HKLM "Software\${boinc_registry_key_root}\BOINC Setup" "DATADIR"
+    ${If} $0 == ""
+        StrCpy $boinc_configuration_page_data_dir $APPDATA\BOINC
+    ${Else}
+        StrCpy $boinc_configuration_page_data_dir $0
+    ${EndIf}
+
+    ReadRegStr $0 HKLM "Software\${boinc_registry_key_root}\BOINC Setup" "INSTALLDIR"
+    ${If} $0 == ""
+        !if ${product_arch} == "intelx86"
+            StrCpy $INSTDIR $PROGRAMFILES\${product_name}
+        !else
+            StrCpy $INSTDIR $PROGRAMFILES64\${product_name}
+        !endif
+    ${Else}
+        StrCpy $INSTDIR $0
+    ${EndIf}
+
+    ReadRegStr $0 HKLM "Software\${boinc_registry_key_root}\BOINC Setup" "ENABLEPROTECTEDAPPLICATIONEXECUTION3"
+    ${If} $0 == ""
+        StrCpy $boinc_configuration_page_service_install "0"
+    ${Else}
+        StrCpy $boinc_configuration_page_service_install $0
+    ${EndIf}
+
+    ReadRegStr $0 HKLM "Software\${boinc_registry_key_root}\BOINC Setup" "ENABLEUSEBYALLUSERS"
+    ${If} $0 == ""
+        StrCpy $boinc_configuration_page_all_users "1"
+    ${Else}
+        StrCpy $boinc_configuration_page_all_users $0
+    ${EndIf}
+
+    ReadRegStr $0 HKLM "Software\${boinc_registry_key_root}\BOINC Setup" "ENABLESCREENSAVER"
+    ${If} $0 == ""
+        ${OrIf} $0 == "1"
+            !insertmacro SelectSection ${sec_boinc_screensaver}
+    ${Else}
+        !insertmacro UnselectSection ${sec_boinc_screensaver}
+    ${EndIf}
+
 FunctionEnd
 
 ;--------------------------------
