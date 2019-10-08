@@ -62,13 +62,9 @@ SetCompressor /SOLID lzma
 
 !define MUI_LANGDLL_ALLLANGUAGES
 
-;--------------------------------
-;Language Selection Dialog Settings
-
-  ;Remember the installer language
-;   !define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
-;   !define MUI_LANGDLL_REGISTRY_KEY "Software\Modern UI Test" 
-;   !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
+!define MUI_LANGDLL_REGISTRY_ROOT "HKLM" 
+!define MUI_LANGDLL_REGISTRY_KEY "Software\${boinc_registry_key_root}\BOINC Setup" 
+!define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 !insertmacro MUI_LANGUAGE "English"
 
@@ -210,11 +206,8 @@ Function .onInit
 
 FunctionEnd
 
-;--------------------------------
-;Uninstaller Functions
+Function un.onInit
 
-; Function un.onInit
-
-;   !insertmacro MUI_UNGETLANGUAGE
+    !insertmacro MUI_UNGETLANGUAGE
   
-; FunctionEnd
+FunctionEnd
