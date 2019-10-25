@@ -39,12 +39,6 @@ SetCompressor /SOLID lzma
 !endif
 !define boinc_src_path "..\.."
 !define boinc_release_path "${boinc_src_path}\win_build\Build\${arch_path}\Release"
-!define boinc_dependencies_path "${boinc_src_path}\..\boinc_depends_win_vs2013"
-!define boinc_dependencies_curl_path "${boinc_dependencies_path}\curl\mswin\${arch_path}\Release\bin"
-!define boinc_dependencies_openssl_path "${boinc_dependencies_path}\openssl\mswin\${arch_path}\Release\bin"
-!define boinc_dependencies_sqlite3_path "${boinc_dependencies_path}\sqlite3\mswin\${arch_path}\Release\bin"
-!define boinc_dependencies_zlib_path "${boinc_dependencies_path}\zlib\mswin\${arch_path}\Release\bin"
-!define boinc_msvc_path "${boinc_src_path}\win_build\Build\${arch_path}\Release"
 !define boinc_skin_path "${boinc_src_path}\clientgui\skins\${boinc_skin_name}"
 !define boinc_registry_key_root "Space Sciences Laboratory, U.C. Berkeley"
 
@@ -81,8 +75,8 @@ Section "-Common"
     File "${boinc_src_path}\COPYING"
     File "${boinc_src_path}\COPYING.LESSER"
     File "${boinc_src_path}\COPYRIGHT"
-    File "${boinc_msvc_path}\msvcp100.dll"
-    File "${boinc_msvc_path}\msvcr100.dll"
+    File "${boinc_release_path}\msvcp*.dll"
+    File "${boinc_release_path}\msvcr*.dll"
 SectionEnd
 
 Section "${product_name} Client" sec_boinc_client
@@ -90,11 +84,11 @@ Section "${product_name} Client" sec_boinc_client
     File "${boinc_release_path}\boinc.exe"
     File "${boinc_release_path}\boinccmd.exe"
     File "${boinc_release_path}\boinctray.exe"
-    File "${boinc_dependencies_curl_path}\libcurl.dll"
-    File "${boinc_dependencies_openssl_path}\libeay32.dll"
-    File "${boinc_dependencies_openssl_path}\ssleay32.dll"
-    File "${boinc_dependencies_zlib_path}\zlib1.dll"
-    File "${boinc_src_path}\curl\ca-bundle.crt"
+    File "${boinc_release_path}\libcurl.dll"
+    File "${boinc_release_path}\libeay32.dll"
+    File "${boinc_release_path}\ssleay32.dll"
+    File "${boinc_release_path}\zlib1.dll"
+    File "${boinc_release_path}\ca-bundle.crt"
     ${If} $boinc_configuration_page_service_install == "1"
         File "${boinc_release_path}\boincsvcctrl.exe"
     ${EndIf}
@@ -113,7 +107,7 @@ SectionEnd
 Section "${product_name} Manager" sec_boinc_manager
     SetOutPath "$INSTDIR"
     File "${boinc_release_path}\boincmgr.exe"
-    File "${boinc_dependencies_sqlite3_path}\sqlite3.dll"
+    File "${boinc_release_path}\sqlite3.dll"
 
     SetOutPath "$INSTDIR\Skins\${boinc_skin_name}"
     File "${boinc_skin_path}\*"
