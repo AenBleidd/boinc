@@ -45,11 +45,11 @@ bool throttled_app_render(int x, int y, double t) {
     static double time_until_render = 0;
     static double last_now = 0;
     static double elapsed_time = 0;
-    double now, t0, t1, diff, frac;
+    double t0 = 0, t1 = 0;
     bool ok_to_render = true;
 
-    now = dtime();
-    diff = now - last_now;
+    const double now = dtime();
+    double diff = now - last_now;
     last_now = now;
 
     // ignore interval if negative or more than 1 second
@@ -74,7 +74,7 @@ bool throttled_app_render(int x, int y, double t) {
     if (boinc_max_gfx_cpu_frac) {
         elapsed_time += diff;
         if (elapsed_time) {
-            frac = total_render_time/elapsed_time;
+            const double frac = total_render_time/elapsed_time;
             if (frac > boinc_max_gfx_cpu_frac) {
                 ok_to_render = false;
             }

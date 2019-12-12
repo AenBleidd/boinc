@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>boinc_win.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)boinc_win.pch</PrecompiledHeaderOutputFile>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalOptions>".\build\win32\debug\libboinc_staticcrt.lib" ".\build\win32\debug\libboinczip_staticcrt.lib" %(AdditionalOptions)</AdditionalOptions>

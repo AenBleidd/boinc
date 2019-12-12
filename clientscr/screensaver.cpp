@@ -326,7 +326,6 @@ int CScreensaver::launch_screensaver(RESULT* rp, GFXAPP_ID& graphics_application
 //
 int CScreensaver::terminate_v6_screensaver(GFXAPP_ID& graphics_application, RESULT* rp) {
     int retval = 0;
-    int i;
 
 #ifdef __APPLE__
     pid_t thePID;
@@ -354,7 +353,7 @@ int CScreensaver::terminate_v6_screensaver(GFXAPP_ID& graphics_application, RESU
         retval = rpc->run_graphics_app(0, thePID, "stop");
 // Inform our helper app that we have stopped current graphics app 
 
-          for (i=0; i<200; i++) {
+          for (int i=0; i<200; i++) {
             boinc_sleep(0.01);      // Wait 2 seconds max
             if (!boinc_file_exists(BOINCPidFilePath)) {
                break;
@@ -413,7 +412,7 @@ int CScreensaver::terminate_v6_screensaver(GFXAPP_ID& graphics_application, RESU
             launchedGfxApp("", 0, -1);
         }
         
-        for (i=0; i<200; i++) {
+        for (int i=0; i<200; i++) {
             boinc_sleep(0.01);      // Wait 2 seconds max
             // Prevent gfx_switcher from becoming a zombie
             if (waitpid(thePID, 0, WNOHANG) == thePID) {
