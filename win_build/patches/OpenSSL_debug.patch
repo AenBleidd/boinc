@@ -1,0 +1,13 @@
+diff --git a/ms/do_nasm.bat b/ms/do_nasm.bat
+index 7b3f3ed..d491444 100644
+--- a/ms/do_nasm.bat
++++ b/ms/do_nasm.bat
+@@ -1,7 +1,7 @@
+ 
+ perl util\mkfiles.pl >MINFO
+ perl util\mk1mf.pl nasm VC-WIN32 >ms\nt.mak
+-perl util\mk1mf.pl dll nasm VC-WIN32 >ms\ntdll.mak
++perl util\mk1mf.pl debug dll nasm VC-WIN32 >ms\ntdll.mak
+ perl util\mk1mf.pl nasm BC-NT >ms\bcb.mak
+ 
+ perl util\mkdef.pl 32 libeay > ms\libeay32.def
