@@ -67,47 +67,133 @@ REM cd %win_build_path%
 
 REM OpenSSL
 
-if not exist %dependencies_root%/openssl.tar.gz (
-    curl -L https://www.openssl.org/source/old/1.0.2/openssl-1.0.2a.tar.gz --output %dependencies_root%/openssl.tar.gz
+REM if not exist %dependencies_root%/openssl.tar.gz (
+REM     curl -L https://www.openssl.org/source/old/1.0.2/openssl-1.0.2a.tar.gz --output %dependencies_root%/openssl.tar.gz
+REM )
+
+REM if exist %dependencies_root%/openssl.tar.gz (
+REM     tar xzvf %dependencies_root%/openssl.tar.gz -C %dependencies_root%
+REM     mv %dependencies_root%/openssl-1.0.2a %dependencies_root%/openssl
+REM )
+
+REM if %platform%==Win32 (
+REM     cp patches/OpenSSL_debug.patch %dependencies_root%
+REM     if %configuration%==Debug (
+REM         cp patches/OpenSSL_nmake_debug.patch %dependencies_root%
+REM     )
+REM     if %configuration%==Release (
+REM         cp patches/OpenSSL_nmake_release.patch %dependencies_root%
+REM     )
+
+REM     cd %dependencies_root%/openssl
+
+REM     if %configuration%==Debug (
+REM         git --work-tree=. --git-dir=.git apply ../OpenSSL_debug.patch
+REM     )
+
+REM     perl Configure VC-WIN32
+REM     call ms/do_nasm
+
+REM     REM https://devblogs.microsoft.com/cppblog/windows-xp-targeting-with-c-in-visual-studio-2012/
+REM     if %configuration%==Debug (
+REM         git --work-tree=. --git-dir=.git apply ../OpenSSL_nmake_debug.patch
+REM     )
+
+REM     if %configuration%==Release (
+REM         git --work-tree=. --git-dir=.git apply ../OpenSSL_nmake_release.patch
+REM     )
+
+REM     nmake -f ms/ntdll.mak
+
+REM     mv out32dll.dbg out32dll
+REM     rmdir /s /q tmp32dll.dbg
+
+REM )
+
+REM if not exist mswin/%platform%/%configuration%/lib (
+REM     mkdir mswin\%platform%\%configuration%\lib
+REM )
+
+REM if not exist mswin/%platform%/%configuration%/bin (
+REM     mkdir mswin\%platform%\%configuration%\bin
+REM )
+
+REM cp out32dll/libeay32.dll mswin/%platform%/%configuration%/bin/
+REM cp out32dll/libeay32.pdb mswin/%platform%/%configuration%/bin/
+REM cp out32dll/ssleay32.dll mswin/%platform%/%configuration%/bin/
+REM cp out32dll/ssleay32.pdb mswin/%platform%/%configuration%/bin/
+
+REM cp out32dll/libeay32.exp mswin/%platform%/%configuration%/lib/
+REM cp out32dll/libeay32.lib mswin/%platform%/%configuration%/lib/
+REM cp out32dll/ssleay32.exp mswin/%platform%/%configuration%/lib/
+REM cp out32dll/ssleay32.lib mswin/%platform%/%configuration%/lib/
+REM cp ms/libeay32.def mswin/%platform%/%configuration%/lib/
+REM cp ms/ssleay32.def mswin/%platform%/%configuration%/lib/
+
+REM cp README mswin/
+
+REM rename \\.\%CD%\nul. deletefile.txt
+
+REM del /q *
+REM rmdir /s /q apps
+REM rmdir /s /q bugs
+REM rmdir /s /q certs
+REM rmdir /s /q crypto
+REM rmdir /s /q demos
+REM rmdir /s /q doc
+REM rmdir /s /q engines
+REM rmdir /s /q inc32
+REM rmdir /s /q MacOS
+REM rmdir /s /q ms
+REM rmdir /s /q Netware
+REM rmdir /s /q os2
+REM rmdir /s /q out32dll
+REM rmdir /s /q perl
+REM rmdir /s /q shlib
+REM rmdir /s /q ssl
+REM rmdir /s /q test
+REM rmdir /s /q times
+REM rmdir /s /q tools
+REM rmdir /s /q util
+REM rmdir /s /q VMS
+
+REM mv mswin/README ./
+
+REM cd ../
+REM del openssl.tar.gz
+REM del OpenSSL_debug.patch
+REM del OpenSSL_nmake_debug.patch
+
+REM cd %win_build_path%
+
+REM curl
+
+if not exist %dependencies_root%/curl.zip (
+    curl -L https://github.com/curl/curl/archive/curl-7_42_1.zip --output %dependencies_root%/curl.zip
 )
 
-if exist %dependencies_root%/openssl.tar.gz (
-    tar xzvf %dependencies_root%/openssl.tar.gz -C %dependencies_root%
-    mv %dependencies_root%/openssl-1.0.2a %dependencies_root%/openssl
+if exist %dependencies_root%/curl.zip (
+    7z x %dependencies_root%/curl.zip -o%dependencies_root%/ -aoa
 )
 
-if %platform%==Win32 (
-    cp patches/OpenSSL_debug.patch %dependencies_root%
-    if %configuration%==Debug (
-        cp patches/OpenSSL_nmake_debug.patch %dependencies_root%
-    )
-    if %configuration%==Release (
-        cp patches/OpenSSL_nmake_release.patch %dependencies_root%
-    )
+mv %dependencies_root%/curl-curl-7_42_1 %dependencies_root%/curl
 
-    cd %dependencies_root%/openssl
+cp patches/curl.patch %dependencies_root%
 
-    if %configuration%==Debug (
-        git --work-tree=. --git-dir=.git apply ../OpenSSL_debug.patch
-    )
+cd %dependencies_root%/curl
 
-    perl Configure VC-WIN32
-    call ms/do_nasm
+cd projects
+call generate.bat vc12
 
-    REM https://devblogs.microsoft.com/cppblog/windows-xp-targeting-with-c-in-visual-studio-2012/
-    if %configuration%==Debug (
-        git --work-tree=. --git-dir=.git apply ../OpenSSL_nmake_debug.patch
-    )
+cd ../
 
-    if %configuration%==Release (
-        git --work-tree=. --git-dir=.git apply ../OpenSSL_nmake_release.patch
-    )
+git --work-tree=. --git-dir=.git apply ../curl.patch
 
-    nmake -f ms/ntdll.mak
-
-    mv out32dll.dbg out32dll
-    rmdir /s /q tmp32dll.dbg
-
+if %configuration%==Debug (
+    msbuild /p:Configuration="DLL Debug - DLL OpenSSL" /p:Platform=%platform% "projects/Windows/VC12/lib/libcurl.sln" /p:AdditionalIncludeDirectories=%CD%/../openssl/include/
+)
+if %configuration%==Release (
+    msbuild /p:Configuration="DLL Release - DLL OpenSSL" /p:Platform=%platform% "projects/Windows/VC12/lib/libcurl.sln" /p:AdditionalIncludeDirectories=%CD%/../openssl/include/
 )
 
 if not exist mswin/%platform%/%configuration%/lib (
@@ -118,50 +204,54 @@ if not exist mswin/%platform%/%configuration%/bin (
     mkdir mswin\%platform%\%configuration%\bin
 )
 
-cp out32dll/libeay32.dll mswin/%platform%/%configuration%/bin/
-cp out32dll/libeay32.pdb mswin/%platform%/%configuration%/bin/
-cp out32dll/ssleay32.dll mswin/%platform%/%configuration%/bin/
-cp out32dll/ssleay32.pdb mswin/%platform%/%configuration%/bin/
+if %platform%==Win32 (
+    if %configuration%==Debug (
+        mv "build/Win32/VC12/DLL Debug - DLL OpenSSL/libcurld.dll" mswin/%platform%/%configuration%/bin/
+        mv "build/Win32/VC12/DLL Debug - DLL OpenSSL/libcurld.pdb" mswin/%platform%/%configuration%/bin/libcurld_imp.pdb
+        mv "build/Win32/VC12/DLL Debug - DLL OpenSSL/libcurld.exp" mswin/%platform%/%configuration%/lib/libcurld_imp.exp
+        mv "build/Win32/VC12/DLL Debug - DLL OpenSSL/libcurld.lib" mswin/%platform%/%configuration%/lib/libcurld_imp.lib
+    )
+    if %configuration%==Release (
+        mv "build/Win32/VC12/DLL Release - DLL OpenSSL/libcurl.dll" mswin/%platform%/%configuration%/bin/
+        mv "build/Win32/VC12/DLL Release - DLL OpenSSL/libcurl.pdb" mswin/%platform%/%configuration%/bin/libcurl.pdb
+        mv "build/Win32/VC12/DLL Release - DLL OpenSSL/libcurl.exp" mswin/%platform%/%configuration%/lib/libcurl_imp.exp
+        mv "build/Win32/VC12/DLL Release - DLL OpenSSL/libcurl.lib" mswin/%platform%/%configuration%/lib/libcurl_imp.lib
+    )
+)
+if %platform%==Win64 (
+    if %configuration%==Debug (
+        mv "build/Win64/VC12/DLL Debug - DLL OpenSSL/libcurld.exp" mswin/%platform%/%configuration%/lib/libcurld_imp.exp
+        mv "build/Win64/VC12/DLL Debug - DLL OpenSSL/libcurld.dll" mswin/%platform%/%configuration%/bin/
+        mv "build/Win64/VC12/DLL Debug - DLL OpenSSL/libcurld.pdb" mswin/%platform%/%configuration%/bin/libcurld_imp.pdb
+        mv "build/Win64/VC12/DLL Debug - DLL OpenSSL/libcurld.lib" mswin/%platform%/%configuration%/lib/libcurld_imp.lib
+    )
+    if %configuration%==Release (
+        mv "build/Win64/VC12/DLL Release - DLL OpenSSL/libcurl.dll" mswin/%platform%/%configuration%/bin/
+        mv "build/Win64/VC12/DLL Release - DLL OpenSSL/libcurl.pdb" mswin/%platform%/%configuration%/bin/libcurl.pdb
+        mv "build/Win64/VC12/DLL Release - DLL OpenSSL/libcurl.exp" mswin/%platform%/%configuration%/lib/libcurl_imp.exp
+        mv "build/Win64/VC12/DLL Release - DLL OpenSSL/libcurl.lib" mswin/%platform%/%configuration%/lib/libcurl_imp.lib
+    )
+)
 
-cp out32dll/libeay32.exp mswin/%platform%/%configuration%/lib/
-cp out32dll/libeay32.lib mswin/%platform%/%configuration%/lib/
-cp out32dll/ssleay32.exp mswin/%platform%/%configuration%/lib/
-cp out32dll/ssleay32.lib mswin/%platform%/%configuration%/lib/
-cp ms/libeay32.def mswin/%platform%/%configuration%/lib/
-cp ms/ssleay32.def mswin/%platform%/%configuration%/lib/
-
-cp README mswin/
-
-rename \\.\%CD%\nul. deletefile.txt
+mv README mswin/
 
 del /q *
-rmdir /s /q apps
-rmdir /s /q bugs
-rmdir /s /q certs
-rmdir /s /q crypto
-rmdir /s /q demos
-rmdir /s /q doc
-rmdir /s /q engines
-rmdir /s /q inc32
-rmdir /s /q MacOS
-rmdir /s /q ms
-rmdir /s /q Netware
-rmdir /s /q os2
-rmdir /s /q out32dll
+rmdir /s /q build
+rmdir /s /q CMake
+rmdir /s /q docs
+rmdir /s /q lib
+rmdir /s /q m4
+rmdir /s /q packages
 rmdir /s /q perl
-rmdir /s /q shlib
-rmdir /s /q ssl
-rmdir /s /q test
-rmdir /s /q times
-rmdir /s /q tools
-rmdir /s /q util
-rmdir /s /q VMS
+rmdir /s /q projects
+rmdir /s /q src
+rmdir /s /q tests
+rmdir /s /q winbuild
 
 mv mswin/README ./
 
 cd ../
-del openssl.tar.gz
-del OpenSSL_debug.patch
-del OpenSSL_nmake_debug.patch
+del curl.patch
+del curl.zip
 
 cd %win_build_path%
