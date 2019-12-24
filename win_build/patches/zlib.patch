@@ -1,0 +1,70 @@
+diff --git a/contrib/masmx86/bld_ml32.bat b/contrib/masmx86/bld_ml32.bat
+index fcf5755..67e6a6a 100644
+--- a/contrib/masmx86/bld_ml32.bat
++++ b/contrib/masmx86/bld_ml32.bat
+@@ -1,2 +1,2 @@
+-ml /coff /Zi /c /Flmatch686.lst match686.asm
+-ml /coff /Zi /c /Flinffas32.lst inffas32.asm
++ml /safeseh /coff /Zi /c /Flmatch686.lst match686.asm
++ml /safeseh /coff /Zi /c /Flinffas32.lst inffas32.asm
+diff --git a/contrib/vstudio/vc11/zlibvc.def b/contrib/vstudio/vc11/zlibvc.def
+index 980fed3..83106b9 100644
+--- a/contrib/vstudio/vc11/zlibvc.def
++++ b/contrib/vstudio/vc11/zlibvc.def
+@@ -1,7 +1,7 @@
+ LIBRARY
+ ; zlib data compression and ZIP file I/O library
+ 
+-VERSION		1.2.8
++VERSION		1.2
+ 
+ EXPORTS
+         adler32                                  @1
+diff --git a/contrib/vstudio/vc11/zlibvc.vcxproj b/contrib/vstudio/vc11/zlibvc.vcxproj
+index c4cffcc..d50ced3 100644
+--- a/contrib/vstudio/vc11/zlibvc.vcxproj
++++ b/contrib/vstudio/vc11/zlibvc.vcxproj
+@@ -46,18 +46,18 @@
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+     <CharacterSet>Unicode</CharacterSet>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'" Label="Configuration">
+@@ -78,18 +78,18 @@
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+     <UseOfMfc>false</UseOfMfc>
+-    <PlatformToolset>v110</PlatformToolset>
++    <PlatformToolset>v120_xp</PlatformToolset>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+   <ImportGroup Label="ExtensionSettings">
