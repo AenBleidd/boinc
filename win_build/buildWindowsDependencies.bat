@@ -335,93 +335,182 @@ REM cd %win_build_path%
 
 REM zlib
 
-if not exist %dependencies_root%/zlib.zip (
-    curl -L https://github.com/madler/zlib/archive/v1.2.8.zip --output %dependencies_root%/zlib.zip
+REM if not exist %dependencies_root%/zlib.zip (
+REM     curl -L https://github.com/madler/zlib/archive/v1.2.8.zip --output %dependencies_root%/zlib.zip
+REM )
+
+REM if exist %dependencies_root%/zlib.zip (
+REM     7z x %dependencies_root%/zlib.zip -o%dependencies_root%/ -aoa
+REM )
+
+REM move %dependencies_root%/zlib-1.2.8 %dependencies_root%/zlib
+
+REM copy "patches\zlib.patch" "%dependencies_root%"
+
+REM cd %dependencies_root%/zlib
+
+REM git --work-tree=. --git-dir=.git apply ../zlib.patch
+
+REM msbuild contrib/vstudio/vc11/zlibvc.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
+
+REM if not exist mswin/%platform%/%configuration%/lib (
+REM     mkdir mswin\%platform%\%configuration%\lib
+REM )
+
+REM if not exist mswin/%platform%/%configuration%/bin (
+REM     mkdir mswin\%platform%\%configuration%\bin
+REM )
+
+REM move README mswin/
+
+REM if not exist include (
+REM     mkdir include
+REM )
+
+REM move zconf.h include\
+REM move zlib.h include\
+
+REM if %platform%==Win32 (
+REM     if %configuration%==Debug (
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.dll mswin\Win32\%configuration%\bin\zlib1d.dll
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.pdb mswin\Win32\%configuration%\bin\zlib1d.pdb
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.exp mswin\Win32\%configuration%\lib\zlib1d.exp
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.lib mswin\Win32\%configuration%\lib\zlib1d.lib
+REM         move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
+REM     )
+REM     if %configuration%==Release (
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.dll mswin\Win32\%configuration%\bin\zlib1.dll
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.pdb mswin\Win32\%configuration%\bin\zlib1.pdb
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.exp mswin\Win32\%configuration%\lib\zlib1.exp
+REM         move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.lib mswin\Win32\%configuration%\lib\zlib1.lib
+REM         move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
+REM     )
+REM )
+
+REM if %platform%==x64 (
+REM     if %configuration%==Debug (
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.dll mswin\x64\%configuration%\bin\zlib1d.dll
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.pdb mswin\x64\%configuration%\bin\zlib1d.pdb
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.exp mswin\x64\%configuration%\lib\zlib1d.exp
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.lib mswin\x64\%configuration%\lib\zlib1d.lib
+REM         move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
+REM     )
+REM     if %configuration%==Release (
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.dll mswin\x64\%configuration%\bin\zlib1.dll
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.pdb mswin\x64\%configuration%\bin\zlib1.pdb
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.exp mswin\x64\%configuration%\lib\zlib1.exp
+REM         move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.lib mswin\x64\%configuration%\lib\zlib1.lib
+REM         move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
+REM     )
+REM )
+
+REM del /q *
+REM rmdir /s /q amiga
+REM rmdir /s /q as400
+REM rmdir /s /q contrib
+REM rmdir /s /q doc
+REM rmdir /s /q examples
+REM rmdir /s /q msdos
+REM rmdir /s /q nintendods
+REM rmdir /s /q old
+REM rmdir /s /q qnx
+REM rmdir /s /q test
+REM rmdir /s /q watcom
+REM rmdir /s /q win32
+
+REM move mswin\README README.txt
+
+REM cd ../
+REM del zlib.patch
+REM del zlib.zip
+
+REM cd %win_build_path%
+
+REM FreeType
+
+REM if not exist %dependencies_root%/freetype.zip (
+REM     curl -L http://download.savannah.gnu.org/releases/freetype/ft2410.zip --output %dependencies_root%/freetype.zip
+REM )
+
+REM if exist %dependencies_root%/freetype.zip (
+REM     7z x %dependencies_root%/freetype.zip -o%dependencies_root%/ -aoa
+REM )
+
+REM move %dependencies_root%/freetype-2.4.10 %dependencies_root%/freetype
+
+REM copy "patches\freetype.patch" "%dependencies_root%"
+
+REM cd %dependencies_root%/freetype
+
+REM git --work-tree=. --git-dir=.git apply ../freetype.patch
+
+REM msbuild builds/win32/vc2010/freetype.sln /p:Configuration=%configuration% /p:Platform=%platform%
+
+REM if not exist mswin/%platform%/%configuration%/lib (
+REM     mkdir mswin\%platform%\%configuration%\lib
+REM )
+
+REM move objs\win32\vc2010\* mswin\%platform%\%configuration%\lib\
+REM move objs\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib\
+
+REM move README mswin
+
+REM del /q *
+REM rmdir /s /q builds
+REM rmdir /s /q devel
+REM rmdir /s /q docs
+REM rmdir /s /q objs
+REM rmdir /s /q src
+
+REM move mswin\README ./
+
+REM cd ../
+REM del freetype.patch
+REM del freetype.zip
+
+REM cd %win_build_path%
+
+REM FTGL
+
+if not exist %dependencies_root%/ftgl.zip (
+    curl -L https://sourceforge.net/code-snapshots/svn/f/ft/ftgl/code/ftgl-code-r1266-trunk.zip --output %dependencies_root%/ftgl.zip
 )
 
-if exist %dependencies_root%/zlib.zip (
-    7z x %dependencies_root%/zlib.zip -o%dependencies_root%/ -aoa
+if exist %dependencies_root%/ftgl.zip (
+    7z x %dependencies_root%/ftgl.zip -o%dependencies_root%/ -aoa
 )
 
-move %dependencies_root%/zlib-1.2.8 %dependencies_root%/zlib
+move %dependencies_root%/ftgl-code-r1266-trunk %dependencies_root%/ftgl
 
-copy "patches\zlib.patch" "%dependencies_root%"
+copy "patches\ftgl_static.vcxproj" "%dependencies_root%\ftgl\msvc\vc9\"
 
-cd %dependencies_root%/zlib
+cd %dependencies_root%/ftgl
 
-git --work-tree=. --git-dir=.git apply ../zlib.patch
-
-msbuild contrib/vstudio/vc11/zlibvc.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
+msbuild msvc/vc9/ftgl_static.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
 
 if not exist mswin/%platform%/%configuration%/lib (
     mkdir mswin\%platform%\%configuration%\lib
 )
 
-if not exist mswin/%platform%/%configuration%/bin (
-    mkdir mswin\%platform%\%configuration%\bin
-)
+move msvc\build\* mswin\%platform%\%configuration%\lib
+move msvc\vc9\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib
 
-move README mswin/
+mkdir include\FTGL
+move src\FTGL\*.* include\FTGL
 
-if not exist include (
-    mkdir include
-)
-
-move zconf.h include\
-move zlib.h include\
-
-if %platform%==Win32 (
-    if %configuration%==Debug (
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.dll mswin\Win32\%configuration%\bin\zlib1d.dll
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.pdb mswin\Win32\%configuration%\bin\zlib1d.pdb
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.exp mswin\Win32\%configuration%\lib\zlib1d.exp
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.lib mswin\Win32\%configuration%\lib\zlib1d.lib
-        move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
-    )
-    if %configuration%==Release (
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.dll mswin\Win32\%configuration%\bin\zlib1.dll
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.pdb mswin\Win32\%configuration%\bin\zlib1.pdb
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.exp mswin\Win32\%configuration%\lib\zlib1.exp
-        move contrib\vstudio\vc11\x86\ZlibDll%configuration%\zlibwapi.lib mswin\Win32\%configuration%\lib\zlib1.lib
-        move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
-    )
-)
-
-if %platform%==x64 (
-    if %configuration%==Debug (
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.dll mswin\x64\%configuration%\bin\zlib1d.dll
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.pdb mswin\x64\%configuration%\bin\zlib1d.pdb
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.exp mswin\x64\%configuration%\lib\zlib1d.exp
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.lib mswin\x64\%configuration%\lib\zlib1d.lib
-        move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
-    )
-    if %configuration%==Release (
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.dll mswin\x64\%configuration%\bin\zlib1.dll
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.pdb mswin\x64\%configuration%\bin\zlib1.pdb
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.exp mswin\x64\%configuration%\lib\zlib1.exp
-        move contrib\vstudio\vc11\x64\ZlibDll%configuration%\zlibwapi.lib mswin\x64\%configuration%\lib\zlib1.lib
-        move contrib\vstudio\vc11\zlibvc.def mswin\Win32\%configuration%\lib\zlib.def
-    )
-)
+move README mswin\README
 
 del /q *
-rmdir /s /q amiga
-rmdir /s /q as400
-rmdir /s /q contrib
-rmdir /s /q doc
-rmdir /s /q examples
-rmdir /s /q msdos
-rmdir /s /q nintendods
-rmdir /s /q old
-rmdir /s /q qnx
+rmdir /s /q demo
+rmdir /s /q docs
+rmdir /s /q m4
+rmdir /s /q msvc
+rmdir /s /q src
 rmdir /s /q test
-rmdir /s /q watcom
-rmdir /s /q win32
 
-move mswin\README README.txt
+move mswin\README ./
 
 cd ../
-del zlib.patch
-del zlib.zip
+del ftgl.zip
 
 cd %win_build_path%
