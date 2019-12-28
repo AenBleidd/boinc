@@ -78,7 +78,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../freetype/include;../../src/;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../../src/;../../../freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FTGL_LIBRARY_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -94,7 +94,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../freetype/include;../../src/;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../../src/;../../../freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FTGL_LIBRARY_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -109,7 +109,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../freetype/include;../../src/;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../../src/;../../../freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FTGL_LIBRARY_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -122,7 +122,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../freetype/include;../../src/;../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../../src/;../../../freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FTGL_LIBRARY_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -137,7 +137,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\FTBuffer.cpp" />
     <ClCompile Include="..\..\src\FTCharmap.cpp" />
-    <ClCompile Include="..\..\src\FTCleanup.cpp" />
     <ClCompile Include="..\..\src\FTContour.cpp" />
     <ClCompile Include="..\..\src\FTFace.cpp" />
     <ClCompile Include="..\..\src\FTFont\FTBitmapFont.cpp" />
@@ -149,7 +148,6 @@
     <ClCompile Include="..\..\src\FTFont\FTPixmapFont.cpp" />
     <ClCompile Include="..\..\src\FTFont\FTPolygonFont.cpp" />
     <ClCompile Include="..\..\src\FTFont\FTTextureFont.cpp" />
-    <ClCompile Include="..\..\src\FTGL.cpp" />
     <ClCompile Include="..\..\src\FTGlyphContainer.cpp" />
     <ClCompile Include="..\..\src\FTGlyph\FTBitmapGlyph.cpp" />
     <ClCompile Include="..\..\src\FTGlyph\FTBufferGlyph.cpp" />
@@ -171,7 +169,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\FTCharmap.h" />
     <ClInclude Include="..\..\src\FTCharToGlyphIndexMap.h" />
-    <ClInclude Include="..\..\src\FTCleanup.h" />
     <ClInclude Include="..\..\src\FTContour.h" />
     <ClInclude Include="..\..\src\FTFace.h" />
     <ClInclude Include="..\..\src\FTFont\FTBitmapFontImpl.h" />
@@ -224,7 +221,7 @@
     <ClInclude Include="..\..\src\FTVectoriser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\README.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

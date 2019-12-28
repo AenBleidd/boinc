@@ -472,28 +472,28 @@ REM cd %win_build_path%
 
 REM FTGL
 
-if not exist %dependencies_root%/ftgl.zip (
-    curl -L https://sourceforge.net/code-snapshots/svn/f/ft/ftgl/code/ftgl-code-r1266-trunk.zip --output %dependencies_root%/ftgl.zip
+if not exist %dependencies_root%/ftgl.tar.gz (
+    curl -L0 https://sourceforge.net/projects/ftgl/files/latest/download --output %dependencies_root%/ftgl.tar.gz
 )
 
-if exist %dependencies_root%/ftgl.zip (
-    7z x %dependencies_root%/ftgl.zip -o%dependencies_root%/ -aoa
+if exist %dependencies_root%/ftgl.tar.gz (
+    tar xzf %dependencies_root%/ftgl.tar.gz -C %dependencies_root%/
 )
 
-move %dependencies_root%/ftgl-code-r1266-trunk %dependencies_root%/ftgl
+move %dependencies_root%/ftgl-2.1.3~rc5 %dependencies_root%/ftgl
 
-copy "patches\ftgl_static.vcxproj" "%dependencies_root%\ftgl\msvc\vc9\"
+copy "patches\ftgl_static.vcxproj" "%dependencies_root%\ftgl\msvc\vc8\"
 
 cd %dependencies_root%/ftgl
 
-msbuild msvc/vc9/ftgl_static.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
+msbuild msvc/vc8/ftgl_static.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
 
 if not exist mswin/%platform%/%configuration%/lib (
     mkdir mswin\%platform%\%configuration%\lib
 )
 
 move msvc\build\* mswin\%platform%\%configuration%\lib
-move msvc\vc9\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib
+move msvc\vc8\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib
 
 mkdir include\FTGL
 move src\FTGL\*.* include\FTGL
@@ -511,6 +511,6 @@ rmdir /s /q test
 move mswin\README ./
 
 cd ../
-del ftgl.zip
+del ftgl.tar.gz
 
 cd %win_build_path%
