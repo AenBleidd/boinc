@@ -91,7 +91,7 @@ index e5a3ae7..bee598b 100644
 +	EndGlobalSection
 +EndGlobal
 diff --git a/builds/win32/vc2010/freetype.vcxproj b/builds/win32/vc2010/freetype.vcxproj
-index 5024da9..bcdf981 100644
+index 5024da9..60142eb 100644
 --- a/builds/win32/vc2010/freetype.vcxproj
 +++ b/builds/win32/vc2010/freetype.vcxproj
 @@ -1,832 +1,1574 @@
@@ -1129,7 +1129,7 @@ index 5024da9..bcdf981 100644
 +      <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 +      <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 +      <StringPooling>true</StringPooling>
-+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <DisableLanguageExtensions>true</DisableLanguageExtensions>
 +      <WarningLevel>Level4</WarningLevel>
@@ -1154,7 +1154,7 @@ index 5024da9..bcdf981 100644
 +      <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 +      <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 +      <StringPooling>true</StringPooling>
-+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 +      <FunctionLevelLinking>true</FunctionLevelLinking>
 +      <DisableLanguageExtensions>true</DisableLanguageExtensions>
 +      <WarningLevel>Level4</WarningLevel>
@@ -1274,7 +1274,7 @@ index 5024da9..bcdf981 100644
 +      <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 +      <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;FT_DEBUG_LEVEL_ERROR;FT_DEBUG_LEVEL_TRACE;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 +      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
 +      <DisableLanguageExtensions>true</DisableLanguageExtensions>
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -1296,7 +1296,7 @@ index 5024da9..bcdf981 100644
 +      <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 +      <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;FT_DEBUG_LEVEL_ERROR;FT_DEBUG_LEVEL_TRACE;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 +      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
 +      <DisableLanguageExtensions>true</DisableLanguageExtensions>
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

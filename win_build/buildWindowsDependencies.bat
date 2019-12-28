@@ -473,7 +473,7 @@ REM cd %win_build_path%
 REM FTGL
 
 if not exist %dependencies_root%/ftgl.tar.gz (
-    curl -L0 https://sourceforge.net/projects/ftgl/files/latest/download --output %dependencies_root%/ftgl.tar.gz
+    curl -L https://sourceforge.net/projects/ftgl/files/latest/download --output %dependencies_root%/ftgl.tar.gz
 )
 
 if exist %dependencies_root%/ftgl.tar.gz (
@@ -501,6 +501,7 @@ move src\FTGL\*.* include\FTGL
 move README mswin\README
 
 del /q *
+rmdir /s /q .auto
 rmdir /s /q demo
 rmdir /s /q docs
 rmdir /s /q m4
