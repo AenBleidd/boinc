@@ -6,6 +6,8 @@ REM curl
 REM tar
 REM perl
 REM nasm
+REM gawk
+REM Tcl
 
 set dependencies_root_name=boinc_depends_win_vs2013
 set dependencies_root_location=../../
@@ -472,46 +474,122 @@ REM cd %win_build_path%
 
 REM FTGL
 
-if not exist %dependencies_root%/ftgl.tar.gz (
-    curl -L https://sourceforge.net/projects/ftgl/files/latest/download --output %dependencies_root%/ftgl.tar.gz
+REM if not exist %dependencies_root%/ftgl.tar.gz (
+REM     curl -L https://sourceforge.net/projects/ftgl/files/latest/download --output %dependencies_root%/ftgl.tar.gz
+REM )
+
+REM if exist %dependencies_root%/ftgl.tar.gz (
+REM     tar xzf %dependencies_root%/ftgl.tar.gz -C %dependencies_root%/
+REM )
+
+REM move %dependencies_root%/ftgl-2.1.3~rc5 %dependencies_root%/ftgl
+
+REM copy "patches\ftgl_static.vcxproj" "%dependencies_root%\ftgl\msvc\vc8\"
+
+REM cd %dependencies_root%/ftgl
+
+REM msbuild msvc/vc8/ftgl_static.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
+
+REM if not exist mswin/%platform%/%configuration%/lib (
+REM     mkdir mswin\%platform%\%configuration%\lib
+REM )
+
+REM move msvc\build\* mswin\%platform%\%configuration%\lib
+REM move msvc\vc8\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib
+
+REM mkdir include\FTGL
+REM move src\FTGL\*.* include\FTGL
+
+REM move README mswin\README
+
+REM del /q *
+REM rmdir /s /q .auto
+REM rmdir /s /q demo
+REM rmdir /s /q docs
+REM rmdir /s /q m4
+REM rmdir /s /q msvc
+REM rmdir /s /q src
+REM rmdir /s /q test
+
+REM move mswin\README ./
+
+REM cd ../
+REM del ftgl.tar.gz
+
+REM cd %win_build_path%
+
+REM sqlite3
+
+if not exist %dependencies_root%/sqlite3.zip (
+    curl -L https://www.sqlite.org/cgi/src/zip/c78be6d7/SQLite-c78be6d7.zip --output %dependencies_root%/sqlite3.zip
 )
 
-if exist %dependencies_root%/ftgl.tar.gz (
-    tar xzf %dependencies_root%/ftgl.tar.gz -C %dependencies_root%/
+if exist %dependencies_root%/sqlite3.zip (
+    7z x %dependencies_root%/sqlite3.zip -o%dependencies_root%/ -aoa
 )
 
-move %dependencies_root%/ftgl-2.1.3~rc5 %dependencies_root%/ftgl
+move %dependencies_root%/SQLite-c78be6d7 %dependencies_root%/sqlite3
 
-copy "patches\ftgl_static.vcxproj" "%dependencies_root%\ftgl\msvc\vc8\"
+cd %dependencies_root%/sqlite3
 
-cd %dependencies_root%/ftgl
+mkdir build
+cd build
 
-msbuild msvc/vc8/ftgl_static.vcxproj /p:Configuration=%configuration% /p:Platform=%platform%
+if %platform%==Win32 (
+    if %configuration%==Debug (
+        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86 DEBUG=1
+    )
+    if %configuration%==Release (
+        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86
+    )
+)
+
+if %platform%==x64 (
+    if %configuration%==Debug (
+        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64 DEBUG=1 
+    )
+    if %configuration%==Release (
+        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64
+    )
+)
+
+cd ../
+
+if not exist include (
+    mkdir include
+)
+
+if not exist mswin/%platform%/%configuration%/bin (
+    mkdir mswin\%platform%\%configuration%\bin
+)
 
 if not exist mswin/%platform%/%configuration%/lib (
     mkdir mswin\%platform%\%configuration%\lib
 )
 
-move msvc\build\* mswin\%platform%\%configuration%\lib
-move msvc\vc8\%configuration%\vc120.pdb mswin\%platform%\%configuration%\lib
+move build\sqlite3.dll mswin\%platform%\%configuration%\bin\
+move build\sqlite3.pdb mswin\%platform%\%configuration%\bin\
+move build\sqlite3.exp mswin\%platform%\%configuration%\lib\
+move build\sqlite3.lib mswin\%platform%\%configuration%\lib\
+move build\sqlite3.h include\
 
-mkdir include\FTGL
-move src\FTGL\*.* include\FTGL
-
-move README mswin\README
+move README mswin\
 
 del /q *
-rmdir /s /q .auto
-rmdir /s /q demo
-rmdir /s /q docs
-rmdir /s /q m4
-rmdir /s /q msvc
+rmdir /s /q art
+rmdir /s /q autoconf
+rmdir /s /q build
+rmdir /s /q contrib
+rmdir /s /q doc
+rmdir /s /q ext
+rmdir /s /q mptest
 rmdir /s /q src
 rmdir /s /q test
+rmdir /s /q tool
 
 move mswin\README ./
 
 cd ../
-del ftgl.tar.gz
+del sqlite3.zip
 
 cd %win_build_path%
