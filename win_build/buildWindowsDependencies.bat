@@ -520,76 +520,87 @@ REM cd %win_build_path%
 
 REM sqlite3
 
-if not exist %dependencies_root%/sqlite3.zip (
-    curl -L https://www.sqlite.org/cgi/src/zip/c78be6d7/SQLite-c78be6d7.zip --output %dependencies_root%/sqlite3.zip
+REM if not exist %dependencies_root%/sqlite3.zip (
+REM     curl -L https://www.sqlite.org/cgi/src/zip/c78be6d7/SQLite-c78be6d7.zip --output %dependencies_root%/sqlite3.zip
+REM )
+
+REM if exist %dependencies_root%/sqlite3.zip (
+REM     7z x %dependencies_root%/sqlite3.zip -o%dependencies_root%/ -aoa
+REM )
+
+REM move %dependencies_root%/SQLite-c78be6d7 %dependencies_root%/sqlite3
+
+REM cd %dependencies_root%/sqlite3
+
+REM mkdir build
+REM cd build
+
+REM if %platform%==Win32 (
+REM     if %configuration%==Debug (
+REM         nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86 DEBUG=1
+REM     )
+REM     if %configuration%==Release (
+REM         nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86
+REM     )
+REM )
+
+REM if %platform%==x64 (
+REM     if %configuration%==Debug (
+REM         nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64 DEBUG=1 
+REM     )
+REM     if %configuration%==Release (
+REM         nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64
+REM     )
+REM )
+
+REM cd ../
+
+REM if not exist include (
+REM     mkdir include
+REM )
+
+REM if not exist mswin/%platform%/%configuration%/bin (
+REM     mkdir mswin\%platform%\%configuration%\bin
+REM )
+
+REM if not exist mswin/%platform%/%configuration%/lib (
+REM     mkdir mswin\%platform%\%configuration%\lib
+REM )
+
+REM move build\sqlite3.dll mswin\%platform%\%configuration%\bin\
+REM move build\sqlite3.pdb mswin\%platform%\%configuration%\bin\
+REM move build\sqlite3.exp mswin\%platform%\%configuration%\lib\
+REM move build\sqlite3.lib mswin\%platform%\%configuration%\lib\
+REM move build\sqlite3.h include\
+
+REM move README mswin\
+
+REM del /q *
+REM rmdir /s /q art
+REM rmdir /s /q autoconf
+REM rmdir /s /q build
+REM rmdir /s /q contrib
+REM rmdir /s /q doc
+REM rmdir /s /q ext
+REM rmdir /s /q mptest
+REM rmdir /s /q src
+REM rmdir /s /q test
+REM rmdir /s /q tool
+
+REM move mswin\README ./
+
+REM cd ../
+REM del sqlite3.zip
+
+REM cd %win_build_path%
+
+cd %dependencies_root%
+
+if not exist win_build (
+    mkdir win_build
 )
-
-if exist %dependencies_root%/sqlite3.zip (
-    7z x %dependencies_root%/sqlite3.zip -o%dependencies_root%/ -aoa
-)
-
-move %dependencies_root%/SQLite-c78be6d7 %dependencies_root%/sqlite3
-
-cd %dependencies_root%/sqlite3
-
-mkdir build
-cd build
-
-if %platform%==Win32 (
-    if %configuration%==Debug (
-        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86 DEBUG=1
-    )
-    if %configuration%==Release (
-        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x86
-    )
-)
-
-if %platform%==x64 (
-    if %configuration%==Debug (
-        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64 DEBUG=1 
-    )
-    if %configuration%==Release (
-        nmake /f ../Makefile.msc sqlite3.dll TOP=..\ TCLSH_CMD=tclsh86t.exe NO_TCL=1 OPTS=-D_USING_V110_SDK71_ PLATFORM=x64
-    )
-)
-
-cd ../
-
-if not exist include (
-    mkdir include
-)
-
-if not exist mswin/%platform%/%configuration%/bin (
-    mkdir mswin\%platform%\%configuration%\bin
-)
-
-if not exist mswin/%platform%/%configuration%/lib (
-    mkdir mswin\%platform%\%configuration%\lib
-)
-
-move build\sqlite3.dll mswin\%platform%\%configuration%\bin\
-move build\sqlite3.pdb mswin\%platform%\%configuration%\bin\
-move build\sqlite3.exp mswin\%platform%\%configuration%\lib\
-move build\sqlite3.lib mswin\%platform%\%configuration%\lib\
-move build\sqlite3.h include\
-
-move README mswin\
-
-del /q *
-rmdir /s /q art
-rmdir /s /q autoconf
-rmdir /s /q build
-rmdir /s /q contrib
-rmdir /s /q doc
-rmdir /s /q ext
-rmdir /s /q mptest
-rmdir /s /q src
-rmdir /s /q test
-rmdir /s /q tool
-
-move mswin\README ./
-
-cd ../
-del sqlite3.zip
 
 cd %win_build_path%
+
+copy "updatedepends.cmd" "%dependencies_root%\win_build\"
+copy "build.cmd" "%dependencies_root%\win_build\"   
