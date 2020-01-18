@@ -223,12 +223,29 @@ bool HOST_INFO::host_is_running_on_batteries() {
 #elif LINUX_LIKE_SYSTEM
     static enum {
       Detect,
+      UPower,
       ProcAPM,
       ProcACPI,
       SysClass,
       NoBattery
     } method = Detect;
     static char path[64] = "";
+    static char upower_out[256] = "";
+
+    if (Detect == method) {
+        // try UPower
+        FILE *f = popen("upower -d", "r");
+        if (f) {
+            while(!std::feof(f)) {
+                if (!fgets(upower_out, sizeof(upower_out), f)) break;
+                if (strstr(upower_out, "on-battery:")) {
+                    method = UPower;
+                    break;
+                }
+            }
+            fclose(f);
+        }
+    }
 
     if (Detect == method) {
         // try APM in ProcFS
@@ -301,6 +318,14 @@ bool HOST_INFO::host_is_running_on_batteries() {
         // if we haven't found a method so far, give up
         method = NoBattery;
         // fall through
+    case UPower:
+        {
+            // I don't want to parse the output twice and duplicate code 
+            // so I just let it Detect upower one more time
+            method = Detect;
+            if (strstr(upower_out, "no")) return true;
+            return false;
+        }
     case ProcAPM:
         {
             // use /proc/apm
