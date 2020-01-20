@@ -192,6 +192,21 @@ int get_timezone() {
     return 0;
 }
 
+std::string read_upower_status() {
+    char upower_out[256];
+    FILE *f = popen("upower -d", "r");
+    if (f) {
+        while(!std::feof(f)) {
+            if (!fgets(upower_out, sizeof(upower_out), f)) return "";
+            if (strstr(upower_out, "on-battery:")) {
+                return std::string(upower_out);
+            }
+        }
+        fclose(f);
+    }
+    return "";
+}
+
 // Returns true if the host is currently running off battery power
 // If you can't figure out, return false
 //
@@ -230,20 +245,11 @@ bool HOST_INFO::host_is_running_on_batteries() {
       NoBattery
     } method = Detect;
     static char path[64] = "";
-    static char upower_out[256] = "";
 
     if (Detect == method) {
         // try UPower
-        FILE *f = popen("upower -d", "r");
-        if (f) {
-            while(!std::feof(f)) {
-                if (!fgets(upower_out, sizeof(upower_out), f)) break;
-                if (strstr(upower_out, "on-battery:")) {
-                    method = UPower;
-                    break;
-                }
-            }
-            fclose(f);
+        if (!read_upower_status().empty()) {
+            method = UPower;
         }
     }
 
@@ -320,10 +326,7 @@ bool HOST_INFO::host_is_running_on_batteries() {
         // fall through
     case UPower:
         {
-            // I don't want to parse the output twice and duplicate code 
-            // so I just let it Detect upower one more time
-            method = Detect;
-            if (strstr(upower_out, "no")) return true;
+            if (strstr(read_upower_status().c_str(), "no")) return true;
             return false;
         }
     case ProcAPM:
