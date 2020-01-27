@@ -595,6 +595,9 @@ const char* URL_LIST::get_current_url(FILE_INFO& fi) {
         );
         return NULL;
     }
+    if (urls[current_index].empty()) {
+        return NULL;
+    }
     return urls[current_index].c_str();
 }
 
