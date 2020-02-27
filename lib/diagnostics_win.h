@@ -27,14 +27,6 @@ typedef LONG       NTSTATUS;
 typedef LONG       KPRIORITY;
 
 //MinGW-W64 defines this struct in its own header
-#if !defined(HAVE_CLIENT_ID) && !defined(__MINGW32__)
-typedef struct _CLIENT_ID {
-    DWORD          UniqueProcess;
-    DWORD          UniqueThread;
-} CLIENT_ID;
-#endif
-
-//MinGW-W64 defines this struct in its own header
 #if !defined(HAVE_VM_COUNTERS) && !defined(__MINGW32__)
 typedef struct _VM_COUNTERS {
 #ifdef _WIN64
