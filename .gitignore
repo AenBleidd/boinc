@@ -8,6 +8,7 @@
 
 # Visual Studio build directories
 /win_build/Build/
+/3rdParty/Windows/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
