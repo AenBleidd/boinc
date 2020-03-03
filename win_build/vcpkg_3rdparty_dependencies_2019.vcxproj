@@ -106,6 +106,7 @@
       <VcpkgItem Include="ftgl:x64-windows-static" />
       <VcpkgItem Include="wxwidgets:x64-windows-static" />
       <VcpkgItem Include="sqlite3:x64-windows-static" />
+      <VcpkgItem Include="opencl:x64-windows-static" />
     </ItemGroup>
     <Exec Command="vcpkg.exe install %(VcpkgItem.Identity)" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
