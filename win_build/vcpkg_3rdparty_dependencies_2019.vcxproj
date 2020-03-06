@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="boinc.props" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -84,17 +85,17 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <PropertyGroup>
-    <VcpkgRootDir Condition="'$(VcpkgRootDir)' == ''">..\3rdParty\Windows\vcpkg</VcpkgRootDir>
-    <VcpkgExe>$(VcpkgRootDir)\vcpkg.exe</VcpkgExe>
-  </PropertyGroup>
-  <Target Name="VcpkgClean" BeforeTargets="Clean" Condition="Exists($(VcpkgRootDir))">
-    <!-- <RemoveDir Directories="$(VcpkgRootDir)" /> -->
-  </Target>
   <Target Name="CreateFolders" BeforeTargets="InstallVcpkg" Condition="!Exists($(VcpkgRootDir))">
     <MakeDir Directories="$(VcpkgRootDir)" />
+    <MakeDir Directories="$(CudaRootDir)" />
   </Target>
-  <Target Name="InstallVcpkg" BeforeTargets="Build3rdPartyLibraries" DependsOnTargets="CreateFolders" AfterTargets="CreateFolders" Condition="!Exists($(VcpkgExe))">
+  <Target Name="DownloadCUDA" BeforeTargets="InstallVcpkg" DependsOnTargets="CreateFolders" AfterTargets="CreateFolders" Condition="!Exists($(CudaNvccPath))">
+    <DownloadFile SourceUrl="https://www.7-zip.org/a/7za920.zip" DestinationFolder="$(TMP)" />
+    <Unzip SourceFiles="$(TMP)\7za920.zip" DestinationFolder="$(TMP)\7z" OverwriteReadOnlyFiles="true"/>
+    <DownloadFile SourceUrl="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/windows/x86_64/wddm2/nvcc.exe" DestinationFolder="$(TMP)" />
+    <Exec Command="$(TMP)\7z\7za x $(TMP)\nvcc.exe -onvcc -aoa" WorkingDirectory="$(CudaRootDir)" ConsoleToMSBuild="true"/>
+  </Target>
+  <Target Name="InstallVcpkg" BeforeTargets="Build3rdPartyLibraries" DependsOnTargets="CreateFolders" AfterTargets="DownloadCUDA" Condition="!Exists($(VcpkgExe))">
     <Exec Command="git clone https://github.com/microsoft/vcpkg ." WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
     <Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
@@ -109,5 +110,6 @@
       <VcpkgItem Include="opencl:x64-windows-static" />
     </ItemGroup>
     <Exec Command="vcpkg.exe install %(VcpkgItem.Identity)" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+    <Exec Command="vcpkg.exe upgrade --no-dry-run" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
 </Project>
