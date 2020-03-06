@@ -94,6 +94,8 @@
     <Unzip SourceFiles="$(TMP)\7za920.zip" DestinationFolder="$(TMP)\7z" OverwriteReadOnlyFiles="true"/>
     <DownloadFile SourceUrl="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/windows/x86_64/wddm2/nvcc.exe" DestinationFolder="$(TMP)" />
     <Exec Command="$(TMP)\7z\7za x $(TMP)\nvcc.exe -onvcc -aoa" WorkingDirectory="$(CudaRootDir)" ConsoleToMSBuild="true"/>
+    <DownloadFile SourceUrl="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/windows/x86_64/wddm2/cublas_dev.exe" DestinationFolder="$(TMP)" />
+    <Exec Command="$(TMP)\7z\7za x $(TMP)\cublas_dev.exe -onvcc -aoa" WorkingDirectory="$(CudaRootDir)" ConsoleToMSBuild="true"/>
   </Target>
   <Target Name="InstallVcpkg" BeforeTargets="Build3rdPartyLibraries" DependsOnTargets="CreateFolders" AfterTargets="DownloadCUDA" Condition="!Exists($(VcpkgExe))">
     <Exec Command="git clone https://github.com/microsoft/vcpkg ." WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
