@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <VcpkgRootDir Condition="'$(VcpkgRootDir)' == ''">..\3rdParty\Windows\vcpkg</VcpkgRootDir>
+        <VcpkgRootDir Condition="'$(VcpkgRootDir)' == ''">$(MSBuildThisFileDirectory)\..\3rdParty\Windows\vcpkg</VcpkgRootDir>
         <VcpkgExe>$(VcpkgRootDir)\vcpkg.exe</VcpkgExe>
         <CUDA_BIN_PATH Condition="'$(CUDA_BIN_PATH)' == ''">$(VcpkgRootDir)\..\cuda\nvcc\bin\</CUDA_BIN_PATH>
         <CudaNvccPath>$(CUDA_BIN_PATH)\nvcc.exe</CudaNvccPath>
