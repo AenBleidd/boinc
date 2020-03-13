@@ -69,7 +69,7 @@
       <ProgramDatabaseFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\samples\nvopencl\*.cl "$(OUTDIR)"</Command>
+      <Command>copy ..\samples\openclapp\*.cl "$(OUTDIR)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -90,7 +90,7 @@
       <ProgramDatabaseFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\samples\nvopencl\*.cl "$(OUTDIR)"</Command>
+      <Command>copy ..\samples\openclapp\*.cl "$(OUTDIR)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

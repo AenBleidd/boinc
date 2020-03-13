@@ -70,7 +70,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\samples\atiopencl\*.cl "$(OUTDIR)"</Command>
+      <Command>copy ..\samples\openclapp\*.cl "$(OUTDIR)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -92,7 +92,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\samples\atiopencl\*.cl "$(OUTDIR)"</Command>
+      <Command>copy ..\samples\openclapp\*.cl "$(OUTDIR)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

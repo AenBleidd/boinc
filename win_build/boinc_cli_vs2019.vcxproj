@@ -115,8 +115,10 @@
       <AdditionalManifestFiles>../client/boinc.xml;%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
     <PostBuildEvent>
-      <Message>Checking boinc.exe dependencies</Message>
-      <Command>"$(ProjectDir)\buildenv.cmd" devenvdir "$(DevEnvDir)" type "$(Configuration)" platform "$(Platform)" exec updatedepends.cmd</Command>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,8 +178,10 @@
       <AdditionalManifestFiles>../client/boinc.xml;%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
     <PostBuildEvent>
-      <Message>Checking boinc.exe dependencies</Message>
-      <Command>"$(ProjectDir)\buildenv.cmd" devenvdir "$(DevEnvDir)" type "$(Configuration)" platform "$(Platform)" exec updatedepends.cmd</Command>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

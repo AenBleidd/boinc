@@ -98,8 +98,10 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Message>Checking boincmgr.exe dependencies</Message>
-      <Command>"$(ProjectDir)\buildenv.cmd" devenvdir "$(DevEnvDir)" type "$(Configuration)" platform "$(Platform)" exec updatedepends.cmd</Command>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,8 +146,10 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Message>Checking boincmgr.exe dependencies</Message>
-      <Command>"$(ProjectDir)\buildenv.cmd" devenvdir "$(DevEnvDir)" type "$(Configuration)" platform "$(Platform)" exec updatedepends.cmd</Command>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDPIAwareness>false</EnableDPIAwareness>
