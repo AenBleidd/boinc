@@ -97,8 +97,9 @@
     <DownloadFile SourceUrl="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/windows/x86_64/wddm2/cublas_dev.exe" DestinationFolder="$(TMP)" />
     <Exec Command="$(TMP)\7z\7za x $(TMP)\cublas_dev.exe -onvcc -aoa" WorkingDirectory="$(CudaRootDir)" ConsoleToMSBuild="true"/>
   </Target>
-  <Target Name="InstallVcpkg" BeforeTargets="Build3rdPartyLibraries" DependsOnTargets="CreateFolders" AfterTargets="DownloadCUDA" Condition="!Exists($(VcpkgExe))">
-    <Exec Command="git clone https://github.com/microsoft/vcpkg ." WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+  <Target Name="InstallVcpkg" BeforeTargets="Build3rdPartyLibraries" DependsOnTargets="CreateFolders" AfterTargets="DownloadCUDA">
+    <Exec Command="git clone https://github.com/microsoft/vcpkg ." WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" Condition="!Exists($(VcpkgExe))" />
+    <Exec Command="git pull" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
     <Exec Command="bootstrap-vcpkg.bat" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
   <Target Name="Build3rdPartyLibraries" BeforeTargets="ClCompile" DependsOnTargets="InstallVcpkg" AfterTargets="InstallVcpkg">
@@ -110,8 +111,9 @@
       <VcpkgItem Include="wxwidgets:x64-windows-static" />
       <VcpkgItem Include="sqlite3:x64-windows-static" />
       <VcpkgItem Include="opencl:x64-windows-static" />
+      <VcpkgItem Include="rappture:x64-windows-static" />
     </ItemGroup>
-    <Exec Command="vcpkg.exe install %(VcpkgItem.Identity)" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
-    <Exec Command="vcpkg.exe upgrade --no-dry-run" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+    <Exec Command="vcpkg.exe install %(VcpkgItem.Identity) --overlay-ports=../../vcpkg_port" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+    <Exec Command="vcpkg.exe upgrade --no-dry-run --overlay-ports=../../vcpkg_port" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
 </Project>

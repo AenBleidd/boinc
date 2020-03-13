@@ -1,0 +1,4 @@
+Source: rappture
+Version: 20130903
+Description: Rappture is a toolkit supporting Rapid application infrastructure, making it quick and easy to develop powerful scientific applications.
+Build-Depends: expat
