@@ -12,7 +12,6 @@ set(SRC_RAPPTURE_CORE
     src/core/RpBindingsDict.cc
     src/core/RpBuffer.cc
     src/core/RpBufferCInterface.cc
-    src/core/RpBuffer_test.cc
     src/core/RpDXWriter.cc
     src/core/RpDXWriterFInterface.cc
     src/core/RpEncode.cc
@@ -49,9 +48,56 @@ set(SRC_RAPPTURE_CORE
     src/core/scew/xprint.c
 )
 
+set(HEADERS
+    src/core/rappture.h
+    src/core/RpBindingsDict.h
+    src/core/RpBuffer.h
+    src/core/RpBufferCHelper.h
+    src/core/RpBufferCInterface.h
+    src/core/RpDict.h
+    src/core/RpDXWriter.h
+    src/core/RpDXWriterFInterface.h
+    src/core/RpDXWriterFStubs.h
+    src/core/RpEncode.h
+    src/core/RpEntityRef.h
+    src/core/RpFortranCommon.h
+    src/core/RpLibrary.h
+    src/core/RpLibraryCInterface.h
+    src/core/RpLibraryFInterface.h
+    src/core/RpLibraryFStubs.h
+    src/core/RpOutcome.h
+    src/core/RpOutcomeCHelper.h
+    src/core/RpOutcomeCInterface.h
+    src/core/RpPtr.h
+    src/core/RpSimpleBuffer.h
+    src/core/RpUnits.h
+    src/core/RpUnitsCInterface.h
+    src/core/RpUnitsFInterface.h
+    src/core/RpUnitsFStubs.h
+    src/core/RpUnitsStd.h
+    src/core/RpUtils.h
+    src/core/RpUtilsCInterface.h
+    src/core/RpUtilsFInterface.h
+    src/core/RpUtilsFStubs.h
+    src/core/scew_extras.h
+
+)
+
+add_definitions("-DRAPPTURE_VERSION=1.9")
+add_definitions("-DSVN_VERSION=6713")
+add_definitions("-D_USE_MATH_DEFINES")
+
 add_library(rappture ${SRC_RAPPTURE_CORE})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/core/)
 
 find_package(EXPAT REQUIRED)
 target_link_libraries(rappture PRIVATE EXPAT::EXPAT)
+
+install(TARGETS rappture
+            RUNTIME DESTINATION bin
+            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
+        )
+
+install(FILES ${HEADERS} DESTINATION include)
