@@ -10,3 +10,24 @@ index e4748b35..d835aa43 100644
  using namespace Rappture;
  
  DXWriter::DXWriter() :
+diff --git a/src/core/scew/scew.h b/src/core/scew/scew.h
+index 9741ed59..924a7aed 100644
+--- a/src/core/scew/scew.h
++++ b/src/core/scew/scew.h
+@@ -61,11 +61,11 @@
+ #  define SCEW_LIB_D
+ # endif /* _DEBUG */
+ 
+-# if defined(SCEW_LIB_U) || defined(SCEW_LIB_S) || defined(SCEW_LIB_D)
+-# pragma comment( lib, "scew_" SCEW_LIB_U SCEW_LIB_S SCEW_LIB_D ".lib" )
+-# else
+-# pragma comment( lib, "scew.lib" )
+-# endif
++// # if defined(SCEW_LIB_U) || defined(SCEW_LIB_S) || defined(SCEW_LIB_D)
++// # pragma comment( lib, "scew_" SCEW_LIB_U SCEW_LIB_S SCEW_LIB_D ".lib" )
++// # else
++// # pragma comment( lib, "scew.lib" )
++// # endif
+ 
+ #endif /* _WIN32 */
+ 

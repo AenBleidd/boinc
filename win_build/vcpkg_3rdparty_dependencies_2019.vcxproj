@@ -113,7 +113,7 @@
       <VcpkgItem Include="opencl:x64-windows-static" />
       <VcpkgItem Include="rappture:x64-windows-static" />
     </ItemGroup>
-    <Exec Command="vcpkg.exe install %(VcpkgItem.Identity) --overlay-ports=../../vcpkg_port" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
-    <Exec Command="vcpkg.exe upgrade --no-dry-run --overlay-ports=../../vcpkg_port" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+    <Exec Command="vcpkg.exe install %(VcpkgItem.Identity) --overlay-ports=../../vcpkg_ports" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
+    <Exec Command="vcpkg.exe upgrade --no-dry-run --overlay-ports=../../vcpkg_ports" WorkingDirectory="$(VcpkgRootDir)" ConsoleToMSBuild="true" />
   </Target>
 </Project>

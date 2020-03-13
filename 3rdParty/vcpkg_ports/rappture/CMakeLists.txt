@@ -100,4 +100,4 @@ install(TARGETS rappture
             LIBRARY DESTINATION lib
         )
 
-install(FILES ${HEADERS} DESTINATION include)
+install(FILES ${HEADERS} DESTINATION include/rappture)
