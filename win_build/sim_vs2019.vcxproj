@@ -69,10 +69,10 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../coprocs/NVIDIA/include;../win_build;../lib;../api;../client/win;../client;..;../3rdParty/Windows/vcpkg/installed/x64-windows/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../coprocs/NVIDIA/include;../win_build;../lib;../api;../client/win;../client;..;../3rdParty/Windows/vcpkg/installed/x64-windows-static/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_MT;_DLL;_WINDOWS;_CONSOLE;SIM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -95,7 +95,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>MSVCRTD.LIB;MSVCPRTD.LIB;kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;zlibd.lib;libcrypto.lib;libssl.lib;libcurl-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MSVCRTD.LIB;MSVCPRTD.LIB;kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;zlibd.lib;libcrypto.lib;libssl.lib;libcurl-d.lib;%(AdditionalDependencies);Ws2_32.Lib;Crypt32.Lib</AdditionalDependencies>
       <OutputFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -106,7 +106,7 @@
       <OptimizeReferences>
       </OptimizeReferences>
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalLibraryDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows/debug/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows-static/debug/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,11 +122,11 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../coprocs/NVIDIA/include;../win_build;../lib;../api;../client/win;../client;..;../3rdParty/Windows/vcpkg/installed/x64-windows/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../coprocs/NVIDIA/include;../win_build;../lib;../api;../client/win;../client;..;../3rdParty/Windows/vcpkg/installed/x64-windows-static/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_MT;_DLL;_WINDOWS;_CONSOLE;SIM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -148,7 +148,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;MSVCRT.LIB;MSVCPRT.LIB;oldnames.lib;zlib.lib;libcrypto.lib;libssl.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;MSVCRT.LIB;MSVCPRT.LIB;oldnames.lib;zlib.lib;libcrypto.lib;libssl.lib;libcurl.lib;%(AdditionalDependencies);Ws2_32.Lib;Crypt32.Lib</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -160,7 +160,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SetChecksum>true</SetChecksum>
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalLibraryDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows-static/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

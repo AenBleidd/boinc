@@ -104,8 +104,8 @@
   </Target>
   <Target Name="Build3rdPartyLibraries" BeforeTargets="ClCompile" DependsOnTargets="InstallVcpkg" AfterTargets="InstallVcpkg">
     <ItemGroup>
-      <VcpkgItem Include="openssl-windows:x64-windows" />
-      <VcpkgItem Include="curl[core,openssl]:x64-windows" />
+      <VcpkgItem Include="openssl-windows:x64-windows-static" />
+      <VcpkgItem Include="curl[core,openssl]:x64-windows-static" />
       <VcpkgItem Include="freetype[core,bzip2,png]:x64-windows-static" />
       <VcpkgItem Include="ftgl:x64-windows-static" />
       <VcpkgItem Include="wxwidgets:x64-windows-static" />
