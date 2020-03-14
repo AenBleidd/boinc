@@ -5,10 +5,10 @@
 *.user
 *.ncb
 *.suo
+*.pdb
 
 # Visual Studio build directories
 /win_build/Build/
-/3rdParty/Windows/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -125,6 +125,7 @@ drupal/sites/default/project
 locale/*/*.flag
 
 ## dependency builds and CI cache directories
+3rdParty/Windows/
 3rdParty/linux/
 3rdParty/mac/
 3rdParty/buildCache/

@@ -60,15 +60,13 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\lib;..\;../3rdParty/Windows/vcpkg/installed/x64-windows/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_MT;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>boinc_win.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)boinc_win.pch</PrecompiledHeaderOutputFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalOptions> ".\build\x64\debug\libboincapi_staticcrt.lib" ".\build\x64\debug\libboinc_staticcrt.lib" ".\build\x64\debug\libboinczip_staticcrt.lib" %(AdditionalOptions)</AdditionalOptions>
@@ -91,8 +89,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>

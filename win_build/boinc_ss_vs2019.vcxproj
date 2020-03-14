@@ -84,11 +84,8 @@
       <PrecompiledHeaderOutputFile>$(IntDir)boinc_win.pch</PrecompiledHeaderOutputFile>
       <BrowseInformation>
       </BrowseInformation>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
-      <DisableSpecificWarnings>4127;4702;4244;4305;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>boinc_win.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -132,11 +129,8 @@
       <PrecompiledHeaderOutputFile>$(IntDir)boinc_win.pch</PrecompiledHeaderOutputFile>
       <BrowseInformation>
       </BrowseInformation>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
-      <DisableSpecificWarnings>4127;4702;4244;4305;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>

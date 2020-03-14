@@ -59,7 +59,7 @@
       <PreprocessorDefinitions>NV_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opencl.lib;cfgmgr32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>.;..;../api;../lib;../samples/image_libs;../samples/jpeglib;../samples/glut;$(CUDA_INC_PATH);../3rdParty/Windows/vcpkg/installed/x64-windows-static/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NV_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opencl.lib;cfgmgr32.lib;%(AdditionalDependencies)</AdditionalDependencies>
