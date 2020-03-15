@@ -69,7 +69,7 @@
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalOptions> ".\build\x64\debug\libboincapi_staticcrt.lib" ".\build\x64\debug\libboinc_staticcrt.lib" ".\build\x64\debug\libboinczip_staticcrt.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Build\$(Platform)\$(Configuration)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows-static/debug/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -101,7 +101,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalOptions> ".\build\x64\release\libboincapi_staticcrt.lib" ".\build\x64\release\libboinc_staticcrt.lib" ".\build\x64\release\libboinczip_staticcrt.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -111,6 +111,9 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="libboincapi_staticcrt_vs2019.vcxproj">
+      <Project>{07bda8f7-4aaf-4a3b-b96e-ea72a143c5ae}</Project>
+    </ProjectReference>
     <ProjectReference Include="libboinczip_staticcrt_vs2019.vcxproj">
       <Project>{753e897d-9ece-42b1-9f0d-cd566775c77e}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
