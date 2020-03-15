@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{07BDA8F7-4AAF-4A3B-B96E-EA72A143C5AE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>libboincapi_staticcrt</ProjectName>
+    <ProjectName>libboincapi</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

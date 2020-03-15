@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C0A2DEEE-2EC5-4F67-8048-53264B6BD14D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>libboincopencl_staticcrt</ProjectName>
+    <ProjectName>libboincopencl</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

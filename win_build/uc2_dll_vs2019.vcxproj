@@ -16,7 +16,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B275C525-5EF4-40BA-A70A-4E01A76A0CDD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>example_app_dll</ProjectName>
+    <ProjectName>example_app_lib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
