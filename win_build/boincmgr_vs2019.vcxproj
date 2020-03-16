@@ -108,7 +108,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../win_build;..;../3rdParty/Windows/vcpkg/installed/x64-windows-static/include/;..\lib;..\api;..\clientgui;..\client\win;../coprocs/OpenCL/include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32;_DEBUG;_WINDOWS;_UNICODE;UNICODE;wxUSE_GUI=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32;_WINDOWS;_UNICODE;UNICODE;wxUSE_GUI=1</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -126,7 +126,7 @@
       <ForcedIncludeFiles>stdwx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../3rdParty/Windows/vcpkg/installed/x64-windows-static/include/;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>

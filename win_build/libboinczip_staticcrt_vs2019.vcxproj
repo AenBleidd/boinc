@@ -59,7 +59,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\lib;..\;.\;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;DLL;NO_MKTEMP;USE_ZIPMAIN;NO_CRYPT;IZ_PWLEN=80;NO_ASM;NO_UNICODE_SUPPORT;inflate=inflate_boinc;deflate=deflate_boinc;get_crc_table=get_crc_table_boinc;longest_match=longest_match_boinc;inflate_codes=inflate_codes_boinc;crc32=crc32_boinc;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;DLL;NO_MKTEMP;USE_ZIPMAIN;NO_CRYPT;IZ_PWLEN=80;NO_ASM;NO_UNICODE_SUPPORT;inflate=inflate_boinc;deflate=deflate_boinc;get_crc_table=get_crc_table_boinc;longest_match=longest_match_boinc;inflate_codes=inflate_codes_boinc;crc32=crc32_boinc;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -67,7 +67,7 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0809</Culture>
     </ResourceCompile>
     <Lib>
