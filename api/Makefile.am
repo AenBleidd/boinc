@@ -41,6 +41,10 @@ if BUILD_GRAPHICS_API
 AM_CXXFLAGS += @GLUT_CFLAGS@
 endif
 
+if OS_ARM_LINUX
+AM_CXXFLAGS += -mfloat-abi=softfp -mfpu=vfpv3-d16
+endif
+
 lib_LTLIBRARIES = libboinc_api.la
 libboinc_api_la_SOURCES = $(api_files)
 libboinc_api_la_LDFLAGS = -version-number $(LIBBOINC_VERSION)

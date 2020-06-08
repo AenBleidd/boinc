@@ -192,6 +192,10 @@ libboinc_la_LDFLAGS += -lexecinfo
 endif
 libboinc_la_LIBADD =
 
+if OS_ARM_LINUX
+AM_CXXFLAGS += -mfloat-abi=softfp -mfpu=vfpv3-d16
+endif
+
 if ENABLE_BOINCCRYPT
 lib_LTLIBRARIES += libboinc_crypt.la
 libboinc_crypt_la_SOURCES = crypt.cpp

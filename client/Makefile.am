@@ -122,6 +122,8 @@ libwhetneon_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_NEON -mfloat-abi=sof
 
 libwhetvfp_a_SOURCES = whetstone.cpp
 libwhetvfp_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_VFP -mfloat-abi=softfp -mfpu=vfp
+
+boinc_client_CXXFLAGS += -mfloat-abi=softfp -mfpu=vfpv3-d16
 endif
 
 switcher_SOURCES = switcher.cpp
