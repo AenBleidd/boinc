@@ -118,12 +118,12 @@ EXTRA_boinc_client_DEPENDENCIES = libwhetneon.a libwhetvfp.a
 boinc_client_LDADD += libwhetneon.a libwhetvfp.a
 noinst_LIBRARIES = libwhetneon.a libwhetvfp.a
 libwhetneon_a_SOURCES = whetstone.cpp
-libwhetneon_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_NEON -mfloat-abi=softfp -mfpu=neon
+libwhetneon_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_NEON -mfloat-abi=soft -mfpu=neon
 
 libwhetvfp_a_SOURCES = whetstone.cpp
-libwhetvfp_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_VFP -mfloat-abi=softfp -mfpu=vfp
+libwhetvfp_a_CXXFLAGS = $(boinc_client_CXXFLAGS) -DANDROID_VFP -mfloat-abi=soft -mfpu=vfp
 
-boinc_client_CXXFLAGS += -mfloat-abi=softfp -mfpu=vfpv3-d16
+boinc_client_CXXFLAGS += -mfloat-abi=soft -mfpu=vfpv3-d16
 endif
 
 switcher_SOURCES = switcher.cpp
