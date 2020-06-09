@@ -193,7 +193,7 @@ endif
 libboinc_la_LIBADD =
 
 if OS_ARM_LINUX
-AM_CXXFLAGS += -mfloat-abi=soft -mfpu=vfpv3-d16
+AM_CXXFLAGS += -mfloat-abi=softfp -mfpu=vfpv3-d16
 endif
 
 if ENABLE_BOINCCRYPT
