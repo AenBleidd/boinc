@@ -16,104 +16,107 @@
   You should have received a copy of the GNU Lesser General Public License
   along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<ScrollView
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:fillViewport="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-    <RelativeLayout
+    <ScrollView
+            android:fillViewport="true"
+            android:layout_above="@id/cancel_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ImageView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:maxWidth="400dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/ic_boinc_logo"
-                android:contentDescription="@string/app_name"
-                android:layout_centerHorizontal="true"/>
+            <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:maxWidth="400dp"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/ic_boinc_logo"
+                    android:contentDescription="@string/app_name"
+                    android:layout_centerHorizontal="true"/>
 
-        <TextView
-                android:id="@+id/content_first"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="10dp"
-                android:layout_below="@+id/logo"
-                android:text="@string/xiaomi_terms_of_use_content_first" />
+            <TextView
+                    android:id="@+id/content_first"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/logo"
+                    android:text="@string/xiaomi_terms_of_use_content_first" />
 
-        <TextView
-                android:id="@+id/content_second"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="10dp"
-                android:layout_below="@+id/content_first"
-                android:text="@string/xiaomi_terms_of_use_content_second" />
+            <TextView
+                    android:id="@+id/content_second"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/content_first"
+                    android:text="@string/xiaomi_terms_of_use_content_second" />
 
-        <TextView
-                android:id="@+id/content_user_agreement"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="10dp"
-                android:layout_below="@+id/content_second"
-                android:autoLink="web"
-                android:text="@string/xiaomi_terms_of_use_content_user_agreement" />
+            <TextView
+                    android:id="@+id/content_user_agreement"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/content_second"
+                    android:autoLink="web"
+                    android:text="@string/xiaomi_terms_of_use_content_user_agreement" />
 
-        <TextView
-                android:id="@+id/content_privacy_policy"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="10dp"
-                android:layout_below="@+id/content_user_agreement"
-                android:autoLink="web"
-                android:text="@string/xiaomi_terms_of_use_content_privacy_policy" />
+            <TextView
+                    android:id="@+id/content_privacy_policy"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/content_user_agreement"
+                    android:autoLink="web"
+                    android:text="@string/xiaomi_terms_of_use_content_privacy_policy" />
+        </RelativeLayout>
+    </ScrollView>
+    <Button
+            android:id="@+id/agree_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_button_blue"
+            android:minWidth="150dp"
+            android:onClick="agreeClicked"
+            android:padding="5dp"
+            android:text="@string/agree_button"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
-        <Button
-                android:id="@+id/agree_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_button_blue"
-                android:minWidth="150dp"
-                android:onClick="agreeClicked"
-                android:padding="5dp"
-                android:text="@string/agree_button"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white" />
-
-        <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_button_blue"
-                android:minWidth="150dp"
-                android:onClick="cancelClicked"
-                android:padding="5dp"
-                android:text="@string/confirm_cancel"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white" />
-
-    </RelativeLayout>
-</ScrollView>
+    <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_button_blue"
+            android:minWidth="150dp"
+            android:onClick="cancelClicked"
+            android:padding="5dp"
+            android:text="@string/confirm_cancel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+</RelativeLayout>

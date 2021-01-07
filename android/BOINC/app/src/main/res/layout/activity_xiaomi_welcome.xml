@@ -16,91 +16,96 @@
   You should have received a copy of the GNU Lesser General Public License
   along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<ScrollView
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:fillViewport="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
+        <ScrollView
+                android:fillViewport="true"
+                android:layout_above="@id/cancel_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-        <ImageView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:maxWidth="400dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/ic_boinc_logo"
-                android:contentDescription="@string/app_name"
-                android:layout_centerHorizontal="true"/>
+                <ImageView
+                        android:id="@+id/logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:maxWidth="400dp"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/ic_boinc_logo"
+                        android:contentDescription="@string/app_name"
+                        android:layout_centerHorizontal="true"/>
 
-        <TextView
-                android:id="@+id/content_welcome_first"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/logo"
-                android:text="@string/xiaomi_welcome_content_first" />
+                <TextView
+                        android:id="@+id/content_welcome_first"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/logo"
+                        android:text="@string/xiaomi_welcome_content_first" />
 
-        <TextView
-                android:id="@+id/content_welcome_second"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/content_welcome_first"
-                android:text="@string/xiaomi_welcome_content_second" />
+                <TextView
+                        android:id="@+id/content_welcome_second"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/content_welcome_first"
+                        android:text="@string/xiaomi_welcome_content_second" />
 
-        <TextView
-                android:id="@+id/content_welcome_third"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/content_welcome_second"
-                android:text="@string/xiaomi_welcome_content_third" />
+                <TextView
+                        android:id="@+id/content_welcome_third"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/content_welcome_second"
+                        android:text="@string/xiaomi_welcome_content_third" />
 
-        <TextView
-                android:id="@+id/content_welcome_fourth"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/content_welcome_third"
-                android:text="@string/xiaomi_welcome_content_fourth" />
+                <TextView
+                        android:id="@+id/content_welcome_fourth"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/content_welcome_third"
+                        android:text="@string/xiaomi_welcome_content_fourth" />
 
-        <TextView
-                android:id="@+id/content_welcome_fifth"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/content_welcome_fourth"
-                android:text="@string/xiaomi_welcome_content_fifth" />
+                <TextView
+                        android:id="@+id/content_welcome_fifth"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/content_welcome_fourth"
+                        android:text="@string/xiaomi_welcome_content_fifth" />
 
-        <TextView
-                android:id="@+id/content_welcome_sixth"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_margin="5dp"
-                android:layout_below="@+id/content_welcome_fifth"
-                android:text="@string/xiaomi_welcome_content_sixth" />
-
+                <TextView
+                        android:id="@+id/content_welcome_sixth"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_margin="5dp"
+                        android:layout_below="@+id/content_welcome_fifth"
+                        android:text="@string/xiaomi_welcome_content_sixth" />
+            </RelativeLayout>
+        </ScrollView>
         <Button
                 android:id="@+id/continue_button"
                 android:layout_width="wrap_content"
@@ -132,6 +137,4 @@
                 android:text="@string/confirm_cancel"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
-
-    </RelativeLayout>
-</ScrollView>
+</RelativeLayout>

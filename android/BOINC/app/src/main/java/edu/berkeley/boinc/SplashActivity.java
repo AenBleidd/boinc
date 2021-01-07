@@ -71,7 +71,12 @@ public class SplashActivity extends AppCompatActivity {
                 if(!monitor.boincMutexAcquired()) {
                     showNotExclusiveDialog();
                 }
-                mIsXiaomiSpecificFirstRun = !monitor.getXiaomiStateFile();
+                if (BuildConfig.BUILD_TYPE.contains("xiaomi")) {
+                    mIsXiaomiSpecificFirstRun = !monitor.getXiaomiStateFile();
+                }
+                else {
+                    mIsXiaomiSpecificFirstRun = false;
+                }
                 // read log level from monitor preferences and adjust accordingly
                 Logging.setLogLevel(monitor.getLogLevel());
             }
