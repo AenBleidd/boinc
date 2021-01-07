@@ -25,12 +25,10 @@ import edu.berkeley.boinc.attach.SelectionListActivity
 import edu.berkeley.boinc.databinding.ActivityXiaomiWelcomeBinding
 
 class XiaomiWelcomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityXiaomiWelcomeBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityXiaomiWelcomeBinding.inflate(layoutInflater)
+        val binding = ActivityXiaomiWelcomeBinding.inflate(layoutInflater)
         binding.continueButton.setOnClickListener {
             startActivity(Intent(this@XiaomiWelcomeActivity, SelectionListActivity::class.java))
         }

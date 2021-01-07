@@ -24,12 +24,10 @@ import androidx.appcompat.app.AppCompatActivity
 import edu.berkeley.boinc.databinding.ActivityXiaomiLicenseBinding
 
 class XiaomiLicenseActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityXiaomiLicenseBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityXiaomiLicenseBinding.inflate(layoutInflater)
+        val binding = ActivityXiaomiLicenseBinding.inflate(layoutInflater)
         binding.agreeButton.setOnClickListener {
             startActivity(Intent(this@XiaomiLicenseActivity, XiaomiWelcomeActivity::class.java))
         }
