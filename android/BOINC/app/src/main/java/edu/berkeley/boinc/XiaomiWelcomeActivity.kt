@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
  */
-package edu.berkeley.boinc;
+package edu.berkeley.boinc
 
 import android.content.Intent
 import android.os.Bundle
@@ -29,6 +29,8 @@ class XiaomiWelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityXiaomiWelcomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.continueButton.setOnClickListener {
             startActivity(Intent(this@XiaomiWelcomeActivity, SelectionListActivity::class.java))
         }
@@ -36,6 +38,5 @@ class XiaomiWelcomeActivity : AppCompatActivity() {
             finish()
         }
 
-        setContentView(binding.root)
     }
 }
