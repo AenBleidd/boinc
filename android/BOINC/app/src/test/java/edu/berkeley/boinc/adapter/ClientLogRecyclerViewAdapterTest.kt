@@ -59,15 +59,13 @@ class ClientLogRecyclerViewAdapterTest {
                         LocalDateTime.now().toEpochSecond(zoneOffset),
                         "Test text for Project 1 part 3")
         )
-
         adapter = ClientLogRecyclerViewAdapter(messages)
-
-        @Test
-        fun `Expect getItemCount() equal 5`() {
-            Assertions.assertEquals(5, adapter.itemCount)
-        }
     }
 
+    @Test
+    fun `Expect getItemCount() equal 5`() {
+        Assertions.assertEquals(5, adapter.itemCount)
+    }
 }
 
  
