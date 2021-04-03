@@ -28,6 +28,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.runner.RunWith
 import org.mockito.*
 import org.robolectric.RobolectricTestRunner
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -53,9 +54,9 @@ class ClientLogRecyclerViewAdapterTest {
                 Message("Project 2", 1, 0,
                         LocalDateTime.now().toEpochSecond(zoneOffset),
                         "Test text for Project 2"),
-                Message("Project 3", 0, 0,
+                Message("", 0, 0,
                         LocalDateTime.now().toEpochSecond(zoneOffset),
-                        "Test text for Project 3"),
+                        "Test text for no project"),
                 Message("Project 1", 1, 2,
                         LocalDateTime.now().toEpochSecond(zoneOffset),
                         "Test text for Project 1 part 3")
@@ -66,6 +67,29 @@ class ClientLogRecyclerViewAdapterTest {
     @Test
     fun `Expect getItemCount() equal 5`() {
         Assertions.assertEquals(5, adapter.itemCount)
+    }
+
+    @Test
+    fun `Expect correct result of getProject()`() {
+        for (i in messages.indices) {
+            Assertions.assertEquals(messages[i].project, adapter.getProject(i))
+        }
+    }
+
+    @Test
+    fun `Except correct result of getMessage()`() {
+        for (i in messages.indices) {
+            Assertions.assertEquals(messages[i].body, adapter.getMessage(i))
+        }
+    }
+
+    @Test
+    fun `Expect correct result of getDateTimeString()`() {
+        for (i in messages.indices) {
+            Assertions.assertEquals(LocalDateTime.ofInstant(Instant.ofEpochSecond(
+                    messages[i].timestamp),ZoneId.systemDefault()),
+                    adapter.getDateTimeString(i))
+        }
     }
 }
 
