@@ -32,6 +32,8 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 //@RunWith(RobolectricTestRunner::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -85,9 +87,10 @@ class ClientLogRecyclerViewAdapterTest {
 
     @Test
     fun `Expect correct result of getDateTimeString()`() {
+        val dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
         for (i in messages.indices) {
-            Assertions.assertEquals(LocalDateTime.ofInstant(Instant.ofEpochSecond(
-                    messages[i].timestamp),ZoneId.systemDefault()),
+            Assertions.assertEquals(dtf.format(LocalDateTime.ofInstant(Instant.ofEpochSecond(
+                    messages[i].timestamp), ZoneId.systemDefault())),
                     adapter.getDateTimeString(i))
         }
     }
