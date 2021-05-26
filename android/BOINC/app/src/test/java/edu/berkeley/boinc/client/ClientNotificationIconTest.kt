@@ -27,11 +27,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationIconTest {
-    lateinit var clientNotification: ClientNotification
+    private lateinit var clientNotification: ClientNotification
 
     @Before
     fun setUp() {
