@@ -38,12 +38,13 @@ class ClientNotificationTest {
     }
 
     @Test
-    fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect corresponding Notification`() {
+    fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect corresponding Notification title and text`() {
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
     @Test
