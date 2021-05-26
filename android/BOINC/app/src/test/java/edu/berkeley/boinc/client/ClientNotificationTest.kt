@@ -42,5 +42,6 @@ class ClientNotificationTest {
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assert.assertEquals(1, notification.actions.size)
     }
 }
