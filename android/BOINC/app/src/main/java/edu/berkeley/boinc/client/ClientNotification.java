@@ -199,7 +199,7 @@ public class ClientNotification {
         }
 
         // set tasks if computing
-        if(computingStatus == ClientStatus.COMPUTING_STATUS_COMPUTING) {
+        if(computingStatus == ClientStatus.COMPUTING_STATUS_COMPUTING && activeTasks != null && activeTasks.size() > 0) {
             // set summary text
             nb.setSubText(statusDesc);
             // set number as content info
