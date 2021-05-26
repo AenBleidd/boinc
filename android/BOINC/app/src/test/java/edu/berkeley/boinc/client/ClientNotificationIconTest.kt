@@ -19,8 +19,10 @@
 package edu.berkeley.boinc.client
 
 import android.os.Build
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import edu.berkeley.boinc.R
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -29,8 +31,12 @@ import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationIconTest {
-    @Inject
-    private lateinit var clientNotification: ClientNotification
+    lateinit var clientNotification: ClientNotification
+
+    @Before
+    fun setUp() {
+        clientNotification = ClientNotification(getApplicationContext())
+    }
 
     @Config(minSdk = Build.VERSION_CODES.JELLY_BEAN, maxSdk = Build.VERSION_CODES.KITKAT_WATCH)
     @Test
