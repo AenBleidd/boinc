@@ -25,9 +25,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationIconTest {
+    @Inject
     private lateinit var clientNotification: ClientNotification
 
     @Config(minSdk = Build.VERSION_CODES.JELLY_BEAN, maxSdk = Build.VERSION_CODES.KITKAT_WATCH)
