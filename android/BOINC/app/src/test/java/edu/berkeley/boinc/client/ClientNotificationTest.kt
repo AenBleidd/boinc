@@ -44,4 +44,22 @@ class ClientNotificationTest {
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
         Assert.assertEquals(1, notification.actions.size)
     }
+
+    @Test
+    fun `When active is true then expect Notification priority to be high`() {
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        val notification = clientNotification.buildNotification(clientStatus, true, null)
+        Assert.assertEquals(Notification.PRIORITY_HIGH, notification.priority)
+    }
+
+    @Test
+    fun `When active is false then expect Notification priority to be low`() {
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        val notification = clientNotification.buildNotification(clientStatus, false, null)
+        Assert.assertEquals(Notification.PRIORITY_LOW, notification.priority)
+    }
 }
