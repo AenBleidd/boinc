@@ -19,7 +19,9 @@
 package edu.berkeley.boinc.client
 
 import android.app.Notification
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import edu.berkeley.boinc.R
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +44,50 @@ class ClientNotificationTest {
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+    }
+
+    @Test
+    fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect only one Notification Action with menu_run_mode_enable title`() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val clientStatus = ClientStatus(context, null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(1, notification.actions.size)
+        Assert.assertEquals(context.getString(R.string.menu_run_mode_enable), notification.actions[0].title)
+    }
+
+    @Test
+    fun `When ClientStatus is COMPUTING_STATUS_IDLE then expect only one Notification Action with menu_run_mode_disable title`() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val clientStatus = ClientStatus(context, null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_IDLE
+
+        val notification = clientNotification.buildNotification(clientStatus, true, null)
+        Assert.assertEquals(1, notification.actions.size)
+        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+    }
+
+    @Test
+    fun `When ClientStatus is COMPUTING_STATUS_SUSPENDED then expect only one Notification Action with menu_run_mode_disable title`() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val clientStatus = ClientStatus(context, null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_SUSPENDED
+
+        val notification = clientNotification.buildNotification(clientStatus, true, null)
+        Assert.assertEquals(1, notification.actions.size)
+        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+    }
+
+    @Test
+    fun `When ClientStatus is COMPUTING_STATUS_COMPUTING then expect only one Notification Action with menu_run_mode_disable title`() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val clientStatus = ClientStatus(context, null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+
+        val notification = clientNotification.buildNotification(clientStatus, true, null)
+        Assert.assertEquals(1, notification.actions.size)
+        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
     }
 
     @Test
