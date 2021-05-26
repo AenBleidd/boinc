@@ -41,6 +41,6 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_BIG_TEXT))
+        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
     }
 }
