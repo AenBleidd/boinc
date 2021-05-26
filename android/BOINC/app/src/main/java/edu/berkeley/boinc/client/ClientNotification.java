@@ -160,7 +160,8 @@ public class ClientNotification {
     }
 
     @SuppressLint("InlinedApi")
-    private Notification buildNotification(ClientStatus status, Boolean active, List<Result> activeTasks) {
+    @VisibleForTesting()
+    public Notification buildNotification(ClientStatus status, Boolean active, List<Result> activeTasks) {
         // get current client computing status
         Integer computingStatus = status.computingStatus;
         // get status strings from ClientStatus
