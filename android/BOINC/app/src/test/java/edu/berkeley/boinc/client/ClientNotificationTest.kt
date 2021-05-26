@@ -24,9 +24,9 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.powermock.modules.junit4.PowerMockRunner
+import org.robolectric.RobolectricTestRunner
 
-@RunWith(PowerMockRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
