@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -226,7 +227,8 @@ public class ClientNotification {
     }
 
     // returns resource id of icon
-    private int getIcon(int status, boolean isSmall) {
+    @VisibleForTesting()
+    public int getIcon(int status, boolean isSmall) {
         int icon;
         switch(status) {
             case ClientStatus.COMPUTING_STATUS_NEVER:
