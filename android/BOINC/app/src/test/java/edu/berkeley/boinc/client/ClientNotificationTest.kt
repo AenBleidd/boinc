@@ -30,6 +30,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.coroutines.coroutineContext
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
@@ -101,7 +102,7 @@ class ClientNotificationTest {
             Result(project = Project(projectName = "Project 2"), app = App(name = "App Name 2")),
         )
 
-        val textLines = """
+        val textLinesExpected = """
             Project 1: App Name 1
             Project 2: App Name 2
         """.trimIndent()
@@ -109,7 +110,8 @@ class ClientNotificationTest {
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
         Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_SUB_TEXT))
-        Assert.assertEquals(textLines, notification.extras.get(Notification.EXTRA_TEXT_LINES).toString())
+        val textLinesActual = (notification.extras.get(Notification.EXTRA_TEXT_LINES) as CharSequence).toString()
+        Assert.assertEquals(textLinesExpected, textLinesActual)
         Assert.assertEquals(activeTasks.size, notification.number)
     }
 
