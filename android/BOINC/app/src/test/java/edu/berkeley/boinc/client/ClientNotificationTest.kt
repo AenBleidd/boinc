@@ -113,7 +113,7 @@ class ClientNotificationTest {
     }
 
     @Test
-    fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks contains records with Project equal null or App equal null then expect lines number to be 0`() {
+    fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks contains records with Project equal null or App equal null then expect no exception thrown`() {
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
@@ -124,7 +124,13 @@ class ClientNotificationTest {
         )
 
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
-        Assert.assertEquals(0, notification.number)
+        Assert.assertEquals(activeTasks.size, notification.number)
+        val lines = notification.extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
+        Assert.assertNotNull(lines)
+        Assert.assertEquals(activeTasks.size, lines?.size)
+        Assert.assertEquals(": App Name 1", lines?.get(0)?.toString())
+        Assert.assertEquals("Project 2: ", lines?.get(1)?.toString())
+        Assert.assertEquals(": ", lines?.get(2)?.toString())
     }
 
     @Test
