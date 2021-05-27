@@ -113,6 +113,21 @@ class ClientNotificationTest {
     }
 
     @Test
+    fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks contains records with Project equal null or App equal null then expect lines number to be 0`() {
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+
+        val activeTasks = listOf(
+            Result(app = App(name = "App Name 1")),
+            Result(project = Project(projectName = "Project 2")),
+            Result()
+        )
+
+        val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
+        Assert.assertEquals(0, notification.number)
+    }
+
+    @Test
     fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect only one Notification Action with menu_run_mode_enable title`() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val clientStatus = ClientStatus(context, null, null)
