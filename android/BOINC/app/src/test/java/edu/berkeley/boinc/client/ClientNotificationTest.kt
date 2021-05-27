@@ -102,17 +102,15 @@ class ClientNotificationTest {
             Result(project = Project(projectName = "Project 2"), app = App(name = "App Name 2")),
         )
 
-        val textLinesExpected = """
-            Project 1: App Name 1
-            Project 2: App Name 2
-        """.trimIndent()
-
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
         Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_SUB_TEXT))
-        val textLinesActual = (notification.extras.get(Notification.EXTRA_TEXT_LINES) as CharSequence).toString()
-        Assert.assertEquals(textLinesExpected, textLinesActual)
         Assert.assertEquals(activeTasks.size, notification.number)
+        val lines = notification.extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
+        Assert.assertNotNull(lines)
+        Assert.assertEquals(activeTasks.size, lines?.size)
+        Assert.assertEquals("Project 1: App Name 1", lines?.get(0)?.toString())
+        Assert.assertEquals("Project 2: App Name 2", lines?.get(1)?.toString())
     }
 
     @Test
