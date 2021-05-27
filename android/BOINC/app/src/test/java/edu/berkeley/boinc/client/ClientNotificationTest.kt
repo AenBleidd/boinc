@@ -19,7 +19,9 @@
 package edu.berkeley.boinc.client
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.R
 import edu.berkeley.boinc.rpc.App
@@ -30,11 +32,28 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import kotlin.coroutines.coroutineContext
+import java.lang.IllegalStateException
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
+
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
+
+    @Throws(IllegalStateException::class)
+    private fun getIntent(pendingIntent: PendingIntent?): Intent? {
+        return try {
+            val getIntent= PendingIntent::class.java.getDeclaredMethod("getIntent")
+            getIntent.invoke(pendingIntent) as Intent
+        } catch (e: NoSuchMethodException) {
+            throw IllegalStateException(e)
+        } catch (e: InvocationTargetException) {
+            throw IllegalStateException(e)
+        } catch (e: IllegalAccessException) {
+            throw IllegalStateException(e)
+        }
+    }
 
     @Before
     fun setUp() {
@@ -122,6 +141,9 @@ class ClientNotificationTest {
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(1, notification.actions.size)
         Assert.assertEquals(context.getString(R.string.menu_run_mode_enable), notification.actions[0].title)
+        val intent = getIntent(notification.actions[0].actionIntent)
+        Assert.assertNotNull(intent)
+        Assert.assertEquals(2, intent!!.extras!!.get("action"))
     }
 
     @Test
@@ -133,6 +155,9 @@ class ClientNotificationTest {
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(1, notification.actions.size)
         Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        val intent = getIntent(notification.actions[0].actionIntent)
+        Assert.assertNotNull(intent)
+        Assert.assertEquals(1, intent!!.extras!!.get("action"))
     }
 
     @Test
@@ -144,6 +169,9 @@ class ClientNotificationTest {
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(1, notification.actions.size)
         Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        val intent = getIntent(notification.actions[0].actionIntent)
+        Assert.assertNotNull(intent)
+        Assert.assertEquals(1, intent!!.extras!!.get("action"))
     }
 
     @Test
@@ -155,6 +183,9 @@ class ClientNotificationTest {
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         Assert.assertEquals(1, notification.actions.size)
         Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        val intent = getIntent(notification.actions[0].actionIntent)
+        Assert.assertNotNull(intent)
+        Assert.assertEquals(1, intent!!.extras!!.get("action"))
     }
 
     @Test
