@@ -32,10 +32,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.lang.IllegalStateException
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
-
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
@@ -44,8 +41,13 @@ class ClientNotificationTest {
     @Throws(IllegalStateException::class)
     private fun getIntent(pendingIntent: PendingIntent?): Intent? {
         return try {
-            val getIntent= PendingIntent::class.java.getDeclaredMethod("getIntent")
-            getIntent.invoke(pendingIntent) as Intent
+            val getIntent = PendingIntent::class.java.getDeclaredMethod("getIntent")
+            val intent = getIntent.invoke(pendingIntent)
+            if (intent != null) {
+                intent as Intent
+            } else {
+                null
+            }
         } catch (e: NoSuchMethodException) {
             throw IllegalStateException(e)
         } catch (e: InvocationTargetException) {
