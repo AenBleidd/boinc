@@ -29,14 +29,20 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
+    @Mock
+    private lateinit var monitor: Monitor
+
     @Before
     fun setUp() {
+        MockitoAnnotations.initMocks(this)
         clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
     }
 
@@ -193,5 +199,11 @@ class ClientNotificationTest {
 
         val notification = clientNotification.buildNotification(clientStatus, false, null)
         Assert.assertEquals(Notification.PRIORITY_LOW, notification.priority)
+    }
+
+    @Test
+    fun `When foreground is false expect it to be true after setForeground call`() {
+        clientNotification.setForegroundState(monitor)
+        Assert.assertEquals(true, clientNotification.foreground)
     }
 }

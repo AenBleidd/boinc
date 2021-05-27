@@ -57,7 +57,8 @@ public class ClientNotification {
     private boolean notificationShown = false;
     // debug foreground state by running
     // adb shell: dumpsys activity services edu.berkeley.boinc
-    private boolean foreground = false;
+    @VisibleForTesting()
+    protected boolean foreground = false;
 
     @Inject
     public ClientNotification(Context context) {
@@ -151,7 +152,8 @@ public class ClientNotification {
     }
 
     // Notification must be built, before setting service to foreground!
-    private void setForegroundState(Monitor service) {
+    @VisibleForTesting()
+    protected void setForegroundState(Monitor service) {
         service.startForeground(notificationId, n);
 
         Log.d(Logging.TAG, "ClientNotification.setForeground() start service as foreground.");
@@ -161,7 +163,7 @@ public class ClientNotification {
 
     @SuppressLint("InlinedApi")
     @VisibleForTesting()
-    public Notification buildNotification(ClientStatus status, Boolean active, List<Result> activeTasks) {
+    protected Notification buildNotification(ClientStatus status, Boolean active, List<Result> activeTasks) {
         // get current client computing status
         Integer computingStatus = status.computingStatus;
         // get status strings from ClientStatus
@@ -232,7 +234,7 @@ public class ClientNotification {
 
     // returns resource id of icon
     @VisibleForTesting()
-    public int getIcon(int status, boolean isSmall) {
+    protected int getIcon(int status, boolean isSmall) {
         int icon;
         switch(status) {
             case ClientStatus.COMPUTING_STATUS_NEVER:
