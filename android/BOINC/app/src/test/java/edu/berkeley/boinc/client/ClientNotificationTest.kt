@@ -23,6 +23,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.R
 import edu.berkeley.boinc.rpc.App
+import edu.berkeley.boinc.rpc.Project
 import edu.berkeley.boinc.rpc.Result
 import org.junit.Assert
 import org.junit.Before
@@ -96,19 +97,20 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
         val activeTasks = listOf(
-            Result(name = "Result 1", app = App(name = "App Name 1")),
-            Result(name = "Result 2", app = App(name = "App Name 2")),
+            Result(project = Project(projectName = "Project 1"), app = App(name = "App Name 1")),
+            Result(project = Project(projectName = "Project 2"), app = App(name = "App Name 2")),
         )
 
         val textLines = """
-            Result 1: App Name 1
-            Result 2: App Name 2
+            Project 1: App Name 1
+            Project 2: App Name 2
         """.trimIndent()
 
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
         Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
         Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_SUB_TEXT))
         Assert.assertEquals(textLines, notification.extras.get(Notification.EXTRA_TEXT_LINES))
+        Assert.assertEquals(activeTasks.size, notification.number)
     }
 
     @Test
