@@ -25,24 +25,20 @@ import edu.berkeley.boinc.R
 import edu.berkeley.boinc.rpc.App
 import edu.berkeley.boinc.rpc.Project
 import edu.berkeley.boinc.rpc.Result
+import io.mockk.justRun
+import io.mockk.mockkClass
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
-    @Mock
-    private lateinit var monitor: Monitor
-
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
     }
 
@@ -203,6 +199,9 @@ class ClientNotificationTest {
 
     @Test
     fun `When foreground is false expect it to be true after setForeground call`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+
         clientNotification.setForegroundState(monitor)
         Assert.assertEquals(true, clientNotification.foreground)
     }
