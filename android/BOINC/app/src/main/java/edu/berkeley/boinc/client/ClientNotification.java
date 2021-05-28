@@ -51,10 +51,14 @@ public class ClientNotification {
     private PendingIntent contentIntent;
     private Notification n;
 
-    private int mOldComputingStatus = -1;
-    private int mOldSuspendReason = -1;
-    private List<Result> mOldActiveTasks = new ArrayList<>();
-    private boolean notificationShown = false;
+    @VisibleForTesting()
+    protected int mOldComputingStatus = -1;
+    @VisibleForTesting()
+    protected int mOldSuspendReason = -1;
+    @VisibleForTesting()
+    protected List<Result> mOldActiveTasks = new ArrayList<>();
+    @VisibleForTesting()
+    protected boolean notificationShown = false;
     // debug foreground state by running
     // adb shell: dumpsys activity services edu.berkeley.boinc
     @VisibleForTesting()
