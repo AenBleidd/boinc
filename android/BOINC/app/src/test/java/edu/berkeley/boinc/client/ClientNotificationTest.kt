@@ -30,6 +30,7 @@ import io.mockk.mockkClass
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -204,5 +205,23 @@ class ClientNotificationTest {
 
         clientNotification.setForegroundState(monitor)
         Assert.assertEquals(true, clientNotification.foreground)
+    }
+
+    @Test
+    fun `When updateStatus is null expect to exception thrown`() {
+        val monitor = mockkClass(Monitor::class)
+        assertDoesNotThrow { clientNotification.update(null, monitor, true) }
+    }
+
+    @Test
+    fun `When service is null expect to exception thrown`() {
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+        assertDoesNotThrow { clientNotification.update(clientStatus, null, true) }
+    }
+
+    @Test
+    fun `When updateStatus is null and service is null expect to exception thrown`() {
+        assertDoesNotThrow { clientNotification.update(null, null, true) }
     }
 }
