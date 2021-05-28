@@ -19,7 +19,9 @@
 package edu.berkeley.boinc.client
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.R
 import edu.berkeley.boinc.rpc.*
@@ -563,5 +565,11 @@ class ClientNotificationTest {
         Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
         Assert.assertFalse(clientNotification.notificationShown)
         Assert.assertFalse(clientNotification.foreground)
+    }
+
+    @Test
+    fun `Check equality of Intent constants`() {
+        Assert.assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, PendingIntent.FLAG_IMMUTABLE)
+        Assert.assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, PendingIntent.FLAG_CANCEL_CURRENT)
     }
 }

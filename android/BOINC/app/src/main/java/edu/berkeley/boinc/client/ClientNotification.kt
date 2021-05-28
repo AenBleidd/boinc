@@ -244,11 +244,11 @@ class ClientNotification @Inject constructor(private val context: Context) {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("targetFragment", R.string.tab_tasks)
-        contentIntent = PendingIntent.getActivity(
-            context,
-            0,
-            intent,
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+        } else {
             Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        )
+        }
+        contentIntent = PendingIntent.getActivity(context,0, intent, flags)
     }
 }
