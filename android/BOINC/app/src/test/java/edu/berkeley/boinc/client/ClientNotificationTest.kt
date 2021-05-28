@@ -23,6 +23,9 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.R
 import edu.berkeley.boinc.rpc.*
+import edu.berkeley.boinc.utils.PROCESS_ABORTED
+import edu.berkeley.boinc.utils.PROCESS_EXECUTING
+import edu.berkeley.boinc.utils.PROCESS_SUSPENDED
 import io.mockk.justRun
 import io.mockk.mockkClass
 import org.junit.Assert
@@ -374,6 +377,63 @@ class ClientNotificationTest {
         clientStatus.setClientStatus(
             CcStatus(),
             listOf(
+                Result(name = "Result 1", isActiveTask = true, activeTaskState = PROCESS_EXECUTING)
+            ),
+            listOf(Project()),
+            listOf(Transfer()),
+            HostInfo(),
+            AcctMgrInfo(),
+            listOf(Notice())
+        )
+
+        clientNotification.update(clientStatus, monitor, true)
+
+        Assert.assertTrue(clientNotification.notificationShown)
+        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+    }
+
+    @Test
+    fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks contains both running and not running tasks then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+        clientStatus.setClientStatus(
+            CcStatus(),
+            listOf(
+                Result(name = "Result 1", isActiveTask = true, activeTaskState = PROCESS_EXECUTING),
+                Result(name = "Result 2", isActiveTask = false, activeTaskState = PROCESS_SUSPENDED),
+                Result(name = "Result 3", isActiveTask = false, activeTaskState = PROCESS_EXECUTING),
+                Result(name = "Result 4", isActiveTask = true, activeTaskState = PROCESS_ABORTED),
+            ),
+            listOf(Project()),
+            listOf(Transfer()),
+            HostInfo(),
+            AcctMgrInfo(),
+            listOf(Notice())
+        )
+
+        clientNotification.update(clientStatus, monitor, true)
+
+        Assert.assertTrue(clientNotification.notificationShown)
+        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+    }
+
+    @Test
+    fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks contains not running tasks then expect status updated and oldActiveTasks to be empty`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+        clientStatus.setClientStatus(
+            CcStatus(),
+            listOf(
                 Result(name = "Result 1")
             ),
             listOf(Project()),
@@ -382,6 +442,62 @@ class ClientNotificationTest {
             AcctMgrInfo(),
             listOf(Notice())
         )
+
+        clientNotification.update(clientStatus, monitor, true)
+
+        Assert.assertTrue(clientNotification.notificationShown)
+        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+    }
+
+    @Test
+    fun `When updatedStatus is COMPUTING_STATUS_COMPUTING, and executingTasks and oldActiveTasks are not empty then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+        clientStatus.setClientStatus(
+            CcStatus(),
+            listOf(
+                Result(name = "Result 1")
+            ),
+            listOf(Project()),
+            listOf(Transfer()),
+            HostInfo(),
+            AcctMgrInfo(),
+            listOf(Notice())
+        )
+        clientNotification.mOldActiveTasks.add(Result(name = "Result 2"))
+
+        clientNotification.update(clientStatus, monitor, true)
+
+        Assert.assertTrue(clientNotification.notificationShown)
+        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+    }
+
+    @Test
+    fun `When updatedStatus is COMPUTING_STATUS_COMPUTING, and executingTasks and oldActiveTasks are not empty and contain different number of records then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
+        clientStatus.setClientStatus(
+            CcStatus(),
+            listOf(
+                Result(name = "Result 1")
+            ),
+            listOf(Project()),
+            listOf(Transfer()),
+            HostInfo(),
+            AcctMgrInfo(),
+            listOf(Notice())
+        )
+        clientNotification.mOldActiveTasks.add(Result(name = "Result 2"))
+        clientNotification.mOldActiveTasks.add(Result(name = "Result 1"))
 
         clientNotification.update(clientStatus, monitor, true)
 
@@ -407,6 +523,7 @@ class ClientNotificationTest {
         Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
         Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
+
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_SUSPENDED and oldActiveTasks is not empty then expect status updated and oldActiveTasks to be empty`() {
         val monitor = mockkClass(Monitor::class)
@@ -422,6 +539,7 @@ class ClientNotificationTest {
         Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
         Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
+
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_NEVER and oldActiveTasks is not empty then expect status updated and oldActiveTasks to be empty`() {
         val monitor = mockkClass(Monitor::class)
@@ -436,5 +554,14 @@ class ClientNotificationTest {
         Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
         Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
         Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+    }
+
+    @Test
+    fun `When ClientNotification is created then expect default values to be set`() {
+        Assert.assertEquals(-1, clientNotification.mOldComputingStatus)
+        Assert.assertEquals(-1, clientNotification.mOldSuspendReason)
+        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assert.assertFalse(clientNotification.notificationShown)
+        Assert.assertFalse(clientNotification.foreground)
     }
 }
