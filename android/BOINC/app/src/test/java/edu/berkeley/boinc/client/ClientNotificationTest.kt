@@ -460,7 +460,7 @@ class ClientNotificationTest {
         clientStatus.setClientStatus(
             CcStatus(),
             listOf(
-                Result(name = "Result 1")
+                Result(name = "Result 1", isActiveTask = true, activeTaskState = PROCESS_EXECUTING)
             ),
             listOf(Project()),
             listOf(Transfer()),
@@ -488,7 +488,7 @@ class ClientNotificationTest {
         clientStatus.setClientStatus(
             CcStatus(),
             listOf(
-                Result(name = "Result 1")
+                Result(name = "Result 1", isActiveTask = true, activeTaskState = PROCESS_EXECUTING)
             ),
             listOf(Project()),
             listOf(Transfer()),
