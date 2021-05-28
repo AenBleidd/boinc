@@ -204,24 +204,61 @@ class ClientNotificationTest {
         justRun { monitor.startForeground(any(), any()) }
 
         clientNotification.setForegroundState(monitor)
-        Assert.assertEquals(true, clientNotification.foreground)
+        Assert.assertTrue(clientNotification.foreground)
     }
 
     @Test
-    fun `When updateStatus is null expect to exception thrown`() {
+    fun `When updateStatus is null expect no exception thrown`() {
         val monitor = mockkClass(Monitor::class)
         assertDoesNotThrow { clientNotification.update(null, monitor, true) }
     }
 
     @Test
-    fun `When service is null expect to exception thrown`() {
+    fun `When service is null expect no exception thrown`() {
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
         assertDoesNotThrow { clientNotification.update(clientStatus, null, true) }
     }
 
     @Test
-    fun `When updateStatus is null and service is null expect to exception thrown`() {
+    fun `When updateStatus is null and service is null expect no exception thrown`() {
         assertDoesNotThrow { clientNotification.update(null, null, true) }
+    }
+
+    @Test
+    fun `When active is true expect foreground to be true`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        clientNotification.update(clientStatus, monitor, true)
+
+        Assert.assertTrue(clientNotification.foreground)
+    }
+
+    @Test
+    fun `When active is false expect foreground to be false`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        clientNotification.update(clientStatus, monitor, false)
+
+        Assert.assertFalse(clientNotification.foreground)
+    }
+
+    @Test
+    fun `When active is false and foreground is true expect foreground to be true`() {
+        val monitor = mockkClass(Monitor::class)
+        justRun { monitor.startForeground(any(), any()) }
+        val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
+        clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
+
+        clientNotification.foreground = true
+        clientNotification.update(clientStatus, monitor, false)
+
+        Assert.assertTrue(clientNotification.foreground)
     }
 }
