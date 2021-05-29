@@ -124,6 +124,7 @@ android {
                 useJUnitPlatform()
                 jacoco {
                     includeNoLocationClasses = true
+                    excludes = ['jdk.internal.*']
                 }
             }
         }
