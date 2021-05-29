@@ -31,20 +31,13 @@ import edu.berkeley.boinc.utils.PROCESS_SUSPENDED
 import io.mockk.justRun
 import io.mockk.mockkClass
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 
 class ClientNotificationTest {
-    private lateinit var clientNotification: ClientNotification
-
-    @BeforeEach
-    fun setUp() {
-        clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
-    }
-
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
@@ -55,6 +48,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_IDLE then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_IDLE
 
@@ -65,6 +59,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_SUSPENDED then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_SUSPENDED
 
@@ -75,6 +70,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks is null then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
@@ -85,6 +81,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks is empty then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
@@ -96,6 +93,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks contains records then expect corresponding Notification title and text`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
@@ -117,6 +115,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_COMPUTING and activeTasks contains records with Project equal null or App equal null then expect no exception thrown`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
@@ -138,6 +137,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_NEVER then expect only one Notification Action with menu_run_mode_enable title`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val context = ApplicationProvider.getApplicationContext<Context>()
         val clientStatus = ClientStatus(context, null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
@@ -149,6 +149,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_IDLE then expect only one Notification Action with menu_run_mode_disable title`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val context = ApplicationProvider.getApplicationContext<Context>()
         val clientStatus = ClientStatus(context, null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_IDLE
@@ -160,6 +161,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_SUSPENDED then expect only one Notification Action with menu_run_mode_disable title`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val context = ApplicationProvider.getApplicationContext<Context>()
         val clientStatus = ClientStatus(context, null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_SUSPENDED
@@ -171,6 +173,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientStatus is COMPUTING_STATUS_COMPUTING then expect only one Notification Action with menu_run_mode_disable title`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val context = ApplicationProvider.getApplicationContext<Context>()
         val clientStatus = ClientStatus(context, null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
@@ -182,6 +185,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When active is true then expect Notification priority to be high`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
@@ -192,6 +196,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When active is false then expect Notification priority to be low`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
@@ -202,6 +207,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When foreground is false then expect it to be true after setForeground call`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
 
@@ -211,12 +217,14 @@ class ClientNotificationTest {
 
     @Test
     fun `When updateStatus is null then expect no exception thrown`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         assertDoesNotThrow { clientNotification.update(null, monitor, true) }
     }
 
     @Test
     fun `When service is null then expect no exception thrown`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
         assertDoesNotThrow { clientNotification.update(clientStatus, null, true) }
@@ -224,11 +232,13 @@ class ClientNotificationTest {
 
     @Test
     fun `When updateStatus is null and service is null then expect no exception thrown`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         assertDoesNotThrow { clientNotification.update(null, null, true) }
     }
 
     @Test
     fun `When active is true then expect foreground to be true`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -241,6 +251,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When active is false then expect foreground to be false`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -253,6 +264,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When active is false and foreground is true then expect foreground to be true`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -266,6 +278,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_NEVER then expect status updated`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -281,6 +294,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_IDLE then expect status updated`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -296,6 +310,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_SUSPENDED then expect status updated`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -311,6 +326,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks is empty then expect status updated`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -326,6 +342,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_IDLE then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -341,6 +358,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_SUSPENDED then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -356,6 +374,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_NEVER then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -371,6 +390,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks is not empty then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -398,6 +418,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks contains both running and not running tasks then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -428,6 +449,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING and executingTasks contains not running tasks then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -454,6 +476,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING, and executingTasks and oldActiveTasks are not empty then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -482,6 +505,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_COMPUTING, and executingTasks and oldActiveTasks are not empty and contain different number of records then expect status updated and oldActiveTasks to be equal to executingTasks`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -511,6 +535,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_IDLE and oldActiveTasks is not empty then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -527,6 +552,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_SUSPENDED and oldActiveTasks is not empty then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -543,6 +569,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When updatedStatus is COMPUTING_STATUS_NEVER and oldActiveTasks is not empty then expect status updated and oldActiveTasks to be empty`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         val monitor = mockkClass(Monitor::class)
         justRun { monitor.startForeground(any(), any()) }
         val clientStatus = ClientStatus(ApplicationProvider.getApplicationContext(), null, null)
@@ -559,6 +586,7 @@ class ClientNotificationTest {
 
     @Test
     fun `When ClientNotification is created then expect default values to be set`() {
+        val clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
         Assertions.assertEquals(-1, clientNotification.mOldComputingStatus)
         Assertions.assertEquals(-1, clientNotification.mOldSuspendReason)
         Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
