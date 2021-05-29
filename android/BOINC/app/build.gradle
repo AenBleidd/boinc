@@ -122,6 +122,9 @@ android {
             includeAndroidResources = true
             all {
                 useJUnitPlatform()
+                jacoco {
+                    includeNoLocationClasses = true
+                }
             }
         }
     }
