@@ -189,6 +189,7 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
+        @Suppress("DEPRECATION")
         Assert.assertEquals(Notification.PRIORITY_HIGH, notification.priority)
     }
 
@@ -198,6 +199,7 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, false, null)
+        @Suppress("DEPRECATION")
         Assert.assertEquals(Notification.PRIORITY_LOW, notification.priority)
     }
 

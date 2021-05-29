@@ -171,8 +171,10 @@ class ClientNotification @Inject constructor(private val context: Context) {
         // adapt priority based on computing status
         // computing: IDLE and COMPUTING (see wakelock handling)
         if (active) {
+            @Suppress("DEPRECATION")
             nb.priority = Notification.PRIORITY_HIGH
         } else {
+            @Suppress("DEPRECATION")
             nb.priority = Notification.PRIORITY_LOW
         }
 
