@@ -30,18 +30,22 @@ import edu.berkeley.boinc.utils.PROCESS_EXECUTING
 import edu.berkeley.boinc.utils.PROCESS_SUSPENDED
 import io.mockk.justRun
 import io.mockk.mockkClass
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+//import org.junit.Assert
+//import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.runner.RunWith
+//import org.junit.runner.RunWith
+//import org.powermock.modules.junit4.PowerMockRunner
 import org.robolectric.RobolectricTestRunner
 
 //@RunWith(RobolectricTestRunner::class)
+//@RunWith(PowerMockRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
-    @Before
+    @BeforeEach
     fun setUp() {
         clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
     }
@@ -52,8 +56,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
     @Test
@@ -62,8 +66,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_IDLE
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
     @Test
@@ -72,8 +76,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_SUSPENDED
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
     @Test
@@ -82,8 +86,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
     @Test
@@ -92,8 +96,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
         val notification = clientNotification.buildNotification(clientStatus, true, listOf())
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_TEXT))
     }
 
 
@@ -108,14 +112,14 @@ class ClientNotificationTest {
         )
 
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
-        Assert.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
-        Assert.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_SUB_TEXT))
-        Assert.assertEquals(activeTasks.size, notification.number)
+        Assertions.assertEquals(clientStatus.currentStatusTitle, notification.extras.get(Notification.EXTRA_TITLE))
+        Assertions.assertEquals(clientStatus.currentStatusDescription, notification.extras.get(Notification.EXTRA_SUB_TEXT))
+        Assertions.assertEquals(activeTasks.size, notification.number)
         val lines = notification.extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
-        Assert.assertNotNull(lines)
-        Assert.assertEquals(activeTasks.size, lines?.size)
-        Assert.assertEquals("Project 1: App Name 1", lines?.get(0)?.toString())
-        Assert.assertEquals("Project 2: App Name 2", lines?.get(1)?.toString())
+        Assertions.assertNotNull(lines)
+        Assertions.assertEquals(activeTasks.size, lines?.size)
+        Assertions.assertEquals("Project 1: App Name 1", lines?.get(0)?.toString())
+        Assertions.assertEquals("Project 2: App Name 2", lines?.get(1)?.toString())
     }
 
     @Test
@@ -130,13 +134,13 @@ class ClientNotificationTest {
         )
 
         val notification = clientNotification.buildNotification(clientStatus, true, activeTasks)
-        Assert.assertEquals(activeTasks.size, notification.number)
+        Assertions.assertEquals(activeTasks.size, notification.number)
         val lines = notification.extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
-        Assert.assertNotNull(lines)
-        Assert.assertEquals(activeTasks.size, lines?.size)
-        Assert.assertEquals(": App Name 1", lines?.get(0)?.toString())
-        Assert.assertEquals("Project 2: ", lines?.get(1)?.toString())
-        Assert.assertEquals(": ", lines?.get(2)?.toString())
+        Assertions.assertNotNull(lines)
+        Assertions.assertEquals(activeTasks.size, lines?.size)
+        Assertions.assertEquals(": App Name 1", lines?.get(0)?.toString())
+        Assertions.assertEquals("Project 2: ", lines?.get(1)?.toString())
+        Assertions.assertEquals(": ", lines?.get(2)?.toString())
     }
 
     @Test
@@ -146,8 +150,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_NEVER
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(1, notification.actions.size)
-        Assert.assertEquals(context.getString(R.string.menu_run_mode_enable), notification.actions[0].title)
+        Assertions.assertEquals(1, notification.actions.size)
+        Assertions.assertEquals(context.getString(R.string.menu_run_mode_enable), notification.actions[0].title)
     }
 
     @Test
@@ -157,8 +161,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_IDLE
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(1, notification.actions.size)
-        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        Assertions.assertEquals(1, notification.actions.size)
+        Assertions.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
     }
 
     @Test
@@ -168,8 +172,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_SUSPENDED
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(1, notification.actions.size)
-        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        Assertions.assertEquals(1, notification.actions.size)
+        Assertions.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
     }
 
     @Test
@@ -179,8 +183,8 @@ class ClientNotificationTest {
         clientStatus.computingStatus = ClientStatus.COMPUTING_STATUS_COMPUTING
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
-        Assert.assertEquals(1, notification.actions.size)
-        Assert.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
+        Assertions.assertEquals(1, notification.actions.size)
+        Assertions.assertEquals(context.getString(R.string.menu_run_mode_disable), notification.actions[0].title)
     }
 
     @Test
@@ -190,7 +194,7 @@ class ClientNotificationTest {
 
         val notification = clientNotification.buildNotification(clientStatus, true, null)
         @Suppress("DEPRECATION")
-        Assert.assertEquals(Notification.PRIORITY_HIGH, notification.priority)
+        Assertions.assertEquals(Notification.PRIORITY_HIGH, notification.priority)
     }
 
     @Test
@@ -200,7 +204,7 @@ class ClientNotificationTest {
 
         val notification = clientNotification.buildNotification(clientStatus, false, null)
         @Suppress("DEPRECATION")
-        Assert.assertEquals(Notification.PRIORITY_LOW, notification.priority)
+        Assertions.assertEquals(Notification.PRIORITY_LOW, notification.priority)
     }
 
     @Test
@@ -209,7 +213,7 @@ class ClientNotificationTest {
         justRun { monitor.startForeground(any(), any()) }
 
         clientNotification.setForegroundState(monitor)
-        Assert.assertTrue(clientNotification.foreground)
+        Assertions.assertTrue(clientNotification.foreground)
     }
 
     @Test
@@ -239,7 +243,7 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.foreground)
+        Assertions.assertTrue(clientNotification.foreground)
     }
 
     @Test
@@ -251,7 +255,7 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, false)
 
-        Assert.assertFalse(clientNotification.foreground)
+        Assertions.assertFalse(clientNotification.foreground)
     }
 
     @Test
@@ -264,7 +268,7 @@ class ClientNotificationTest {
         clientNotification.foreground = true
         clientNotification.update(clientStatus, monitor, false)
 
-        Assert.assertTrue(clientNotification.foreground)
+        Assertions.assertTrue(clientNotification.foreground)
     }
 
     @Test
@@ -276,10 +280,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -291,10 +295,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -306,10 +310,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -321,10 +325,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -336,10 +340,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -351,10 +355,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -366,10 +370,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -392,11 +396,11 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
-        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assertions.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -422,11 +426,11 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
-        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assertions.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -449,10 +453,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -476,11 +480,11 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
-        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assertions.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -505,11 +509,11 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertEquals(1, clientNotification.mOldActiveTasks.size)
-        Assert.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertEquals(1, clientNotification.mOldActiveTasks.size)
+        Assertions.assertEquals("Result 1", clientNotification.mOldActiveTasks[0].name)
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -522,10 +526,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -538,10 +542,10 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
@@ -554,24 +558,24 @@ class ClientNotificationTest {
 
         clientNotification.update(clientStatus, monitor, true)
 
-        Assert.assertTrue(clientNotification.notificationShown)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.notificationShown)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertEquals(clientStatus.computingStatus, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(clientStatus.computingSuspendReason, clientNotification.mOldSuspendReason)
     }
 
     @Test
     fun `When ClientNotification is created then expect default values to be set`() {
-        Assert.assertEquals(-1, clientNotification.mOldComputingStatus)
-        Assert.assertEquals(-1, clientNotification.mOldSuspendReason)
-        Assert.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
-        Assert.assertFalse(clientNotification.notificationShown)
-        Assert.assertFalse(clientNotification.foreground)
+        Assertions.assertEquals(-1, clientNotification.mOldComputingStatus)
+        Assertions.assertEquals(-1, clientNotification.mOldSuspendReason)
+        Assertions.assertTrue(clientNotification.mOldActiveTasks.isEmpty())
+        Assertions.assertFalse(clientNotification.notificationShown)
+        Assertions.assertFalse(clientNotification.foreground)
     }
 
     @Test
     fun `Check equality of Intent constants`() {
-        Assert.assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, PendingIntent.FLAG_IMMUTABLE)
-        Assert.assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, PendingIntent.FLAG_CANCEL_CURRENT)
+        Assertions.assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TOP, PendingIntent.FLAG_IMMUTABLE)
+        Assertions.assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, PendingIntent.FLAG_CANCEL_CURRENT)
     }
 }
