@@ -37,7 +37,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
+//@RunWith(RobolectricTestRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
