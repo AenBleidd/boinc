@@ -28,6 +28,8 @@ import edu.berkeley.boinc.rpc.*
 import edu.berkeley.boinc.utils.PROCESS_ABORTED
 import edu.berkeley.boinc.utils.PROCESS_EXECUTING
 import edu.berkeley.boinc.utils.PROCESS_SUSPENDED
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.mockkClass
@@ -45,10 +47,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 //@RunWith(PowerMockRunner::class)
 class ClientNotificationTest {
+    @SpyK
     private lateinit var clientNotification: ClientNotification
 
     @BeforeEach
     fun setUp() {
+        MockKAnnotations.init(this, overrideRecordPrivateCalls = true)
         clientNotification = ClientNotification(ApplicationProvider.getApplicationContext())
     }
 
