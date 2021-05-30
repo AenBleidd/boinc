@@ -36,12 +36,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-//import org.junit.runner.RunWith
-//import org.powermock.modules.junit4.PowerMockRunner
+import org.junit.runner.RunWith
+import org.powermock.modules.junit4.PowerMockRunner
 import org.robolectric.RobolectricTestRunner
 
 //@RunWith(RobolectricTestRunner::class)
-//@RunWith(PowerMockRunner::class)
+@RunWith(PowerMockRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
 
