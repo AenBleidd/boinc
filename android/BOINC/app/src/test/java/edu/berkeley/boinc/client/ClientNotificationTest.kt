@@ -28,6 +28,7 @@ import edu.berkeley.boinc.rpc.*
 import edu.berkeley.boinc.utils.PROCESS_ABORTED
 import edu.berkeley.boinc.utils.PROCESS_EXECUTING
 import edu.berkeley.boinc.utils.PROCESS_SUSPENDED
+import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.mockkClass
 import org.junit.jupiter.api.Assertions
@@ -36,11 +37,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.extension.ExtendWith
+//import org.junit.runner.RunWith
 //import org.powermock.modules.junit4.PowerMockRunner
-import org.robolectric.RobolectricTestRunner
+//import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
+@ExtendWith(MockKExtension::class)
 //@RunWith(PowerMockRunner::class)
 class ClientNotificationTest {
     private lateinit var clientNotification: ClientNotification
