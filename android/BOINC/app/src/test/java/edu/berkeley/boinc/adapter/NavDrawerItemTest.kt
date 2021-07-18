@@ -23,9 +23,9 @@ import android.graphics.Bitmap
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.R
 import io.mockk.*
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -34,7 +34,7 @@ class NavDrawerItemTest {
     private lateinit var context : Context
     private lateinit var adapter : NavDrawerListAdapter
 
-    @BeforeEach
+    @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         adapter = spyk(NavDrawerListAdapter(context))
@@ -44,15 +44,15 @@ class NavDrawerItemTest {
     fun `Check default item values when constructor is called with (id, icon)`() {
         val actual = adapter.NavDrawerItem(R.string.tab_projects, 42)
 
-        Assertions.assertEquals(R.string.tab_projects, actual.id)
-        Assertions.assertEquals(context.getString(R.string.tab_projects), actual.title)
-        Assertions.assertEquals(42, actual.icon)
+        Assert.assertEquals(R.string.tab_projects, actual.id)
+        Assert.assertEquals(context.getString(R.string.tab_projects), actual.title)
+        Assert.assertEquals(42, actual.icon)
 
-        Assertions.assertFalse(actual.counterVisibility)
-        Assertions.assertFalse(actual.isSubItem)
-        Assertions.assertFalse(actual.isProjectItem)
-        Assertions.assertNull(actual.projectIcon)
-        Assertions.assertNull(actual.projectMasterUrl)
+        Assert.assertFalse(actual.counterVisibility)
+        Assert.assertFalse(actual.isSubItem)
+        Assert.assertFalse(actual.isProjectItem)
+        Assert.assertNull(actual.projectIcon)
+        Assert.assertNull(actual.projectMasterUrl)
     }
 
     @Test
@@ -62,15 +62,15 @@ class NavDrawerItemTest {
             isSubItem = true
         )
 
-        Assertions.assertEquals(R.string.tab_projects, actual.id)
-        Assertions.assertEquals(context.getString(R.string.tab_projects), actual.title)
-        Assertions.assertEquals(42, actual.icon)
+        Assert.assertEquals(R.string.tab_projects, actual.id)
+        Assert.assertEquals(context.getString(R.string.tab_projects), actual.title)
+        Assert.assertEquals(42, actual.icon)
 
-        Assertions.assertTrue(actual.counterVisibility)
-        Assertions.assertTrue(actual.isSubItem)
-        Assertions.assertFalse(actual.isProjectItem)
-        Assertions.assertNull(actual.projectIcon)
-        Assertions.assertNull(actual.projectMasterUrl)
+        Assert.assertTrue(actual.counterVisibility)
+        Assert.assertTrue(actual.isSubItem)
+        Assert.assertFalse(actual.isProjectItem)
+        Assert.assertNull(actual.projectIcon)
+        Assert.assertNull(actual.projectMasterUrl)
     }
 
     @Test
@@ -78,30 +78,30 @@ class NavDrawerItemTest {
         val icon = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
         val actual = adapter.NavDrawerItem("Test Project", icon, "https://test.com/boinc")
 
-        Assertions.assertEquals("https://test.com/boinc".hashCode(), actual.id)
-        Assertions.assertEquals("Test Project", actual.title)
-        Assertions.assertEquals(0, actual.icon)
+        Assert.assertEquals("https://test.com/boinc".hashCode(), actual.id)
+        Assert.assertEquals("Test Project", actual.title)
+        Assert.assertEquals(0, actual.icon)
 
-        Assertions.assertFalse(actual.counterVisibility)
-        Assertions.assertTrue(actual.isSubItem)
-        Assertions.assertTrue(actual.isProjectItem)
-        Assertions.assertEquals(icon, actual.projectIcon)
-        Assertions.assertEquals("https://test.com/boinc", actual.projectMasterUrl)
+        Assert.assertFalse(actual.counterVisibility)
+        Assert.assertTrue(actual.isSubItem)
+        Assert.assertTrue(actual.isProjectItem)
+        Assert.assertEquals(icon, actual.projectIcon)
+        Assert.assertEquals("https://test.com/boinc", actual.projectMasterUrl)
     }
 
     @Test
     fun `Check default item values when constructor is called with (id, icon, isCounterVisible)` () {
         val actual = adapter.NavDrawerItem(R.string.tab_projects, 42, true)
 
-        Assertions.assertEquals(R.string.tab_projects, actual.id)
-        Assertions.assertEquals(context.getString(R.string.tab_projects), actual.title)
-        Assertions.assertEquals(42, actual.icon)
+        Assert.assertEquals(R.string.tab_projects, actual.id)
+        Assert.assertEquals(context.getString(R.string.tab_projects), actual.title)
+        Assert.assertEquals(42, actual.icon)
 
-        Assertions.assertTrue(actual.counterVisibility)
-        Assertions.assertFalse(actual.isSubItem)
-        Assertions.assertFalse(actual.isProjectItem)
-        Assertions.assertNull(actual.projectIcon)
-        Assertions.assertNull(actual.projectMasterUrl)
+        Assert.assertTrue(actual.counterVisibility)
+        Assert.assertFalse(actual.isSubItem)
+        Assert.assertFalse(actual.isProjectItem)
+        Assert.assertNull(actual.projectIcon)
+        Assert.assertNull(actual.projectMasterUrl)
     }
 
     @Test
@@ -110,43 +110,43 @@ class NavDrawerItemTest {
 
         val actual = adapter.NavDrawerItem("Test Project", null, "https://test.com/boinc")
 
-        Assertions.assertNull(actual.projectIcon)
+        Assert.assertNull(actual.projectIcon)
 
         every { adapter.getProjectIconForMasterUrl(any()) } returns icon
 
         actual.updateProjectIcon()
-        Assertions.assertEquals(icon, actual.projectIcon)
+        Assert.assertEquals(icon, actual.projectIcon)
     }
 
     @Test
     fun `Check that updateProjectName() updates project name`() {
         val actual = adapter.NavDrawerItem("Test Project", null, "https://test.com/boinc")
 
-        Assertions.assertEquals("Test Project", actual.title)
+        Assert.assertEquals("Test Project", actual.title)
 
         every { adapter.getProjectNameForMasterUrl(any()) } returns "New Test Project"
 
         actual.updateProjectName()
-        Assertions.assertEquals("New Test Project", actual.title)
+        Assert.assertEquals("New Test Project", actual.title)
     }
 
     @Test
     fun `Check that setTitle() sets project name`() {
         val actual = adapter.NavDrawerItem("Test Project", null, "https://test.com/boinc")
 
-        Assertions.assertEquals("Test Project", actual.title)
+        Assert.assertEquals("Test Project", actual.title)
 
         actual.title = "New Test Project"
-        Assertions.assertEquals("New Test Project", actual.title)
+        Assert.assertEquals("New Test Project", actual.title)
     }
 
     @Test
     fun `Check that setIcon() updates project icon`() {
         val actual = adapter.NavDrawerItem("Test Project", null, "https://test.com/boinc")
 
-        Assertions.assertEquals(0, actual.icon)
+        Assert.assertEquals(0, actual.icon)
 
         actual.icon = 42
-        Assertions.assertEquals(42, actual.icon)
+        Assert.assertEquals(42, actual.icon)
     }
 }
