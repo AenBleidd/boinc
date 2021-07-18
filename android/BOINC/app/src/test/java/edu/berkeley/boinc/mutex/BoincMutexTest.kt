@@ -44,25 +44,25 @@ import java.io.IOException
 //@PrepareForTest(Log::class)
 class BoincMutexTest {
     @MockK
-    private val localSocket: LocalSocket? = null
+    private lateinit var localSocket: LocalSocket
     private var boincMutex: BoincMutex? = null
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
 //        MockitoAnnotations.initMocks(this)
-        boincMutex = BoincMutex(localSocket!!)
+        boincMutex = BoincMutex(localSocket)
     }
 
     @Test
     fun `Acquire() Expect True when socket is already bound`() {
-        every { localSocket!!.isBound } returns true
+        every { localSocket.isBound } returns true
 //        Mockito.`when`(localSocket!!.isBound).thenReturn(true)
         Assertions.assertTrue(boincMutex!!.acquire())
     }
 
     @Test
     fun `Acquire() Expect False when isBound() returns false`() {
-        every { localSocket!!.isBound } returns false
+        every { localSocket.isBound } returns false
 //        Mockito.`when`(localSocket!!.isBound).thenReturn(false)
         Assertions.assertFalse(boincMutex!!.acquire())
     }
@@ -72,7 +72,7 @@ class BoincMutexTest {
     fun `Acquire() Expect IOException thrown by bind to be logged when LoggingLevel is Error`() {
         mockkStatic(Log::class)
 //        PowerMockito.mockStatic(Log::class.java)
-        every { localSocket?.bind(any()) } throws IOException()
+        every { localSocket.bind(any()) } throws IOException()
 //        Mockito.doThrow(IOException()).`when`(localSocket)?.bind(ArgumentMatchers.any())
         setLogLevel(1)
         boincMutex!!.acquire()
@@ -84,7 +84,7 @@ class BoincMutexTest {
 
     @Test
     fun `Release() Expect isAcquired to be False`() {
-        every { localSocket!!.isBound } returns true
+        every { localSocket.isBound } returns true
 //        Mockito.`when`(localSocket!!.isBound).thenReturn(true)
         boincMutex!!.release()
         Assertions.assertFalse(boincMutex!!.isAcquired)
@@ -95,9 +95,9 @@ class BoincMutexTest {
     fun `Release() Expect IOException thrown by Close to be logged when bound and LoggingLevel is Error`() {
         mockkStatic(Log::class)
 //        PowerMockito.mockStatic(Log::class.java)
-        every { localSocket!!.isBound } returns true
+        every { localSocket.isBound } returns true
 //        Mockito.`when`(localSocket!!.isBound).thenReturn(true)
-        every { localSocket?.close() } throws IOException()
+        every { localSocket.close() } throws IOException()
 //        Mockito.doThrow(IOException()).`when`(localSocket).close()
         setLogLevel(1)
         boincMutex!!.release()
