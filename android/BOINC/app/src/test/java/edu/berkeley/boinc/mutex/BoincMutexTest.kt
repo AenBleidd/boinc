@@ -22,7 +22,8 @@ import android.net.LocalSocket
 import android.util.Log
 import edu.berkeley.boinc.utils.Logging.setLogLevel
 import io.mockk.*
-import io.mockk.impl.annotations.MockK
+//import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.SpyK
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -43,7 +44,7 @@ import java.io.IOException
 //@RunWith(PowerMockRunner::class)
 //@PrepareForTest(Log::class)
 class BoincMutexTest {
-    @MockK
+    @SpyK
     private lateinit var localSocket: LocalSocket
     private var boincMutex: BoincMutex? = null
     @BeforeEach
