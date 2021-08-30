@@ -18,8 +18,6 @@
  */
 package edu.berkeley.boinc.adapter
 
-import android.app.Activity
-import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.ProjectsFragment
 import edu.berkeley.boinc.rpc.Project
 import org.junit.Assert
@@ -62,7 +60,7 @@ class ProjectControlsListAdapterTest {
             )
         )
         projectControlsListAdapter = ProjectControlsListAdapter(
-            ApplicationProvider.getApplicationContext() as Activity,
+            projectsFragment.activity,
             projectControls
         )
     }
