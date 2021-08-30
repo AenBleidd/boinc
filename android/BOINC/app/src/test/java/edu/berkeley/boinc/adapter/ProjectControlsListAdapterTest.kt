@@ -22,13 +22,13 @@ import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.ProjectsFragment
 import edu.berkeley.boinc.rpc.Project
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ProjectControlsListAdapterTest {
     private lateinit var projectControlsListAdapter: ProjectControlsListAdapter
 
-    @BeforeAll
+    @BeforeEach
     fun setUp() {
         val projectsFragment = ProjectsFragment()
         val projectControls = listOf(
