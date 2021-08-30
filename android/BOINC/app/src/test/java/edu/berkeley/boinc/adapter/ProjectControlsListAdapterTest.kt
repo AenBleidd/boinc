@@ -18,8 +18,10 @@
  */
 package edu.berkeley.boinc.adapter
 
+import android.widget.ArrayAdapter
 import edu.berkeley.boinc.ProjectsFragment
 import edu.berkeley.boinc.rpc.Project
+import io.mockk.mockkConstructor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -32,6 +34,8 @@ class ProjectControlsListAdapterTest {
 
     @Before
     fun setUp() {
+        mockkConstructor(ArrayAdapter::class)
+
         val projectsFragment = ProjectsFragment()
         val projectControls = listOf(
             projectsFragment.ProjectControl(
