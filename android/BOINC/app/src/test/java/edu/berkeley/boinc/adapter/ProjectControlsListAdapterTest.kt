@@ -21,17 +21,14 @@ package edu.berkeley.boinc.adapter
 import androidx.test.core.app.ApplicationProvider
 import edu.berkeley.boinc.ProjectsFragment
 import edu.berkeley.boinc.rpc.Project
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 
-@RunWith(RobolectricTestRunner::class)
 class ProjectControlsListAdapterTest {
     private lateinit var projectControlsListAdapter: ProjectControlsListAdapter
 
-    @Before
+    @BeforeAll
     fun setUp() {
         val projectsFragment = ProjectsFragment()
         val projectControls = listOf(
@@ -68,31 +65,33 @@ class ProjectControlsListAdapterTest {
 
     @Test
     fun `Check that entry count equal passed count`() {
-        Assert.assertEquals(3, projectControlsListAdapter.count)
+        Assertions.assertEquals(3, projectControlsListAdapter.count)
     }
 
     @Test
     fun `Check content and order of entries`() {
-        Assert.assertEquals("Project 1",
-            projectControlsListAdapter.getItem(0)?.data?.project?.projectName
+        Assertions.assertEquals("Project 1",
+            projectControlsListAdapter.getItem(0).data.project?.projectName
         )
-        Assert.assertEquals(0, projectControlsListAdapter.getItemId(0))
-        Assert.assertEquals("Project 2",
-            projectControlsListAdapter.getItem(1)?.data?.project?.projectName
+        Assertions.assertEquals(0, projectControlsListAdapter.getItemId(0))
+        Assertions.assertEquals("Project 2",
+            projectControlsListAdapter.getItem(1).data.project?.projectName
         )
-        Assert.assertEquals(1, projectControlsListAdapter.getItemId(1))
-        Assert.assertEquals("Project 3",
-            projectControlsListAdapter.getItem(2)?.data?.project?.projectName
+        Assertions.assertEquals(1, projectControlsListAdapter.getItemId(1))
+        Assertions.assertEquals("Project 3",
+            projectControlsListAdapter.getItem(2).data.project?.projectName
         )
-        Assert.assertEquals(2, projectControlsListAdapter.getItemId(2))
+        Assertions.assertEquals(2, projectControlsListAdapter.getItemId(2))
     }
 
-    @Test(expected = IndexOutOfBoundsException::class)
+    @Test
+    @Throws(IndexOutOfBoundsException::class)
     fun `Check that getItem() fails with IndexOutOfBoundsException when incorrect position provided`() {
         projectControlsListAdapter.run { getItem(42) }
     }
 
-    @Test(expected = IndexOutOfBoundsException::class)
+    @Test
+    @Throws(IndexOutOfBoundsException::class)
     fun `Check that getItemId() fails with IndexOutOfBoundsException when incorrect position provided`() {
         projectControlsListAdapter.run { getItemId(42) }
     }
