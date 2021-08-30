@@ -19,6 +19,7 @@
 package edu.berkeley.boinc.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,8 @@ import java.util.List;
 public class ProjectControlsListAdapter extends ArrayAdapter<ProjectControl> {
     private final List<ProjectControl> entries; // ID of control texts in strings.xml
 
-    public ProjectControlsListAdapter(Activity activity, List<ProjectControl> entries) {
-        super(activity, R.layout.projects_controls_listitem_layout, entries);
+    public ProjectControlsListAdapter(Context context, List<ProjectControl> entries) {
+        super(context, R.layout.projects_controls_listitem_layout, entries);
         this.entries = entries;
     }
 
