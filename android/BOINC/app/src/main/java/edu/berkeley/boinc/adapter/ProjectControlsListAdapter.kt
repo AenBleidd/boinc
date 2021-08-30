@@ -28,17 +28,14 @@ import android.widget.TextView
 import edu.berkeley.boinc.rpc.RpcClient
 import androidx.appcompat.content.res.AppCompatResources
 import edu.berkeley.boinc.ProjectsFragment
-import edu.berkeley.boinc.R.drawable
-import edu.berkeley.boinc.R.id
-import edu.berkeley.boinc.R.layout
-import edu.berkeley.boinc.R.string
+import edu.berkeley.boinc.R
 
 class ProjectControlsListAdapter(
     context: Context?,
     // ID of control texts in strings.xml
     private val entries: List<ProjectControl>
 ) : ArrayAdapter<ProjectControl>(
-    context!!, layout.projects_controls_listitem_layout, entries
+    context!!, R.layout.projects_controls_listitem_layout, entries
 ) {
     override fun getCount(): Int {
         return entries.size
@@ -55,38 +52,38 @@ class ProjectControlsListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val data = entries[position]
         val vi = LayoutInflater.from(parent.context)
-            .inflate(layout.projects_controls_listitem_layout, null)
-        val tvText = vi.findViewById<TextView>(id.text)
+            .inflate(R.layout.projects_controls_listitem_layout, null)
+        val tvText = vi.findViewById<TextView>(R.id.text)
         var text = ""
         when (data.operation) {
             RpcClient.PROJECT_UPDATE -> text =
-                context.resources.getString(string.projects_control_update)
+                context.resources.getString(R.string.projects_control_update)
             RpcClient.PROJECT_SUSPEND -> text =
-                context.resources.getString(string.projects_control_suspend)
+                context.resources.getString(R.string.projects_control_suspend)
             RpcClient.PROJECT_RESUME -> text =
-                context.resources.getString(string.projects_control_resume)
+                context.resources.getString(R.string.projects_control_resume)
             RpcClient.PROJECT_ANW -> text =
-                context.resources.getString(string.projects_control_allownewtasks)
+                context.resources.getString(R.string.projects_control_allownewtasks)
             RpcClient.PROJECT_NNW -> text =
-                context.resources.getString(string.projects_control_nonewtasks)
+                context.resources.getString(R.string.projects_control_nonewtasks)
             RpcClient.PROJECT_RESET -> text =
-                context.resources.getString(string.projects_control_reset)
+                context.resources.getString(R.string.projects_control_reset)
             RpcClient.PROJECT_DETACH -> {
                 tvText.background =
-                    AppCompatResources.getDrawable(context, drawable.shape_light_red_background)
-                text = context.resources.getString(string.projects_control_remove)
+                    AppCompatResources.getDrawable(context, R.drawable.shape_light_red_background)
+                text = context.resources.getString(R.string.projects_control_remove)
             }
             RpcClient.MGR_SYNC -> text =
-                context.resources.getString(string.projects_control_sync_acctmgr)
+                context.resources.getString(R.string.projects_control_sync_acctmgr)
             RpcClient.MGR_DETACH -> {
                 tvText.background =
-                    AppCompatResources.getDrawable(context, drawable.shape_light_red_background)
-                text = context.resources.getString(string.projects_control_remove_acctmgr)
+                    AppCompatResources.getDrawable(context, R.drawable.shape_light_red_background)
+                text = context.resources.getString(R.string.projects_control_remove_acctmgr)
             }
             RpcClient.TRANSFER_RETRY -> text =
-                context.resources.getString(string.trans_control_retry)
+                context.resources.getString(R.string.trans_control_retry)
             ProjectsFragment.VISIT_WEBSITE -> text =
-                context.resources.getString(string.projects_control_visit_website)
+                context.resources.getString(R.string.projects_control_visit_website)
             else -> {
             }
         }
