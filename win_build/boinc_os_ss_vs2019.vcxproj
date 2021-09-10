@@ -325,7 +325,10 @@
     <ClCompile Include="..\lib\proxy_info.cpp" />
     <ClCompile Include="..\clientscr\screensaver.cpp" />
     <ClCompile Include="..\clientscr\screensaver_win.cpp" />
-    <ClCompile Include="..\lib\stackwalker_win.cpp" />
+    <ClCompile Include="..\lib\stackwalker_win.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\lib\str_util.cpp" />
     <ClCompile Include="..\lib\url.cpp" />
     <ClCompile Include="..\lib\util.cpp" />
