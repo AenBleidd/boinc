@@ -35,15 +35,67 @@
 #endif
 
 #include "error_numbers.h"
-#include "md5.h"
+//#include "MD5.h"
+#include <openssl/evp.h>
 
 #include "md5_file.h"
 
+class MD5 {
+public:
+    static MD5& init() {
+        static MD5 instance;
+        if (instance.initialized) {
+            throw std::logic_error("MD5::init() already called");
+        }
+        EVP_DigestInit_ex(instance.context, instance.md, NULL);
+        instance.initialized = true;
+        return instance;
+    }
+    void update(const void* buf, const size_t len) {
+        if (!initialized) {
+            throw std::logic_error("MD5::init() must be called first");
+        }
+        EVP_DigestUpdate(context, buf, len);
+    }
+    void finalize(char* output, const size_t len) {
+        if (!initialized) {
+            throw std::logic_error("MD5::init() must be called first");
+        }
+        EVP_DigestFinal_ex(context, md_value, &md_len);
+        initialized = false;
+
+        if (md_len * 2 + 1 > len) {
+            throw std::logic_error("MD5::finalize() output buffer too small");
+        }
+
+        for (size_t i = 0; i < md_len; i++) {
+            sprintf(output + 2 * i, "%02x", md_value[i]);
+        }
+        output[md_len*2] = 0;
+    }
+    
+private:
+    EVP_MD_CTX* context;
+    const EVP_MD* md;
+    unsigned char md_value[EVP_MAX_MD_SIZE];
+    unsigned int md_len;
+    bool initialized;
+    MD5() {
+        context = EVP_MD_CTX_new();
+        md = EVP_MD_fetch(NULL, "MD5", NULL);
+        initialized = false;
+    }
+    ~MD5() {
+        EVP_MD_CTX_free(context);
+    }
+    MD5(const MD5&);
+    MD5& operator=(const MD5&);
+
+};
+
 int md5_file(const char* path, char* output, double& nbytes, bool is_gzip) {
     unsigned char buf[4096];
-    unsigned char binout[16];
-    md5_state_t state;
-    int i, n;
+    int n;
 
     nbytes = 0;
 #ifndef _USING_FCGI_
@@ -61,12 +113,11 @@ int md5_file(const char* path, char* output, double& nbytes, bool is_gzip) {
 
         return ERR_FOPEN;
     }
-    md5_init(&state);
 
     // check and skip gzip header if needed
     //
     if (is_gzip) {
-        n = (int)fread(buf, 1, 10, f);
+        n = static_cast<int>(fread(buf, 1, 10, f));
         if (n != 10) {
             fclose(f);
             return ERR_BAD_FORMAT;
@@ -78,17 +129,15 @@ int md5_file(const char* path, char* output, double& nbytes, bool is_gzip) {
         nbytes = 10;
     }
 
-    while (1) {
-        n = (int)fread(buf, 1, 4096, f);
+    MD5& md5 = MD5::init();
+    while (true) {
+        n = static_cast<int>(fread(buf, 1, 4096, f));
         if (n<=0) break;
         nbytes += n;
-        md5_append(&state, buf, n);
+        md5.update(buf, n);
     }
-    md5_finish(&state, binout);
-    for (i=0; i<16; i++) {
-        sprintf(output+2*i, "%02x", binout[i]);
-    }
-    output[32] = 0;
+    md5.finalize(output, MD5_LEN);
+
     fclose(f);
     return 0;
 }
@@ -96,20 +145,12 @@ int md5_file(const char* path, char* output, double& nbytes, bool is_gzip) {
 int md5_block(const unsigned char* data, int nbytes, char* output,
     const unsigned char* data2, int nbytes2     // optional 2nd block
 ) {
-    unsigned char binout[16];
-    int i;
-
-    md5_state_t state;
-    md5_init(&state);
-    md5_append(&state, data, nbytes);
+    MD5& md5 = MD5::init();
+    md5.update(data, nbytes);
     if (data2) {
-        md5_append(&state, data2, nbytes2);
+        md5.update(data2, nbytes2);
     }
-    md5_finish(&state, binout);
-    for (i=0; i<16; i++) {
-        sprintf(output+2*i, "%02x", binout[i]);
-    }
-    output[32] = 0;
+    md5.finalize(output, MD5_LEN);
     return 0;
 }
 

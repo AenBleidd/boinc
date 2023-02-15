@@ -134,7 +134,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;libcrypto.lib;libssl.lib;Crypt32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -143,6 +143,7 @@
       <OptimizeReferences>
       </OptimizeReferences>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
@@ -182,7 +183,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;libcrypto.lib;libssl.lib;Crypt32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -190,6 +191,7 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>
       </OptimizeReferences>
+      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -230,7 +232,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;libcrypto.lib;libssl.lib;Crypt32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -240,6 +242,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SetChecksum>true</SetChecksum>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -279,7 +282,7 @@
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;advapi32.lib;wsock32.lib;wininet.lib;winmm.lib;oldnames.lib;libcrypto.lib;libssl.lib;Crypt32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -288,6 +291,7 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <SetChecksum>true</SetChecksum>
+      <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

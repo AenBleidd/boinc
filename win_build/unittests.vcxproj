@@ -101,7 +101,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib;$(VcpkgInstalledDir)/debug/lib/manual-link</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;Crypt32.Lib;Ws2_32.lib;gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -115,7 +115,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/debug/lib;$(VcpkgInstalledDir)/debug/lib/manual-link</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;Crypt32.Lib;Ws2_32.lib;gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -133,7 +133,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/lib;$(VcpkgInstalledDir)/lib/manual-link</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;Crypt32.Lib;Ws2_32.lib;gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -151,7 +151,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VcpkgInstalledDir)/lib;$(VcpkgInstalledDir)/lib/manual-link</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcrypto.lib;libssl.lib;Crypt32.Lib;Ws2_32.lib;gtest_main.lib;gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>

@@ -54,13 +54,24 @@ namespace test_md5_file {
     };
 
     TEST_F(test_md5_file, md5_string) {
-        std::string result = md5_string("abcdefghijk");
+        const string result = md5_string("abcdefghijk");
         EXPECT_EQ(result, "92b9cccc0b98c3a0b8d0df25a421c0e3");
     }
 
-    TEST_F(test_md5_file, make_secure_random_string_os) {
+    TEST_F(test_md5_file, md5_block) {
         char output[33];
-        EXPECT_EQ(make_secure_random_string_os(output), 0);
+        const string s1("abcdef");
+        const string s2("ghijk");
+        md5_block(reinterpret_cast<const unsigned char*>(s1.c_str()), s1.size(), output, reinterpret_cast<const unsigned char*>(s2.c_str()), s2.size());
+        EXPECT_STREQ(output, "92b9cccc0b98c3a0b8d0df25a421c0e3");
+    }
+
+    TEST_F(test_md5_file, make_secure_random_string_os) {
+        char output1[33];
+        EXPECT_EQ(make_secure_random_string_os(output1), 0);
+        char output2[33];
+        EXPECT_EQ(make_secure_random_string_os(output2), 0);
+        EXPECT_STRNE(output1, output2);
     }
 
     TEST_F(test_md5_file, md5_file) {
@@ -71,10 +82,19 @@ namespace test_md5_file {
 #else
         const string md5_file_path = "../unit-tests/lib/test_md5_file.txt";
 #endif
-        int result = md5_file(md5_file_path.c_str(), output, bytes);
+        const int result = md5_file(md5_file_path.c_str(), output, bytes);
         EXPECT_EQ(result, 0);
         EXPECT_STREQ(output, "3b13c74a05696e71f9aeb4e6f10cbae8");
         EXPECT_EQ(bytes, 737);
+    }
+
+    TEST_F(test_md5_file, md5_string_performance) {
+        const int iterations = 1000000;
+        const string data = "abcdefghijk";
+        for (int i = 0; i < iterations; i++) {
+            const string result = md5_string(data);
+            EXPECT_EQ(result, "92b9cccc0b98c3a0b8d0df25a421c0e3");
+        }
     }
 
 } // namespace
