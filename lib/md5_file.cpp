@@ -31,7 +31,6 @@
 
 #include "boinc_stdio.h"
 #include "error_numbers.h"
-//#include "MD5.h"
 #include <openssl/evp.h>
 
 #include "md5_file.h"
@@ -40,49 +39,49 @@ class MD5 {
 public:
     static MD5& init() {
         static MD5 instance;
-        if (instance.initialized) {
+        if (instance.m_initialized) {
             throw std::logic_error("MD5::init() already called");
         }
-        EVP_DigestInit_ex(instance.context, instance.md, NULL);
-        instance.initialized = true;
+        EVP_DigestInit_ex(instance.m_context, instance.m_md, NULL);
+        instance.m_initialized = true;
         return instance;
     }
     void update(const void* buf, const size_t len) {
-        if (!initialized) {
+        if (!m_initialized) {
             throw std::logic_error("MD5::init() must be called first");
         }
-        EVP_DigestUpdate(context, buf, len);
+        EVP_DigestUpdate(m_context, buf, len);
     }
     void finalize(char* output, const size_t len) {
-        if (!initialized) {
+        if (!m_initialized) {
             throw std::logic_error("MD5::init() must be called first");
         }
-        EVP_DigestFinal_ex(context, md_value, &md_len);
-        initialized = false;
+        unsigned char md_value[EVP_MAX_MD_SIZE];
+        unsigned int md_len;
+        EVP_DigestFinal_ex(m_context, md_value, &md_len);
+        m_initialized = false;
 
         if (md_len * 2 + 1 > len) {
             throw std::logic_error("MD5::finalize() output buffer too small");
         }
 
         for (size_t i = 0; i < md_len; i++) {
-            sprintf(output + 2 * i, "%02x", md_value[i]);
+            snprintf(output + 2 * i, len, "%02x", md_value[i]);
         }
         output[md_len*2] = 0;
     }
 
 private:
-    EVP_MD_CTX* context;
-    const EVP_MD* md;
-    unsigned char md_value[EVP_MAX_MD_SIZE];
-    unsigned int md_len;
-    bool initialized;
+    EVP_MD_CTX* m_context;
+    const EVP_MD* m_md;    
+    bool m_initialized;
     MD5() {
-        context = EVP_MD_CTX_new();
-        md = EVP_MD_fetch(NULL, "MD5", NULL);
-        initialized = false;
+        m_context = EVP_MD_CTX_new();
+        m_md = EVP_MD_fetch(NULL, "MD5", NULL);
+        m_initialized = false;
     }
     ~MD5() {
-        EVP_MD_CTX_free(context);
+        EVP_MD_CTX_free(m_context);
     }
     MD5(const MD5&);
     MD5& operator=(const MD5&);
@@ -145,7 +144,7 @@ int md5_block(const unsigned char* data, int nbytes, char* output,
 std::string md5_string(const unsigned char* data, int nbytes) {
     char output[MD5_LEN];
     md5_block(data, nbytes, output);
-    return std::string(output);
+    return output;
 }
 
 // make a secure (i.e. hard to guess)
@@ -166,7 +165,7 @@ int make_secure_random_string_os(char* out) {
         }
     }
 
-    if(! CryptGenRandom(hCryptProv, (DWORD) 32, (BYTE *) buf)) {
+    if(! CryptGenRandom(hCryptProv, static_cast<DWORD>(32), reinterpret_cast<BYTE*>(buf))) {
         CryptReleaseContext(hCryptProv, 0);
         return -3;
     }
@@ -183,7 +182,7 @@ int make_secure_random_string_os(char* out) {
     boinc::fclose(f);
     if (n != 1) return -2;
 #endif
-    md5_block((const unsigned char*)buf, 32, out);
+    md5_block(reinterpret_cast<const unsigned char*>(buf), 32, out);
     return 0;
 }
 
