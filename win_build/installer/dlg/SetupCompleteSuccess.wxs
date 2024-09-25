@@ -4,7 +4,7 @@
     <Property Id="SetupCompleteSuccessDlg" Value="1"/>
     <UI>
       <Dialog Id="SetupCompleteSuccess" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control Id="OK" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Finish)" Cancel="yes">
+        <Control Id="OK" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Finish)" Cancel="yes">
           <Publish Event="DoAction" Value="CALaunchBOINCManager" Order="5" Condition='LAUNCHPROGRAM And (ACTION &lt;&gt; "ADMIN")'/>
           <Publish Event="DoAction" Value="CALaunchBOINCTray" Order="6" Condition='LAUNCHPROGRAM And (ACTION &lt;&gt; "ADMIN")'/>
           <Publish Event="DoAction" Value="CASaveSetupState" Order="2" Condition="1"/>

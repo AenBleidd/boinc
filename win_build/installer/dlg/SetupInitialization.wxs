@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SetupInitializationDlg" Value="1"/>
+    
+    <UI>
+      <Dialog Id="SetupInitialization" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Cancel="yes" Default="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup"/>
+        </Control>
+        <Control Id="ActionData" Type="Text" X="135" Y="125" Width="228" Height="12">
+          <Subscribe Event="SetActionData" Attribute="Text"/>
+        </Control>
+        <Control Id="ActionText" Type="Text" X="135" Y="109" Width="220" Height="36">
+          <Subscribe Event="SetActionText" Attribute="Text"/>
+        </Control>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="374" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.IsInitDlg_WelcomeWizard)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="55" Width="228" Height="30" Text="!(loc.IsInitDlg_PreparingWizard)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

@@ -11,4 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\boinccas.vcxproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Resources.wxs" />
+  </ItemGroup>
 </Project>

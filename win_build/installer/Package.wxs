@@ -7,7 +7,12 @@
     <PropertyRef Id="SetupCompleteErrorDlg"/>
     <PropertyRef Id="SetupCompleteSuccessDlg"/>
     <PropertyRef Id="SetupErrorDlg"/>
+    <PropertyRef Id="SetupInitializationDlg"/>
     <PropertyRef Id="SetupInterruptedDlg"/>
+    <PropertyRef Id="CancelSetupDlg"/>
+
+    <PropertyRef Id="CustomActions"/>
+    <PropertyRef Id="Resources"/>
     
     <Property Id="_IsMaintenance" Value="Install"/>
     <Property Id="DefaultUIFont" Value="Tahoma8"/>
@@ -39,12 +44,6 @@
         <Control_First>Next</Control_First>
         <Control_Default>Next</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="CancelSetup" Width="260" Height="85" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>No</Control_First>
-        <Control_Default>No</Control_Default>
-        <Control_Cancel>No</Control_Cancel>
       </Dialog>-->
 
       <!--<Dialog Id="ChangeFolderData" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
@@ -139,12 +138,6 @@
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
 
-      <!--<Dialog Id="SetupInitialization" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Cancel</Control_First>
-        <Control_Default>Cancel</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
       <!--<Dialog Id="SetupProgress" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Cancel</Control_First>
         <Control_Default>Cancel</Control_Default>
@@ -171,21 +164,13 @@
           <Directory Id="PROJECTS" Name="projects"/>
         </Directory>
       </StandardDirectory>
-    <Binary Id="boinccas_dll" SourceFile="$(var.OutputPath)boinccas.dll"/>
-    <Binary Id="banner_bmp" SourceFile="$(var.InputPath)banner.bmp"/>
-    <Binary Id="dialogbitmap_bmp" SourceFile="$(var.InputPath)dialogbitmap.bmp"/> <!--NewBinary5-->
-    <Binary Id="warning_bmp" SourceFile="$(var.InputPath)warning.bmp"/>
+    
     <!--<Property Id="DATADIR"/>-->
     <Feature Id="BOINC" ConfigurableDirectory="TARGETDIR">
       <Component Id="_BOINCData" Directory="DATADIR" Guid="{4E793828-A468-4366-892F-FC2F36EC99D9}"/>
       <Component Id="_BOINCDataProjects" Directory="PROJECTS" Guid="{9C720438-35E8-4377-A105-AF3675664094}"/>
       <Component Id="_BOINCDataSlots" Directory="SLOTS" Guid="{C9FE7A6E-2470-4666-949B-4DB2BB936E5F}"/>
     </Feature>
-    <CustomAction Id="CALaunchBOINCManager" BinaryRef="boinccas_dll" DllEntry="LaunchBOINCManager"/>
-    <CustomAction Id="CALaunchBOINCTray" BinaryRef="boinccas_dll" DllEntry="LaunchBOINCTray"/>
-    <CustomAction Id="CASaveSetupState" BinaryRef="boinccas_dll" DllEntry="SaveSetupState"/>
-    <CustomAction Id="CASetBOINCDataProjects" Directory="PROJECTS" Value="[DATADIR]projects"/>
-    <CustomAction Id="CASetBOINCDataSlots" Directory="SLOTS" Value="[DATADIR]slots"/>
     <AdminExecuteSequence>
       <CostInitialize Sequence="1"/>
       <FileCost Sequence="2"/>
@@ -202,10 +187,10 @@
       <Show Dialog="SetupCompleteError" OnExit="error"/>
       <Show Dialog="SetupInterrupted" OnExit="cancel"/>
       <Show Dialog="SetupCompleteSuccess" OnExit="success"/>
-      <!--<Custom Action="SetupInitialization" Sequence="4"/>-->
-      <CostInitialize Sequence="5"/>
-      <FileCost Sequence="6"/>
-      <CostFinalize Sequence="7"/>
+      <Show Dialog="SetupInitialization" Sequence="1"/>
+      <CostInitialize Sequence="2"/>
+      <FileCost Sequence="3"/>
+      <CostFinalize Sequence="4"/>
       <!--<Custom Action="AdminWelcome" Sequence="8"/>
       <Custom Action="SetupProgress" Sequence="9"/>
       <Custom Action="ExecuteAction" Sequence="10"/>-->
@@ -334,9 +319,9 @@
       <Action Name="CARestoreSetupState" Sequence="6" Condition=""/>
       <Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>
       <Action Name="AppSearch" Sequence="400" Condition=""/>
-      <Action Name="LaunchConditions" Sequence="410" Condition="Not Installed"/>
-      <Action Name="SetupInitialization" Sequence="420" Condition=""/>
-      <Action Name="FindRelatedProducts" Sequence="430" Condition=""/>
+      <Action Name="LaunchConditions" Sequence="410" Condition="Not Installed"/>-->
+      <Show Dialog="SetupInitialization" Sequence="420"/>
+      <!--<Action Name="FindRelatedProducts" Sequence="430" Condition=""/>
       <Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>
       <Action Name="CCPSearch" Sequence="500" Condition="CCP_TEST"/>
       <Action Name="RMCCPSearch" Sequence="600" Condition="Not CCP_SUCCESS And CCP_TEST"/>

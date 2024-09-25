@@ -23,7 +23,7 @@
                  HideCondition="UpdateStarted" ShowCondition="NOT UpdateStarted"/>
         <Control Id="FinishText2" Type="Text" X="135" Y="135" Width="228" Height="25" Text="!(loc.ClickFinish)"
                  HideCondition="UpdateStarted" ShowCondition="NOT UpdateStarted"/>
-        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="374" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
         <Control Id="RestContText1" Type="Text" X="135" Y="80" Width="228" Height="50" Text="!(loc.KeepOrRestore)"
                  HideCondition="NOT UpdateStarted" ShowCondition="UpdateStarted"/>
         <Control Id="RestContText2" Type="Text" X="135" Y="135" Width="228" Height="25" Text="!(loc.RestoreOrContinueLater)"

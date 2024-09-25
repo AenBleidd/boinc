@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="Resources" Value="1"/>    
+    
+    <Binary Id="boinccas_dll" SourceFile="$(var.OutputPath)boinccas.dll"/>
+    <Binary Id="banner_bmp" SourceFile="$(var.InputPath)res/banner.bmp"/>
+    <Binary Id="dialogbitmap_bmp" SourceFile="$(var.InputPath)res/dialogbitmap.bmp"/>    <!--NewBinary5-->
+    <Binary Id="warning_ico" SourceFile="$(var.InputPath)res/warning.ico"/>
+  </Fragment>
+</Wix>

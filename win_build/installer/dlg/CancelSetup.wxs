@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="CancelSetupDlg" Value="1"/>
+    
+    <UI>
+      <Dialog Id="CancelSetup" Width="260" Height="85" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="No" Type="PushButton" X="135" Y="57" Width="66" Height="17" Text="!(loc.No)" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Return"/>
+        </Control>
+        <Control Id="Icon" Type="Icon" X="15" Y="15" Width="24" Height="24" Text="warning_ico"/>
+        <Control Id="Text" Type="Text" X="48" Y="15" Width="194" Height="30" Text="!(loc.IsCancelDlg_ConfirmCancel)"/>
+        <Control Id="Yes" Type="PushButton" X="62" Y="57" Width="66" Height="17" Text="!(loc.Yes)">
+          <Publish Event="EndDialog" Value="Exit"/>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>
