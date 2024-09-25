@@ -1,0 +1,39 @@
+﻿<!--
+This file contains the declaration of all the localizable strings.
+-->
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
+
+  <String Id="ApplicationsUsingFiles" Value="The following applications are using files that need to be updated by this setup. Close these applications and click Retry to continue."/>
+  <String Id="Back" Value="&lt; &amp;Back"/>
+  <String Id="BeforeReboot" Value="On clicking finish you will be given an option to restart your computer. Please save all unfinished work first. BOINC will not start until you have restarted your computer."/>
+  <String Id="BOINC_Installation" Value="[ProductName] Installation"/>
+  <String Id="Cancel" Value="Cancel"/>
+  <String Id="Cancel2" Value="&amp;Cancel"/>
+  <String Id="ClickFinish" Value="Click Finish to exit the wizard."/>
+  <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed."/>
+  <String Id="Exit" Value="&amp;Exit"/>
+  <String Id="FilesInUse" Value="{&amp;MSSansBold8}Files in Use"/>
+  <String Id="FilesInUseMessage" Value="Some files that need to be updated are currently in use."/>
+  <String Id="Finish" Value="&amp;Finish"/>
+  <String Id="Ignore" Value="&amp;Ignore"/>
+  <String Id="InstallSuccess" Value="The Installation Wizard has successfully installed [ProductName]. Click Finish to exit the wizard."/>
+  <String Id="IsErrorDlg_Abort" Value="&amp;Abort"/>
+  <String Id="IsErrorDlg_ErrorText" Value="REPLACE WITH THE ERROR TEXT"/>
+  <String Id="IsErrorDlg_InstallerInfo" Value="[ProductName] Installer Information"/>
+  <String Id="IsErrorDlg_NO" Value="&amp;No"/>
+  <String Id="IsErrorDlg_OK" Value="&amp;OK"/>
+  <String Id="IsErrorDlg_Yes" Value="&amp;Yes"/>
+  <String Id="IsFatalError_NotModified" Value="Your system has not been modified. To complete installation at another time, please run setup again."/>
+  <String Id="IsUserExit_NotModified" Value="Your system has not been modified. To install this program at a later time, please run the installation again."/>
+  <String Id="KeepOrRestore" Value="You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation."/>
+  <String Id="LaunchBOINCManager" Value="Launch the BOINC Manager"/>
+  <String Id="ProductNameInstallationWizard" Value="[ProductName] - Installation Wizard"/>
+  <String Id="Repair" Value="A BOINC component didn't get updated properly. Please run the repair tool from the 'Control Panel - Add/Remove Programs' tool ('Control Panel - Program Features' tool on newer version of Windows)."/>
+  <String Id="RestoreOrContinueLater" Value="Click Restore or Continue Later to exit the wizard."/>
+  <String Id="Retry" Value="&amp;Retry"/>
+  <String Id="SetupFinished" Value="Setup has finished installing [ProductName]."/>
+  <String Id="UninstallSuccess" Value="The Installation Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard."/>
+  <String Id="WizardCompleted" Value="{&amp;TahomaBold10}Installation Wizard Completed"/>
+  <String Id="WizardInterrupted" Value="The wizard was interrupted before [ProductName] could be completely installed."/>
+
+</WixLocalization>

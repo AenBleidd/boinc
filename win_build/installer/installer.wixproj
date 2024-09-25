@@ -1,0 +1,14 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.1">
+  <PropertyGroup>
+    <InputPath>$(SolutionDir)installer\</InputPath>
+    <Pedantic>true</Pedantic>
+    <OutputPath>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutputPath>
+    <ObjectPath>$(SolutionDir)Build\$(Platform)\$(Configuration)\$(ProjectName)\obj\</ObjectPath>
+    <IntermediateOutputPath>$(SolutionDir)Build\$(Platform)\$(Configuration)\$(ProjectName)\obj\</IntermediateOutputPath>
+    <DefineConstants>OutputPath=$(OutputPath);InputPath=$(InputPath)</DefineConstants>
+    <VerboseOutput>true</VerboseOutput>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\boinccas.vcxproj" />
+  </ItemGroup>
+</Project>

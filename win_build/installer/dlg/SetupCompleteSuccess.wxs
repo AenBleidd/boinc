@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SetupCompleteSuccessDlg" Value="1"/>
+    <UI>
+      <Dialog Id="SetupCompleteSuccess" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="OK" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Finish)" Cancel="yes">
+          <Publish Event="DoAction" Value="CALaunchBOINCManager" Order="5" Condition='LAUNCHPROGRAM And (ACTION &lt;&gt; "ADMIN")'/>
+          <Publish Event="DoAction" Value="CALaunchBOINCTray" Order="6" Condition='LAUNCHPROGRAM And (ACTION &lt;&gt; "ADMIN")'/>
+          <Publish Event="DoAction" Value="CASaveSetupState" Order="2" Condition="1"/>
+          <Publish Event="EndDialog" Value="Exit" Order="2" Condition="1"/>
+        </Control>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="374" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="LaunchProgramCheck" Type="CheckBox" X="135" Y="114" Width="10" Height="9" Property="LAUNCHPROGRAM" Default="yes" Hidden="yes"
+                 ShowCondition='ACTION &lt;&gt; "ADMIN" And RETURN_VALIDATEINSTALL = "1" And RETURN_REBOOTREQUESTED = "0" And NOT Installed'/>
+        <Control Id="LaunchProgramText" Type="Text" X="149" Y="114" Width="198" Height="15" Text="!(loc.LaunchBOINCManager)" Property="NewProperty1" Hidden="yes"
+                 ShowCondition='ACTION &lt;&gt; "ADMIN" And RETURN_VALIDATEINSTALL = "1" And RETURN_REBOOTREQUESTED = "0" And NOT Installed'/>
+        <Control Id="RebootText" Type="Text" X="135" Y="140" Width="225" Height="35" Text="!(loc.BeforeReboot)" Hidden="yes"
+                 ShowCondition='RETURN_REBOOTREQUESTED = "1"'/>
+        <Control Id="RepairText" Type="Text" X="135" Y="178" Width="225" Height="52" Text="!(loc.Repair)" Hidden="yes"
+                 ShowCondition='RETURN_VALIDATEINSTALL = "0" AND _IsMaintenance &lt;&gt; "Remove"'/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.WizardCompleted)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="55" Width="228" Height="45" Text="!(loc.InstallSuccess)" Hidden="yes"
+                 ShowCondition='ProgressType2="installed" And ((ACTION&lt;&gt;"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))'/>
+        <Control Id="TextLine3" Type="Text" X="135" Y="55" Width="228" Height="45" Text="!(loc.UninstallSuccess)" Hidden="yes"
+                 ShowCondition='ProgressType2="uninstalled" And ((ACTION&lt;&gt;"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))'/>
+        <Control Id="UpdateTextLine1" Type="Text" X="134" Y="30" Width="228" Height="45" Text="!(loc.SetupFinished)" Hidden="yes"
+                 ShowCondition='ISENABLEDWUSFINISHDIALOG And NOT Installed And ACTION="INSTALL"'/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

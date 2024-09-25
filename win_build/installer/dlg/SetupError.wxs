@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SetupErrorDlg" Value="1"/>
+    <UI>
+      <Dialog Id="SetupError" Width="270" Height="110" Title="!(loc.IsErrorDlg_InstallerInfo)" ErrorDialog="yes">
+        <Control Id="ErrorText" Type="Text" X="50" Y="15" Width="200" Height="50" TabSkip="no" Text="&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;&lt;error text goes here&gt;"/>
+        <Control Id="A" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.IsErrorDlg_Abort)">
+          <Publish Event="EndDialog" Value="ErrorAbort"/>
+        </Control>
+        <Control Id="C" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.Cancel2)" Cancel="yes">
+          <Publish Event="EndDialog" Value="ErrorCancel"/>
+        </Control>
+        <Control Id="I" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.Ignore)">
+          <Publish Event="EndDialog" Value="ErrorIgnore"/>
+        </Control>
+        <Control Id="N" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.IsErrorDlg_NO)">
+          <Publish Event="EndDialog" Value="ErrorNo"/>
+        </Control>
+        <Control Id="O" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.IsErrorDlg_OK)" Default="yes">
+          <Publish Event="EndDialog" Value="ErrorOk"/>
+        </Control>
+        <Control Id="R" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.Retry)">
+          <Publish Event="EndDialog" Value="ErrorRetry"/>
+        </Control>
+        <Control Id="WarningIcon" Type="Icon" X="15" Y="15" Width="24" Height="24" Text="warning_bmp"/>
+        <Control Id="ErrorIcon" Type="Icon" X="15" Y="15" Width="24" Height="24" FixedSize="yes" Text="warning_bmp"/>
+        <Control Id="Y" Type="PushButton" X="192" Y="80" Width="66" Height="17" Text="!(loc.IsErrorDlg_Yes)">
+          <Publish Event="EndDialog" Value="ErrorYes"/>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

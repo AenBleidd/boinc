@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SetupCompleteErrorDlg" Value="1"/>
+    <UI>
+      <Dialog Id="SetupCompleteError" Height="266" Width="374" Title="!(loc.BOINC_Installation)">
+        <Control Id="Finish" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Finish)"
+                 DefaultCondition="NOT UpdateStarted" Default="yes" Cancel="yes">
+          <Publish Event="EndDialog" Value="Exit" Order="1" Condition="2"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)"
+                 EnableCondition="UpdateStarted" DisableCondition="NOT UpdateStarted">
+          <Publish Event="EndDialog" Value="Return" Order="1" Condition="2"/>
+          <Publish Event="[Suspend]" Value="1" Order="1" Condition="1"/>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Back)"
+                 DefaultCondition="UpdateStarted" EnableCondition="UpdateStarted" DisableCondition="NOT UpdateStarted">
+          <Publish Event="EndDialog" Value="Return" Order="1" Condition="2"/>
+          <Publish Event="[Suspend]" Value="{}" Order="1" Condition="1"/>
+        </Control>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="374" Height="0"/>
+        <Control Id="FinishText1" Type="Text" X="135" Y="80" Width="228" Height="50" Text="!(loc.IsFatalError_NotModified)"
+                 HideCondition="UpdateStarted" ShowCondition="NOT UpdateStarted"/>
+        <Control Id="FinishText2" Type="Text" X="135" Y="135" Width="228" Height="25" Text="!(loc.ClickFinish)"
+                 HideCondition="UpdateStarted" ShowCondition="NOT UpdateStarted"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="RestContText1" Type="Text" X="135" Y="80" Width="228" Height="50" Text="!(loc.KeepOrRestore)"
+                 HideCondition="NOT UpdateStarted" ShowCondition="UpdateStarted"/>
+        <Control Id="RestContText2" Type="Text" X="135" Y="135" Width="228" Height="25" Text="!(loc.RestoreOrContinueLater)"
+                 HideCondition="NOT UpdateStarted" ShowCondition="UpdateStarted"/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.WizardCompleted)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="55" Width="228" Height="25" Text="!(loc.WizardInterrupted)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

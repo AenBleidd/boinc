@@ -24,6 +24,9 @@
 /win_build/installerv2/WCG
 /win_build/installerv2/Progress
 
+# Installer temp files
+/win_build/installer/obj/
+
 # Netbeans project files
 /html/nbproject/
 *.project

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="FilesInUseDlg" Value="1"/>
+    <UI>
+      <Dialog Id="FilesInUse" Width="374" Height="266" Title="!(loc.BOINC_Installation)">
+        <Control Id="Retry" Default="yes" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Retry)">
+          <Publish Event="EndDialog" Value="Retry"/>
+        </Control>
+        <Control Id="Ignore" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Ignore)">
+          <Publish Event="EndDialog" Value="Ignore"/>
+        </Control>
+        <Control Id="Exit" Cancel="yes" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Exit)">
+          <Publish Event="EndDialog" Value="Exit"/>
+        </Control>
+        <Control Id="List" Type="ListBox" X="21" Y="87" Width="331" Height="135" Property="FileInUseProcess"/>
+        <Control Id="Banner" Type="Bitmap" X="0" Y="0" Width="374" Height="44" Text="banner_bmp"/>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0"/>
+        <Control Id="DlgDesc" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.FilesInUseMessage)"/>
+        <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="326" Height="0"/>
+        <Control Id="DlgText" Type="Text" X="21" Y="51" Width="348" Height="29" Text="!(loc.ApplicationsUsingFiles)"/>
+        <Control Id="DlgTitle" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.FilesInUse)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>
