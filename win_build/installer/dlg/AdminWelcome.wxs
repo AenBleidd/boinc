@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="AdminWelcomeDlg" Value="1"/>
+    
+    <UI>
+      <Dialog Id="AdminWelcome" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Next" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Next)" Default="yes">
+          <Publish Event="NewDialog" Value="AdminNetworkLocation"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup"/>
+        </Control>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="326" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.IsAdminInstallPointWelcome_Wizard)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="55" Width="228" Height="45" Text="!(loc.IsAdminInstallPointWelcome_ServerImage)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

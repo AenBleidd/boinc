@@ -6,6 +6,8 @@
     <Binary Id="boinccas_dll" SourceFile="$(var.OutputPath)boinccas.dll"/>
     <Binary Id="banner_bmp" SourceFile="$(var.InputPath)res/banner.bmp"/>
     <Binary Id="dialogbitmap_bmp" SourceFile="$(var.InputPath)res/dialogbitmap.bmp"/>    <!--NewBinary5-->
-    <Binary Id="warning_ico" SourceFile="$(var.InputPath)res/warning.ico"/>
+    <Binary Id="folderadd_ico" SourceFile="$(var.InputPath)res/folderadd.ico"/> <!--NewBinary2-->
+    <Binary Id="folderup_ico" SourceFile="$(var.InputPath)res/folderup.ico"/> <!--NewBinary3-->
+    <Binary Id="warning_ico" SourceFile="$(var.InputPath)res/warning.ico"/> <!--NewBinary4-->
   </Fragment>
 </Wix>

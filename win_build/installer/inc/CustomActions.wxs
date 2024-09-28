@@ -2,11 +2,21 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Fragment>
     <Property Id="CustomActions" Value="1"/>
-    
+
+    <CustomAction Id="CAAnnounceUpgrade" BinaryRef="boinccas_dll" DllEntry="AnnounceUpgrade"/>
+    <CustomAction Id="CACleanupOldBinaries" BinaryRef="boinccas_dll" DllEntry="CleanupOldBinaries"/>
     <CustomAction Id="CALaunchBOINCManager" BinaryRef="boinccas_dll" DllEntry="LaunchBOINCManager"/>
     <CustomAction Id="CALaunchBOINCTray" BinaryRef="boinccas_dll" DllEntry="LaunchBOINCTray"/>
+    <CustomAction Id="CARestoreExecutionState" BinaryRef="boinccas_dll" DllEntry="RestoreExecutionState"/>
+    <CustomAction Id="CARestoreSetupState" BinaryRef="boinccas_dll" DllEntry="RestoreSetupState"/>
     <CustomAction Id="CASaveSetupState" BinaryRef="boinccas_dll" DllEntry="SaveSetupState"/>
     <CustomAction Id="CASetBOINCDataProjects" Directory="PROJECTS" Value="[DATADIR]projects"/>
     <CustomAction Id="CASetBOINCDataSlots" Directory="SLOTS" Value="[DATADIR]slots"/>
+    <CustomAction Id="CAShutdownBOINC" BinaryRef="boinccas_dll" DllEntry="ShutdownBOINC"/>
+    <CustomAction Id="CAShutdownBOINCManager" BinaryRef="boinccas_dll" DllEntry="ShutdownBOINCManager"/>
+    <CustomAction Id="CAShutdownBOINCScreensaver" BinaryRef="boinccas_dll" DllEntry="ShutdownBOINCScreensaver"/>
+    <CustomAction Id="CAValidateSetupType" BinaryRef="boinccas_dll" DllEntry="ValidateSetupType"/>
+    <CustomAction Id="setUserProfileNT" Property="USERPROFILE" Value="[%USERPROFILE]"/>
+    <CustomAction Id="setAllUsersProfile2K" Property="ALLUSERSPROFILE" Value="[%ALLUSERSPROFILE]"/>
   </Fragment>
 </Wix>

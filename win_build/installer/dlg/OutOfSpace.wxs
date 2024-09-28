@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="OutOfSpaceDlg" Value="1"/>
+
+    <UI>
+      <Dialog Id="OutOfSpace" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Resume" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.OK)" Default="yes" Cancel="yes">
+          <Publish Event="NewDialog" Value="AdminNetworkLocation" Condition='ACTION = "ADMIN"'/>
+          <!--<Publish Event="NewDialog" Value="NoDialog" Condition='ACTION &lt;&gt; "ADMIN"'/>-->
+          <Publish Event="EndDialog" Value="Return" Condition='ACTION &lt;&gt; "ADMIN"'/>
+        </Control>
+        <Control Id="Banner" Type="Bitmap" X="0" Y="0" Width="374" Height="44" Text="banner_bmp"/>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0"/>
+        <Control Id="DlgDesc" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.IsDiskSpaceDlg_DiskSpace)"/>
+        <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="326" Height="0"/>
+        <Control Id="DlgText" Type="Text" X="21" Y="51" Width="326" Height="43" Text="!(loc.IsDiskSpaceDlg_HighlightedVolumes)"/>
+        <Control Id="DlgTitle" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.IsDiskSpaceDlg_OutOfDiskSpace)"/>
+        <Control Id="List" Type="VolumeCostList" X="21" Y="95" Width="332" Height="120" Text="!(loc.IsDiskSpaceDlg_Numbers)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

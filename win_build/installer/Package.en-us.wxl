@@ -17,7 +17,24 @@ This file contains the declaration of all the localizable strings.
   <String Id="Finish" Value="&amp;Finish"/>
   <String Id="Ignore" Value="&amp;Ignore"/>
   <String Id="InstallSuccess" Value="The Installation Wizard has successfully installed [ProductName]. Click Finish to exit the wizard."/>
+  <String Id="IsAdminInstallBrowse_BrowseDestination" Value="IDS__IsAdminInstallBrowse_BrowseDestination"/>
+  <String Id="IsAdminInstallBrowse_ChangeDestination" Value="{&amp;MSSansBold8}Change Current Destination Folder"/>
+  <String Id="IsAdminInstallBrowse_FolderName" Value="&amp;Folder name:"/>
+  <String Id="IsAdminInstallBrowse_LookIn" Value="&amp;Look in:"/>
+  <String Id="IsAdminInstallPoint_Change" Value="&amp;Change..."/>
+  <String Id="IsAdminInstallPoint_EnterNetworkLocation" Value="Enter the network location or click Change to browse to a location.  Click Install to create a server image of [ProductName] at the specified network location or click Cancel to exit the wizard."/>
+  <String Id="IsAdminInstallPoint_Install" Value="&amp;Install"/>
+  <String Id="IsAdminInstallPoint_NetworkLocation" Value="&amp;Network location:"/>
+  <String Id="IsAdminInstallPoint_NetworkLocationFormatted" Value="{&amp;MSSansBold8}Network Location"/>
+  <String Id="IsAdminInstallPoint_SpecifyNetworkLocation" Value="Specify a network location for the server image of the product."/>
+  <String Id="IsAdminInstallPointWelcome_Wizard" Value="{&amp;TahomaBold10}Welcome to the Installation Wizard for [ProductName]"/>
+  <String Id="IsAdminInstallPointWelcome_ServerImage" Value="The Installation Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next."/>
   <String Id="IsCancelDlg_ConfirmCancel" Value="Are you sure you want to cancel [ProductName] installation?"/>
+  <String Id="IsDiskSpaceDlg_DiskSpace" Value="Disk space required for the installation exceeds available disk space."/>
+  <String Id="IsDiskSpaceDlg_HighlightedVolumes" Value="The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives."/>
+  <String Id="IsDiskSpaceDlg_Numbers" Value="{120}{70}{70}{70}{70}"/>
+  <String Id="OK" Value="OK"/>
+  <String Id="IsDiskSpaceDlg_OutOfDiskSpace" Value="{&amp;MSSansBold8}Out of Disk Space"/>
   <String Id="IsErrorDlg_Abort" Value="&amp;Abort"/>
   <String Id="IsErrorDlg_ErrorText" Value="REPLACE WITH THE ERROR TEXT"/>
   <String Id="IsErrorDlg_InstallerInfo" Value="[ProductName] Installer Information"/>

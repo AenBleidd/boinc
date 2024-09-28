@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="AdminNetworkLocationDlg" Value="1"/>
+    <UI>
+      <Dialog Id="AdminNetworkLocation" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="InstallNow" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.IsAdminInstallPoint_Install)" Default="yes">
+          <Publish Event="EndDialog" Value="Return" Condition="OutOfNoRbDiskSpace &lt;&gt; 1" Order="3"/>
+          <Publish Event="NewDialog" Value="OutOfSpace" Condition="OutOfNoRbDiskSpace = 1" Order="2"/>
+          <Publish Event="SetTargetPath" Value="[TARGETDIR]" Order="1"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup"/>
+        </Control>
+        <Control Id="SetupPathEdit" Type="PathEdit" X="21" Y="102" Width="330" Height="17" Property="TARGETDIR"/>
+        <Control Id="Browse" Type="PushButton" X="286" Y="124" Width="66" Height="17" Text="!(loc.IsAdminInstallPoint_Change)">
+          <Publish Event="SpawnDialog" Value="AdminChangeFolder"/>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Back)">
+          <Publish Event="NewDialog" Value="AdminWelcome"/>
+        </Control>
+        <Control Id="Banner" Type="Bitmap" X="0" Y="0" Width="374" Height="44" Text="banner_bmp"/>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0"/>
+        <Control Id="DlgDesc" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.IsAdminInstallPoint_SpecifyNetworkLocation)"/>
+        <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="326" Height="0"/>
+        <Control Id="DlgText" Type="Text" X="21" Y="51" Width="326" Height="40" Text="!(loc.IsAdminInstallPoint_EnterNetworkLocation)"/>
+        <Control Id="DlgTitle" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.IsAdminInstallPoint_NetworkLocationFormatted)"/>
+        <Control Id="LBBrowse" Type="Text" X="21" Y="90" Width="100" Height="10" Text="!(loc.IsAdminInstallPoint_NetworkLocation)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

@@ -3,7 +3,11 @@
     <Media Id="1" Cabinet="boinc.cab" CompressionLevel="high" EmbedCab="yes"/>
     <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"/>
 
+    <PropertyRef Id="AdminChangeFolderDlg"/>
+    <PropertyRef Id="AdminWelcomeDlg"/>
+    <PropertyRef Id="AdminNetworkLocationDlg"/>
     <PropertyRef Id="FilesInUseDlg"/>
+    <PropertyRef Id="OutOfSpaceDlg"/>
     <PropertyRef Id="SetupCompleteErrorDlg"/>
     <PropertyRef Id="SetupCompleteSuccessDlg"/>
     <PropertyRef Id="SetupErrorDlg"/>
@@ -27,24 +31,6 @@
       <TextStyle Id="MSSansBold8" FaceName="Tahoma" Size="8" Bold="yes"/> <!-- TODO: Rename this -->
       <TextStyle Id="Tahoma8" FaceName="Tahoma" Size="8"/>
       <TextStyle Id="TahomaBold10" FaceName="Tahoma" Size="10" Bold="yes"/>
-
-      <!--<Dialog Id="AdminChangeFolder" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Tail</Control_First>
-        <Control_Default>OK</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="AdminNetworkLocation" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>InstallNow</Control_First>
-        <Control_Default>InstallNow</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="AdminWelcome" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Next</Control_First>
-        <Control_Default>Next</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
 
       <!--<Dialog Id="ChangeFolderData" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Tail</Control_First>
@@ -98,12 +84,6 @@
         <Control_First>OK</Control_First>
         <Control_Default>OK</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="OutOfSpace" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Resume</Control_First>
-        <Control_Default>Resume</Control_Default>
-        <Control_Cancel>Resume</Control_Cancel>
       </Dialog>-->
 
       <!--<Dialog Id="PatchWelcome" Width="374" Height="266" Title="!(loc.IsPatchDlg_PatchWizard)">
@@ -172,59 +152,59 @@
       <Component Id="_BOINCDataSlots" Directory="SLOTS" Guid="{C9FE7A6E-2470-4666-949B-4DB2BB936E5F}"/>
     </Feature>
     <AdminExecuteSequence>
-      <CostInitialize Sequence="1"/>
-      <FileCost Sequence="2"/>
-      <CostFinalize Sequence="3"/>
-      <Custom Action="CASetBOINCDataSlots" Sequence="4"/>
-      <Custom Action="CASetBOINCDataProjects" Sequence="5"/>
-      <InstallValidate Sequence="6"/>
-      <InstallInitialize Sequence="7"/>
-      <InstallAdminPackage Sequence="8"/>
-      <InstallFiles Sequence="9"/>
-      <InstallFinalize Sequence="10"/>
+      <CostInitialize Sequence="800"/>
+      <FileCost Sequence="900"/>
+      <CostFinalize Sequence="1000"/>
+      <Custom Action="CASetBOINCDataSlots" Sequence="1200"/>
+      <Custom Action="CASetBOINCDataProjects" Sequence="1300"/>
+      <InstallValidate Sequence="1400"/>
+      <InstallInitialize Sequence="1500"/>
+      <InstallAdminPackage Sequence="3900"/>
+      <InstallFiles Sequence="4000"/>
+      <InstallFinalize Sequence="6600"/>
     </AdminExecuteSequence>
     <AdminUISequence>
       <Show Dialog="SetupCompleteError" OnExit="error"/>
       <Show Dialog="SetupInterrupted" OnExit="cancel"/>
       <Show Dialog="SetupCompleteSuccess" OnExit="success"/>
-      <Show Dialog="SetupInitialization" Sequence="1"/>
-      <CostInitialize Sequence="2"/>
-      <FileCost Sequence="3"/>
-      <CostFinalize Sequence="4"/>
-      <!--<Custom Action="AdminWelcome" Sequence="8"/>
-      <Custom Action="SetupProgress" Sequence="9"/>
-      <Custom Action="ExecuteAction" Sequence="10"/>-->
+      <Show Dialog="SetupInitialization" Sequence="50"/>
+      <CostInitialize Sequence="800"/>
+      <FileCost Sequence="900"/>
+      <CostFinalize Sequence="1000"/>
+      <Show Dialog="AdminWelcome" Sequence="1010"/>
+      <!--<Custom Action="SetupProgress" Sequence="1020"/>-->
+      <ExecuteAction Sequence="1300"/>
     </AdminUISequence>
     <InstallExecuteSequence>
       <!--<Action Name="ISSetupFilesExtract" Sequence="3" Condition=""/>
-      <Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>
-      <Action Name="AppSearch" Sequence="400" Condition=""/>
-      <Action Name="CAShutdownBOINC" Sequence="403" Condition="VersionNT"/>
-      <Action Name="CAShutdownBOINCManager" Sequence="404" Condition="VersionNT"/>
-      <Action Name="CAShutdownBOINCScreensaver" Sequence="408" Condition="VersionNT"/>
-      <Action Name="LaunchConditions" Sequence="410" Condition="Not Installed"/>
-      <Action Name="FindRelatedProducts" Sequence="420" Condition="NOT ISSETUPDRIVEN"/>
-      <Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>
-      <Action Name="CCPSearch" Sequence="500" Condition="CCP_TEST"/>
-      <Action Name="RMCCPSearch" Sequence="600" Condition="Not CCP_SUCCESS And CCP_TEST"/>
-      <Action Name="ValidateProductID" Sequence="700" Condition=""/>
-      <Action Name="CAValidateSetupType" Sequence="737" Condition=""/>
-      <Action Name="CACleanupOldBinaries" Sequence="796" Condition="REMOVE &lt;&gt; 'ALL'"/>-->
+      <Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>-->
+      <AppSearch Sequence="400"/>
+      <Custom Action="CAShutdownBOINC" Sequence="403"/>
+      <Custom Action="CAShutdownBOINCManager" Sequence="404"/>
+      <Custom Action="CAShutdownBOINCScreensaver" Sequence="408"/>
+      <LaunchConditions Sequence="410" Condition="Not Installed"/>
+      <FindRelatedProducts Sequence="420" Condition="NOT ISSETUPDRIVEN"/>
+      <!--<Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>-->
+      <CCPSearch Sequence="500" Condition="CCP_TEST"/>
+      <RMCCPSearch Sequence="600" Condition="Not CCP_SUCCESS And CCP_TEST"/>
+      <ValidateProductID Sequence="700"/>
+      <Custom Action="CAValidateSetupType" Sequence="737"/>
+      <Custom Action="CACleanupOldBinaries" Sequence="796" Condition='REMOVE &lt;&gt; "ALL"'/>
       <CostInitialize Sequence="800"/>
-      <!--<Action Name="ResolveSource" Sequence="850" Condition='_IsMaintenance &lt;&gt; "Remove"'/>-->
+      <ResolveSource Sequence="850" Condition='_IsMaintenance &lt;&gt; "Remove"'/>
       <FileCost Sequence="900"/>
-      <!--<Action Name="IsolateComponents" Sequence="950" Condition=""/>-->
+      <IsolateComponents Sequence="950"/>
       <CostFinalize Sequence="1000"/>
-      <!--<Action Name="CAAnnounceUpgrade" Sequence="1001" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CARestoreSetupState" Sequence="1002" Condition="VersionNT And REMOVE = 'ALL'"/>
-      <Action Name="CASetBOINCDataSlots" Sequence="1003" Condition=""/>
-      <Action Name="CASetBOINCDataProjects" Sequence="1004" Condition=""/>
-      <Action Name="SetARPReadme" Sequence="1005" Condition=""/>
-      <Action Name="SetARPINSTALLLOCATION" Sequence="1010" Condition="Not Installed"/>
-      <Action Name="SetODBCFolders" Sequence="1100" Condition=""/>
-      <Action Name="MigrateFeatureStates" Sequence="1200" Condition=""/>-->
+      <Custom Action="CAAnnounceUpgrade" Sequence="1001" Condition='REMOVE &lt;&gt; "ALL"'/>
+      <Custom Action="CARestoreSetupState" Sequence="1002" Condition='REMOVE = "ALL"'/>
+      <Custom Action="CASetBOINCDataSlots" Sequence="1003"/>
+      <Custom Action="CASetBOINCDataProjects" Sequence="1004"/>
+      <!--<SetARPReadme Sequence="1005"/>
+      <Action Name="SetARPINSTALLLOCATION" Sequence="1010" Condition="Not Installed"/>-->
+      <SetODBCFolders Sequence="1100"/>
+      <MigrateFeatureStates Sequence="1200"/>
       <InstallValidate Sequence="1400"/>
-      <!--<Action Name="RemoveExistingProducts" Sequence="1410" Condition=""/>-->
+      <!--<RemoveExistingProducts Sequence="1410"/>-->
       <InstallInitialize Sequence="1501"/>
       <!--<Action Name="CAGetAdministratorsGroupName" Sequence="1537" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
       <Action Name="CAGetUsersGroupName" Sequence="1543" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
@@ -293,9 +273,9 @@
       <Action Name="PublishComponents" Sequence="6200" Condition=""/>
       <Action Name="MsiPublishAssemblies" Sequence="6250" Condition=""/>
       <Action Name="PublishFeatures" Sequence="6300" Condition=""/>
-      <Action Name="PublishProduct" Sequence="6400" Condition=""/>
-      <Action Name="ScheduleReboot" Sequence="6410" Condition="ISSCHEDULEREBOOT"/>
-      <Action Name="RegisterUser" Sequence="6000" Condition=""/>-->
+      <Action Name="PublishProduct" Sequence="6400" Condition=""/>-->
+      <ScheduleReboot Sequence="6410" Condition="ISSCHEDULEREBOOT"/>
+      <!--<Action Name="RegisterUser" Sequence="6000" Condition=""/>-->
       <InstallFinalize Sequence="6601"/>
       <!--<Action Name="CAValidateInstall" Sequence="6602" Condition="REMOVE &lt;&gt; 'ALL'"/>
       <Action Name="CAValidateRebootRequest" Sequence="6603" Condition="REMOVE &lt;&gt; 'ALL' AND RETURN_REBOOTREQUESTED = '1'"/>
@@ -315,35 +295,34 @@
       <Show Dialog="SetupCompleteError" OnExit="error"/>
       <Show Dialog="SetupInterrupted" OnExit="cancel"/>
       <Show Dialog="SetupCompleteSuccess" OnExit="success"/>
-      <!--<Action Name="ISSetupFilesExtract" Sequence="3" Condition=""/>
-      <Action Name="CARestoreSetupState" Sequence="6" Condition=""/>
-      <Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>
-      <Action Name="AppSearch" Sequence="400" Condition=""/>
-      <Action Name="LaunchConditions" Sequence="410" Condition="Not Installed"/>-->
+      <!--<Action Name="ISSetupFilesExtract" Sequence="3" Condition=""/>-->
+      <Custom Action="CARestoreSetupState" Sequence="6"/>
+      <!--<Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>-->
+      <AppSearch Sequence="400"/>
+      <LaunchConditions Sequence="410" Condition="Not Installed"/>
       <Show Dialog="SetupInitialization" Sequence="420"/>
-      <!--<Action Name="FindRelatedProducts" Sequence="430" Condition=""/>
-      <Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>
-      <Action Name="CCPSearch" Sequence="500" Condition="CCP_TEST"/>
-      <Action Name="RMCCPSearch" Sequence="600" Condition="Not CCP_SUCCESS And CCP_TEST"/>
-      <Action Name="ValidateProductID" Sequence="700" Condition=""/>-->
+      <FindRelatedProducts Sequence="430"/>
+      <!--<Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>-->
+      <CCPSearch Sequence="500" Condition="CCP_TEST"/>
+      <RMCCPSearch Sequence="600" Condition="Not CCP_SUCCESS And CCP_TEST"/>
+      <ValidateProductID Sequence="700"/>
       <CostInitialize Sequence="800"/>
       <FileCost Sequence="900"/>
-      <!--<Action Name="IsolateComponents" Sequence="950" Condition=""/>
-      <Action Name="setUserProfileNT" Sequence="960" Condition="VersionNT"/>
-      <Action Name="SetAllUsersProfileNT" Sequence="970" Condition="VersionNT = 400"/>
-      <Action Name="setAllUsersProfile2K" Sequence="980" Condition="VersionNT &gt;= 500"/>
-      <Action Name="ResolveSource" Sequence="990" Condition="Not Installed And Not PATCH"/>-->
+      <IsolateComponents Sequence="950"/>
+      <Custom Action="setUserProfileNT" Sequence="960" Condition="VersionNT"/>
+      <Custom Action="setAllUsersProfile2K" Sequence="980" Condition="VersionNT &gt;= 500"/>
+      <ResolveSource Sequence="990" Condition="Not Installed And Not PATCH"/>
       <CostFinalize Sequence="1000"/>
-      <!--<Action Name="SetARPReadme" Sequence="1002" Condition=""/>
-      <Action Name="MigrateFeatureStates" Sequence="1200" Condition=""/>
-      <Action Name="PatchWelcome" Sequence="1205" Condition="PATCH And Not IS_MAJOR_UPGRADE"/>
+      <!--<Action Name="SetARPReadme" Sequence="1002" Condition=""/>-->
+      <MigrateFeatureStates Sequence="1200"/>
+      <!--<Action Name="PatchWelcome" Sequence="1205" Condition="PATCH And Not IS_MAJOR_UPGRADE"/>
       <Action Name="InstallWelcome" Sequence="1210" Condition="Not Installed And (Not PATCH Or IS_MAJOR_UPGRADE)"/>
       <Action Name="SetupResume" Sequence="1220" Condition="Installed And (RESUME Or Preselected) And Not PATCH"/>
       <Action Name="MaintenanceWelcome" Sequence="1230" Condition="Installed And Not RESUME And Not Preselected And Not PATCH"/>
-      <Action Name="SetupProgress" Sequence="1240" Condition=""/>
-      <Action Name="ExecuteAction" Sequence="1300" Condition="ExecuteAction"/>
-      <Action Name="ISSetupFilesCleanup" Sequence="1302" Condition=""/>
-      <Action Name="CARestoreExecutionState" Sequence="1352" Condition=""/>-->
+      <Action Name="SetupProgress" Sequence="1240" Condition=""/>-->
+      <ExecuteAction Sequence="1300"/>
+      <!--<Action Name="ISSetupFilesCleanup" Sequence="1302" Condition=""/>-->
+      <Custom Action="CARestoreExecutionState" Sequence="1352"/>
     </InstallUISequence>
   </Package>
 </Wix>
