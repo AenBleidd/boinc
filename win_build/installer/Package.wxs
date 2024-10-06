@@ -1,4 +1,5 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+﻿
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Package Codepage="1252" Manufacturer="Space Sciences Laboratory, U.C. Berkeley" Name="BOINC for Windows" UpgradeCode="E913E54D-5080-42EC-A312-B21948BA1C02" Version="8.1.0">
     <Media Id="1" Cabinet="boinc.cab" CompressionLevel="high" EmbedCab="yes"/>
     <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"/>
@@ -25,6 +26,8 @@
     <Property Id="ProgressType2" Value="installed"/>
     <Property Id="RETURN_VALIDATEINSTALL" Value="0"/>
     <Property Id="RETURN_REBOOTREQUESTED" Value="0"/>
+    <!--TODO: Check this-->
+    <Property Id="TARGETDIR" Value="CommonAppDataFolder"/>
 
     <UI>
       <!--<ProgressText Action="" Message ="" Template=""/>-->
@@ -137,8 +140,8 @@
       </Dialog>-->
 
     </UI>
-      <!-- TODO: DATADIR need to be specified-->
-      <StandardDirectory Id="CommonAppDataFolder">
+      <!-- TODO: Check this-->
+      <StandardDirectory Id="TARGETDIR">
         <Directory Id="DATADIR" Name="BOINC">
           <Directory Id="SLOTS" Name="slots"/>
           <Directory Id="PROJECTS" Name="projects"/>
