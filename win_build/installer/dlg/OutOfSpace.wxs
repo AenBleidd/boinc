@@ -2,7 +2,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Fragment>
     <Property Id="OutOfSpaceDlg" Value="1"/>
-
     <UI>
       <Dialog Id="OutOfSpace" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control Id="Resume" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.OK)" Default="yes" Cancel="yes">

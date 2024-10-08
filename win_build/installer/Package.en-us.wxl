@@ -9,26 +9,26 @@ This file contains the declaration of all the localizable strings.
   <String Id="BOINC_Installation" Value="[ProductName] Installation"/>
   <String Id="Cancel" Value="Cancel"/>
   <String Id="Cancel2" Value="&amp;Cancel"/>
-  <String Id="ClickFinish" Value="Click Finish to exit the wizard."/>
+  <String Id="ClickFinish" Value="Click Finish to exit the installer."/>
   <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed."/>
   <String Id="Exit" Value="&amp;Exit"/>
   <String Id="FilesInUse" Value="{&amp;MSSansBold8}Files in Use"/>
   <String Id="FilesInUseMessage" Value="Some files that need to be updated are currently in use."/>
   <String Id="Finish" Value="&amp;Finish"/>
   <String Id="Ignore" Value="&amp;Ignore"/>
-  <String Id="InstallSuccess" Value="The Installation Wizard has successfully installed [ProductName]. Click Finish to exit the wizard."/>
+  <String Id="InstallSuccess" Value="The Installer has successfully installed [ProductName]. Click Finish to exit the installer."/>
   <String Id="IsAdminInstallBrowse_BrowseDestination" Value="IDS__IsAdminInstallBrowse_BrowseDestination"/>
   <String Id="IsAdminInstallBrowse_ChangeDestination" Value="{&amp;MSSansBold8}Change Current Destination Folder"/>
   <String Id="IsAdminInstallBrowse_FolderName" Value="&amp;Folder name:"/>
   <String Id="IsAdminInstallBrowse_LookIn" Value="&amp;Look in:"/>
   <String Id="IsAdminInstallPoint_Change" Value="&amp;Change..."/>
-  <String Id="IsAdminInstallPoint_EnterNetworkLocation" Value="Enter the network location or click Change to browse to a location.  Click Install to create a server image of [ProductName] at the specified network location or click Cancel to exit the wizard."/>
+  <String Id="IsAdminInstallPoint_EnterNetworkLocation" Value="Enter the network location or click Change to browse to a location.  Click Install to create a server image of [ProductName] at the specified network location or click Cancel to exit the installer."/>
   <String Id="IsAdminInstallPoint_Install" Value="&amp;Install"/>
   <String Id="IsAdminInstallPoint_NetworkLocation" Value="&amp;Network location:"/>
   <String Id="IsAdminInstallPoint_NetworkLocationFormatted" Value="{&amp;MSSansBold8}Network Location"/>
   <String Id="IsAdminInstallPoint_SpecifyNetworkLocation" Value="Specify a network location for the server image of the product."/>
-  <String Id="IsAdminInstallPointWelcome_Wizard" Value="{&amp;TahomaBold10}Welcome to the Installation Wizard for [ProductName]"/>
-  <String Id="IsAdminInstallPointWelcome_ServerImage" Value="The Installation Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next."/>
+  <String Id="IsAdminInstallPointWelcome_Wizard" Value="{&amp;TahomaBold10}Welcome to the Installater for [ProductName]"/>
+  <String Id="IsAdminInstallPointWelcome_ServerImage" Value="The Installer will create a server image of [ProductName] at a specified network location. To continue, click Next."/>
   <String Id="IsCancelDlg_ConfirmCancel" Value="Are you sure you want to cancel [ProductName] installation?"/>
   <String Id="IsDiskSpaceDlg_DiskSpace" Value="Disk space required for the installation exceeds available disk space."/>
   <String Id="IsDiskSpaceDlg_HighlightedVolumes" Value="The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install fewer features onto local drives, or select different destination drives."/>
@@ -41,20 +41,31 @@ This file contains the declaration of all the localizable strings.
   <String Id="IsErrorDlg_OK" Value="&amp;OK"/>
   <String Id="IsFatalError_NotModified" Value="Your system has not been modified. To complete installation at another time, please run setup again."/>
   <String Id="IsInitDlg_PreparingWizard" Value="[ProductName] Setup is preparing the Installation Wizard which will guide you through the program setup process.  Please wait."/>
-  <String Id="IsInitDlg_WelcomeWizard" Value="{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]"/>
+  <String Id="IsInitDlg_WelcomeWizard" Value="{&amp;TahomaBold10}Welcome to the installer for [ProductName]"/>
+  <String Id="IsProgressDlg_Hidden" Value="(Hidden for now)"/>
+  <String Id="IsProgressDlg_HiddenTimeRemaining" Value="(Hidden for now)Estimated time remaining:"/>
+  <String Id="IsProgressDlg_InstallingProductName" Value="{&amp;MSSansBold8}Installing [ProductName]"/>
+  <String Id="IsProgressDlg_ProgressDone" Value="Progress done"/>
+  <String Id="IsProgressDlg_SecHidden" Value="(Hidden for now)Sec."/>
+  <String Id="IsProgressDlg_Status" Value="Status:"/>
+  <String Id="IsProgressDlg_Uninstalling" Value="{&amp;MSSansBold8}Uninstalling [ProductName]"/>
+  <String Id="IsProgressDlg_UninstallingFeatures" Value="The program features you selected are being uninstalled."/>
+  <String Id="IsProgressDlg_UninstallingFeatures2" Value="The program features you selected are being installed."/>
+  <String Id="IsProgressDlg_WaitUninstall" Value="Please wait while the Installer uninstalls [ProductName]. This may take several minutes."/>
+  <String Id="IsProgressDlg_WaitUninstall2" Value="Please wait while the Installer installs [ProductName]. This may take several minutes."/>
   <String Id="IsUserExit_NotModified" Value="Your system has not been modified. To install this program at a later time, please run the installation again."/>
   <String Id="KeepOrRestore" Value="You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation."/>
   <String Id="LaunchBOINCManager" Value="Launch the BOINC Manager"/>
   <String Id="Next" Value="&amp;Next &gt;"/>
   <String Id="No" Value="&amp;No"/>
-  <String Id="ProductNameInstallationWizard" Value="[ProductName] - Installation Wizard"/>
+  <String Id="ProductNameInstallationWizard" Value="[ProductName] - Installer"/>
   <String Id="Repair" Value="A BOINC component didn't get updated properly. Please run the repair tool from the 'Control Panel - Add/Remove Programs' tool ('Control Panel - Program Features' tool on newer version of Windows)."/>
-  <String Id="RestoreOrContinueLater" Value="Click Restore or Continue Later to exit the wizard."/>
+  <String Id="RestoreOrContinueLater" Value="Click Restore or Continue Later to exit the installer."/>
   <String Id="Retry" Value="&amp;Retry"/>
   <String Id="SetupFinished" Value="Setup has finished installing [ProductName]."/>
-  <String Id="UninstallSuccess" Value="The Installation Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard."/>
-  <String Id="WizardCompleted" Value="{&amp;TahomaBold10}Installation Wizard Completed"/>
-  <String Id="WizardInterrupted" Value="The wizard was interrupted before [ProductName] could be completely installed."/>
+  <String Id="UninstallSuccess" Value="The Installer has successfully uninstalled [ProductName]. Click Finish to exit the installer."/>
+  <String Id="WizardCompleted" Value="{&amp;TahomaBold10}Installer Completed"/>
+  <String Id="WizardInterrupted" Value="The installer was interrupted before [ProductName] could be completely installed."/>
   <String Id="Yes" Value="&amp;Yes"/>
 
 </WixLocalization>

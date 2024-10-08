@@ -7,6 +7,7 @@
     <PropertyRef Id="AdminChangeFolderDlg"/>
     <PropertyRef Id="AdminWelcomeDlg"/>
     <PropertyRef Id="AdminNetworkLocationDlg"/>
+    <PropertyRef Id="CancelSetupDlg"/>
     <PropertyRef Id="FilesInUseDlg"/>
     <PropertyRef Id="OutOfSpaceDlg"/>
     <PropertyRef Id="SetupCompleteErrorDlg"/>
@@ -14,7 +15,7 @@
     <PropertyRef Id="SetupErrorDlg"/>
     <PropertyRef Id="SetupInitializationDlg"/>
     <PropertyRef Id="SetupInterruptedDlg"/>
-    <PropertyRef Id="CancelSetupDlg"/>
+    <PropertyRef Id="SetupProgressDlg"/>    
 
     <PropertyRef Id="CustomActions"/>
     <PropertyRef Id="Resources"/>
@@ -121,12 +122,6 @@
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
 
-      <!--<Dialog Id="SetupProgress" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Cancel</Control_First>
-        <Control_Default>Cancel</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
       <!--<Dialog Id="SetupResume" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Next</Control_First>
         <Control_Default>Next</Control_Default>
@@ -175,7 +170,7 @@
       <FileCost Sequence="900"/>
       <CostFinalize Sequence="1000"/>
       <Show Dialog="AdminWelcome" Sequence="1010"/>
-      <!--<Custom Action="SetupProgress" Sequence="1020"/>-->
+      <Show Dialog="SetupProgress" Sequence="1020"/>
       <ExecuteAction Sequence="1300"/>
     </AdminUISequence>
     <InstallExecuteSequence>
@@ -321,8 +316,8 @@
       <!--<Action Name="PatchWelcome" Sequence="1205" Condition="PATCH And Not IS_MAJOR_UPGRADE"/>
       <Action Name="InstallWelcome" Sequence="1210" Condition="Not Installed And (Not PATCH Or IS_MAJOR_UPGRADE)"/>
       <Action Name="SetupResume" Sequence="1220" Condition="Installed And (RESUME Or Preselected) And Not PATCH"/>
-      <Action Name="MaintenanceWelcome" Sequence="1230" Condition="Installed And Not RESUME And Not Preselected And Not PATCH"/>
-      <Action Name="SetupProgress" Sequence="1240" Condition=""/>-->
+      <Action Name="MaintenanceWelcome" Sequence="1230" Condition="Installed And Not RESUME And Not Preselected And Not PATCH"/>-->
+      <Show Dialog="SetupProgress" Sequence="1240"/>
       <ExecuteAction Sequence="1300"/>
       <!--<Action Name="ISSetupFilesCleanup" Sequence="1302" Condition=""/>-->
       <Custom Action="CARestoreExecutionState" Sequence="1352"/>

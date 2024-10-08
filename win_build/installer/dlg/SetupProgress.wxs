@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SetupProgressDlg" Value="1"/>
+    <UI>
+      <Dialog Id="SetupProgress" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Default="yes" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup" Order="0" Condition="1"/>
+        </Control>
+        <Control Id="ActionProgress95" Type="ProgressBar" X="59" Y="113" Width="275" Height="12" Text="!(loc.IsProgressDlg_ProgressDone)">
+          <Subscribe Event="AdminInstallFinalize" Attribute="Progress" />
+          <Subscribe Event="InstallFiles" Attribute="Progress" />
+          <Subscribe Event="MoveFiles" Attribute="Progress" />
+          <Subscribe Event="RemoveFiles" Attribute="Progress" />
+          <Subscribe Event="RemoveRegistryValues" Attribute="Progress" />
+          <Subscribe Event="SetProgress" Attribute="Progress" />
+          <Subscribe Event="UnmoveFiles" Attribute="Progress" />
+          <Subscribe Event="WriteIniValues" Attribute="Progress" />
+          <Subscribe Event="WriteRegistryValues" Attribute="Progress" />
+        </Control>
+        <Control Id="ActionText" Type="Text" X="59" Y="100" Width="275" Height="12">
+          <Subscribe Event="ActionText" Attribute="Text" />
+        </Control>
+        <Control Id="Banner" Type="Bitmap" X="0" Y="0" Width="374" Height="44" Text="banner_bmp"/>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0"/>
+        <Control Id="DlgDesc" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.IsProgressDlg_UninstallingFeatures2)" Hidden="yes" ShowCondition='ProgressType2="installed"'/>
+        <Control Id="DlgDesc2" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.IsProgressDlg_UninstallingFeatures)" Hidden="yes" ShowCondition='ProgressType2="uninstalled"'/>
+        <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="326" Height="0"/>
+        <Control Id="DlgText" Type="Text" X="59" Y="51" Width="275" Height="30" Text="!(loc.IsProgressDlg_WaitUninstall2)" Hidden="yes" ShowCondition='ProgressType3="installs"'/>
+        <Control Id="DlgText2" Type="Text" X="59" Y="51" Width="275" Height="30" Text="!(loc.IsProgressDlg_WaitUninstall)" Hidden="yes" ShowCondition='ProgressType3="uninstalls"'/>
+        <Control Id="DlgTitle" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.IsProgressDlg_InstallingProductName)" Hidden="yes" ShowCondition='ProgressType1="Installing"'/>
+        <Control Id="DlgTitle2" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.IsProgressDlg_Uninstalling)" Hidden="yes" ShowCondition='ProgressType1="Uninstalling"'/>
+        <Control Id="LbSec" Type="Text" X="172" Y="139" Width="32" Height="12" Text="!(loc.IsProgressDlg_SecHidden)"/>
+        <Control Id="LbStatus" Type="Text" X="59" Y="85" Width="70" Height="12" Text="!(loc.IsProgressDlg_Status)"/>
+        <Control Id="SetupIcon" Type="Icon" X="21" Y="51" Width="24" Height="24" Text="setup_ico"/>
+        <Control Id="ShowTime" Type="Text" X="155" Y="139" Width="17" Height="12" Text="!(loc.IsProgressDlg_Hidden)"/>
+        <Control Id="TextTime" Type="Text" X="59" Y="139" Width="96" Height="12" Text="!(loc.IsProgressDlg_HiddenTimeRemaining)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>
