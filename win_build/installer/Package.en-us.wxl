@@ -42,6 +42,8 @@ This file contains the declaration of all the localizable strings.
   <String Id="IsFatalError_NotModified" Value="Your system has not been modified. To complete installation at another time, please run setup again."/>
   <String Id="IsInitDlg_PreparingWizard" Value="[ProductName] Setup is preparing the Installation Wizard which will guide you through the program setup process.  Please wait."/>
   <String Id="IsInitDlg_WelcomeWizard" Value="{&amp;TahomaBold10}Welcome to the installer for [ProductName]"/>
+  <String Id="IsLicenseDlg_LicenseAgreement" Value="{&amp;MSSansBold8}License Agreement"/>
+  <String Id="IsLicenseDlg_ReadLicenseAgreement" Value="Please read the following license agreement carefully."/>
   <String Id="IsPatchDlg_PatchClickUpdate" Value="The Installer will install the Patch for [ProductName] on your computer. To continue, click Update."/>
   <String Id="IsPatchDlg_PatchWizard" Value="[ProductName] Patch - Installer"/>
   <String Id="IsPatchDlg_Update" Value="&amp;Update &gt;"/>
@@ -65,6 +67,7 @@ This file contains the declaration of all the localizable strings.
   <String Id="LaunchBOINCManager" Value="Launch the BOINC Manager"/>
   <String Id="Next" Value="&amp;Next &gt;"/>
   <String Id="No" Value="&amp;No"/>
+  <String Id="Print" Value="&amp;Print"/>
   <String Id="ProductNameInstallationWizard" Value="[ProductName] - Installer"/>
   <String Id="Repair" Value="A BOINC component didn't get updated properly. Please run the repair tool from the 'Control Panel - Add/Remove Programs' tool ('Control Panel - Program Features' tool on newer version of Windows)."/>
   <String Id="RestoreOrContinueLater" Value="Click Restore or Continue Later to exit the installer."/>

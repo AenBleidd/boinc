@@ -10,6 +10,7 @@
     <PropertyRef Id="CancelSetupDlg"/>
     <PropertyRef Id="FilesInUseDlg"/>
     <PropertyRef Id="InstallWelcomeDlg"/>
+    <PropertyRef Id="LicenseAgreementDlg"/>
     <PropertyRef Id="OutOfSpaceDlg"/>
     <PropertyRef Id="PatchWelcomeDlg"/>
     <PropertyRef Id="SetupCompleteErrorDlg"/>
@@ -31,7 +32,7 @@
     <Property Id="RETURN_VALIDATEINSTALL" Value="0"/>
     <Property Id="RETURN_REBOOTREQUESTED" Value="0"/>
     <!--TODO: Check this-->
-    <Property Id="TARGETDIR" Value="CommonAppDataFolder"/>
+    <!--<Property Id="TARGETDIR" Value="CommonAppDataFolder"/>-->
 
     <UI>
       <!--<ProgressText Action="" Message ="" Template=""/>-->
@@ -60,12 +61,6 @@
       <!--<Dialog Id="FeatureNotSupported" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Back</Control_First>
         <Control_Default>Back</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="LicenseAgreement" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Agree</Control_First>
-        <Control_Default>Next</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
 
@@ -98,8 +93,6 @@
         <Control_Default>RemoveNow</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
-
-
 
       <!--<Dialog Id="SetupConfig" Width="374" Height="266" Title="!(loc.ID_STRING18)">
         <Control_First>Advanced</Control_First>
@@ -283,7 +276,7 @@
       <!--<Action Name="ISSetAllUsers" Sequence="10" Condition="Not Installed"/>-->
       <AppSearch Sequence="400"/>
       <LaunchConditions Sequence="410" Condition="Not Installed"/>
-      <Show Dialog="SetupInitialization" Sequence="420"/>
+      <!--<Show Dialog="SetupInitialization" Sequence="420"/>-->
       <FindRelatedProducts Sequence="430"/>
       <!--<Action Name="ISPreventDowngrade" Sequence="450" Condition="ISFOUNDNEWERPRODUCTVERSION"/>-->
       <CCPSearch Sequence="500" Condition="CCP_TEST"/>
