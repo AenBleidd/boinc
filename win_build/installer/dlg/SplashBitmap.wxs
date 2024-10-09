@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="SplashBitmapDlg" Value="1"/>
+    <UI>
+      <Dialog Id="SplashBitmap" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Next" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Next)" Default="yes">
+          <Publish Event="NewDialog" Value="InstallWelcome"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cacel)" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup"/>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Back)"/>
+        <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="374" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="13" Y="12" Width="349" Height="211" Text="setup_bmp"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

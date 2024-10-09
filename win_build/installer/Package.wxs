@@ -9,13 +9,16 @@
     <PropertyRef Id="AdminNetworkLocationDlg"/>
     <PropertyRef Id="CancelSetupDlg"/>
     <PropertyRef Id="FilesInUseDlg"/>
+    <PropertyRef Id="InstallWelcomeDlg"/>
     <PropertyRef Id="OutOfSpaceDlg"/>
+    <PropertyRef Id="PatchWelcomeDlg"/>
     <PropertyRef Id="SetupCompleteErrorDlg"/>
     <PropertyRef Id="SetupCompleteSuccessDlg"/>
     <PropertyRef Id="SetupErrorDlg"/>
     <PropertyRef Id="SetupInitializationDlg"/>
     <PropertyRef Id="SetupInterruptedDlg"/>
     <PropertyRef Id="SetupProgressDlg"/>    
+    <PropertyRef Id="SplashBitmapDlg"/>
 
     <PropertyRef Id="CustomActions"/>
     <PropertyRef Id="Resources"/>
@@ -60,12 +63,6 @@
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
 
-      <!--<Dialog Id="InstallWelcome" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Next</Control_First>
-        <Control_Default>Next</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
       <!--<Dialog Id="LicenseAgreement" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Agree</Control_First>
         <Control_Default>Next</Control_Default>
@@ -87,12 +84,6 @@
       <!--<Dialog Id="MsiRMFilesInUse" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>OK</Control_First>
         <Control_Default>OK</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="PatchWelcome" Width="374" Height="266" Title="!(loc.IsPatchDlg_PatchWizard)">
-        <Control_First>Next</Control_First>
-        <Control_Default>Next</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
       </Dialog>-->
 
@@ -123,12 +114,6 @@
       </Dialog>-->
 
       <!--<Dialog Id="SetupResume" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
-        <Control_First>Next</Control_First>
-        <Control_Default>Next</Control_Default>
-        <Control_Cancel>Cancel</Control_Cancel>
-      </Dialog>-->
-
-      <!--<Dialog Id="SplashBitmap" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
         <Control_First>Next</Control_First>
         <Control_Default>Next</Control_Default>
         <Control_Cancel>Cancel</Control_Cancel>
@@ -204,31 +189,31 @@
       <InstallValidate Sequence="1400"/>
       <!--<RemoveExistingProducts Sequence="1410"/>-->
       <InstallInitialize Sequence="1501"/>
-      <!--<Action Name="CAGetAdministratorsGroupName" Sequence="1537" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CAGetUsersGroupName" Sequence="1543" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CACreateBOINCAccounts" Sequence="1546" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCMasterRights" Sequence="1547" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CARevokeBOINCMasterRights" Sequence="1548" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCProjectRights" Sequence="1549" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CARevokeBOINCProjectRights" Sequence="1550" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CADeleteBOINCAccounts" Sequence="1551" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CACreateBOINCGroups" Sequence="1552" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCAdminsRights" Sequence="1553" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CARevokeBOINCAdminsRights" Sequence="1554" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCAdminsVirtualBoxRights" Sequence="1555" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCUsersRights" Sequence="1556" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CARevokeBOINCUsersRights" Sequence="1557" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCProjectsRights" Sequence="1558" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CARevokeBOINCProjectsRights" Sequence="1559" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CAGrantBOINCProjectsVirtualBoxRights" Sequence="1560" Condition="VersionNT And REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
-      <Action Name="CADeleteBOINCGroups" Sequence="1561" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <!--<Action Name="CAGetAdministratorsGroupName" Sequence="1537" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CAGetUsersGroupName" Sequence="1543" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CACreateBOINCAccounts" Sequence="1546" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCMasterRights" Sequence="1547" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CARevokeBOINCMasterRights" Sequence="1548" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCProjectRights" Sequence="1549" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CARevokeBOINCProjectRights" Sequence="1550" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CADeleteBOINCAccounts" Sequence="1551" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CACreateBOINCGroups" Sequence="1552" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCAdminsRights" Sequence="1553" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CARevokeBOINCAdminsRights" Sequence="1554" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCAdminsVirtualBoxRights" Sequence="1555" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCUsersRights" Sequence="1556" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CARevokeBOINCUsersRights" Sequence="1557" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCProjectsRights" Sequence="1558" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CARevokeBOINCProjectsRights" Sequence="1559" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CAGrantBOINCProjectsVirtualBoxRights" Sequence="1560" Condition="REMOVE &lt;&gt; 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CADeleteBOINCGroups" Sequence="1561" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
       <Action Name="AllocateRegistrySpace" Sequence="1562" Condition="NOT Installed"/>
       <Action Name="ProcessComponents" Sequence="1600" Condition=""/>
       <Action Name="UnpublishComponents" Sequence="1700" Condition=""/>
       <Action Name="MsiUnpublishAssemblies" Sequence="1750" Condition=""/>
       <Action Name="UnpublishFeatures" Sequence="1800" Condition=""/>
-      <Action Name="StopServices" Sequence="1900" Condition="VersionNT"/>
-      <Action Name="DeleteServices" Sequence="2000" Condition="VersionNT"/>
+      <Action Name="StopServices" Sequence="1900"/>
+      <Action Name="DeleteServices" Sequence="2000"/>
       <Action Name="UnregisterComPlus" Sequence="2100" Condition=""/>
       <Action Name="SelfUnregModules" Sequence="2200" Condition=""/>
       <Action Name="UnregisterTypeLibraries" Sequence="2300" Condition=""/>
@@ -264,9 +249,9 @@
       <Action Name="RegisterTypeLibraries" Sequence="5500" Condition=""/>
       <Action Name="SelfRegModules" Sequence="5600" Condition=""/>
       <Action Name="RegisterComPlus" Sequence="5700" Condition=""/>
-      <Action Name="InstallServices" Sequence="5800" Condition="VersionNT"/>
+      <Action Name="InstallServices" Sequence="5800"/>
       <Action Name="MsiConfigureServices" Sequence="5801" Condition="VersionMsi &gt;= '5.00'"/>
-      <Action Name="StartServices" Sequence="5900" Condition="VersionNT"/>
+      <Action Name="StartServices" Sequence="5900"/>
       <Action Name="RegisterProduct" Sequence="6100" Condition=""/>
       <Action Name="PublishComponents" Sequence="6200" Condition=""/>
       <Action Name="MsiPublishAssemblies" Sequence="6250" Condition=""/>
@@ -277,14 +262,14 @@
       <InstallFinalize Sequence="6601"/>
       <!--<Action Name="CAValidateInstall" Sequence="6602" Condition="REMOVE &lt;&gt; 'ALL'"/>
       <Action Name="CAValidateRebootRequest" Sequence="6603" Condition="REMOVE &lt;&gt; 'ALL' AND RETURN_REBOOTREQUESTED = '1'"/>
-      <Action Name="CACreateClientAuthFile" Sequence="6604" Condition="VersionNT And NOT Installed"/>
+      <Action Name="CACreateClientAuthFile" Sequence="6604" Condition="NOT Installed"/>
       <Action Name="CACreateAcctMgrLoginFile" Sequence="6605" Condition="NOT Installed"/>
       <Action Name="CACreateProjectInitFile" Sequence="6606" Condition="NOT Installed"/>
-      <Action Name="CASetPermissionBOINC" Sequence="6607" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CASetPermissionBOINCData" Sequence="6609" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CASetPermissionBOINCDataProjects" Sequence="6610" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CASetPermissionBOINCDataSlots" Sequence="6611" Condition="VersionNT And REMOVE &lt;&gt; 'ALL'"/>
-      <Action Name="CARestorePermissionBOINCData" Sequence="6612" Condition="VersionNT And REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
+      <Action Name="CASetPermissionBOINC" Sequence="6607" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CASetPermissionBOINCData" Sequence="6609" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CASetPermissionBOINCDataProjects" Sequence="6610" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CASetPermissionBOINCDataSlots" Sequence="6611" Condition="REMOVE &lt;&gt; 'ALL'"/>
+      <Action Name="CARestorePermissionBOINCData" Sequence="6612" Condition="REMOVE = 'ALL' AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"/>
       <Action Name="CASaveSetupState" Sequence="6613" Condition=""/>
       <Action Name="CASaveExecutionState" Sequence="6614" Condition=""/>
       <Action Name="ISSetupFilesCleanup" Sequence="6615" Condition=""/>-->
@@ -307,15 +292,15 @@
       <CostInitialize Sequence="800"/>
       <FileCost Sequence="900"/>
       <IsolateComponents Sequence="950"/>
-      <Custom Action="setUserProfileNT" Sequence="960" Condition="VersionNT"/>
-      <Custom Action="setAllUsersProfile2K" Sequence="980" Condition="VersionNT &gt;= 500"/>
+      <Custom Action="setUserProfileNT" Sequence="960"/>
+      <Custom Action="setAllUsersProfile2K" Sequence="980"/>
       <ResolveSource Sequence="990" Condition="Not Installed And Not PATCH"/>
       <CostFinalize Sequence="1000"/>
       <!--<Action Name="SetARPReadme" Sequence="1002" Condition=""/>-->
       <MigrateFeatureStates Sequence="1200"/>
-      <!--<Action Name="PatchWelcome" Sequence="1205" Condition="PATCH And Not IS_MAJOR_UPGRADE"/>
-      <Action Name="InstallWelcome" Sequence="1210" Condition="Not Installed And (Not PATCH Or IS_MAJOR_UPGRADE)"/>
-      <Action Name="SetupResume" Sequence="1220" Condition="Installed And (RESUME Or Preselected) And Not PATCH"/>
+      <Show Dialog="PatchWelcome" Sequence="1205" Condition="PATCH And Not IS_MAJOR_UPGRADE"/>
+      <Show Dialog="InstallWelcome" Sequence="1210" Condition="Not Installed And (Not PATCH Or IS_MAJOR_UPGRADE)"/>
+      <!--<Action Name="SetupResume" Sequence="1220" Condition="Installed And (RESUME Or Preselected) And Not PATCH"/>
       <Action Name="MaintenanceWelcome" Sequence="1230" Condition="Installed And Not RESUME And Not Preselected And Not PATCH"/>-->
       <Show Dialog="SetupProgress" Sequence="1240"/>
       <ExecuteAction Sequence="1300"/>

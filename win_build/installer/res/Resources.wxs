@@ -8,6 +8,7 @@
     <Binary Id="dialogbitmap_bmp" SourceFile="$(var.InputPath)res/dialogbitmap.bmp"/>     <!--NewBinary5-->
     <Binary Id="folderadd_ico" SourceFile="$(var.InputPath)res/folderadd.ico"/>           <!--NewBinary2-->
     <Binary Id="folderup_ico" SourceFile="$(var.InputPath)res/folderup.ico"/>             <!--NewBinary3-->
+    <Binary Id="setup_bmp" SourceFile="$(var.InputPath)res/setup.bmp"/>                   <!--NewBinary19-->
     <Binary Id="setup_ico" SourceFile="$(var.InputPath)res/setup.ico"/>                   <!--NewBinary9-->
     <Binary Id="warning_ico" SourceFile="$(var.InputPath)res/warning.ico"/>               <!--NewBinary4-->
   </Fragment>

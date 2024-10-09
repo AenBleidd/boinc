@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="InstallWelcomeDlg" Value="1"/>
+    <UI>
+      <Dialog Id="InstallWelcome" Width="374" Height="266" Title="!(loc.ProductNameInstallationWizard)">
+        <Control Id="Next" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.Next)" Default="yes">
+          <Publish Event="NewDialog" Value="LicenseAgreement"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup"/>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Back)">
+          <Publish Event="NewDialog" Value="SplashBitmap" Condition="Display_IsBitmapDlg"/>
+        </Control>
+        <Control Id="Copyright" Type="Text" X="135" Y="144" Width="228" Height="73" Text="!(loc.IsWelcomeDlg_WarningCopyright)" HideCondition='SHOWCOPYRIGHT="No"' ShowCondition='SHOWCOPYRIGHT="Yes"'/>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="374" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.IsWelcomeDlg_WelcomeProductName)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="55" Width="228" Height="45" Text="!(loc.IsWelcomeDlg_InstallProductName)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

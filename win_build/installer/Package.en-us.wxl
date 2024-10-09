@@ -42,6 +42,10 @@ This file contains the declaration of all the localizable strings.
   <String Id="IsFatalError_NotModified" Value="Your system has not been modified. To complete installation at another time, please run setup again."/>
   <String Id="IsInitDlg_PreparingWizard" Value="[ProductName] Setup is preparing the Installation Wizard which will guide you through the program setup process.  Please wait."/>
   <String Id="IsInitDlg_WelcomeWizard" Value="{&amp;TahomaBold10}Welcome to the installer for [ProductName]"/>
+  <String Id="IsPatchDlg_PatchClickUpdate" Value="The Installer will install the Patch for [ProductName] on your computer. To continue, click Update."/>
+  <String Id="IsPatchDlg_PatchWizard" Value="[ProductName] Patch - Installer"/>
+  <String Id="IsPatchDlg_Update" Value="&amp;Update &gt;"/>
+  <String Id="IsPatchDlg_WelcomePatchWizard" Value="{&amp;TahomaBold10}Welcome to the Patch for [ProductName]"/>
   <String Id="IsProgressDlg_Hidden" Value="(Hidden for now)"/>
   <String Id="IsProgressDlg_HiddenTimeRemaining" Value="(Hidden for now)Estimated time remaining:"/>
   <String Id="IsProgressDlg_InstallingProductName" Value="{&amp;MSSansBold8}Installing [ProductName]"/>
@@ -54,6 +58,9 @@ This file contains the declaration of all the localizable strings.
   <String Id="IsProgressDlg_WaitUninstall" Value="Please wait while the Installer uninstalls [ProductName]. This may take several minutes."/>
   <String Id="IsProgressDlg_WaitUninstall2" Value="Please wait while the Installer installs [ProductName]. This may take several minutes."/>
   <String Id="IsUserExit_NotModified" Value="Your system has not been modified. To install this program at a later time, please run the installation again."/>
+  <String Id="IsWelcomeDlg_InstallProductName" Value="The Installer will install [ProductName] on your computer. To continue, click Next."/>
+  <String Id="IsWelcomeDlg_WarningCopyright" Value="WARNING: This program is protected by copyright law and international treaties."/>
+  <String Id="IsWelcomeDlg_WelcomeProductName" Value="{&amp;TahomaBold10}Welcome to the Installer for [ProductName]"/>
   <String Id="KeepOrRestore" Value="You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation."/>
   <String Id="LaunchBOINCManager" Value="Launch the BOINC Manager"/>
   <String Id="Next" Value="&amp;Next &gt;"/>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="PatchWelcomeDlg" Value="1"/>
+    <UI>
+      <Dialog Id="PatchWelcome" Width="374" Height="266" Title="!(loc.IsPatchDlg_PatchWizard)">
+        <Control Id="Next" Type="PushButton" X="230" Y="243" Width="66" Height="17" Text="!(loc.IsPatchDlg_Update)" Default="yes">
+          <Publish Event="EndDialog" Value="Return" Condition="1" Order="1"/>
+          <Publish Event="Reinstall" Value="ALL" Condition='PATCH And REINSTALL=""' Order="1"/>
+          <Publish Event="ReinstallMode" Value="omus" Condition='PATCH And REINSTALLMODE=""' Order="2"/>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="301" Y="243" Width="66" Height="17" Text="!(loc.Cancel)" Cancel="yes">
+          <Publish Event="SpawnDialog" Value="CancelSetup" Condition="1" Order="1"/>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="164" Y="243" Width="66" Height="17" Text="!(loc.Back)">
+          <Publish Event="NewDialog" Value="SplashBitmap" Condition="Display_IsBitmapDlg" Order="1"/>
+        </Control>
+        <Control Id="DlgLine" Type="Line" X="0" Y="234" Width="374" Height="0"/>
+        <Control Id="Image" Type="Bitmap" X="0" Y="0" Width="100" Height="234" Text="dialogbitmap_bmp"/>
+        <Control Id="TextLine1" Type="Text" X="135" Y="8" Width="225" Height="45" Text="!(loc.IsPatchDlg_WelcomePatchWizard)"/>
+        <Control Id="TextLine2" Type="Text" X="135" Y="54" Width="228" Height="45" Text="!(loc.IsPatchDlg_PatchClickUpdate)"/>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>
