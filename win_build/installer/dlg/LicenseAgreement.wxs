@@ -17,14 +17,16 @@
         </Control>
         <!--TODO: Need to be fixed by looking for a better way of printing-->
         <!--<Control Id="ISPrintButton" Type="PushButton" X="301" Y="188" Width="65" Height="17" Text="!(loc.Print)">
-          <Publish Event="DoAction" Value="PrintEula"/>
+          <Publish Event="DoAction" Value="WixUIPrintEula"/>
         </Control>-->
         <Control Id="Banner" Type="Bitmap" X="0" Y="0" Width="374" Height="44" Text="banner_bmp"/>
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="374" Height="0"/>
         <Control Id="DlgDesc" Type="Text" X="21" Y="23" Width="292" Height="25" Text="!(loc.IsLicenseDlg_ReadLicenseAgreement)" Transparent="yes"/>
         <Control Id="DlgLine" Type="Line" X="48" Y="234" Width="326" Height="0"/>
         <Control Id="DlgTitle" Type="Text" X="13" Y="6" Width="292" Height="25" Text="!(loc.IsLicenseDlg_LicenseAgreement)" Transparent="yes"/>
-        <Control Id="Memo" Type="ScrollableText" X="8" Y="55" Width="358" Height="130" Text="eula_rtf"/>
+        <Control Id="Memo" Type="ScrollableText" X="8" Y="55" Width="358" Height="130" Sunken="yes">
+          <Text SourceFile="$(var.InputPath)res/eula.rtf"/>
+        </Control>
       </Dialog>
     </UI>
   </Fragment>
