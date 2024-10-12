@@ -361,6 +361,34 @@ public:
     }
 };
 
+class AdvtExecuteSequence : public Generator<Action> {
+public:
+    AdvtExecuteSequence() = default;
+    ~AdvtExecuteSequence() = default;
+    std::string generate() const override {
+        std::vector<Action> values;
+
+            values.emplace_back("CostFinalize", 1000);
+            values.emplace_back("CostInitialize", 800);
+            values.emplace_back("CreateShortcuts", 4500);
+            values.emplace_back("InstallFinalize", 6600);
+            values.emplace_back("InstallInitialize", 1500);
+            values.emplace_back("InstallValidate", 1400);
+            values.emplace_back("MsiPublishAssemblies", 6250);
+            values.emplace_back("PublishComponents", 6200);
+            values.emplace_back("PublishFeatures", 6300);
+            values.emplace_back("PublishProduct", 6400);
+            values.emplace_back("RegisterClassInfo", 4600);
+            values.emplace_back("RegisterExtensionInfo", 4700);
+            values.emplace_back("RegisterMIMEInfo", 4900);
+            values.emplace_back("RegisterProgIdInfo", 4800);
+            values.emplace_back("RegisterTypeLibraries", 4910);
+            values.emplace_back("ScheduleReboot", "ISSCHEDULEREBOOT", 6410);
+
+        return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "AdvtExecuteSequence", "Action" }, values);
+    }
+};
+
 class Installer {
 public:
     Installer() = default;
@@ -381,6 +409,9 @@ public:
         AdminUISequenceTable aus;
         std::cout << "==== AdminUISequence Table ====" << std::endl;
         std::cout << aus.generate() << std::endl;
+        AdvtExecuteSequence aes2;
+        std::cout << "==== AdvtExecuteSequence Table ====" << std::endl;
+        std::cout << aes2.generate() << std::endl;
     }
 private:
     InstallerStrings installerStrings;
