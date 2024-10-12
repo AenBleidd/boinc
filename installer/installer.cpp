@@ -93,6 +93,22 @@ private:
     std::string tmplt;
 };
 
+class Action : public Record {
+public:
+    explicit Action(const std::string& action, const std::string& condition, const int sequence) : action(action), condition(condition), sequence(sequence) {};
+    explicit Action(const std::string& action, const int sequence) : action(action), condition(""), sequence(sequence) {};
+    ~Action() = default;
+    std::string get() const override {
+        std::ostringstream oss;
+        oss << action << "\t" << condition << "\t" << sequence << "\n";
+        return oss.str();
+    }
+private:
+    std::string action;
+    std::string condition;
+    int sequence;
+};
+
 template <typename V>
 class Generator {
 public:
@@ -190,26 +206,26 @@ public:
         const auto lastsavedtm = oss.str();
         const auto appname = std::string("BOINC");
 
-        std::vector<KeyValue<int, std::string>> properties;
-        properties.emplace_back(1, std::to_string(codepage));
-        properties.emplace_back(2, title);
-        properties.emplace_back(3, subject);
-        properties.emplace_back(4, author);
-        properties.emplace_back(5, keywords);
-        properties.emplace_back(6, comments);
-        properties.emplace_back(7, arch);
-        properties.emplace_back(8, lastauthor);
-        properties.emplace_back(9, revision);
-        properties.emplace_back(11, lastprinted);
-        properties.emplace_back(12, createdtm);
-        properties.emplace_back(13, lastsavedtm);
-        properties.emplace_back(14, std::to_string(pagecount));
-        properties.emplace_back(15, std::to_string(wordcount));
-        properties.emplace_back(16, std::to_string(charcount));
-        properties.emplace_back(18, appname);
-        properties.emplace_back(19, std::to_string(security));
+        std::vector<KeyValue<int, std::string>> values;
+        values.emplace_back(1, std::to_string(codepage));
+        values.emplace_back(2, title);
+        values.emplace_back(3, subject);
+        values.emplace_back(4, author);
+        values.emplace_back(5, keywords);
+        values.emplace_back(6, comments);
+        values.emplace_back(7, arch);
+        values.emplace_back(8, lastauthor);
+        values.emplace_back(9, revision);
+        values.emplace_back(11, lastprinted);
+        values.emplace_back(12, createdtm);
+        values.emplace_back(13, lastsavedtm);
+        values.emplace_back(14, std::to_string(pagecount));
+        values.emplace_back(15, std::to_string(wordcount));
+        values.emplace_back(16, std::to_string(charcount));
+        values.emplace_back(18, appname);
+        values.emplace_back(19, std::to_string(security));
 
-        return Generator::generate({ "PropertyId", "Value" }, { "i2", "l255" }, { "_SummaryInformation", "PropertyId" }, properties);
+        return Generator::generate({ "PropertyId", "Value" }, { "i2", "l255" }, { "_SummaryInformation", "PropertyId" }, values);
     }
 private:
     InstallerStrings& installerStrings;
@@ -300,6 +316,29 @@ private:
     InstallerStrings& installerStrings;
 };
 
+class AdminExecuteSequenceTable : public Generator<Action> {
+public:
+    AdminExecuteSequenceTable() = default;
+    ~AdminExecuteSequenceTable() = default;
+    std::string generate() const override {
+        std::vector<Action> values;
+
+        values.emplace_back("CASetBOINCDataProjects",                       1300);
+        values.emplace_back("CASetBOINCDataSlots",                          1200);
+        values.emplace_back("CostFinalize",                                 1000);
+        values.emplace_back("CostInitialize",                                800);
+        values.emplace_back("FileCost",                                      900);
+        values.emplace_back("InstallAdminPackage",                          3900);
+        values.emplace_back("InstallFiles",                                 4000);
+        values.emplace_back("InstallFinalize",                              6600);
+        values.emplace_back("InstallInitialize",                            1500);
+        values.emplace_back("InstallValidate",                              1400);
+        values.emplace_back("ScheduleReboot",           "ISSCHEDULEREBOOT", 4010);
+
+        return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "AdminExecuteSequence", "Action" }, values);
+    }
+};
+
 class Installer {
 public:
     Installer() = default;
@@ -314,6 +353,9 @@ public:
         ActionTextTable at(installerStrings);
         std::cout << "==== ActionText Table ====" << std::endl;
         std::cout << at.generate() << std::endl;
+        AdminExecuteSequenceTable aes;
+        std::cout << "==== AdminExecuteSequence Table ====" << std::endl;
+        std::cout << aes.generate() << std::endl;
     }
 private:
     InstallerStrings installerStrings;
