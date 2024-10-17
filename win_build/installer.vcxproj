@@ -21,7 +21,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\installer\installer.cpp" />
+    <ClCompile Include="..\installer\Action.cpp" />
+    <ClCompile Include="..\installer\ActionText.cpp" />
+    <ClCompile Include="..\installer\ActionTextTable.cpp" />
+    <ClCompile Include="..\installer\AdminUISequenceTable.cpp" />
+    <ClCompile Include="..\installer\Control.cpp" />
+    <ClCompile Include="..\installer\Dialog.cpp" />
+    <ClCompile Include="..\installer\GuidHelper.cpp" />
+    <ClCompile Include="..\installer\InstallerStrings.cpp" />
+    <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
+    <ClCompile Include="..\installer\main.cpp" />
+    <ClCompile Include="..\installer\Property.cpp" />
+    <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\installer\Action.h" />
+    <ClInclude Include="..\installer\ActionText.h" />
+    <ClInclude Include="..\installer\ActionTextTable.h" />
+    <ClInclude Include="..\installer\AdminUISequencetable.h" />
+    <ClInclude Include="..\installer\Control.h" />
+    <ClInclude Include="..\installer\Dialog.h" />
+    <ClInclude Include="..\installer\Generator.h" />
+    <ClInclude Include="..\installer\GuidHelper.h" />
+    <ClInclude Include="..\installer\InstallerStrings.h" />
+    <ClInclude Include="..\installer\InstallUISequenceTable.h" />
+    <ClInclude Include="..\installer\KeyValue.h" />
+    <ClInclude Include="..\installer\Property.h" />
+    <ClInclude Include="..\installer\Record.h" />
+    <ClInclude Include="..\installer\SummaryInformationTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
