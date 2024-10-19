@@ -23,10 +23,10 @@
 
 class ActionTextTable : public Generator<ActionText> {
 public:
-    ActionTextTable(InstallerStrings& installerStrings) noexcept;
+    ActionTextTable(const InstallerStrings& installerStrings) noexcept;
     ~ActionTextTable() = default;
     std::string generate() const override;
 private:
-    InstallerStrings& installerStrings;
+    const InstallerStrings& installerStrings;
 };
 

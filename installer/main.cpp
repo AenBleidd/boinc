@@ -18,13 +18,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "GuidHelper.h"
-#include "KeyValue.h"
-#include "ActionText.h"
-#include "Action.h"
-#include "Dialog.h"
-#include "Generator.h"
-#include "InstallerStrings.h"
+#include "UI.h"
 
 #include "SummaryInformationTable.h"
 #include "ActionTextTable.h"

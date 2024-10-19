@@ -19,7 +19,6 @@
 
 #include <sstream>
 
-#include "Dialog.h"
 #include "Property.h"
 
 class CONTROL_TYPE {
@@ -50,13 +49,12 @@ class CONTROL_TYPE {
 
 class Control : public Record {
 public:
-    explicit Control(const std::weak_ptr<Dialog> dialog, const std::string& control, const std::string& type, const int x, const int y, const int width, const int height, const int attributes, const std::shared_ptr<Property> property, const std::string& text, const std::string& help);
+    explicit Control(const std::string& control, const std::string& type, const int x, const int y, const int width, const int height, const int attributes, const std::shared_ptr<Property> property, const std::string& text, const std::string& help);
     ~Control() = default;
     std::string get() const override;
     const std::string& get_name() const;
     void set_next(std::shared_ptr<Control> n) noexcept;
 private:
-    std::weak_ptr<Dialog> dialog;
     std::string control;
     std::string type;
     int x;

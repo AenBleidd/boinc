@@ -17,7 +17,7 @@
 
 #include "ActionTextTable.h"
 
-ActionTextTable::ActionTextTable(InstallerStrings& installerStrings) noexcept : installerStrings(installerStrings) {};
+ActionTextTable::ActionTextTable(const InstallerStrings& installerStrings) noexcept : installerStrings(installerStrings) {};
 std::string ActionTextTable::generate() const {
     std::vector<ActionText> values;
 

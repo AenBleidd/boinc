@@ -23,10 +23,10 @@
 
 class SummaryInformationTable : public Generator<KeyValue<int, std::string>> {
 public:
-    SummaryInformationTable(InstallerStrings& installerStrings) noexcept;
+    SummaryInformationTable(const InstallerStrings& installerStrings) noexcept;
     ~SummaryInformationTable() = default;
     std::string generate() const override;
 private:
-    InstallerStrings& installerStrings;
+    const InstallerStrings& installerStrings;
 };
 

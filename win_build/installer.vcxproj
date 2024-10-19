@@ -36,6 +36,7 @@
     <ClCompile Include="..\installer\main.cpp" />
     <ClCompile Include="..\installer\Property.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
+    <ClCompile Include="..\installer\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\installer\Action.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="..\installer\Property.h" />
     <ClInclude Include="..\installer\Record.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />
+    <ClInclude Include="..\installer\UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

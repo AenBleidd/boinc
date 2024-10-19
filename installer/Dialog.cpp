@@ -18,7 +18,6 @@
 #include <sstream>
 
 #include "Dialog.h"
-#include "Control.h"
 
 Dialog::Dialog(const std::string& dialog, const int hcentering, const int vcentering, const int width, const int height, const int attributes, const std::string& title)
     : dialog(dialog), hcentering(hcentering), vcentering(vcentering), width(width), height(height), attributes(attributes), title(title) {};

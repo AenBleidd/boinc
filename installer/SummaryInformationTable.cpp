@@ -21,7 +21,7 @@
 
 #include "GuidHelper.h"
 
-SummaryInformationTable::SummaryInformationTable(InstallerStrings& installerStrings) noexcept : installerStrings(installerStrings) {};
+SummaryInformationTable::SummaryInformationTable(const InstallerStrings& installerStrings) noexcept : installerStrings(installerStrings) {};
 std::string SummaryInformationTable::generate() const {
     const auto now = std::chrono::system_clock::now();
     const auto now_time_t = std::chrono::system_clock::to_time_t(now);

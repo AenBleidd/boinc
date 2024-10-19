@@ -17,9 +17,11 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "Record.h"
+#include "Control.h"
 
 enum ATTRIBUTE {
     VISIBLE = 1,
@@ -35,9 +37,6 @@ enum ATTRIBUTE {
     BIDI = RTLRO | RIGHT_ALIGNED | LEFT_SCROLL,
     ATTRIBUTE_ERROR = 65536
 };
-
-//forward declaration
-class Control;
 
 class Dialog : public Record {
 public:
