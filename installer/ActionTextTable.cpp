@@ -93,5 +93,5 @@ std::string ActionTextTable::generate() const {
     values.emplace_back("caCreateVRoots", installerStrings.get("IDS_ACTIONTEXT_CreatingIISRoots"));
     values.emplace_back("caRemoveVRoots", installerStrings.get("IDS_ACTIONTEXT_RemovingIISRoots"));
 
-    return Generator::generate({ "Action", "Description", "Template" }, { "s72", "L0", "L0" }, { "ActionText", "Action" }, values);
+    return Generator::generate({ { "Action", "s72" }, { "Description", "L0" }, { "Template", "L0" } }, { "ActionText", "Action" }, values);
 }

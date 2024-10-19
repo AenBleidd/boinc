@@ -25,16 +25,15 @@ class Generator {
 public:
     Generator() = default;
     virtual ~Generator() = default;
-    virtual std::string generate(const std::vector<std::string>& columns, const std::vector<std::string>& types, const std::vector<std::string>& keys, const std::vector<V>& values) const {
+    virtual std::string generate(const std::vector<std::pair<std::string, std::string>>& columns, const std::vector<std::string>& keys, const std::vector<V>& values) const {
         std::string result;
+        std::string cols;
+        std::string types;
         for (const auto& column : columns) {
-            result += column + "\t";
+            cols += column.first + "\t";
+            types += column.second + "\t";
         }
-        result += "\n";
-        for (const auto& type : types) {
-            result += type + "\t";
-        }
-        result += "\n";
+        result += cols + "\n" + types + "\n";
         for (const auto& key : keys) {
             result += key + "\t";
         }

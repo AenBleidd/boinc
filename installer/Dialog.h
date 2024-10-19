@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "Record.h"
@@ -40,12 +39,11 @@ enum ATTRIBUTE {
 
 class Dialog : public Record {
 public:
-    explicit Dialog(const std::string& dialog, const int hcentering, const int vcentering, const int width, const int height, const int attributes, const std::string& title);
+    explicit Dialog(const std::string& dialog, const int hcentering, const int vcentering, const int width, const int height, const int attributes, const std::string& title, const std::string& first, const std::string& default, const std::string& cancel);
     ~Dialog() = default;
     std::string get() const override;
-    std::string get_name() const;
-    std::vector<std::shared_ptr<Control>>& get_controls() noexcept;
-    void add(std::shared_ptr<Control> control, bool first = false, bool default = false, bool cancel = false);
+    std::vector<Control>& get_controls() noexcept;
+    void add(Control control);
 private:
     std::string dialog;
     int hcentering;
@@ -54,8 +52,8 @@ private:
     int height;
     int attributes;
     std::string title;
-    std::shared_ptr<Control> first;
-    std::shared_ptr<Control> default;
-    std::shared_ptr<Control> cancel;
-    std::vector<std::shared_ptr<Control>> controls;
+    std::string first;
+    std::string default;
+    std::string cancel;
+    std::vector<Control> controls;
 };

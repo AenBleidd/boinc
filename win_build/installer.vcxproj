@@ -29,6 +29,7 @@
     <ClCompile Include="..\installer\AdvtExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\Control.cpp" />
     <ClCompile Include="..\installer\Dialog.cpp" />
+    <ClCompile Include="..\installer\DialogTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
     <ClCompile Include="..\installer\InstallerStrings.cpp" />
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\installer\AdvtExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\Control.h" />
     <ClInclude Include="..\installer\Dialog.h" />
+    <ClInclude Include="..\installer\DialogTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />
     <ClInclude Include="..\installer\InstallerStrings.h" />

@@ -37,5 +37,5 @@ std::string AdvtExecuteSequenceTable::generate() const {
     values.emplace_back("RegisterTypeLibraries", 4910);
     values.emplace_back("ScheduleReboot", "ISSCHEDULEREBOOT", 6410);
 
-    return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "AdvtExecuteSequence", "Action" }, values);
+    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdvtExecuteSequence", "Action" }, values);
 }

@@ -49,12 +49,12 @@ class CONTROL_TYPE {
 
 class Control : public Record {
 public:
-    explicit Control(const std::string& control, const std::string& type, const int x, const int y, const int width, const int height, const int attributes, const std::shared_ptr<Property> property, const std::string& text, const std::string& help);
+    explicit Control(const std::string& dialog, const std::string& control, const std::string& type, const int x, const int y, const int width, const int height,
+        const int attributes, const std::string& property, const std::string& text, const std::string& next, const std::string& help);
     ~Control() = default;
     std::string get() const override;
-    const std::string& get_name() const;
-    void set_next(std::shared_ptr<Control> n) noexcept;
 private:
+    std::string dialog;
     std::string control;
     std::string type;
     int x;
@@ -62,8 +62,8 @@ private:
     int width;
     int height;
     int attributes;
-    std::shared_ptr<Property> property;
+    std::string property;
     std::string text;
-    std::weak_ptr<Control> next;
+    std::string next;
     std::string help;
 };

@@ -53,5 +53,5 @@ std::string InstallUISequenceTable::generate() const {
     values.emplace_back("setAllUsersProfile2K", "VersionNT >= 500", 980);
     values.emplace_back("setUserProfileNT", "VersionNT", 960);
 
-    return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "InstallUISequence", "Action" }, values);
+    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "InstallUISequence", "Action" }, values);
 }

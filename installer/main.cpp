@@ -18,13 +18,12 @@
 #include <iostream>
 #include <fstream>
 
-#include "UI.h"
-
 #include "SummaryInformationTable.h"
 #include "ActionTextTable.h"
 #include "AdminExecuteSequenceTable.h"
 #include "AdminUISequenceTable.h"
 #include "AdvtExecuteSequenceTable.h"
+#include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
 
@@ -35,7 +34,9 @@ public:
     void load() {
         installerStrings.load();
     }
-    void generate() {
+    void generate_tables() {
+        UI ui(installerStrings);
+
         SummaryInformationTable si(installerStrings);
         std::cout << "==== SummaryInformation ====" << std::endl;
         std::cout << si.generate() << std::endl;
@@ -52,6 +53,10 @@ public:
         std::cout << "==== AdvtExecuteSequence Table ====" << std::endl;
         std::cout << aes2.generate() << std::endl;
 
+        DialogTable dt(ui);
+        std::cout << "==== Dialog Table ====" << std::endl;
+        std::cout << dt.generate() << std::endl;
+
         InstallExecuteSequenceTable ies;
         std::cout << "==== InstallExecuteSequence Table ====" << std::endl;
         std::cout << ies.generate() << std::endl;
@@ -66,6 +71,6 @@ private:
 int main(int argc, char** argv) {
     Installer installer;
     installer.load();
-    installer.generate();
+    installer.generate_tables();
     return 0;
 }

@@ -15,16 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "DialogTable.h"
 
-#include "Record.h"
+DialogTable::DialogTable(const UI& ui) : ui(ui) {
+}
 
-class Property : public Record {
-public:
-    explicit Property(const std::string& property, const std::string& value);
-    ~Property() = default;
-    std::string get() const override;
-private:
-    std::string property;
-    std::string value;
-};
+std::string DialogTable::generate() const {
+    return Generator::generate({ { "Dialog", "s72" }, { "HCentering", "i2" }, { "VCentering", "i2" }, { "Width", "i2" }, { "Height", "i2" }, { "Attributes", "I4" },
+        { "Title", "L128" }, { "Control_First", "s50" }, { "Control_Default", "S50" }, { "Control_Cancel", "S50" } }, { "Dialog", "Dialog" }, ui.get_dialogs());
+}
+
+

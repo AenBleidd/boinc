@@ -31,5 +31,5 @@ std::string AdminUISequenceTable::generate() const {
     values.emplace_back("SetupInterrupted", -2);
     values.emplace_back("SetupProgress", 1020);
 
-    return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "AdminUISequence", "Action" }, values);
+    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdminUISequence", "Action" }, values);
 }

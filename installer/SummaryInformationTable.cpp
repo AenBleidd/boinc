@@ -50,5 +50,5 @@ std::string SummaryInformationTable::generate() const {
     values.emplace_back(18, std::string("BOINC"));
     values.emplace_back(19, "1");
 
-    return Generator::generate({ "PropertyId", "Value" }, { "i2", "l255" }, { "_SummaryInformation", "PropertyId" }, values);
+    return Generator::generate({ { "PropertyId", "i2" }, { "Value", "l255" } }, { "_SummaryInformation", "PropertyId" }, values);
 }

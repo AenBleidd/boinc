@@ -25,6 +25,3 @@ std::string Property::get() const {
     oss << property << "\t" << value << "\n";
     return oss.str();
 }
-const std::string& Property::get_name() const noexcept {
-    return property;
-}

@@ -17,14 +17,15 @@
 
 #pragma once
 
-#include "Record.h"
+#include "Generator.h"
+#include "Dialog.h"
+#include "UI.h"
 
-class Property : public Record {
+class DialogTable : public Generator<Dialog> {
 public:
-    explicit Property(const std::string& property, const std::string& value);
-    ~Property() = default;
-    std::string get() const override;
+    explicit DialogTable(const UI& ui);
+    ~DialogTable() = default;
+    std::string generate() const override;
 private:
-    std::string property;
-    std::string value;
+    const UI& ui;
 };

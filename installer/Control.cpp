@@ -17,16 +17,10 @@
 
 #include "Control.h"
 
-Control::Control(const std::string& control, const std::string& type, const int x, const int y, const int width, const int height, const int attributes, const std::shared_ptr<Property> property, const std::string& text, const std::string& help)
-    : control(control), type(type), x(x), y(y), width(width), height(height), attributes(attributes), property(property), text(text), help(help) {};
+Control::Control(const std::string& dialog, const std::string& control, const std::string& type, const int x, const int y, const int width, const int height, const int attributes, const std::string& property, const std::string& text, const std::string& next, const std::string& help)
+    : dialog(dialog), control(control), type(type), x(x), y(y), width(width), height(height), attributes(attributes), property(property), text(text), next(next), help(help) {};
 std::string Control::get() const {
     std::ostringstream oss;
-    oss << control << "\t" << type << "\t" << x << "\t" << y << "\t" << width << "\t" << height << "\t" << attributes << "\t" << property->get_name() << "\t" << text << "\t" << (next.lock() ? next.lock()->get_name() : "\t") << "\t" << help << "\n";
+    oss << dialog << "\t" << control << "\t" << type << "\t" << x << "\t" << y << "\t" << width << "\t" << height << "\t" << attributes << "\t" << property << "\t" << text << "\t" << next << "\t" << help << "\n";
     return oss.str();
-}
-const std::string& Control::get_name() const {
-    return control;
-}
-void Control::set_next(std::shared_ptr<Control> n) noexcept {
-    next = n;
 }

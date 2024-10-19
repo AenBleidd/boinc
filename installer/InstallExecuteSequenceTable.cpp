@@ -135,5 +135,5 @@ std::string InstallExecuteSequenceTable::generate() const {
     values.emplace_back("WriteIniValues", 5100);
     values.emplace_back("WriteRegistryValues", 5000);
 
-    return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "InstallExecuteSequence", "Action" }, values);
+    return Generator::generate({ {"Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "InstallExecuteSequence", "Action" }, values);
 }

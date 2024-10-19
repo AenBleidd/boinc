@@ -32,5 +32,5 @@ std::string AdminExecuteSequenceTable::generate() const {
     values.emplace_back("InstallValidate", 1400);
     values.emplace_back("ScheduleReboot", "ISSCHEDULEREBOOT", 4010);
 
-    return Generator::generate({ "Action", "Condition", "Sequence" }, { "s72", "S255", "I2" }, { "AdminExecuteSequence", "Action" }, values);
+    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdminExecuteSequence", "Action" }, values);
 }
