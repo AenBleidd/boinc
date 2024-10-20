@@ -38,14 +38,11 @@ bool InstallerStrings::load_from_json(const nlohmann::json& json) {
     for (const auto& item : json) {
         const auto& id = item.at("Id");
         const auto& value = item.at("Value");
-        if (!id.is_null() && !value.is_null()) {
-            strings.insert(std::make_pair(id.get<std::string>(), value.get<std::string>()));
+        if (!id.is_null()) {
+            strings.insert(std::make_pair(id.get<std::string>(), value.is_null() ? "" : value.get<std::string>()));
         }
-        else if (id.is_null()) {
+        else {
             std::cerr << "WARNING: Skipped record with no Id specified." << std::endl;
-        }
-        else if (value.is_null()) {
-            std::cerr << "WARNING: Skipped [" << id.get<std::string>() << "] record with no Value specified" << std::endl;
         }
     }
     return true;

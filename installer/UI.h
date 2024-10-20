@@ -26,6 +26,7 @@ public:
     ~UI() = default;
 
     const std::vector<Dialog>& get_dialogs() const noexcept;
+    std::vector<Control> get_controls() const noexcept;
 private:
     void create_dialogs();
 

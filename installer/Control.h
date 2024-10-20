@@ -22,6 +22,7 @@
 #include "Property.h"
 
 class CONTROL_TYPE {
+public:
     static auto Billboard() noexcept { return "Billboard"; }
     static auto Bitmap() noexcept { return "Bitmap"; }
     static auto CheckBox() noexcept { return "CheckBox"; }
@@ -50,7 +51,7 @@ class CONTROL_TYPE {
 class Control : public Record {
 public:
     explicit Control(const std::string& dialog, const std::string& control, const std::string& type, const int x, const int y, const int width, const int height,
-        const int attributes, const std::string& property, const std::string& text, const std::string& next, const std::string& help);
+        const int attributes, const std::string& property = "", const std::string& text = "", const std::string& next = "", const std::string& help = "");
     ~Control() = default;
     std::string get() const override;
 private:

@@ -23,6 +23,7 @@
 #include "AdminExecuteSequenceTable.h"
 #include "AdminUISequenceTable.h"
 #include "AdvtExecuteSequenceTable.h"
+#include "ControlTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
@@ -52,6 +53,10 @@ public:
         AdvtExecuteSequenceTable aes2;
         std::cout << "==== AdvtExecuteSequence Table ====" << std::endl;
         std::cout << aes2.generate() << std::endl;
+
+        ControlTable ct(ui);
+        std::cout << "==== Control Table ====" << std::endl;
+        std::cout << ct.generate() << std::endl;
 
         DialogTable dt(ui);
         std::cout << "==== Dialog Table ====" << std::endl;

@@ -27,7 +27,7 @@ std::string Dialog::get() const {
     oss << dialog << "\t" << hcentering << "\t" << vcentering << "\t" << width << "\t" << height << "\t" << attributes << "\t" << title << "\t" << first << "\t" << default << "\t" << cancel << "\n";
     return oss.str();
 }
-std::vector<Control>& Dialog::get_controls() noexcept {
+std::vector<Control> Dialog::get_controls() const {
     return controls;
 }
 void Dialog::add(Control control) {

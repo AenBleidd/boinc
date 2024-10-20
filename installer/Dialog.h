@@ -42,7 +42,7 @@ public:
     explicit Dialog(const std::string& dialog, const int hcentering, const int vcentering, const int width, const int height, const int attributes, const std::string& title, const std::string& first, const std::string& default, const std::string& cancel);
     ~Dialog() = default;
     std::string get() const override;
-    std::vector<Control>& get_controls() noexcept;
+    std::vector<Control> get_controls() const;
     void add(Control control);
 private:
     std::string dialog;
