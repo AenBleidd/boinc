@@ -19,7 +19,7 @@
 
 #include "Property.h"
 
-Property::Property(const std::string& property, const std::string& value) : property(property), value(value) {};
+Property::Property(std::string property, std::string value) : property(property), value(value) {};
 std::string Property::get() const {
     std::ostringstream oss;
     oss << property << "\t" << value << "\n";

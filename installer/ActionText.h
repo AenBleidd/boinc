@@ -21,7 +21,7 @@
 
 class ActionText : public Record {
 public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
+    explicit ActionText(std::string action, std::string description, std::string tmplt = "");
     ~ActionText() = default;
     std::string get() const override;
     bool empty() const noexcept;

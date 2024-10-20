@@ -23,8 +23,8 @@
 
 class Action : public Record {
 public:
-    explicit Action(const std::string& action, const std::string& condition, const int sequence);
-    explicit Action(const std::string& action, const int sequence);
+    explicit Action(std::string action, std::string condition, int sequence);
+    explicit Action(std::string action, int sequence);
     ~Action() = default;
     std::string get() const override;
 private:

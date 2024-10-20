@@ -50,8 +50,8 @@ public:
 
 class Control : public Record {
 public:
-    explicit Control(const std::string& dialog, const std::string& control, const std::string& type, const int x, const int y, const int width, const int height,
-        const int attributes, const std::string& property = "", const std::string& text = "", const std::string& next = "", const std::string& help = "");
+    explicit Control(std::string dialog, std::string control, std::string type, int x, int y, int width, int height, int attributes, std::string property = "",
+        std::string text = "", std::string next = "", std::string help = "");
     ~Control() = default;
     std::string get() const override;
 private:
