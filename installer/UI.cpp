@@ -53,38 +53,76 @@ void UI::create_dialogs() {
 }
 
 void UI::create_AdminChangeFolder_dialog() {
-
-    dialogs.emplace_back(Dialog("AdminChangeFolder", 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Tail", "OK", "Cancel",
+    const auto dialog_name = "AdminChangeFolder";
+    dialogs.emplace_back(Dialog(dialog_name, 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Tail", "OK", "Cancel",
         [&]() -> auto {
             std::vector<Control> controls;
-            controls.emplace_back(Control("AdminChangeFolder", "Banner", CONTROL_TYPE::Bitmap(), 0, 0, 374, 44, 1, "", "NewBinary1"));
-            controls.emplace_back(Control("AdminChangeFolder", "BannerLine", CONTROL_TYPE::Line(), 0, 44, 374, 0, 1));
-            controls.emplace_back(Control("AdminChangeFolder", "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "ComboText"));
-            controls.emplace_back(Control("AdminChangeFolder", "Combo", CONTROL_TYPE::DirectoryCombo(), 21, 64, 277, 80, 458755, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_4"), "Up"));
-            controls.emplace_back(Control("AdminChangeFolder", "ComboText", CONTROL_TYPE::Text(), 21, 50, 99, 14, 3, "", installerStrings.get("IDS__IsAdminInstallBrowse_LookIn"), "Combo"));
-            controls.emplace_back(Control("AdminChangeFolder", "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallBrowse_BrowseDestination")));
-            controls.emplace_back(Control("AdminChangeFolder", "DlgLine", CONTROL_TYPE::Line(), 48, 234, 326, 0, 1));
-            controls.emplace_back(Control("AdminChangeFolder", "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallBrowse_ChangeDestination")));
-            controls.emplace_back(Control("AdminChangeFolder", "List", CONTROL_TYPE::DirectoryList(), 21, 90, 332, 97, 7, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_8"), "TailText"));
-            controls.emplace_back(Control("AdminChangeFolder", "NewFolder", CONTROL_TYPE::PushButton(), 335, 66, 19, 19, 3670019, "", "NewBinary2", "List", installerStrings.get("IDS__IsAdminInstallBrowse_CreateFolder")));
-            controls.emplace_back(Control("AdminChangeFolder", "OK", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_OK"), "Cancel"));
-            controls.emplace_back(Control("AdminChangeFolder", "Tail", CONTROL_TYPE::PathEdit(), 21, 207, 332, 17, 3, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_11"), "OK"));
-            controls.emplace_back(Control("AdminChangeFolder", "TailText", CONTROL_TYPE::Text(), 21, 193, 99, 13, 3, "", installerStrings.get("IDS__IsAdminInstallBrowse_FolderName"), "Tail"));
-            controls.emplace_back(Control("AdminChangeFolder", "Up", CONTROL_TYPE::PushButton(), 310, 66, 19, 19, 3670019, "", "NewBinary3", "NewFolder", installerStrings.get("IDS__IsAdminInstallBrowse_UpOneLevel")));
+            controls.emplace_back(Control(dialog_name, "Banner", CONTROL_TYPE::Bitmap(), 0, 0, 374, 44, 1, "", "NewBinary1"));
+            controls.emplace_back(Control(dialog_name, "BannerLine", CONTROL_TYPE::Line(), 0, 44, 374, 0, 1));
+            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "ComboText"));
+            controls.emplace_back(Control(dialog_name, "Combo", CONTROL_TYPE::DirectoryCombo(), 21, 64, 277, 80, 458755, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_4"), "Up"));
+            controls.emplace_back(Control(dialog_name, "ComboText", CONTROL_TYPE::Text(), 21, 50, 99, 14, 3, "", installerStrings.get("IDS__IsAdminInstallBrowse_LookIn"), "Combo"));
+            controls.emplace_back(Control(dialog_name, "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallBrowse_BrowseDestination")));
+            controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 48, 234, 326, 0, 1));
+            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallBrowse_ChangeDestination")));
+            controls.emplace_back(Control(dialog_name, "List", CONTROL_TYPE::DirectoryList(), 21, 90, 332, 97, 7, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_8"), "TailText"));
+            controls.emplace_back(Control(dialog_name, "NewFolder", CONTROL_TYPE::PushButton(), 335, 66, 19, 19, 3670019, "", "NewBinary2", "List", installerStrings.get("IDS__IsAdminInstallBrowse_CreateFolder")));
+            controls.emplace_back(Control(dialog_name, "OK", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_OK"), "Cancel"));
+            controls.emplace_back(Control(dialog_name, "Tail", CONTROL_TYPE::PathEdit(), 21, 207, 332, 17, 3, "TARGETDIR", installerStrings.get("IDS__IsAdminInstallBrowse_11"), "OK"));
+            controls.emplace_back(Control(dialog_name, "TailText", CONTROL_TYPE::Text(), 21, 193, 99, 13, 3, "", installerStrings.get("IDS__IsAdminInstallBrowse_FolderName"), "Tail"));
+            controls.emplace_back(Control(dialog_name, "Up", CONTROL_TYPE::PushButton(), 310, 66, 19, 19, 3670019, "", "NewBinary3", "NewFolder", installerStrings.get("IDS__IsAdminInstallBrowse_UpOneLevel")));
             return controls;
         }()));
 }
 
 void UI::create_AdminNetworkLocation_dialog() {
-    dialogs.emplace_back(Dialog("AdminNetworkLocation", 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "InstallNow", "InstallNow", "Cancel", {}));
+    const auto dialog_name = "AdminNetworkLocation";
+    dialogs.emplace_back(Dialog(dialog_name, 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "InstallNow", "InstallNow", "Cancel",
+        [&]() -> auto {
+            std::vector<Control> controls;
+            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 3, "", installerStrings.get("IDS_BACK"), "InstallNow"));
+            controls.emplace_back(Control(dialog_name, "Banner", CONTROL_TYPE::Bitmap(), 0, 0, 374, 44, 1, "", "NewBinary1"));
+            controls.emplace_back(Control(dialog_name, "BannerLine", CONTROL_TYPE::Line(), 0, 44, 374, 0, 1, ""));
+            controls.emplace_back(Control(dialog_name, "Browse", CONTROL_TYPE::PushButton(), 286, 124, 66, 17, 3, "", installerStrings.get("IDS__IsAdminInstallPoint_Change"), "Back"));
+            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "SetupPathEdit"));
+            controls.emplace_back(Control(dialog_name, "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallPoint_SpecifyNetworkLocation")));
+            controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 48, 234, 326, 0, 1, ""));
+            controls.emplace_back(Control(dialog_name, "DlgText", CONTROL_TYPE::Text(), 21, 51, 326, 40, 3, "", installerStrings.get("IDS__IsAdminInstallPoint_EnterNetworkLocation")));
+            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65539, "", installerStrings.get("IDS__IsAdminInstallPoint_NetworkLocationFormatted")));
+            controls.emplace_back(Control(dialog_name, "InstallNow", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsAdminInstallPoint_Install"), "Cancel"));
+            controls.emplace_back(Control(dialog_name, "LBBrowse", CONTROL_TYPE::Text(), 21, 90, 100, 10, 3, "", installerStrings.get("IDS__IsAdminInstallPoint_NetworkLocation")));
+            controls.emplace_back(Control(dialog_name, "SetupPathEdit", CONTROL_TYPE::PathEdit(), 21, 102, 330, 17, 3, "TARGETDIR", "", "Browse"));
+            return controls;
+        }()));
 }
 
 void UI::create_AdminWelcome_dialog() {
-    dialogs.emplace_back(Dialog("AdminWelcome", 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Next", "Next", "Cancel", {}));
+    const auto dialog_name = "AdminWelcome";
+    dialogs.emplace_back(Dialog(dialog_name, 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Next", "Next", "Cancel",
+        [&]() -> auto {
+            std::vector<Control> controls;
+            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK"), "Next"));
+            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "Back"));
+            controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 326, 0, 1));
+            controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5"));
+            controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_NEXT"), "Cancel"));
+            controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsAdminInstallPointWelcome_Wizard")));
+            controls.emplace_back(Control(dialog_name, "TextLine2", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65539, "", installerStrings.get("IDS__IsAdminInstallPointWelcome_ServerImage")));
+            return controls;
+        }()));
 }
 
 void UI::create_CancelSetup_dialog() {
-    dialogs.emplace_back(Dialog("CancelSetup", 50, 50, 260, 85, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "No", "No", "No", {}));
+    const auto dialog_name = "CancelSetup";
+    dialogs.emplace_back(Dialog(dialog_name, 50, 50, 260, 85, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "No", "No", "No",
+        [&]() -> auto {
+            std::vector<Control> controls;
+            controls.emplace_back(Control(dialog_name, "Icon", CONTROL_TYPE::Icon(), 15, 15, 24, 24, 5242881, "", "NewBinary4"));
+            controls.emplace_back(Control(dialog_name, "No", CONTROL_TYPE::PushButton(), 135, 57, 66, 17, 3, "", installerStrings.get("IDS__IsCancelDlg_No"), "Yes"));
+            controls.emplace_back(Control(dialog_name, "Text", CONTROL_TYPE::Text(), 48, 15, 194, 30, 3, "", installerStrings.get("IDS__IsCancelDlg_ConfirmCancel")));
+            controls.emplace_back(Control(dialog_name, "Yes", CONTROL_TYPE::PushButton(), 62, 57, 66, 17, 3, "", installerStrings.get("IDS__IsCancelDlg_Yes"), "No"));
+            return controls;
+        }()));
 }
 
 void UI::create_ChangeFolderData_dialog() {
