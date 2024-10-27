@@ -15,18 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "ControlConditionTable.h"
 
-#include "Record.h"
+ControlConditionTable::ControlConditionTable(const UI& ui) : ui(ui) {}
 
-class ActionText : public Record {
-public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
-    ~ActionText() = default;
-    std::string get() const override;
-    bool empty() const noexcept;
-private:
-    std::string action;
-    std::string description;
-    std::string tmplt;
-};
+std::string ControlConditionTable::generate() const
+{
+    return Generator::generate({ { "Dialog_", "s72" }, { "Control_", "s50" }, { "Action", "s50" }, { "Condition", "s255" } },
+        { "ControlCondition", "Dialog_", "Control_", "Action", "Condition" }, ui.get_control_conditions());
+}

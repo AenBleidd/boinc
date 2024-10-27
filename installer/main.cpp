@@ -24,6 +24,7 @@
 #include "AdminUISequenceTable.h"
 #include "AdvtExecuteSequenceTable.h"
 #include "ControlTable.h"
+#include "ControlConditionTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
@@ -57,6 +58,9 @@ public:
         ControlTable ct(ui);
         std::cout << "==== Control Table ====" << std::endl;
         std::cout << ct.generate() << std::endl;
+        ControlConditionTable cct(ui);
+        std::cout << "==== ControlCondition Table ====" << std::endl;
+        std::cout << cct.generate() << std::endl;
 
         DialogTable dt(ui);
         std::cout << "==== Dialog Table ====" << std::endl;

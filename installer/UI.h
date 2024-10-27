@@ -27,6 +27,7 @@ public:
 
     const std::vector<Dialog>& get_dialogs() const noexcept;
     std::vector<Control> get_controls() const;
+    std::vector<ControlCondition> get_control_conditions() const;
 private:
     void create_dialogs();
 

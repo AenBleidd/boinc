@@ -39,7 +39,8 @@ enum ATTRIBUTE {
 
 class Dialog : public Record {
 public:
-    explicit Dialog(std::string dialog, int hcentering, int vcentering, int width, int height, int attributes, std::string title, std::string first, std::string default, std::string cancel, std::vector<Control> controls);
+    explicit Dialog(const std::string& dialog, int hcentering, int vcentering, int width, int height, int attributes, const std::string& title,
+        const std::string& first, const std::string& default, const std::string& cancel, const std::vector<Control>& controls);
     ~Dialog() = default;
     std::string get() const override;
     std::vector<Control> get_controls() const;

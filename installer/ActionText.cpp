@@ -19,7 +19,7 @@
 
 #include "ActionText.h"
 
-ActionText::ActionText(std::string action, std::string description, std::string tmplt)
+ActionText::ActionText(const std::string& action, const std::string& description, const std::string& tmplt)
     : action(action), description(description), tmplt(tmplt) {};
 
 std::string ActionText::get() const {

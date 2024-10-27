@@ -21,7 +21,7 @@
 
 class Property : public Record {
 public:
-    explicit Property(std::string property, std::string value);
+    explicit Property(const std::string& property, const std::string& value);
     ~Property() = default;
     std::string get() const override;
 private:

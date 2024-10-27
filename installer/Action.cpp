@@ -19,9 +19,9 @@
 
 #include "Action.h"
 
-Action::Action(std::string action, std::string condition, int sequence)
+Action::Action(const std::string& action, const std::string& condition, int sequence)
     : action(action), condition(condition), sequence(sequence) {};
-Action::Action(std::string action, int sequence)
+Action::Action(const std::string& action, int sequence)
     : action(action), condition(""), sequence(sequence) {};
 std::string Action::get() const {
     std::ostringstream oss;

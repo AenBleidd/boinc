@@ -25,7 +25,7 @@
 template <typename K, typename V>
 class KeyValue : public Record {
 public:
-    explicit KeyValue(K key, V value) : key(key), value(value) {};
+    explicit KeyValue(const K& key, const V& value) : key(key), value(value) {};
     ~KeyValue() = default;
     std::string get() const override {
         std::ostringstream oss;

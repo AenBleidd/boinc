@@ -18,8 +18,10 @@
 #pragma once
 
 #include <sstream>
+#include <vector>
 
 #include "Property.h"
+#include "ControlCondition.h"
 
 class CONTROL_TYPE {
 public:
@@ -50,10 +52,11 @@ public:
 
 class Control : public Record {
 public:
-    explicit Control(std::string dialog, std::string control, std::string type, int x, int y, int width, int height, int attributes, std::string property = "",
-        std::string text = "", std::string next = "", std::string help = "");
+    explicit Control(const std::string& dialog, const std::string& control, const std::string& type, int x, int y, int width, int height, int attributes,
+        const std::string& property = "", const std::string& text = "", const std::string& next = "", const std::string& help = "", const std::vector<ControlCondition>& conditions = {});
     ~Control() = default;
     std::string get() const override;
+    const std::vector<ControlCondition>& get_conditions() const noexcept;
 private:
     std::string dialog;
     std::string control;
@@ -67,4 +70,5 @@ private:
     std::string text;
     std::string next;
     std::string help;
+    std::vector<ControlCondition> conditions;
 };

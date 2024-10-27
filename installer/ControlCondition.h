@@ -19,14 +19,14 @@
 
 #include "Record.h"
 
-class ActionText : public Record {
+class ControlCondition : public Record {
 public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
-    ~ActionText() = default;
+    explicit ControlCondition(const std::string& dialog, const std::string& control, const std::string& action, const std::string& condition);
+    ~ControlCondition() = default;
     std::string get() const override;
-    bool empty() const noexcept;
 private:
+    std::string dialog;
+    std::string control;
     std::string action;
-    std::string description;
-    std::string tmplt;
+    std::string condition;
 };

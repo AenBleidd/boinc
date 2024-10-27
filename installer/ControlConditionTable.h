@@ -17,16 +17,15 @@
 
 #pragma once
 
-#include "Record.h"
+#include "Generator.h"
+#include "ControlCondition.h"
+#include "UI.h"
 
-class ActionText : public Record {
+class ControlConditionTable : public Generator<ControlCondition> {
 public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
-    ~ActionText() = default;
-    std::string get() const override;
-    bool empty() const noexcept;
+    explicit ControlConditionTable(const UI& ui);
+    ~ControlConditionTable() = default;
+    std::string generate() const override;
 private:
-    std::string action;
-    std::string description;
-    std::string tmplt;
+    const UI& ui;
 };

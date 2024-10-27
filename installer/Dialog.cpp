@@ -20,7 +20,8 @@
 #include "Dialog.h"
 #include "Control.h"
 
-Dialog::Dialog(std::string dialog, int hcentering, int vcentering, int width, int height, int attributes, std::string title, std::string first, std::string default, std::string cancel, std::vector<Control> controls)
+Dialog::Dialog(const std::string& dialog, int hcentering, int vcentering, int width, int height, int attributes, const std::string& title,
+    const std::string& first, const std::string& default, const std::string& cancel, const std::vector<Control>& controls)
     : dialog(dialog), hcentering(hcentering), vcentering(vcentering), width(width), height(height), attributes(attributes), title(title), first(first), default(default), cancel(cancel), controls(controls) {};
 std::string Dialog::get() const {
     std::ostringstream oss;

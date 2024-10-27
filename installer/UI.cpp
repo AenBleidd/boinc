@@ -231,7 +231,13 @@ void UI::create_InstallWelcome_dialog() {
             std::vector<Control> controls;
             controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK"), "Copyright"));
             controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "Back"));
-            controls.emplace_back(Control(dialog_name, "Copyright", CONTROL_TYPE::Text(), 135, 144, 228, 73, 65539, "", installerStrings.get("IDS__IsWelcomeDlg_WarningCopyright"), "Next"));
+            controls.emplace_back(Control(dialog_name, "Copyright", CONTROL_TYPE::Text(), 135, 144, 228, 73, 65539, "", installerStrings.get("IDS__IsWelcomeDlg_WarningCopyright"), "Next", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Copyright", "Hide", "SHOWCOPYRIGHT=\"No\""));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Copyright", "Show", "SHOWCOPYRIGHT=\"Yes\""));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 374, 0, 1));
             controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5"));
             controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_NEXT"), "Cancel"));
@@ -256,7 +262,13 @@ void UI::create_LicenseAgreement_dialog() {
             controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65539, "", installerStrings.get("IDS__IsLicenseDlg_LicenseAgreement")));
             controls.emplace_back(Control(dialog_name, "ISPrintButton", CONTROL_TYPE::PushButton(), 301, 188, 65, 17, 3, "", installerStrings.get("IDS_PRINT_BUTTON"), "Agree"));
             controls.emplace_back(Control(dialog_name, "Memo", CONTROL_TYPE::ScrollableText(), 8, 55, 358, 130, 7, "", "&lt;ISProjectFolder&gt;\\redist\\0409\\eula.rtf"));
-            controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_NEXT"), "Cancel"));
+            controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_NEXT"), "Cancel", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Next", "Disable", "AgreeToLicense <> \"Yes\""));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Next", "Enable", "AgreeToLicense = \"Yes\""));
+                    return conditions;
+                }()));
             return controls;
         }()));
 }
@@ -364,9 +376,24 @@ void UI::create_ReadyToInstall_dialog() {
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 48, 234, 374, 0, 1));
             controls.emplace_back(Control(dialog_name, "DlgText", CONTROL_TYPE::Text(), 21, 51, 326, 20, 3, "", installerStrings.get("IDS__IsVerifyReadyDlg_ClickInstall")));
             controls.emplace_back(Control(dialog_name, "DlgText1", CONTROL_TYPE::Text(), 21, 70, 330, 24, 3, "", installerStrings.get("IDS__IsVerifyReadyDlg_BackOrCancel")));
-            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ModifyReady")));
-            controls.emplace_back(Control(dialog_name, "DlgTitle2", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ReadyRepair")));
-            controls.emplace_back(Control(dialog_name, "DlgTitle3", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ReadyInstall")));
+            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ModifyReady"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgTitle", "Show", "ProgressType0=\"Modify\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgTitle2", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ReadyRepair"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgTitle2", "Show", "ProgressType0=\"Repair\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgTitle3", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsVerifyReadyDlg_ReadyInstall"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgTitle3", "Show", "ProgressType0=\"install\""));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "InstallNow", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsVerifyReadyDlg_Install"), "Cancel"));
             return controls;
         }()));
@@ -397,15 +424,57 @@ void UI::create_SetupCompleteError_dialog() {
     dialogs.emplace_back(Dialog(dialog_name, 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Finish", "Finish", "Finish",
         [&]() -> auto {
             std::vector<Control> controls;
-            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK"), "Finish"));
-            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 1, "", installerStrings.get("IDS_CANCEL"), "Back"));
+            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK"), "Finish", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Default", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Disable", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Enable", "UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 1, "", installerStrings.get("IDS_CANCEL"), "Back", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Cancel", "Disable", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Cancel", "Enable", "UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 374, 0, 1));
-            controls.emplace_back(Control(dialog_name, "Finish", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsFatalError_Finish"), "Cancel"));
-            controls.emplace_back(Control(dialog_name, "FinishText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsFatalError_NotModified")));
-            controls.emplace_back(Control(dialog_name, "FinishText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsFatalError_ClickFinish")));
+            controls.emplace_back(Control(dialog_name, "Finish", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsFatalError_Finish"), "Cancel", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Finish", "Default", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "FinishText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsFatalError_NotModified"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText1", "Hide", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText1", "Show", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "FinishText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsFatalError_ClickFinish"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText2", "Hide", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText2", "Show", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5"));
-            controls.emplace_back(Control(dialog_name, "RestContText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsFatalError_KeepOrRestore")));
-            controls.emplace_back(Control(dialog_name, "RestContText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsFatalError_RestoreOrContinueLater")));
+            controls.emplace_back(Control(dialog_name, "RestContText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsFatalError_KeepOrRestore"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText1", "Hide", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText1", "Show", "UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "RestContText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsFatalError_RestoreOrContinueLater"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText2", "Hide", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText2", "Show", "UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsFatalError_WizardCompleted")));
             controls.emplace_back(Control(dialog_name, "TextLine2", CONTROL_TYPE::Text(), 135, 55, 228, 25, 65539, "", installerStrings.get("IDS__IsFatalError_WizardInterrupted")));
             return controls;
@@ -421,15 +490,50 @@ void UI::create_SetupCompleteSuccess_dialog() {
             controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 1, "", installerStrings.get("IDS_CANCEL"), "Image"));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 374, 0, 1));
             controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5", "Back"));
-            controls.emplace_back(Control(dialog_name, "LaunchProgramCheck", CONTROL_TYPE::CheckBox(), 151, 114, 10, 9, 2, "LAUNCHPROGRAM", "", "LaunchProgramText"));
-            controls.emplace_back(Control(dialog_name, "LaunchProgramText", CONTROL_TYPE::Text(), 165, 114, 198, 15, 65538, "NewProperty1", installerStrings.get("NEW_STRING2"), "OK"));
+            controls.emplace_back(Control(dialog_name, "LaunchProgramCheck", CONTROL_TYPE::CheckBox(), 151, 114, 10, 9, 2, "LAUNCHPROGRAM", "", "LaunchProgramText", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "LaunchProgramCheck", "Show", "PROGRAMFILETOLAUNCHATEND <> \"\" And ACTION <> \"ADMIN\" And RETURN_VALIDATEINSTALL = \"1\" And RETURN_REBOOTREQUESTED = \"0\" And NOT Installed"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "LaunchProgramText", CONTROL_TYPE::Text(), 165, 114, 198, 15, 65538, "NewProperty1", installerStrings.get("NEW_STRING2"), "OK", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "LaunchProgramText", "Show", "PROGRAMFILETOLAUNCHATEND <> \"\" And ACTION <> \"ADMIN\" And RETURN_VALIDATEINSTALL = \"1\" And RETURN_REBOOTREQUESTED = \"0\" And NOT Installed"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "OK", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsExitDialog_Finish"), "Cancel"));
-            controls.emplace_back(Control(dialog_name, "RebootText", CONTROL_TYPE::Text(), 135, 140, 225, 35, 65538, "", installerStrings.get("NEW_STRING28")));
-            controls.emplace_back(Control(dialog_name, "RepairText", CONTROL_TYPE::Text(), 135, 178, 225, 52, 65538, "", installerStrings.get("NEW_STRING29")));
-            controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsExitDialog_WizardCompleted")));
-            controls.emplace_back(Control(dialog_name, "TextLine2", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65538, "", installerStrings.get("IDS__IsExitDialog_InstallSuccess")));
+            controls.emplace_back(Control(dialog_name, "RebootText", CONTROL_TYPE::Text(), 135, 140, 225, 35, 65538, "", installerStrings.get("NEW_STRING28"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RebootText", "Show", "RETURN_REBOOTREQUESTED = \"1\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "RepairText", CONTROL_TYPE::Text(), 135, 178, 225, 52, 65538, "", installerStrings.get("NEW_STRING29"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RepairText", "Show", "RETURN_VALIDATEINSTALL = \"0\" AND _IsMaintenance <> \"Remove\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsExitDialog_WizardCompleted"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "TextLine1", "Hide", "ProgressType2=\"installed\" And ((ACTION<>\"INSTALL\") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "TextLine2", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65538, "", installerStrings.get("IDS__IsExitDialog_InstallSuccess"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "TextLine2", "Hide", "ProgressType2=\"uninstalled\" And ((ACTION<>\"INSTALL\") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "TextLine3", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65538, "", installerStrings.get("IDS__IsExitDialog_UninstallSuccess")));
-            controls.emplace_back(Control(dialog_name, "UpdateTextLine1", CONTROL_TYPE::Text(), 134, 30, 228, 45, 65538, "", installerStrings.get("IDS__IsExitDialog_Update_SetupFinished")));
+            controls.emplace_back(Control(dialog_name, "UpdateTextLine1", CONTROL_TYPE::Text(), 134, 30, 228, 45, 65538, "", installerStrings.get("IDS__IsExitDialog_Update_SetupFinished"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "UpdateTextLine1", "Hide", "ISENABLEDWUSFINISHDIALOG And NOT Installed And ACTION=\"INSTALL\""));
+                    return conditions;
+                }()));
             return controls;
         }()));
 }
@@ -479,8 +583,18 @@ void UI::create_SetupConfigAdvanced_dialog() {
             controls.emplace_back(Control(dialog_name, "ChangeData", CONTROL_TYPE::PushButton(), 301, 100, 66, 17, 3, "", installerStrings.get("NEW_STRING8"), "Back"));
             controls.emplace_back(Control(dialog_name, "ChangeInstall", CONTROL_TYPE::PushButton(), 301, 65, 66, 17, 3, "", installerStrings.get("NEW_STRING5"), "CheckBox4"));
             controls.emplace_back(Control(dialog_name, "CheckBox2", CONTROL_TYPE::CheckBox(), 21, 127, 331, 13, 3, "ENABLESCREENSAVER", installerStrings.get("NEW_STRING12"), "CheckBox3"));
-            controls.emplace_back(Control(dialog_name, "CheckBox3", CONTROL_TYPE::CheckBox(), 21, 143, 331, 13, 3, "ENABLEPROTECTEDAPPLICATIONEXECUTION3", installerStrings.get("NEW_STRING13"), "Next"));
-            controls.emplace_back(Control(dialog_name, "CheckBox4", CONTROL_TYPE::CheckBox(), 21, 210, 331, 13, 3, "ENABLEUSEBYALLUSERS", installerStrings.get("NEW_STRING15"), "CheckBox2"));
+            controls.emplace_back(Control(dialog_name, "CheckBox3", CONTROL_TYPE::CheckBox(), 21, 143, 331, 13, 3, "ENABLEPROTECTEDAPPLICATIONEXECUTION3", installerStrings.get("NEW_STRING13"), "Next", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "CheckBox3", "Disable", "NOT VersionNT"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "CheckBox4", CONTROL_TYPE::CheckBox(), 21, 210, 331, 13, 3, "ENABLEUSEBYALLUSERS", installerStrings.get("NEW_STRING15"), "CheckBox2", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "CheckBox4", "Disable", "NOT VersionNT"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65539, "", installerStrings.get("ID_STRING25")));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 48, 234, 326, 0, 1));
             controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65539, "", installerStrings.get("ID_STRING24")));
@@ -491,8 +605,20 @@ void UI::create_SetupConfigAdvanced_dialog() {
             controls.emplace_back(Control(dialog_name, "Text2", CONTROL_TYPE::Text(), 57, 52, 290, 11, 3, "NewProperty1", installerStrings.get("NEW_STRING7")));
             controls.emplace_back(Control(dialog_name, "Text3", CONTROL_TYPE::Text(), 57, 100, 240, 13, 3, "_BrowseDataProperty", installerStrings.get("NEW_STRING9")));
             controls.emplace_back(Control(dialog_name, "Text4", CONTROL_TYPE::Text(), 57, 87, 290, 11, 3, "NewProperty2", installerStrings.get("NEW_STRING10")));
-            controls.emplace_back(Control(dialog_name, "Text5", CONTROL_TYPE::Text(), 34, 158, 328, 44, 3, "", "***IS_STRING_NOT_DEFINED***"));
-            controls.emplace_back(Control(dialog_name, "Text6", CONTROL_TYPE::Text(), 34, 158, 328, 44, 3, "NewProperty1", installerStrings.get("NEW_STRING31")));
+            controls.emplace_back(Control(dialog_name, "Text5", CONTROL_TYPE::Text(), 34, 158, 328, 44, 3, "", "***IS_STRING_NOT_DEFINED***", "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Text5", "Hide", "VersionNT >= 600"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Text5", "Show", "Version9X OR VersionNT < 600"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "Text6", CONTROL_TYPE::Text(), 34, 158, 328, 44, 3, "NewProperty1", installerStrings.get("NEW_STRING31"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Text6", "Hide", "Version9X OR VersionNT < 600"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Text6", "Show", "VersionNT >= 600"));
+                    return conditions;
+                }()));
             return controls;
         }()));
 }
@@ -538,15 +664,57 @@ void UI::create_SetupInterrupted_dialog() {
     dialogs.emplace_back(Dialog(dialog_name, 50, 50, 374, 266, ATTRIBUTE::VISIBLE | ATTRIBUTE::MODAL, installerStrings.get("IDS_PRODUCTNAME_INSTALLSHIELD"), "Finish", "Finish", "Finish",
         [&]() -> auto {
             std::vector<Control> controls;
-            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK")));
-            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 1, "", installerStrings.get("IDS_CANCEL")));
+            controls.emplace_back(Control(dialog_name, "Back", CONTROL_TYPE::PushButton(), 164, 243, 66, 17, 1, "", installerStrings.get("IDS_BACK"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Default", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Disable", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Back", "Enable", "UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 1, "", installerStrings.get("IDS_CANCEL"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Cancel", "Disable", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "Cancel", "Enable", "UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 374, 0, 1));
-            controls.emplace_back(Control(dialog_name, "Finish", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsUserExit_Finish")));
-            controls.emplace_back(Control(dialog_name, "FinishText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsUserExit_NotModified")));
-            controls.emplace_back(Control(dialog_name, "FinishText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsUserExit_ClickFinish")));
+            controls.emplace_back(Control(dialog_name, "Finish", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS__IsUserExit_Finish"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "Finish", "Default", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "FinishText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsUserExit_NotModified"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText1", "Hide", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText1", "Show", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "FinishText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsUserExit_ClickFinish"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText2", "Hide", "UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "FinishText2", "Show", "NOT UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5"));
-            controls.emplace_back(Control(dialog_name, "RestContText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsUserExit_KeepOrRestore")));
-            controls.emplace_back(Control(dialog_name, "RestContText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsUserExit_RestoreOrContinue")));
+            controls.emplace_back(Control(dialog_name, "RestContText1", CONTROL_TYPE::Text(), 135, 80, 228, 50, 65539, "", installerStrings.get("IDS__IsUserExit_KeepOrRestore"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText1", "Hide", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText1", "Show", "UpdateStarted"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "RestContText2", CONTROL_TYPE::Text(), 135, 135, 228, 25, 65539, "", installerStrings.get("IDS__IsUserExit_RestoreOrContinue"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText2", "Hide", "NOT UpdateStarted"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "RestContText2", "Show", "UpdateStarted"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsUserExit_WizardCompleted")));
             controls.emplace_back(Control(dialog_name, "TextLine2", CONTROL_TYPE::Text(), 135, 55, 228, 25, 65539, "", installerStrings.get("IDS__IsUserExit_WizardInterrupted")));
             return controls;
@@ -564,13 +732,43 @@ void UI::create_SetupProgress_dialog() {
             controls.emplace_back(Control(dialog_name, "Banner", CONTROL_TYPE::Bitmap(), 0, 0, 374, 44, 1, "", "NewBinary1"));
             controls.emplace_back(Control(dialog_name, "BannerLine", CONTROL_TYPE::Line(), 0, 44, 374, 0, 1));
             controls.emplace_back(Control(dialog_name, "Cancel", CONTROL_TYPE::PushButton(), 301, 243, 66, 17, 3, "", installerStrings.get("IDS_CANCEL"), "Back"));
-            controls.emplace_back(Control(dialog_name, "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_UninstallingFeatures2")));
-            controls.emplace_back(Control(dialog_name, "DlgDesc2", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_UninstallingFeatures")));
+            controls.emplace_back(Control(dialog_name, "DlgDesc", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_UninstallingFeatures2"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgDesc", "Show", "ProgressType2=\"installed\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgDesc2", CONTROL_TYPE::Text(), 21, 23, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_UninstallingFeatures"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgDesc2", "Show", "ProgressType2=\"uninstalled\""));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 48, 234, 326, 0, 1));
-            controls.emplace_back(Control(dialog_name, "DlgText", CONTROL_TYPE::Text(), 59, 51, 275, 30, 65538, "", installerStrings.get("IDS__IsProgressDlg_WaitUninstall2")));
-            controls.emplace_back(Control(dialog_name, "DlgText2", CONTROL_TYPE::Text(), 59, 51, 275, 30, 65538, "", installerStrings.get("IDS__IsProgressDlg_WaitUninstall")));
-            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_InstallingProductName")));
-            controls.emplace_back(Control(dialog_name, "DlgTitle2", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_Uninstalling")));
+            controls.emplace_back(Control(dialog_name, "DlgText", CONTROL_TYPE::Text(), 59, 51, 275, 30, 65538, "", installerStrings.get("IDS__IsProgressDlg_WaitUninstall2"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgText", "Show", "ProgressType3=\"installs\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgText2", CONTROL_TYPE::Text(), 59, 51, 275, 30, 65538, "", installerStrings.get("IDS__IsProgressDlg_WaitUninstall"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgText2", "Show", "ProgressType3=\"uninstalls\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgTitle", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_InstallingProductName"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgTitle", "Show", "ProgressType1=\"Installing\""));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "DlgTitle2", CONTROL_TYPE::Text(), 13, 6, 292, 25, 65538, "", installerStrings.get("IDS__IsProgressDlg_Uninstalling"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "DlgTitle2", "Show", "ProgressType1=\"Uninstalling\""));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "LbSec", CONTROL_TYPE::Text(), 172, 139, 32, 12, 2, "", installerStrings.get("IDS__IsProgressDlg_SecHidden")));
             controls.emplace_back(Control(dialog_name, "LbStatus", CONTROL_TYPE::Text(), 59, 85, 70, 12, 3, "", installerStrings.get("IDS__IsProgressDlg_Status")));
             controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 1, "", installerStrings.get("IDS_NEXT"), "Cancel"));
@@ -591,8 +789,20 @@ void UI::create_SetupResume_dialog() {
             controls.emplace_back(Control(dialog_name, "DlgLine", CONTROL_TYPE::Line(), 0, 234, 374, 0, 1));
             controls.emplace_back(Control(dialog_name, "Image", CONTROL_TYPE::Bitmap(), 0, 0, 374, 234, 1, "", "NewBinary5"));
             controls.emplace_back(Control(dialog_name, "Next", CONTROL_TYPE::PushButton(), 230, 243, 66, 17, 3, "", installerStrings.get("IDS_NEXT"), "Cancel"));
-            controls.emplace_back(Control(dialog_name, "PreselectedText", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65539, "", installerStrings.get("IDS__IsResumeDlg_WizardResume")));
-            controls.emplace_back(Control(dialog_name, "ResumeText", CONTROL_TYPE::Text(), 135, 46, 228, 45, 65539, "", installerStrings.get("IDS__IsResumeDlg_ResumeSuspended")));
+            controls.emplace_back(Control(dialog_name, "PreselectedText", CONTROL_TYPE::Text(), 135, 55, 228, 45, 65539, "", installerStrings.get("IDS__IsResumeDlg_WizardResume"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "PreselectedText", "Hide", "RESUME"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "PreselectedText", "Show", "NOT RESUME"));
+                    return conditions;
+                }()));
+            controls.emplace_back(Control(dialog_name, "ResumeText", CONTROL_TYPE::Text(), 135, 46, 228, 45, 65539, "", installerStrings.get("IDS__IsResumeDlg_ResumeSuspended"), "", "",
+                [&]() -> auto {
+                    std::vector<ControlCondition> conditions;
+                    conditions.emplace_back(ControlCondition(dialog_name, "ResumeText", "Hide", "NOT RESUME"));
+                    conditions.emplace_back(ControlCondition(dialog_name, "ResumeText", "Show", "RESUME"));
+                    return conditions;
+                }()));
             controls.emplace_back(Control(dialog_name, "TextLine1", CONTROL_TYPE::Text(), 135, 8, 225, 45, 65539, "", installerStrings.get("IDS__IsResumeDlg_Resuming")));
             return controls;
         }()));
@@ -625,4 +835,17 @@ std::vector<Control> UI::get_controls() const
         }
     }
     return controls;
+}
+
+std::vector<ControlCondition> UI::get_control_conditions() const
+{
+    std::vector<ControlCondition> conditions;
+    for (const auto& dialog : dialogs) {
+        for (const auto& control : dialog.get_controls()) {
+            for (const auto& condition : control.get_conditions()) {
+                conditions.emplace_back(condition);
+            }
+        }
+    }
+    return conditions;
 }

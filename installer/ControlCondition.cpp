@@ -15,18 +15,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include <sstream>
 
-#include "Record.h"
+#include "ControlCondition.h"
 
-class ActionText : public Record {
-public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
-    ~ActionText() = default;
-    std::string get() const override;
-    bool empty() const noexcept;
-private:
-    std::string action;
-    std::string description;
-    std::string tmplt;
-};
+ControlCondition::ControlCondition(const std::string& dialog, const std::string& control, const std::string& action, const std::string& condition)
+    : dialog(dialog), control(control), action(action), condition(condition) {}
+std::string ControlCondition::get() const
+{
+    std::ostringstream oss;
+    oss << dialog << "\t" << control << "\t" << action << "\t" << condition << "\n";
+    return oss.str();
+}

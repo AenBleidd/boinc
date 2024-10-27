@@ -28,6 +28,8 @@
     <ClCompile Include="..\installer\AdminUISequenceTable.cpp" />
     <ClCompile Include="..\installer\AdvtExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\Control.cpp" />
+    <ClCompile Include="..\installer\ControlCondition.cpp" />
+    <ClCompile Include="..\installer\ControlConditionTable.cpp" />
     <ClCompile Include="..\installer\ControlTable.cpp" />
     <ClCompile Include="..\installer\Dialog.cpp" />
     <ClCompile Include="..\installer\DialogTable.cpp" />
@@ -48,6 +50,8 @@
     <ClInclude Include="..\installer\AdminUISequencetable.h" />
     <ClInclude Include="..\installer\AdvtExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\Control.h" />
+    <ClInclude Include="..\installer\ControlCondition.h" />
+    <ClInclude Include="..\installer\ControlConditionTable.h" />
     <ClInclude Include="..\installer\ControlTable.h" />
     <ClInclude Include="..\installer\Dialog.h" />
     <ClInclude Include="..\installer\DialogTable.h" />

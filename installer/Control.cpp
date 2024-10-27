@@ -17,10 +17,16 @@
 
 #include "Control.h"
 
-Control::Control(std::string dialog, std::string control, std::string type, int x, int y, int width, int height, int attributes, std::string property, std::string text, std::string next, std::string help)
-    : dialog(dialog), control(control), type(type), x(x), y(y), width(width), height(height), attributes(attributes), property(property), text(text), next(next), help(help) {};
+Control::Control(const std::string& dialog, const std::string& control, const std::string& type, int x, int y, int width, int height, int attributes,
+    const std::string& property, const std::string& text, const std::string& next, const std::string& help, const std::vector<ControlCondition>& conditions)
+    : dialog(dialog), control(control), type(type), x(x), y(y), width(width), height(height), attributes(attributes), property(property), text(text),
+    next(next), help(help), conditions(conditions) {};
 std::string Control::get() const {
     std::ostringstream oss;
     oss << dialog << "\t" << control << "\t" << type << "\t" << x << "\t" << y << "\t" << width << "\t" << height << "\t" << attributes << "\t" << property << "\t" << text << "\t" << next << "\t" << help << "\n";
     return oss.str();
+}
+
+const std::vector<ControlCondition>& Control::get_conditions() const noexcept {
+    return conditions;
 }
