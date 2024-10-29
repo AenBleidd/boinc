@@ -17,15 +17,12 @@
 
 #pragma once
 
-#include "Generator.h"
 #include "ControlCondition.h"
-#include "UI.h"
+#include "Dialog.h"
 
-class ControlConditionTable : public Generator<ControlCondition> {
+class ControlConditionTable {
 public:
-    explicit ControlConditionTable(const UI& ui);
+    explicit ControlConditionTable() noexcept = default;
     ~ControlConditionTable() = default;
-    std::string generate() const override;
-private:
-    const UI& ui;
+    std::string generate(const std::vector<Dialog>& dialogs) const;
 };

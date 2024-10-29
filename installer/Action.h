@@ -18,13 +18,13 @@
 #pragma once
 
 #include <sstream>
+#include <nlohmann/json.hpp>
 
 #include "Record.h"
 
 class Action : public Record {
 public:
-    explicit Action(const std::string& action, const std::string& condition, int sequence);
-    explicit Action(const std::string& action, int sequence);
+    explicit Action(const nlohmann::json& json);
     ~Action() = default;
     std::string get() const override;
 private:

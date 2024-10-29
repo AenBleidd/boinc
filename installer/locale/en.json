@@ -4622,5 +4622,9 @@
     {
         "Id": "NEW_STRING9",
         "Value": "[DATADIR]"
+    },
+    {
+        "Id": "IS_STRING_NOT_DEFINED",
+        "Value": "***IS_STRING_NOT_DEFINED***"
     }
 ]

@@ -16,13 +16,23 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DialogTable.h"
-
-DialogTable::DialogTable(const UI& ui) : ui(ui) {
-}
+#include "Generator.h"
 
 std::string DialogTable::generate() const {
-    return Generator::generate({ { "Dialog", "s72" }, { "HCentering", "i2" }, { "VCentering", "i2" }, { "Width", "i2" }, { "Height", "i2" }, { "Attributes", "I4" },
-        { "Title", "L128" }, { "Control_First", "s50" }, { "Control_Default", "S50" }, { "Control_Cancel", "S50" } }, { "Dialog", "Dialog" }, ui.get_dialogs());
+    return Generator<Dialog>().generate({{"Dialog", "s72"}, {"HCentering", "i2"}, {"VCentering", "i2"}, {"Width", "i2"}, {"Height", "i2"}, {"Attributes", "I4"},
+        { "Title", "L128" }, { "Control_First", "s50" }, { "Control_Default", "S50" }, { "Control_Cancel", "S50" } }, { "Dialog", "Dialog" }, dialogs);
+}
+
+bool DialogTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    for (const auto& dialog : json) {
+        dialogs.emplace_back(dialog, installerStrings);
+    }
+
+    return true;
+}
+
+const std::vector<Dialog>& DialogTable::get() const {
+    return dialogs;
 }
 
 

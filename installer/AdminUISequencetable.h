@@ -17,12 +17,14 @@
 
 #pragma once
 
-#include "Generator.h"
 #include "Action.h"
 
-class AdminUISequenceTable : public Generator<Action> {
+class AdminUISequenceTable {
 public:
-    AdminUISequenceTable() = default;
+    explicit AdminUISequenceTable() noexcept = default;
     ~AdminUISequenceTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json);
+private:
+    std::vector<Action> actions;
 };

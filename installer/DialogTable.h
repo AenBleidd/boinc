@@ -17,15 +17,16 @@
 
 #pragma once
 
-#include "Generator.h"
 #include "Dialog.h"
-#include "UI.h"
+#include "InstallerStrings.h"
 
-class DialogTable : public Generator<Dialog> {
+class DialogTable {
 public:
-    explicit DialogTable(const UI& ui);
+    explicit DialogTable() noexcept = default;
     ~DialogTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    const std::vector<Dialog>& get() const;
 private:
-    const UI& ui;
+    std::vector<Dialog> dialogs;
 };

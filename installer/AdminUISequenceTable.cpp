@@ -16,20 +16,15 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AdminUISequenceTable.h"
+#include "Generator.h"
 
 std::string AdminUISequenceTable::generate() const {
-    std::vector<Action> values;
+    return Generator<Action>().generate({{"Action", "s72"}, {"Condition", "S255"}, {"Sequence", "I2"}}, {"AdminUISequence", "Action"}, actions);
+}
 
-    values.emplace_back("AdminWelcome", 1010);
-    values.emplace_back("CostFinalize", 1000);
-    values.emplace_back("CostInitialize", 800);
-    values.emplace_back("ExecuteAction", 1300);
-    values.emplace_back("FileCost", 900);
-    values.emplace_back("SetupCompleteError", -3);
-    values.emplace_back("SetupCompleteSuccess", -1);
-    values.emplace_back("SetupInitialization", 50);
-    values.emplace_back("SetupInterrupted", -2);
-    values.emplace_back("SetupProgress", 1020);
-
-    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdminUISequence", "Action" }, values);
+bool AdminUISequenceTable::load(const nlohmann::json& json) {
+    for (const auto& value : json) {
+        actions.emplace_back(value);
+    }
+    return true;
 }

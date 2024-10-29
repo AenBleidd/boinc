@@ -17,14 +17,16 @@
 
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include "Record.h"
+#include "InstallerStrings.h"
 
 class ActionText : public Record {
 public:
-    explicit ActionText(const std::string& action, const std::string& description, const std::string& tmplt = "");
+    explicit ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~ActionText() = default;
     std::string get() const override;
-    bool empty() const noexcept;
 private:
     std::string action;
     std::string description;

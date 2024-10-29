@@ -18,29 +18,15 @@
 #pragma once
 
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "Record.h"
 #include "Control.h"
-
-enum ATTRIBUTE {
-    VISIBLE = 1,
-    MODAL = 2,
-    MINIMIZE = 4,
-    SYSMODAL = 8,
-    KEEP_MODELESS = 16,
-    TRACK_DISK_SPACE = 32,
-    USE_CUSTOM_PALETTE = 64,
-    RTLRO = 128,
-    RIGHT_ALIGNED = 256,
-    LEFT_SCROLL = 512,
-    BIDI = RTLRO | RIGHT_ALIGNED | LEFT_SCROLL,
-    ATTRIBUTE_ERROR = 65536
-};
+#include "InstallerStrings.h"
 
 class Dialog : public Record {
 public:
-    explicit Dialog(const std::string& dialog, int hcentering, int vcentering, int width, int height, int attributes, const std::string& title,
-        const std::string& first, const std::string& default, const std::string& cancel, const std::vector<Control>& controls);
+    explicit Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~Dialog() = default;
     std::string get() const override;
     std::vector<Control> get_controls() const;

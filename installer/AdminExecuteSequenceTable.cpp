@@ -16,21 +16,15 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AdminExecuteSequenceTable.h"
+#include "Generator.h"
 
 std::string AdminExecuteSequenceTable::generate() const {
-    std::vector<Action> values;
+    return Generator<Action>().generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdminExecuteSequence", "Action" }, actions);
+}
 
-    values.emplace_back("CASetBOINCDataProjects", 1300);
-    values.emplace_back("CASetBOINCDataSlots", 1200);
-    values.emplace_back("CostFinalize", 1000);
-    values.emplace_back("CostInitialize", 800);
-    values.emplace_back("FileCost", 900);
-    values.emplace_back("InstallAdminPackage", 3900);
-    values.emplace_back("InstallFiles", 4000);
-    values.emplace_back("InstallFinalize", 6600);
-    values.emplace_back("InstallInitialize", 1500);
-    values.emplace_back("InstallValidate", 1400);
-    values.emplace_back("ScheduleReboot", "ISSCHEDULEREBOOT", 4010);
-
-    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdminExecuteSequence", "Action" }, values);
+bool AdminExecuteSequenceTable::load(const nlohmann::json& json) {
+    for (const auto& value : json) {
+        actions.emplace_back(value);
+    }
+    return true;
 }

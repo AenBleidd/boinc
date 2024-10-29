@@ -17,13 +17,18 @@
 
 #pragma once
 
-#include "Generator.h"
+#include <vector>
+#include <nlohmann/json.hpp>
+
 #include "Action.h"
 
-class AdminExecuteSequenceTable : public Generator<Action> {
+class AdminExecuteSequenceTable {
 public:
-    AdminExecuteSequenceTable() = default;
+    explicit AdminExecuteSequenceTable() noexcept = default;
     ~AdminExecuteSequenceTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json);
+private:
+    std::vector<Action> actions;
 };
 

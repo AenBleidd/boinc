@@ -19,8 +19,16 @@
 
 #include "ControlCondition.h"
 
-ControlCondition::ControlCondition(const std::string& dialog, const std::string& control, const std::string& action, const std::string& condition)
-    : dialog(dialog), control(control), action(action), condition(condition) {}
+ControlCondition::ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control)
+    : dialog(dialog), control(control) {
+    if (json.contains("Action")) {
+        action = json["Action"];
+    }
+    if (json.contains("Condition")) {
+        condition = json["Condition"];
+    }
+}
+
 std::string ControlCondition::get() const
 {
     std::ostringstream oss;

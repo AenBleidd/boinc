@@ -19,41 +19,16 @@
 
 #include <sstream>
 #include <vector>
+#include <nlohmann/json.hpp>
+
 
 #include "Property.h"
 #include "ControlCondition.h"
-
-class CONTROL_TYPE {
-public:
-    static auto Billboard() noexcept { return "Billboard"; }
-    static auto Bitmap() noexcept { return "Bitmap"; }
-    static auto CheckBox() noexcept { return "CheckBox"; }
-    static auto ComboBox() noexcept { return "ComboBox"; }
-    static auto DirectoryCombo() noexcept { return "DirectoryCombo"; }
-    static auto DirectoryList() noexcept { return "DirectoryList"; }
-    static auto Edit() noexcept { return "Edit"; }
-    static auto GroupBox() noexcept { return "GroupBox"; }
-    static auto Hyperlink() noexcept { return "Hyperlink"; }
-    static auto Icon() noexcept { return "Icon"; }
-    static auto Line() noexcept { return "Line"; }
-    static auto ListBox() noexcept { return "ListBox"; }
-    static auto ListView() noexcept { return "ListView"; }
-    static auto MaskedEdit() noexcept { return "MaskedEdit"; }
-    static auto PathEdit() noexcept { return "PathEdit"; }
-    static auto ProgressBar() noexcept { return "ProgressBar"; }
-    static auto PushButton() noexcept { return "PushButton"; }
-    static auto RadioButtonGroup() noexcept { return "RadioButtonGroup"; }
-    static auto ScrollableText() noexcept { return "ScrollableText"; }
-    static auto SelectionTree() noexcept { return "SelectionTree"; }
-    static auto Text() noexcept { return "Text"; }
-    static auto VolumeCostList() noexcept { return "VolumeCostList"; }
-    static auto VolumeSelectCombo() noexcept { return "VolumeSelectCombo"; }
-};
+#include "InstallerStrings.h"
 
 class Control : public Record {
 public:
-    explicit Control(const std::string& dialog, const std::string& control, const std::string& type, int x, int y, int width, int height, int attributes,
-        const std::string& property = "", const std::string& text = "", const std::string& next = "", const std::string& help = "", const std::vector<ControlCondition>& conditions = {});
+    explicit Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog);
     ~Control() = default;
     std::string get() const override;
     const std::vector<ControlCondition>& get_conditions() const noexcept;

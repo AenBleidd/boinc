@@ -16,26 +16,15 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "AdvtExecuteSequenceTable.h"
+#include "Generator.h"
 
 std::string AdvtExecuteSequenceTable::generate() const {
-    std::vector<Action> values;
+    return Generator<Action>().generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdvtExecuteSequence", "Action" }, actions);
+}
 
-    values.emplace_back("CostFinalize", 1000);
-    values.emplace_back("CostInitialize", 800);
-    values.emplace_back("CreateShortcuts", 4500);
-    values.emplace_back("InstallFinalize", 6600);
-    values.emplace_back("InstallInitialize", 1500);
-    values.emplace_back("InstallValidate", 1400);
-    values.emplace_back("MsiPublishAssemblies", 6250);
-    values.emplace_back("PublishComponents", 6200);
-    values.emplace_back("PublishFeatures", 6300);
-    values.emplace_back("PublishProduct", 6400);
-    values.emplace_back("RegisterClassInfo", 4600);
-    values.emplace_back("RegisterExtensionInfo", 4700);
-    values.emplace_back("RegisterMIMEInfo", 4900);
-    values.emplace_back("RegisterProgIdInfo", 4800);
-    values.emplace_back("RegisterTypeLibraries", 4910);
-    values.emplace_back("ScheduleReboot", "ISSCHEDULEREBOOT", 6410);
-
-    return Generator::generate({ { "Action", "s72" }, { "Condition", "S255" }, { "Sequence", "I2" } }, { "AdvtExecuteSequence", "Action" }, values);
+bool AdvtExecuteSequenceTable::load(const nlohmann::json& json) {
+    for (const auto& value : json) {
+        actions.emplace_back(value);
+    }
+    return true;
 }

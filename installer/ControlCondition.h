@@ -17,11 +17,13 @@
 
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include "Record.h"
 
 class ControlCondition : public Record {
 public:
-    explicit ControlCondition(const std::string& dialog, const std::string& control, const std::string& action, const std::string& condition);
+    explicit ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control);
     ~ControlCondition() = default;
     std::string get() const override;
 private:

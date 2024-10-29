@@ -17,12 +17,14 @@
 
 #pragma once
 
-#include "Generator.h"
 #include "Action.h"
 
-class InstallExecuteSequenceTable : public Generator<Action> {
+class InstallExecuteSequenceTable {
 public:
-    InstallExecuteSequenceTable() = default;
+    explicit InstallExecuteSequenceTable() noexcept = default;
     ~InstallExecuteSequenceTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json);
+private:
+    std::vector<Action> actions;
 };

@@ -17,16 +17,16 @@
 
 #pragma once
 
-#include "Generator.h"
-#include "KeyValue.h"
 #include "InstallerStrings.h"
+#include "KeyValue.h"
 
-class SummaryInformationTable : public Generator<KeyValue<int, std::string>> {
+class SummaryInformationTable {
 public:
-    SummaryInformationTable(const InstallerStrings& installerStrings) noexcept;
+    explicit SummaryInformationTable() noexcept = default;
     ~SummaryInformationTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
 private:
-    const InstallerStrings& installerStrings;
+    std::vector<KeyValue<int, std::string>> summary;
 };
 

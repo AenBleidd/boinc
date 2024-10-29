@@ -15,12 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Generator.h"
+
 #include "ControlConditionTable.h"
 
-ControlConditionTable::ControlConditionTable(const UI& ui) : ui(ui) {}
-
-std::string ControlConditionTable::generate() const
+std::string ControlConditionTable::generate(const std::vector<Dialog>& dialogs) const
 {
-    return Generator::generate({ { "Dialog_", "s72" }, { "Control_", "s50" }, { "Action", "s50" }, { "Condition", "s255" } },
-        { "ControlCondition", "Dialog_", "Control_", "Action", "Condition" }, ui.get_control_conditions());
+    std::vector<ControlCondition> conditions;
+    for (const auto& dialog : dialogs) {
+        for (const auto& control : dialog.get_controls()) {
+            for (const auto& condition : control.get_conditions()) {
+                conditions.push_back(condition);
+            }
+        }
+    }
+
+    return Generator<ControlCondition>().generate({{"Dialog_", "s72"}, {"Control_", "s50"}, {"Action", "s50"}, {"Condition", "s255"}},
+        { "ControlCondition", "Dialog_", "Control_", "Action", "Condition" }, conditions);
 }

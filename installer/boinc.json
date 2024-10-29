@@ -1,0 +1,5035 @@
+{
+    "Summary": {
+		"codepage": 1252,
+		"title": "COMPANY_PRODUCT",
+		"subject": "COMPANY_PRODUCT_SUBJECT",
+		"author": "COMPANY_NAME",
+		"keywords": "BOINC",
+		"comments": "IDS_FEATURE_BOINC_DESCRIPTION",
+		"template": "AMD64;1033",
+		"lastauthor": "BOINC",
+		"pagecount": 200,
+		"wordcount": 0,
+		"charcount": 0,
+		"appname":"BOINC",
+		"security": 1
+    },
+    "ActionText": [
+        {
+            "Action": "Advertise",
+            "Description": "IDS_ACTIONTEXT_Advertising"
+        },
+        {
+            "Action": "AllocateRegistrySpace",
+            "Description": "IDS_ACTIONTEXT_AllocatingRegistry",
+            "Template": "IDS_ACTIONTEXT_FreeSpace"
+        },
+        {
+            "Action": "AppSearch",
+            "Description": "IDS_ACTIONTEXT_SearchInstalled",
+            "Template": "IDS_ACTIONTEXT_PropertySignature"
+        },
+        {
+            "Action": "BindImage",
+            "Description": "IDS_ACTIONTEXT_BindingExes",
+            "Template": "IDS_ACTIONTEXT_File"
+        },
+        {
+            "Action": "CCPSearch",
+            "Description": "IDS_ACTIONTEXT_UnregisterModules"
+        },
+        {
+            "Action": "CostFinalize",
+            "Description": "IDS_ACTIONTEXT_ComputingSpace3"
+        },
+        {
+            "Action": "CostInitialize",
+            "Description": "IDS_ACTIONTEXT_ComputingSpace"
+        },
+        {
+            "Action": "CreateFolders",
+            "Description": "IDS_ACTIONTEXT_CreatingFolders",
+            "Template": "IDS_ACTIONTEXT_Folder"
+        },
+        {
+            "Action": "CreateShortcuts",
+            "Description": "IDS_ACTIONTEXT_CreatingShortcuts",
+            "Template": "IDS_ACTIONTEXT_Shortcut"
+        },
+        {
+            "Action": "DeleteServices",
+            "Description": "IDS_ACTIONTEXT_DeletingServices",
+            "Template": "IDS_ACTIONTEXT_Service"
+        },
+        {
+            "Action": "DuplicateFiles",
+            "Description": "IDS_ACTIONTEXT_CreatingDuplicate",
+            "Template": "IDS_ACTIONTEXT_FileDirectorySize"
+        },
+        {
+            "Action": "FileCost",
+            "Description": "IDS_ACTIONTEXT_ComputingSpace2"
+        },
+        {
+            "Action": "FindRelatedProducts",
+            "Description": "IDS_ACTIONTEXT_SearchForRelated",
+            "Template": "IDS_ACTIONTEXT_FoundApp"
+        },
+        {
+            "Action": "GenerateScript",
+            "Description": "IDS_ACTIONTEXT_GeneratingScript",
+            "Template": "IDS_ACTIONTEXT_1"
+        },
+        {
+            "Action": "InstallAdminPackage",
+            "Description": "IDS_ACTIONTEXT_CopyingNetworkFiles",
+            "Template": "IDS_ACTIONTEXT_FileDirSize"
+        },
+        {
+            "Action": "InstallFiles",
+            "Description": "IDS_ACTIONTEXT_CopyingNewFiles",
+            "Template": "IDS_ACTIONTEXT_FileDirSize2"
+        },
+        {
+            "Action": "InstallODBC",
+            "Description": "IDS_ACTIONTEXT_InstallODBC"
+        },
+        {
+            "Action": "InstallSFPCatalogFile",
+            "Description": "IDS_ACTIONTEXT_InstallingSystemCatalog",
+            "Template": "IDS_ACTIONTEXT_FileDependencies"
+        },
+        {
+            "Action": "InstallServices",
+            "Description": "IDS_ACTIONTEXT_InstallServices",
+            "Template": "IDS_ACTIONTEXT_Service2"
+        },
+        {
+            "Action": "InstallValidate",
+            "Description": "IDS_ACTIONTEXT_Validating"
+        },
+        {
+            "Action": "LaunchConditions",
+            "Description": "IDS_ACTIONTEXT_EvaluateLaunchConditions"
+        },
+        {
+            "Action": "MigrateFeatureStates",
+            "Description": "IDS_ACTIONTEXT_MigratingFeatureStates",
+            "Template": "IDS_ACTIONTEXT_Application"
+        },
+        {
+            "Action": "MoveFiles",
+            "Description": "IDS_ACTIONTEXT_MovingFiles",
+            "Template": "IDS_ACTIONTEXT_FileDirSize3"
+        },
+        {
+            "Action": "PatchFiles",
+            "Description": "IDS_ACTIONTEXT_PatchingFiles",
+            "Template": "IDS_ACTIONTEXT_FileDirSize4"
+        },
+        {
+            "Action": "ProcessComponents",
+            "Description": "IDS_ACTIONTEXT_UpdateComponentRegistration"
+        },
+        {
+            "Action": "PublishComponents",
+            "Description": "IDS_ACTIONTEXT_PublishingQualifiedComponents",
+            "Template": "IDS_ACTIONTEXT_ComponentIDQualifier"
+        },
+        {
+            "Action": "PublishFeatures",
+            "Description": "IDS_ACTIONTEXT_PublishProductFeatures",
+            "Template": "IDS_ACTIONTEXT_FeatureColon"
+        },
+        {
+            "Action": "PublishProduct",
+            "Description": "IDS_ACTIONTEXT_PublishProductInfo"
+        },
+        {
+            "Action": "RMCCPSearch",
+            "Description": "IDS_ACTIONTEXT_SearchingQualifyingProducts"
+        },
+        {
+            "Action": "RegisterClassInfo",
+            "Description": "IDS_ACTIONTEXT_RegisterClassServer",
+            "Template": "IDS_ACTIONTEXT_ClassId"
+        },
+        {
+            "Action": "RegisterComPlus",
+            "Description": "IDS_ACTIONTEXT_RegisteringComPlus",
+            "Template": "IDS_ACTIONTEXT_AppIdAppTypeRSN"
+        },
+        {
+            "Action": "RegisterExtensionInfo",
+            "Description": "IDS_ACTIONTEXT_RegisterExtensionServers",
+            "Template": "IDS_ACTIONTEXT_Extension2"
+        },
+        {
+            "Action": "RegisterFonts",
+            "Description": "IDS_ACTIONTEXT_RegisterFonts",
+            "Template": "IDS_ACTIONTEXT_Font"
+        },
+        {
+            "Action": "RegisterMIMEInfo",
+            "Description": "IDS_ACTIONTEXT_RegisterMimeInfo",
+            "Template": "IDS_ACTIONTEXT_ContentTypeExtension"
+        },
+        {
+            "Action": "RegisterProduct",
+            "Description": "IDS_ACTIONTEXT_RegisteringProduct",
+            "Template": "IDS_ACTIONTEXT_1b"
+        },
+        {
+            "Action": "RegisterProgIdInfo",
+            "Description": "IDS_ACTIONTEXT_RegisteringProgIdentifiers",
+            "Template": "IDS_ACTIONTEXT_ProgID2"
+        },
+        {
+            "Action": "RegisterTypeLibraries",
+            "Description": "IDS_ACTIONTEXT_RegisterTypeLibs",
+            "Template": "IDS_ACTIONTEXT_LibId"
+        },
+        {
+            "Action": "RegisterUser",
+            "Description": "IDS_ACTIONTEXT_RegUser",
+            "Template": "IDS_ACTIONTEXT_1c"
+        },
+        {
+            "Action": "RemoveDuplicateFiles",
+            "Description": "IDS_ACTIONTEXT_RemovingDuplicates",
+            "Template": "IDS_ACTIONTEXT_FileDir"
+        },
+        {
+            "Action": "RemoveEnvironmentStrings",
+            "Description": "IDS_ACTIONTEXT_UpdateEnvironmentStrings",
+            "Template": "IDS_ACTIONTEXT_NameValueAction2"
+        },
+        {
+            "Action": "RemoveExistingProducts",
+            "Description": "IDS_ACTIONTEXT_RemoveApps",
+            "Template": "IDS_ACTIONTEXT_AppCommandLine"
+        },
+        {
+            "Action": "RemoveFiles",
+            "Description": "IDS_ACTIONTEXT_RemovingFiles",
+            "Template": "IDS_ACTIONTEXT_FileDir2"
+        },
+        {
+            "Action": "RemoveFolders",
+            "Description": "IDS_ACTIONTEXT_RemovingFolders",
+            "Template": "IDS_ACTIONTEXT_Folder1"
+        },
+        {
+            "Action": "RemoveIniValues",
+            "Description": "IDS_ACTIONTEXT_RemovingIni",
+            "Template": "IDS_ACTIONTEXT_FileSectionKeyValue"
+        },
+        {
+            "Action": "RemoveODBC",
+            "Description": "IDS_ACTIONTEXT_RemovingODBC"
+        },
+        {
+            "Action": "RemoveRegistryValues",
+            "Description": "IDS_ACTIONTEXT_RemovingRegistry",
+            "Template": "IDS_ACTIONTEXT_KeyName"
+        },
+        {
+            "Action": "RemoveShortcuts",
+            "Description": "IDS_ACTIONTEXT_RemovingShortcuts",
+            "Template": "IDS_ACTIONTEXT_Shortcut1"
+        },
+        {
+            "Action": "Rollback",
+            "Description": "IDS_ACTIONTEXT_RollingBack",
+            "Template": "IDS_ACTIONTEXT_1d"
+        },
+        {
+            "Action": "RollbackCleanup",
+            "Description": "IDS_ACTIONTEXT_RemovingBackup",
+            "Template": "IDS_ACTIONTEXT_File2"
+        },
+        {
+            "Action": "SelfRegModules",
+            "Description": "IDS_ACTIONTEXT_RegisteringModules",
+            "Template": "IDS_ACTIONTEXT_FileFolder"
+        },
+        {
+            "Action": "SelfUnregModules",
+            "Description": "IDS_ACTIONTEXT_UnregisterModules",
+            "Template": "IDS_ACTIONTEXT_FileFolder2"
+        },
+        {
+            "Action": "SetODBCFolders",
+            "Description": "IDS_ACTIONTEXT_InitializeODBCDirs"
+        },
+        {
+            "Action": "ShutdownBOINCManager",
+            "Description": "ID_STRING4"
+        },
+        {
+            "Action": "StartServices",
+            "Description": "IDS_ACTIONTEXT_StartingServices",
+            "Template": "IDS_ACTIONTEXT_Service3"
+        },
+        {
+            "Action": "StopServices",
+            "Description": "IDS_ACTIONTEXT_StoppingServices",
+            "Template": "IDS_ACTIONTEXT_Service4"
+        },
+        {
+            "Action": "UnmoveFiles",
+            "Description": "IDS_ACTIONTEXT_RemovingMoved",
+            "Template": "IDS_ACTIONTEXT_FileDir3"
+        },
+        {
+            "Action": "UnpublishComponents",
+            "Description": "IDS_ACTIONTEXT_UnpublishQualified",
+            "Template": "IDS_ACTIONTEXT_ComponentIdQualifier2"
+        },
+        {
+            "Action": "UnpublishFeatures",
+            "Description": "IDS_ACTIONTEXT_UnpublishProductFeatures",
+            "Template": "IDS_ACTIONTEXT_Feature"
+        },
+        {
+            "Action": "UnpublishProduct",
+            "Description": "IDS_ACTIONTEXT_UnpublishingProductInfo"
+        },
+        {
+            "Action": "UnregisterClassInfo",
+            "Description": "IDS_ACTIONTEXT_UnregisterClassServers",
+            "Template": "IDS_ACTIONTEXT_ClsID"
+        },
+        {
+            "Action": "UnregisterComPlus",
+            "Description": "IDS_ACTIONTEXT_UnregisteringComPlus",
+            "Template": "IDS_ACTIONTEXT_AppId"
+        },
+        {
+            "Action": "UnregisterExtensionInfo",
+            "Description": "IDS_ACTIONTEXT_UnregisterExtensionServers",
+            "Template": "IDS_ACTIONTEXT_Extension"
+        },
+        {
+            "Action": "UnregisterFonts",
+            "Description": "IDS_ACTIONTEXT_UnregisteringFonts",
+            "Template": "IDS_ACTIONTEXT_Font2"
+        },
+        {
+            "Action": "UnregisterMIMEInfo",
+            "Description": "IDS_ACTIONTEXT_UnregisteringMimeInfo",
+            "Template": "IDS_ACTIONTEXT_ContentTypeExtension2"
+        },
+        {
+            "Action": "UnregisterProgIdInfo",
+            "Description": "IDS_ACTIONTEXT_UnregisteringProgramIds",
+            "Template": "IDS_ACTIONTEXT_ProgID"
+        },
+        {
+            "Action": "UnregisterTypeLibraries",
+            "Description": "IDS_ACTIONTEXT_UnregTypeLibs",
+            "Template": "IDS_ACTIONTEXT_Libid2"
+        },
+        {
+            "Action": "WriteEnvironmentStrings",
+            "Description": "IDS_ACTIONTEXT_EnvironmentStrings",
+            "Template": "IDS_ACTIONTEXT_NameValueAction"
+        },
+        {
+            "Action": "WriteIniValues",
+            "Description": "IDS_ACTIONTEXT_WritingINI",
+            "Template": "IDS_ACTIONTEXT_FileSectionKeyValue2"
+        },
+        {
+            "Action": "WriteRegistryValues",
+            "Description": "IDS_ACTIONTEXT_WritingRegistry",
+            "Template": "IDS_ACTIONTEXT_KeyNameValue"
+        },
+        {
+            "Action": "caCreateVRoots",
+            "Description": "IDS_ACTIONTEXT_CreatingIISRoots"
+        },
+        {
+            "Action": "caRemoveVRoots",
+            "Description": "IDS_ACTIONTEXT_RemovingIISRoots"
+        }
+    ],
+    "AdminExecuteSequence": [
+        {
+            "Action": "CASetBOINCDataProjects",
+            "Sequence": 1300
+        },
+        {
+            "Action": "CASetBOINCDataSlots",
+            "Sequence": 1200
+        },
+        {
+            "Action": "CostFinalize",
+            "Sequence": 1000
+        },
+        {
+            "Action": "CostInitialize",
+            "Sequence": 800
+        },
+        {
+            "Action": "FileCost",
+            "Sequence": 900
+        },
+        {
+            "Action": "InstallAdminPackage",
+            "Sequence": 3900
+        },
+        {
+            "Action": "InstallFiles",
+            "Sequence": 4000
+        },
+        {
+            "Action": "InstallFinalize",
+            "Sequence": 6600
+        },
+        {
+            "Action": "InstallInitialize",
+            "Sequence": 1500
+        },
+        {
+            "Action": "InstallValidate",
+            "Sequence": 1400
+        },
+        {
+            "Action": "ScheduleReboot",
+            "Condition": "ISSCHEDULEREBOOT",
+            "Sequence": 4010
+        }
+    ],
+    "AdminUISequence": [
+        {
+            "Action": "AdminWelcome",
+            "Sequence": 1010
+        },
+        {
+            "Action": "CostFinalize",
+            "Sequence": 1000
+        },
+        {
+            "Action": "CostInitialize",
+            "Sequence": 800
+        },
+        {
+            "Action": "ExecuteAction",
+            "Sequence": 1300
+        },
+        {
+            "Action": "FileCost",
+            "Sequence": 900
+        },
+        {
+            "Action": "SetupCompleteError",
+            "Sequence": -3
+        },
+        {
+            "Action": "SetupCompleteSuccess",
+            "Sequence": -1
+        },
+        {
+            "Action": "SetupInitialization",
+            "Sequence": 50
+        },
+        {
+            "Action": "SetupInterrupted",
+            "Sequence": -2
+        },
+        {
+            "Action": "SetupProgress",
+            "Sequence": 1020
+        }
+    ],
+    "AdvtExecuteSequence": [
+        {
+            "Action": "CostFinalize",
+            "Sequence": 1000
+        },
+        {
+            "Action": "CostInitialize",
+            "Sequence": 800
+        },
+        {
+            "Action": "CreateShortcuts",
+            "Sequence": 4500
+        },
+        {
+            "Action": "InstallFinalize",
+            "Sequence": 6600
+        },
+        {
+            "Action": "InstallInitialize",
+            "Sequence": 1500
+        },
+        {
+            "Action": "InstallValidate",
+            "Sequence": 1400
+        },
+        {
+            "Action": "MsiPublishAssemblies",
+            "Sequence": 6250
+        },
+        {
+            "Action": "PublishComponents",
+            "Sequence": 6200
+        },
+        {
+            "Action": "PublishFeatures",
+            "Sequence": 6300
+        },
+        {
+            "Action": "PublishProduct",
+            "Sequence": 6400
+        },
+        {
+            "Action": "RegisterClassInfo",
+            "Sequence": 4600
+        },
+        {
+            "Action": "RegisterExtensionInfo",
+            "Sequence": 4700
+        },
+        {
+            "Action": "RegisterMIMEInfo",
+            "Sequence": 4900
+        },
+        {
+            "Action": "RegisterProgIdInfo",
+            "Sequence": 4800
+        },
+        {
+            "Action": "RegisterTypeLibraries",
+            "Sequence": 4910
+        },
+        {
+            "Action": "ScheduleReboot",
+            "Condition": "ISSCHEDULEREBOOT",
+            "Sequence": 6410
+        }
+    ],
+    "InstallExecuteSequence": [
+        {
+            "Action": "AllocateRegistrySpace",
+            "Condition": "NOT Installed",
+            "Sequence": 1562
+        },
+        {
+            "Action": "AppSearch",
+            "Sequence": 400
+        },
+        {
+            "Action": "BindImage",
+            "Sequence": 4300
+        },
+        {
+            "Action": "CAAnnounceUpgrade",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 1001
+        },
+        {
+            "Action": "CACleanupOldBinaries",
+            "Condition": "REMOVE <> \"ALL\"",
+            "Sequence": 796
+        },
+        {
+            "Action": "CACreateAcctMgrLoginFile",
+            "Condition": "NOT Installed",
+            "Sequence": 6605
+        },
+        {
+            "Action": "CACreateBOINCAccounts",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1546
+        },
+        {
+            "Action": "CACreateBOINCGroups",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1552
+        },
+        {
+            "Action": "CACreateClientAuthFile",
+            "Condition": "VersionNT And NOT Installed",
+            "Sequence": 6604
+        },
+        {
+            "Action": "CACreateProjectInitFile",
+            "Condition": "NOT Installed",
+            "Sequence": 6606
+        },
+        {
+            "Action": "CADeleteBOINCAccounts",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1551
+        },
+        {
+            "Action": "CADeleteBOINCGroups",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1561
+        },
+        {
+            "Action": "CAGetAdministratorsGroupName",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 1537
+        },
+        {
+            "Action": "CAGetUsersGroupName",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 1543
+        },
+        {
+            "Action": "CAGrantBOINCAdminsRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1553
+        },
+        {
+            "Action": "CAGrantBOINCAdminsVirtualBoxRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1555
+        },
+        {
+            "Action": "CAGrantBOINCMasterRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1547
+        },
+        {
+            "Action": "CAGrantBOINCProjectRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1549
+        },
+        {
+            "Action": "CAGrantBOINCProjectsRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1558
+        },
+        {
+            "Action": "CAGrantBOINCProjectsVirtualBoxRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1560
+        },
+        {
+            "Action": "CAGrantBOINCUsersRights",
+            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1556
+        },
+        {
+            "Action": "CARestorePermissionBOINCData",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 6612
+        },
+        {
+            "Action": "CARestoreSetupState",
+            "Condition": "VersionNT And REMOVE = \"ALL\"",
+            "Sequence": 1002
+        },
+        {
+            "Action": "CARevokeBOINCAdminsRights",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1554
+        },
+        {
+            "Action": "CARevokeBOINCMasterRights",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1548
+        },
+        {
+            "Action": "CARevokeBOINCProjectRights",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1550
+        },
+        {
+            "Action": "CARevokeBOINCProjectsRights",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1559
+        },
+        {
+            "Action": "CARevokeBOINCUsersRights",
+            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Sequence": 1557
+        },
+        {
+            "Action": "CASaveExecutionState",
+            "Sequence": 6614
+        },
+        {
+            "Action": "CASaveSetupState",
+            "Sequence": 6613
+        },
+        {
+            "Action": "CASetBOINCDataProjects",
+            "Sequence": 1004
+        },
+        {
+            "Action": "CASetBOINCDataSlots",
+            "Sequence": 1003
+        },
+        {
+            "Action": "CASetPermissionBOINC",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 6607
+        },
+        {
+            "Action": "CASetPermissionBOINCData",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 6609
+        },
+        {
+            "Action": "CASetPermissionBOINCDataProjects",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 6610
+        },
+        {
+            "Action": "CASetPermissionBOINCDataSlots",
+            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Sequence": 6611
+        },
+        {
+            "Action": "CAShutdownBOINC",
+            "Condition": "VersionNT",
+            "Sequence": 403
+        },
+        {
+            "Action": "CAShutdownBOINCManager",
+            "Condition": "VersionNT",
+            "Sequence": 404
+        },
+        {
+            "Action": "CAShutdownBOINCScreensaver",
+            "Condition": "VersionNT",
+            "Sequence": 408
+        },
+        {
+            "Action": "CAValidateInstall",
+            "Condition": "REMOVE <> \"ALL\"",
+            "Sequence": 6602
+        },
+        {
+            "Action": "CAValidateRebootRequest",
+            "Condition": "REMOVE <> \"ALL\" AND RETURN_REBOOTREQUESTED = \"1\"",
+            "Sequence": 6603
+        },
+        {
+            "Action": "CAValidateSetupType",
+            "Sequence": 737
+        },
+        {
+            "Action": "CCPSearch",
+            "Condition": "CCP_TEST",
+            "Sequence": 500
+        },
+        {
+            "Action": "CostFinalize",
+            "Sequence": 1000
+        },
+        {
+            "Action": "CostInitialize",
+            "Sequence": 800
+        },
+        {
+            "Action": "CreateFolders",
+            "Sequence": 3700
+        },
+        {
+            "Action": "CreateShortcuts",
+            "Sequence": 4500
+        },
+        {
+            "Action": "DeleteServices",
+            "Condition": "VersionNT",
+            "Sequence": 2000
+        },
+        {
+            "Action": "DuplicateFiles",
+            "Sequence": 4210
+        },
+        {
+            "Action": "FileCost",
+            "Sequence": 900
+        },
+        {
+            "Action": "FindRelatedProducts",
+            "Condition": "NOT ISSETUPDRIVEN",
+            "Sequence": 420
+        },
+        {
+            "Action": "ISPreventDowngrade",
+            "Condition": "ISFOUNDNEWERPRODUCTVERSION",
+            "Sequence": 450
+        },
+        {
+            "Action": "ISSetAllUsers",
+            "Condition": "Not Installed",
+            "Sequence": 10
+        },
+        {
+            "Action": "ISSetupFilesCleanup",
+            "Sequence": 6615
+        },
+        {
+            "Action": "ISSetupFilesExtract",
+            "Sequence": 3
+        },
+        {
+            "Action": "InstallFiles",
+            "Sequence": 4000
+        },
+        {
+            "Action": "InstallFinalize",
+            "Sequence": 6601
+        },
+        {
+            "Action": "InstallInitialize",
+            "Sequence": 1501
+        },
+        {
+            "Action": "InstallODBC",
+            "Sequence": 5400
+        },
+        {
+            "Action": "InstallServices",
+            "Condition": "VersionNT",
+            "Sequence": 5800
+        },
+        {
+            "Action": "InstallValidate",
+            "Sequence": 1400
+        },
+        {
+            "Action": "IsolateComponents",
+            "Sequence": 950
+        },
+        {
+            "Action": "LaunchConditions",
+            "Condition": "Not Installed",
+            "Sequence": 410
+        },
+        {
+            "Action": "MigrateFeatureStates",
+            "Sequence": 1200
+        },
+        {
+            "Action": "MoveFiles",
+            "Sequence": 3800
+        },
+        {
+            "Action": "MsiConfigureServices",
+            "Condition": "VersionMsi >= \"5.00\"",
+            "Sequence": 5801
+        },
+        {
+            "Action": "MsiPublishAssemblies",
+            "Sequence": 6250
+        },
+        {
+            "Action": "MsiUnpublishAssemblies",
+            "Sequence": 1750
+        },
+        {
+            "Action": "PatchFiles",
+            "Sequence": 4090
+        },
+        {
+            "Action": "ProcessComponents",
+            "Sequence": 1600
+        },
+        {
+            "Action": "PublishComponents",
+            "Sequence": 6200
+        },
+        {
+            "Action": "PublishFeatures",
+            "Sequence": 6300
+        },
+        {
+            "Action": "PublishProduct",
+            "Sequence": 6400
+        },
+        {
+            "Action": "RMCCPSearch",
+            "Condition": "Not CCP_SUCCESS And CCP_TEST",
+            "Sequence": 600
+        },
+        {
+            "Action": "RegisterClassInfo",
+            "Sequence": 4600
+        },
+        {
+            "Action": "RegisterComPlus",
+            "Sequence": 5700
+        },
+        {
+            "Action": "RegisterExtensionInfo",
+            "Sequence": 4700
+        },
+        {
+            "Action": "RegisterFonts",
+            "Sequence": 5300
+        },
+        {
+            "Action": "RegisterMIMEInfo",
+            "Sequence": 4900
+        },
+        {
+            "Action": "RegisterProduct",
+            "Sequence": 6100
+        },
+        {
+            "Action": "RegisterProgIdInfo",
+            "Sequence": 4800
+        },
+        {
+            "Action": "RegisterTypeLibraries",
+            "Sequence": 5500
+        },
+        {
+            "Action": "RegisterUser",
+            "Sequence": 6000
+        },
+        {
+            "Action": "RemoveDuplicateFiles",
+            "Sequence": 3400
+        },
+        {
+            "Action": "RemoveEnvironmentStrings",
+            "Sequence": 3300
+        },
+        {
+            "Action": "RemoveExistingProducts",
+            "Sequence": 1410
+        },
+        {
+            "Action": "RemoveFiles",
+            "Sequence": 3500
+        },
+        {
+            "Action": "RemoveFolders",
+            "Sequence": 3600
+        },
+        {
+            "Action": "RemoveIniValues",
+            "Sequence": 3100
+        },
+        {
+            "Action": "RemoveODBC",
+            "Sequence": 2400
+        },
+        {
+            "Action": "RemoveRegistryValues",
+            "Sequence": 2600
+        },
+        {
+            "Action": "RemoveShortcuts",
+            "Sequence": 3200
+        },
+        {
+            "Action": "ResolveSource",
+            "Condition": "_IsMaintenance <> \"Remove\"",
+            "Sequence": 850
+        },
+        {
+            "Action": "ScheduleReboot",
+            "Condition": "ISSCHEDULEREBOOT",
+            "Sequence": 6410
+        },
+        {
+            "Action": "SelfRegModules",
+            "Sequence": 5600
+        },
+        {
+            "Action": "SelfUnregModules",
+            "Sequence": 2200
+        },
+        {
+            "Action": "SetARPINSTALLLOCATION",
+            "Condition": "Not Installed",
+            "Sequence": 1010
+        },
+        {
+            "Action": "SetARPReadme",
+            "Sequence": 1005
+        },
+        {
+            "Action": "SetODBCFolders",
+            "Sequence": 1100
+        },
+        {
+            "Action": "StartServices",
+            "Condition": "VersionNT",
+            "Sequence": 5900
+        },
+        {
+            "Action": "StopServices",
+            "Condition": "VersionNT",
+            "Sequence": 1900
+        },
+        {
+            "Action": "UnpublishComponents",
+            "Sequence": 1700
+        },
+        {
+            "Action": "UnpublishFeatures",
+            "Sequence": 1800
+        },
+        {
+            "Action": "UnregisterClassInfo",
+            "Sequence": 2700
+        },
+        {
+            "Action": "UnregisterComPlus",
+            "Sequence": 2100
+        },
+        {
+            "Action": "UnregisterExtensionInfo",
+            "Sequence": 2800
+        },
+        {
+            "Action": "UnregisterFonts",
+            "Sequence": 2500
+        },
+        {
+            "Action": "UnregisterMIMEInfo",
+            "Sequence": 3000
+        },
+        {
+            "Action": "UnregisterProgIdInfo",
+            "Sequence": 2900
+        },
+        {
+            "Action": "UnregisterTypeLibraries",
+            "Sequence": 2300
+        },
+        {
+            "Action": "ValidateProductID",
+            "Sequence": 700
+        },
+        {
+            "Action": "WriteEnvironmentStrings",
+            "Sequence": 5200
+        },
+        {
+            "Action": "WriteIniValues",
+            "Sequence": 5100
+        },
+        {
+            "Action": "WriteRegistryValues",
+            "Sequence": 5000
+        }
+    ],
+    "InstallUISequence": [
+        {
+            "Action": "AppSearch",
+            "Sequence": 400
+        },
+        {
+            "Action": "CARestoreExecutionState",
+            "Sequence": 1352
+        },
+        {
+            "Action": "CARestoreSetupState",
+            "Sequence": 6
+        },
+        {
+            "Action": "CCPSearch",
+            "Condition": "CCP_TEST",
+            "Sequence": 500
+        },
+        {
+            "Action": "CostFinalize",
+            "Sequence": 1000
+        },
+        {
+            "Action": "CostInitialize",
+            "Sequence": 800
+        },
+        {
+            "Action": "ExecuteAction",
+            "Sequence": 1300
+        },
+        {
+            "Action": "FileCost",
+            "Sequence": 900
+        },
+        {
+            "Action": "FindRelatedProducts",
+            "Sequence": 430
+        },
+        {
+            "Action": "ISPreventDowngrade",
+            "Condition": "ISFOUNDNEWERPRODUCTVERSION",
+            "Sequence": 450
+        },
+        {
+            "Action": "ISSetAllUsers",
+            "Condition": "Not Installed",
+            "Sequence": 10
+        },
+        {
+            "Action": "ISSetupFilesCleanup",
+            "Sequence": 1302
+        },
+        {
+            "Action": "ISSetupFilesExtract",
+            "Sequence": 3
+        },
+        {
+            "Action": "InstallWelcome",
+            "Condition": "Not Installed And (Not PATCH Or IS_MAJOR_UPGRADE)",
+            "Sequence": 1210
+        },
+        {
+            "Action": "IsolateComponents",
+            "Sequence": 950
+        },
+        {
+            "Action": "LaunchConditions",
+            "Condition": "Not Installed",
+            "Sequence": 410
+        },
+        {
+            "Action": "MaintenanceWelcome",
+            "Condition": "Installed And Not RESUME And Not Preselected And Not PATCH",
+            "Sequence": 1230
+        },
+        {
+            "Action": "MigrateFeatureStates",
+            "Sequence": 1200
+        },
+        {
+            "Action": "PatchWelcome",
+            "Condition": "PATCH And Not IS_MAJOR_UPGRADE",
+            "Sequence": 1205
+        },
+        {
+            "Action": "RMCCPSearch",
+            "Condition": "Not CCP_SUCCESS And CCP_TEST",
+            "Sequence": 600
+        },
+        {
+            "Action": "ResolveSource",
+            "Condition": "Not Installed And Not PATCH",
+            "Sequence": 990
+        },
+        {
+            "Action": "SetARPReadme",
+            "Sequence": 1002
+        },
+        {
+            "Action": "SetAllUsersProfileNT",
+            "Condition": "VersionNT = 400",
+            "Sequence": 970
+        },
+        {
+            "Action": "SetupCompleteError",
+            "Sequence": -3
+        },
+        {
+            "Action": "SetupCompleteSuccess",
+            "Sequence": -1
+        },
+        {
+            "Action": "SetupInitialization",
+            "Sequence": 420
+        },
+        {
+            "Action": "SetupInterrupted",
+            "Sequence": -2
+        },
+        {
+            "Action": "SetupProgress",
+            "Sequence": 1240
+        },
+        {
+            "Action": "SetupResume",
+            "Condition": "Installed And (RESUME Or Preselected) And Not PATCH",
+            "Sequence": 1220
+        },
+        {
+            "Action": "ValidateProductID",
+            "Sequence": 700
+        },
+        {
+            "Action": "setAllUsersProfile2K",
+            "Condition": "VersionNT >= 500",
+            "Sequence": 980
+        },
+        {
+            "Action": "setUserProfileNT",
+            "Condition": "VersionNT",
+            "Sequence": 960
+        }
+    ],
+    "Dialog": [
+        {
+            "Dialog": "AdminChangeFolder",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Tail",
+            "Control_Default": "OK",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "ComboText"
+                },
+                {
+                    "Control": "Combo",
+                    "Type": "DirectoryCombo",
+                    "X": 21,
+                    "Y": 64,
+                    "Width": 277,
+                    "Height": 80,
+                    "Attributes": 458755,
+                    "Property": "TARGETDIR",
+                    "Text": "IDS__IsAdminInstallBrowse_4",
+                    "Control_Next": "Up"
+                },
+                {
+                    "Control": "ComboText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 50,
+                    "Width": 99,
+                    "Height": 14,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallBrowse_LookIn",
+                    "Control_Next": "Combo"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallBrowse_BrowseDestination"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallBrowse_ChangeDestination"
+                },
+                {
+                    "Control": "List",
+                    "Type": "DirectoryList",
+                    "X": 21,
+                    "Y": 90,
+                    "Width": 332,
+                    "Height": 97,
+                    "Attributes": 7,
+                    "Property": "TARGETDIR",
+                    "Text": "IDS__IsAdminInstallBrowse_8",
+                    "Control_Next": "TailText"
+                },
+                {
+                    "Control": "NewFolder",
+                    "Type": "PushButton",
+                    "X": 335,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "List",
+                    "Help": "IDS__IsAdminInstallBrowse_CreateFolder",
+                    "Binary_": "NewBinary2"
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_OK",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "Tail",
+                    "Type": "PathEdit",
+                    "X": 21,
+                    "Y": 207,
+                    "Width": 332,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Property": "TARGETDIR",
+                    "Text": "IDS__IsAdminInstallBrowse_11",
+                    "Control_Next": "OK"
+                },
+                {
+                    "Control": "TailText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 193,
+                    "Width": 99,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallBrowse_FolderName",
+                    "Control_Next": "Tail"
+                },
+                {
+                    "Control": "Up",
+                    "Type": "PushButton",
+                    "X": 310,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "NewFolder",
+                    "Help": "IDS__IsAdminInstallBrowse_UpOneLevel",
+                    "Binary_": "NewBinary3"
+                }
+            ]
+        },
+        {
+            "Dialog": "AdminNetworkLocation",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "InstallNow",
+            "Control_Default": "InstallNow",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "InstallNow"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Browse",
+                    "Type": "PushButton",
+                    "X": 286,
+                    "Y": 124,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallPoint_Change",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "SetupPathEdit"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallPoint_SpecifyNetworkLocation"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 326,
+                    "Height": 40,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallPoint_EnterNetworkLocation"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallPoint_NetworkLocationFormatted"
+                },
+                {
+                    "Control": "InstallNow",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallPoint_Install",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "LBBrowse",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 90,
+                    "Width": 100,
+                    "Height": 10,
+                    "Attributes": 3,
+                    "Text": "IDS__IsAdminInstallPoint_NetworkLocation"
+                },
+                {
+                    "Control": "SetupPathEdit",
+                    "Type": "PathEdit",
+                    "X": 21,
+                    "Y": 102,
+                    "Width": 330,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Property": "TARGETDIR",
+                    "Control_Next": "Browse"
+                }
+            ]
+        },
+        {
+            "Dialog": "AdminWelcome",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallPointWelcome_Wizard"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsAdminInstallPointWelcome_ServerImage"
+                }
+            ]
+        },
+        {
+            "Dialog": "CancelSetup",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 260,
+            "Height": 85,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "No",
+            "Control_Default": "No",
+            "Control_Cancel": "No",
+            "Controls": [
+                {
+                    "Control": "Icon",
+                    "Type": "Icon",
+                    "X": 15,
+                    "Y": 15,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5242881,
+                    "Binary_": "NewBinary4"
+                },
+                {
+                    "Control": "No",
+                    "Type": "PushButton",
+                    "X": 135,
+                    "Y": 57,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsCancelDlg_No",
+                    "Control_Next": "Yes"
+                },
+                {
+                    "Control": "Text",
+                    "Type": "Text",
+                    "X": 48,
+                    "Y": 15,
+                    "Width": 194,
+                    "Height": 30,
+                    "Attributes": 3,
+                    "Text": "IDS__IsCancelDlg_ConfirmCancel"
+                },
+                {
+                    "Control": "Yes",
+                    "Type": "PushButton",
+                    "X": 62,
+                    "Y": 57,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsCancelDlg_Yes",
+                    "Control_Next": "No"
+                }
+            ]
+        },
+        {
+            "Dialog": "ChangeFolderData",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Tail",
+            "Control_Default": "OK",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "ComboText"
+                },
+                {
+                    "Control": "Combo",
+                    "Type": "DirectoryCombo",
+                    "X": 21,
+                    "Y": 64,
+                    "Width": 277,
+                    "Height": 80,
+                    "Attributes": 4128779,
+                    "Property": "_BrowseDataProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_4",
+                    "Control_Next": "Up"
+                },
+                {
+                    "Control": "ComboText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 50,
+                    "Width": 99,
+                    "Height": 14,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_LookIn",
+                    "Control_Next": "Combo"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsBrowseFolderDlg_BrowseDestFolder"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsBrowseFolderDlg_ChangeCurrentFolder"
+                },
+                {
+                    "Control": "List",
+                    "Type": "DirectoryList",
+                    "X": 21,
+                    "Y": 90,
+                    "Width": 332,
+                    "Height": 97,
+                    "Attributes": 15,
+                    "Property": "_BrowseDataProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_8",
+                    "Control_Next": "TailText"
+                },
+                {
+                    "Control": "NewFolder",
+                    "Type": "PushButton",
+                    "X": 335,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "List",
+                    "Help": "IDS__IsBrowseFolderDlg_CreateFolder",
+                    "Binary_": "NewBinary2"
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_OK",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "Tail",
+                    "Type": "PathEdit",
+                    "X": 21,
+                    "Y": 207,
+                    "Width": 332,
+                    "Height": 17,
+                    "Attributes": 15,
+                    "Property": "_BrowseDataProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_11",
+                    "Control_Next": "OK"
+                },
+                {
+                    "Control": "TailText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 193,
+                    "Width": 99,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_FolderName",
+                    "Control_Next": "Tail"
+                },
+                {
+                    "Control": "Up",
+                    "Type": "PushButton",
+                    "X": 310,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "NewFolder",
+                    "Help": "IDS__IsBrowseFolderDlg_UpOneLevel",
+                    "Binary_": "NewBinary3"
+                }
+            ]
+        },
+        {
+            "Dialog": "ChangeFolderInstall",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Tail",
+            "Control_Default": "OK",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "ComboText"
+                },
+                {
+                    "Control": "Combo",
+                    "Type": "DirectoryCombo",
+                    "X": 21,
+                    "Y": 64,
+                    "Width": 277,
+                    "Height": 80,
+                    "Attributes": 4128779,
+                    "Property": "_BrowseInstallProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_4",
+                    "Control_Next": "Up"
+                },
+                {
+                    "Control": "ComboText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 50,
+                    "Width": 99,
+                    "Height": 14,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_LookIn",
+                    "Control_Next": "Combo"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsBrowseFolderDlg_BrowseDestFolder"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsBrowseFolderDlg_ChangeCurrentFolder"
+                },
+                {
+                    "Control": "List",
+                    "Type": "DirectoryList",
+                    "X": 21,
+                    "Y": 90,
+                    "Width": 332,
+                    "Height": 97,
+                    "Attributes": 15,
+                    "Property": "_BrowseInstallProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_8",
+                    "Control_Next": "TailText"
+                },
+                {
+                    "Control": "NewFolder",
+                    "Type": "PushButton",
+                    "X": 335,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "List",
+                    "Help": "IDS__IsBrowseFolderDlg_CreateFolder",
+                    "Binary_": "NewBinary2"
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_OK",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "Tail",
+                    "Type": "PathEdit",
+                    "X": 21,
+                    "Y": 207,
+                    "Width": 332,
+                    "Height": 17,
+                    "Attributes": 15,
+                    "Property": "_BrowseInstallProperty",
+                    "Text": "IDS__IsBrowseFolderDlg_11",
+                    "Control_Next": "OK"
+                },
+                {
+                    "Control": "TailText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 193,
+                    "Width": 99,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Text": "IDS__IsBrowseFolderDlg_FolderName",
+                    "Control_Next": "Tail"
+                },
+                {
+                    "Control": "Up",
+                    "Type": "PushButton",
+                    "X": 310,
+                    "Y": 66,
+                    "Width": 19,
+                    "Height": 19,
+                    "Attributes": 3670019,
+                    "Control_Next": "NewFolder",
+                    "Help": "IDS__IsBrowseFolderDlg_UpOneLevel",
+                    "Binary_": "NewBinary3"
+                }
+            ]
+        },
+        {
+            "Dialog": "DiskSpaceRequirements",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "OK",
+            "Control_Default": "OK",
+            "Control_Cancel": "OK",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 17,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFeatureDetailsDlg_SpaceRequired"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 10,
+                    "Y": 185,
+                    "Width": 358,
+                    "Height": 41,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFeatureDetailsDlg_VolumesTooSmall"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 9,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFeatureDetailsDlg_DiskSpaceRequirements"
+                },
+                {
+                    "Control": "List",
+                    "Type": "VolumeCostList",
+                    "X": 8,
+                    "Y": 55,
+                    "Width": 358,
+                    "Height": 125,
+                    "Attributes": 393223,
+                    "Text": "IDS__IsFeatureDetailsDlg_Numbers"
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFeatureDetailsDlg_OK"
+                }
+            ]
+        },
+        {
+            "Dialog": "FeatureNotSupported",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Back",
+            "Control_Default": "Back",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "InteriorBin1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__FeatueNotSupportedDlg_DialogDescription"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__FeatueNotSupportedDlg_DialogTitle"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_NEXT"
+                }
+            ]
+        },
+        {
+            "Dialog": "FilesInUse",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 19,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Retry",
+            "Control_Default": "Retry",
+            "Control_Cancel": "Exit",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFilesInUse_FilesInUseMessage"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 348,
+                    "Height": 29,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFilesInUse_ApplicationsUsingFiles"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFilesInUse_FilesInUse"
+                },
+                {
+                    "Control": "Exit",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFilesInUse_Exit",
+                    "Control_Next": "List"
+                },
+                {
+                    "Control": "Ignore",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFilesInUse_Ignore",
+                    "Control_Next": "Exit"
+                },
+                {
+                    "Control": "List",
+                    "Type": "ListBox",
+                    "X": 21,
+                    "Y": 87,
+                    "Width": 331,
+                    "Height": 135,
+                    "Attributes": 7,
+                    "Property": "FileInUseProcess",
+                    "Control_Next": "Retry"
+                },
+                {
+                    "Control": "Retry",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFilesInUse_Retry",
+                    "Control_Next": "Ignore"
+                }
+            ]
+        },
+        {
+            "Dialog": "InstallWelcome",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Copyright"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "Copyright",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 144,
+                    "Width": 228,
+                    "Height": 73,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsWelcomeDlg_WarningCopyright",
+                    "Control_Next": "Next",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "SHOWCOPYRIGHT=\"No\""
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "SHOWCOPYRIGHT=\"Yes\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsWelcomeDlg_WelcomeProductName"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsWelcomeDlg_InstallProductName"
+                }
+            ]
+        },
+        {
+            "Dialog": "LicenseAgreement",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 2,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Agree",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Agree",
+                    "Type": "RadioButtonGroup",
+                    "X": 8,
+                    "Y": 190,
+                    "Width": 291,
+                    "Height": 40,
+                    "Attributes": 3,
+                    "Property": "AgreeToLicense",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "ISPrintButton"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsLicenseDlg_ReadLicenseAgreement"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsLicenseDlg_LicenseAgreement"
+                },
+                {
+                    "Control": "ISPrintButton",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 188,
+                    "Width": 65,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_PRINT_BUTTON",
+                    "Control_Next": "Agree"
+                },
+                {
+                    "Control": "Memo",
+                    "Type": "ScrollableText",
+                    "X": 8,
+                    "Y": 55,
+                    "Width": 358,
+                    "Height": 130,
+                    "Attributes": 7
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel",
+                    "Conditions": [
+                        {
+                            "Action": "Disable",
+                            "Condition": "AgreeToLicense <> \"Yes\""
+                        },
+                        {
+                            "Action": "Enable",
+                            "Condition": "AgreeToLicense = \"Yes\""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Dialog": "MaintenanceType",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "RadioGroup",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "RadioGroup"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsMaintenanceDlg_MaitenanceOptions"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsMaintenanceDlg_ProgramMaintenance"
+                },
+                {
+                    "Control": "Ico2",
+                    "Type": "Icon",
+                    "X": 35,
+                    "Y": 75,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary7"
+                },
+                {
+                    "Control": "Ico3",
+                    "Type": "Icon",
+                    "X": 35,
+                    "Y": 135,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary8"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "RadioGroup",
+                    "Type": "RadioButtonGroup",
+                    "X": 21,
+                    "Y": 55,
+                    "Width": 290,
+                    "Height": 170,
+                    "Attributes": 3,
+                    "Property": "_IsMaintenance",
+                    "Text": "IDS__IsMaintenanceDlg_11",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "Text2",
+                    "Type": "Text",
+                    "X": 80,
+                    "Y": 75,
+                    "Width": 260,
+                    "Height": 35,
+                    "Attributes": 3,
+                    "Text": "IDS__IsMaintenanceDlg_RepairMessage"
+                },
+                {
+                    "Control": "Text3",
+                    "Type": "Text",
+                    "X": 80,
+                    "Y": 135,
+                    "Width": 260,
+                    "Height": 35,
+                    "Attributes": 3,
+                    "Text": "IDS__IsMaintenanceDlg_RemoveProductName"
+                }
+            ]
+        },
+        {
+            "Dialog": "MaintenanceWelcome",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsMaintenanceWelcome_WizardWelcome"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 50,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsMaintenanceWelcome_MaintenanceOptionsDescription"
+                }
+            ]
+        },
+        {
+            "Dialog": "MsiRMFilesInUse",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 19,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "OK",
+            "Control_Default": "OK",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Restart"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFilesInUse_FilesInUseMessage"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 348,
+                    "Height": 14,
+                    "Attributes": 3,
+                    "Text": "IDS__IsMsiRMFilesInUse_ApplicationsUsingFiles"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFilesInUse_FilesInUse"
+                },
+                {
+                    "Control": "List",
+                    "Type": "ListBox",
+                    "X": 21,
+                    "Y": 66,
+                    "Width": 331,
+                    "Height": 130,
+                    "Attributes": 3,
+                    "Property": "FileInUseProcess",
+                    "Control_Next": "OK"
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_OK",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "Restart",
+                    "Type": "RadioButtonGroup",
+                    "X": 19,
+                    "Y": 187,
+                    "Width": 343,
+                    "Height": 40,
+                    "Attributes": 3,
+                    "Property": "RestartManagerOption",
+                    "Control_Next": "List"
+                }
+            ]
+        },
+        {
+            "Dialog": "OutOfSpace",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Resume",
+            "Control_Default": "Resume",
+            "Control_Cancel": "Resume",
+            "Controls": [
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsDiskSpaceDlg_DiskSpace"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 326,
+                    "Height": 43,
+                    "Attributes": 3,
+                    "Text": "IDS__IsDiskSpaceDlg_HighlightedVolumes"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsDiskSpaceDlg_OutOfDiskSpace"
+                },
+                {
+                    "Control": "List",
+                    "Type": "VolumeCostList",
+                    "X": 21,
+                    "Y": 95,
+                    "Width": 332,
+                    "Height": 120,
+                    "Attributes": 393223,
+                    "Text": "IDS__IsDiskSpaceDlg_Numbers"
+                },
+                {
+                    "Control": "Resume",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsDiskSpaceDlg_OK"
+                }
+            ]
+        },
+        {
+            "Dialog": "PatchWelcome",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS__IsPatchDlg_PatchWizard",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsPatchDlg_Update",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsPatchDlg_WelcomePatchWizard"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 54,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsPatchDlg_PatchClickUpdate"
+                }
+            ]
+        },
+        {
+            "Dialog": "ReadyToInstall",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 35,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "InstallNow",
+            "Control_Default": "InstallNow",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "InstallNow"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsVerifyReadyDlg_WizardReady"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 326,
+                    "Height": 20,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyReadyDlg_ClickInstall"
+                },
+                {
+                    "Control": "DlgText1",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 70,
+                    "Width": 330,
+                    "Height": 24,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyReadyDlg_BackOrCancel"
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsVerifyReadyDlg_ModifyReady",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType0=\"Modify\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgTitle2",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsVerifyReadyDlg_ReadyRepair",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType0=\"Repair\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgTitle3",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsVerifyReadyDlg_ReadyInstall",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType0=\"install\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "InstallNow",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyReadyDlg_Install",
+                    "Control_Next": "Cancel"
+                }
+            ]
+        },
+        {
+            "Dialog": "ReadyToRemove",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "RemoveNow",
+            "Control_Default": "RemoveNow",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "RemoveNow"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsVerifyRemoveAllDlg_ChoseRemoveProgram"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 326,
+                    "Height": 24,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyRemoveAllDlg_ClickRemove"
+                },
+                {
+                    "Control": "DlgText1",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 79,
+                    "Width": 330,
+                    "Height": 23,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyRemoveAllDlg_ClickBack"
+                },
+                {
+                    "Control": "DlgText2",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 102,
+                    "Width": 330,
+                    "Height": 24,
+                    "Attributes": 3
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsVerifyRemoveAllDlg_RemoveProgram"
+                },
+                {
+                    "Control": "RemoveNow",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsVerifyRemoveAllDlg_Remove",
+                    "Control_Next": "Cancel"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupCompleteError",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Finish",
+            "Control_Default": "Finish",
+            "Control_Cancel": "Finish",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Finish",
+                    "Conditions": [
+                        {
+                            "Action": "Default",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Enable",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back",
+                    "Conditions": [
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Enable",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Finish",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsFatalError_Finish",
+                    "Control_Next": "Cancel",
+                    "Conditions": [
+                        {
+                            "Action": "Default",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "FinishText1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 80,
+                    "Width": 228,
+                    "Height": 50,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_NotModified",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "FinishText2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 135,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_ClickFinish",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "RestContText1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 80,
+                    "Width": 228,
+                    "Height": 50,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_KeepOrRestore",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "RestContText2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 135,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_RestoreOrContinueLater",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_WizardCompleted"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsFatalError_WizardInterrupted"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupCompleteSuccess",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "OK",
+            "Control_Default": "LaunchProgramCheck",
+            "Control_Cancel": "OK",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "LaunchProgramCheck"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Image"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Control_Next": "Back",
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "LaunchProgramCheck",
+                    "Type": "CheckBox",
+                    "X": 151,
+                    "Y": 114,
+                    "Width": 10,
+                    "Height": 9,
+                    "Attributes": 2,
+                    "Property": "LAUNCHPROGRAM",
+                    "Control_Next": "LaunchProgramText",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "PROGRAMFILETOLAUNCHATEND <> \"\" And ACTION <> \"ADMIN\" And RETURN_VALIDATEINSTALL = \"1\" And RETURN_REBOOTREQUESTED = \"0\" And NOT Installed"
+                        }
+                    ]
+                },
+                {
+                    "Control": "LaunchProgramText",
+                    "Type": "Text",
+                    "X": 165,
+                    "Y": 114,
+                    "Width": 198,
+                    "Height": 15,
+                    "Attributes": 65538,
+                    "Property": "NewProperty1",
+                    "Text": "NEW_STRING2",
+                    "Control_Next": "OK",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "PROGRAMFILETOLAUNCHATEND <> \"\" And ACTION <> \"ADMIN\" And RETURN_VALIDATEINSTALL = \"1\" And RETURN_REBOOTREQUESTED = \"0\" And NOT Installed"
+                        }
+                    ]
+                },
+                {
+                    "Control": "OK",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsExitDialog_Finish",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "RebootText",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 140,
+                    "Width": 225,
+                    "Height": 35,
+                    "Attributes": 65538,
+                    "Text": "NEW_STRING28",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "RETURN_REBOOTREQUESTED = \"1\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "RepairText",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 178,
+                    "Width": 225,
+                    "Height": 52,
+                    "Attributes": 65538,
+                    "Text": "NEW_STRING29",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "RETURN_VALIDATEINSTALL = \"0\" AND _IsMaintenance <> \"Remove\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsExitDialog_WizardCompleted"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsExitDialog_InstallSuccess",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType2=\"installed\" And ((ACTION<>\"INSTALL\") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))"
+                        }
+                    ]
+                },
+                {
+                    "Control": "TextLine3",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsExitDialog_UninstallSuccess",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType2=\"uninstalled\" And ((ACTION<>\"INSTALL\") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))"
+                        }
+                    ]
+                },
+                {
+                    "Control": "UpdateTextLine1",
+                    "Type": "Text",
+                    "X": 134,
+                    "Y": 30,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsExitDialog_Update_SetupFinished",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ISENABLEDWUSFINISHDIALOG And NOT Installed And ACTION=\"INSTALL\""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupConfig",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "ID_STRING18",
+            "Control_First": "Advanced",
+            "Control_Default": "CheckBox4",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Advanced",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 209,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "NEW_STRING1",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING14",
+                    "Control_Next": "CheckBox4"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "InteriorBin1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Branding1",
+                    "Type": "Text",
+                    "X": 4,
+                    "Y": 229,
+                    "Width": 50,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Text": "ID_STRING19"
+                },
+                {
+                    "Control": "Branding2",
+                    "Type": "Text",
+                    "X": 3,
+                    "Y": 228,
+                    "Width": 50,
+                    "Height": 13,
+                    "Attributes": 65537,
+                    "Text": "ID_STRING20"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING15"
+                },
+                {
+                    "Control": "CheckBox2",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 127,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 1,
+                    "Property": "ENABLESCREENSAVER",
+                    "Text": "NEW_STRING22",
+                    "Control_Next": "CheckBox3"
+                },
+                {
+                    "Control": "CheckBox3",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 143,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 1,
+                    "Property": "ENABLEPROTECTEDAPPLICATIONEXECUTION3",
+                    "Text": "NEW_STRING24",
+                    "Control_Next": "Advanced"
+                },
+                {
+                    "Control": "CheckBox4",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 185,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 1,
+                    "Property": "ENABLEUSEBYALLUSERS",
+                    "Text": "NEW_STRING25",
+                    "Control_Next": "CheckBox2"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "ID_STRING17"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 12,
+                    "Y": 5,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "ID_STRING16"
+                },
+                {
+                    "Control": "Icon1",
+                    "Type": "Icon",
+                    "X": 21,
+                    "Y": 52,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary12"
+                },
+                {
+                    "Control": "Icon2",
+                    "Type": "Icon",
+                    "X": 21,
+                    "Y": 87,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary12"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING13"
+                },
+                {
+                    "Control": "Text1",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 65,
+                    "Width": 240,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "_BrowseInstallProperty",
+                    "Text": "NEW_STRING16"
+                },
+                {
+                    "Control": "Text2",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 52,
+                    "Width": 290,
+                    "Height": 12,
+                    "Attributes": 3,
+                    "Property": "NewProperty1",
+                    "Text": "NEW_STRING17"
+                },
+                {
+                    "Control": "Text3",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 100,
+                    "Width": 240,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "_BrowseDataProperty1",
+                    "Text": "NEW_STRING18"
+                },
+                {
+                    "Control": "Text4",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 202,
+                    "Width": 267,
+                    "Height": 22,
+                    "Attributes": 3,
+                    "Property": "NewProperty211",
+                    "Text": "NEW_STRING27"
+                },
+                {
+                    "Control": "Text5",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 87,
+                    "Width": 290,
+                    "Height": 11,
+                    "Attributes": 3,
+                    "Property": "NewProperty21",
+                    "Text": "NEW_STRING21"
+                },
+                {
+                    "Control": "Text6",
+                    "Type": "Text",
+                    "X": 34,
+                    "Y": 159,
+                    "Width": 328,
+                    "Height": 25,
+                    "Attributes": 1,
+                    "Text": "NEW_STRING30"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupConfigAdvanced",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "ID_STRING26",
+            "Control_First": "Next",
+            "Control_Default": "CheckBox4",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING22",
+                    "Control_Next": "ChangeInstall"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "InteriorBin1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Branding1",
+                    "Type": "Text",
+                    "X": 4,
+                    "Y": 229,
+                    "Width": 50,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Text": "ID_STRING27"
+                },
+                {
+                    "Control": "Branding2",
+                    "Type": "Text",
+                    "X": 3,
+                    "Y": 228,
+                    "Width": 50,
+                    "Height": 13,
+                    "Attributes": 65537,
+                    "Text": "ID_STRING28"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING23",
+                    "Control_Next": "ChangeData"
+                },
+                {
+                    "Control": "ChangeData",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 100,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "NEW_STRING8",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "ChangeInstall",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 65,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "NEW_STRING5",
+                    "Control_Next": "CheckBox4"
+                },
+                {
+                    "Control": "CheckBox2",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 127,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "ENABLESCREENSAVER",
+                    "Text": "NEW_STRING12",
+                    "Control_Next": "CheckBox3"
+                },
+                {
+                    "Control": "CheckBox3",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 143,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "ENABLEPROTECTEDAPPLICATIONEXECUTION3",
+                    "Text": "NEW_STRING13",
+                    "Control_Next": "Next",
+                    "Conditions": [
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT VersionNT"
+                        }
+                    ]
+                },
+                {
+                    "Control": "CheckBox4",
+                    "Type": "CheckBox",
+                    "X": 21,
+                    "Y": 210,
+                    "Width": 331,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "ENABLEUSEBYALLUSERS",
+                    "Text": "NEW_STRING15",
+                    "Control_Next": "CheckBox2",
+                    "Conditions": [
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT VersionNT"
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "ID_STRING25"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "ID_STRING24"
+                },
+                {
+                    "Control": "Icon1",
+                    "Type": "Icon",
+                    "X": 21,
+                    "Y": 52,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary12"
+                },
+                {
+                    "Control": "Icon2",
+                    "Type": "Icon",
+                    "X": 21,
+                    "Y": 87,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5767169,
+                    "Binary_": "NewBinary12"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "ID_STRING21",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "Text1",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 65,
+                    "Width": 240,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "_BrowseInstallProperty",
+                    "Text": "NEW_STRING6"
+                },
+                {
+                    "Control": "Text2",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 52,
+                    "Width": 290,
+                    "Height": 11,
+                    "Attributes": 3,
+                    "Property": "NewProperty1",
+                    "Text": "NEW_STRING7"
+                },
+                {
+                    "Control": "Text3",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 100,
+                    "Width": 240,
+                    "Height": 13,
+                    "Attributes": 3,
+                    "Property": "_BrowseDataProperty",
+                    "Text": "NEW_STRING9"
+                },
+                {
+                    "Control": "Text4",
+                    "Type": "Text",
+                    "X": 57,
+                    "Y": 87,
+                    "Width": 290,
+                    "Height": 11,
+                    "Attributes": 3,
+                    "Property": "NewProperty2",
+                    "Text": "NEW_STRING10"
+                },
+                {
+                    "Control": "Text5",
+                    "Type": "Text",
+                    "X": 34,
+                    "Y": 158,
+                    "Width": 328,
+                    "Height": 44,
+                    "Attributes": 3,
+                    "Text": "IS_STRING_NOT_DEFINED",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "VersionNT >= 600"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "Version9X OR VersionNT < 600"
+                        }
+                    ]
+                },
+                {
+                    "Control": "Text6",
+                    "Type": "Text",
+                    "X": 34,
+                    "Y": 158,
+                    "Width": 328,
+                    "Height": 44,
+                    "Attributes": 3,
+                    "Property": "NewProperty1",
+                    "Text": "NEW_STRING31",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "Version9X OR VersionNT < 600"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "VersionNT >= 600"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupError",
+            "HCentering": 50,
+            "VCentering": 10,
+            "Width": 270,
+            "Height": 110,
+            "Attributes": 65543,
+            "Title": "IDS__IsErrorDlg_InstallerInfo",
+            "Control_First": "ErrorText",
+            "Control_Default": "O",
+            "Control_Cancel": "C",
+            "Controls": [
+                {
+                    "Control": "A",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_Abort"
+                },
+                {
+                    "Control": "C",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL2"
+                },
+                {
+                    "Control": "ErrorText",
+                    "Type": "Text",
+                    "X": 50,
+                    "Y": 15,
+                    "Width": 200,
+                    "Height": 50,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_ErrorText"
+                },
+                {
+                    "Control": "I",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_Ignore"
+                },
+                {
+                    "Control": "N",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_NO"
+                },
+                {
+                    "Control": "O",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_OK"
+                },
+                {
+                    "Control": "R",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_Retry"
+                },
+                {
+                    "Control": "WarningIcon",
+                    "Type": "Icon",
+                    "X": 15,
+                    "Y": 15,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5242881,
+                    "Binary_": "NewBinary4"
+                },
+                {
+                    "Control": "Y",
+                    "Type": "PushButton",
+                    "X": 192,
+                    "Y": 80,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsErrorDlg_Yes"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupInitialization",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 5,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Cancel",
+            "Control_Default": "Cancel",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "ActionData",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 125,
+                    "Width": 228,
+                    "Height": 12,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsInitDlg_1"
+                },
+                {
+                    "Control": "ActionText",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 109,
+                    "Width": 220,
+                    "Height": 36,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsInitDlg_2"
+                },
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_NEXT"
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsInitDlg_WelcomeWizard"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 30,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsInitDlg_PreparingWizard"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupInterrupted",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Finish",
+            "Control_Default": "Finish",
+            "Control_Cancel": "Finish",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Conditions": [
+                        {
+                            "Action": "Default",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Enable",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_CANCEL",
+                    "Conditions": [
+                        {
+                            "Action": "Disable",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Enable",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Finish",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS__IsUserExit_Finish",
+                    "Conditions": [
+                        {
+                            "Action": "Default",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "FinishText1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 80,
+                    "Width": 228,
+                    "Height": 50,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_NotModified",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "FinishText2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 135,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_ClickFinish",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "NOT UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "RestContText1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 80,
+                    "Width": 228,
+                    "Height": 50,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_KeepOrRestore",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "RestContText2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 135,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_RestoreOrContinue",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "NOT UpdateStarted"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "UpdateStarted"
+                        }
+                    ]
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_WizardCompleted"
+                },
+                {
+                    "Control": "TextLine2",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 25,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsUserExit_WizardInterrupted"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupProgress",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 5,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Cancel",
+            "Control_Default": "Cancel",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "ActionProgress95",
+                    "Type": "ProgressBar",
+                    "X": 59,
+                    "Y": 113,
+                    "Width": 275,
+                    "Height": 12,
+                    "Attributes": 65537,
+                    "Text": "IDS__IsProgressDlg_ProgressDone"
+                },
+                {
+                    "Control": "ActionText",
+                    "Type": "Text",
+                    "X": 59,
+                    "Y": 100,
+                    "Width": 275,
+                    "Height": 12,
+                    "Attributes": 3,
+                    "Text": "IDS__IsProgressDlg_2"
+                },
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Banner",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 44,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary1"
+                },
+                {
+                    "Control": "BannerLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 44,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgDesc",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_UninstallingFeatures2",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType2=\"installed\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgDesc2",
+                    "Type": "Text",
+                    "X": 21,
+                    "Y": 23,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_UninstallingFeatures",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType2=\"uninstalled\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 326,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "DlgText",
+                    "Type": "Text",
+                    "X": 59,
+                    "Y": 51,
+                    "Width": 275,
+                    "Height": 30,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_WaitUninstall2",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType3=\"installs\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgText2",
+                    "Type": "Text",
+                    "X": 59,
+                    "Y": 51,
+                    "Width": 275,
+                    "Height": 30,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_WaitUninstall",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType3=\"uninstalls\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgTitle",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_InstallingProductName",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType1=\"Installing\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "DlgTitle2",
+                    "Type": "Text",
+                    "X": 13,
+                    "Y": 6,
+                    "Width": 292,
+                    "Height": 25,
+                    "Attributes": 65538,
+                    "Text": "IDS__IsProgressDlg_Uninstalling",
+                    "Conditions": [
+                        {
+                            "Action": "Show",
+                            "Condition": "ProgressType1=\"Uninstalling\""
+                        }
+                    ]
+                },
+                {
+                    "Control": "LbSec",
+                    "Type": "Text",
+                    "X": 172,
+                    "Y": 139,
+                    "Width": 32,
+                    "Height": 12,
+                    "Attributes": 2,
+                    "Text": "IDS__IsProgressDlg_SecHidden"
+                },
+                {
+                    "Control": "LbStatus",
+                    "Type": "Text",
+                    "X": 59,
+                    "Y": 85,
+                    "Width": 70,
+                    "Height": 12,
+                    "Attributes": 3,
+                    "Text": "IDS__IsProgressDlg_Status"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "SetupIcon",
+                    "Type": "Icon",
+                    "X": 21,
+                    "Y": 51,
+                    "Width": 24,
+                    "Height": 24,
+                    "Attributes": 5242881,
+                    "Binary_": "NewBinary9"
+                },
+                {
+                    "Control": "ShowTime",
+                    "Type": "Text",
+                    "X": 155,
+                    "Y": 139,
+                    "Width": 17,
+                    "Height": 12,
+                    "Attributes": 2,
+                    "Text": "IDS__IsProgressDlg_Hidden"
+                },
+                {
+                    "Control": "TextTime",
+                    "Type": "Text",
+                    "X": 59,
+                    "Y": 139,
+                    "Width": 96,
+                    "Height": 12,
+                    "Attributes": 2,
+                    "Text": "IDS__IsProgressDlg_HiddenTimeRemaining"
+                }
+            ]
+        },
+        {
+            "Dialog": "SetupResume",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 0,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 374,
+                    "Height": 234,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary5"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                },
+                {
+                    "Control": "PreselectedText",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 55,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsResumeDlg_WizardResume",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "RESUME"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "NOT RESUME"
+                        }
+                    ]
+                },
+                {
+                    "Control": "ResumeText",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 46,
+                    "Width": 228,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsResumeDlg_ResumeSuspended",
+                    "Conditions": [
+                        {
+                            "Action": "Hide",
+                            "Condition": "NOT RESUME"
+                        },
+                        {
+                            "Action": "Show",
+                            "Condition": "RESUME"
+                        }
+                    ]
+                },
+                {
+                    "Control": "TextLine1",
+                    "Type": "Text",
+                    "X": 135,
+                    "Y": 8,
+                    "Width": 225,
+                    "Height": 45,
+                    "Attributes": 65539,
+                    "Text": "IDS__IsResumeDlg_Resuming"
+                }
+            ]
+        },
+        {
+            "Dialog": "SplashBitmap",
+            "HCentering": 50,
+            "VCentering": 50,
+            "Width": 374,
+            "Height": 266,
+            "Attributes": 3,
+            "Title": "IDS_PRODUCTNAME_INSTALLSHIELD",
+            "Control_First": "Next",
+            "Control_Default": "Next",
+            "Control_Cancel": "Cancel",
+            "Controls": [
+                {
+                    "Control": "Back",
+                    "Type": "PushButton",
+                    "X": 164,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 1,
+                    "Text": "IDS_BACK",
+                    "Control_Next": "Next"
+                },
+                {
+                    "Control": "Cancel",
+                    "Type": "PushButton",
+                    "X": 301,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_CANCEL",
+                    "Control_Next": "Back"
+                },
+                {
+                    "Control": "DlgLine",
+                    "Type": "Line",
+                    "X": 48,
+                    "Y": 234,
+                    "Width": 374,
+                    "Height": 0,
+                    "Attributes": 1
+                },
+                {
+                    "Control": "Image",
+                    "Type": "Bitmap",
+                    "X": 13,
+                    "Y": 12,
+                    "Width": 349,
+                    "Height": 211,
+                    "Attributes": 1,
+                    "Binary_": "NewBinary19"
+                },
+                {
+                    "Control": "Next",
+                    "Type": "PushButton",
+                    "X": 230,
+                    "Y": 243,
+                    "Width": 66,
+                    "Height": 17,
+                    "Attributes": 3,
+                    "Text": "IDS_NEXT",
+                    "Control_Next": "Cancel"
+                }
+            ]
+        }
+    ]
+}

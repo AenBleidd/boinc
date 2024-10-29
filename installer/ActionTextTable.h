@@ -17,16 +17,18 @@
 
 #pragma once
 
-#include "Generator.h"
+#include <nlohmann/json.hpp>
+
 #include "ActionText.h"
 #include "InstallerStrings.h"
 
-class ActionTextTable : public Generator<ActionText> {
+class ActionTextTable {
 public:
-    ActionTextTable(const InstallerStrings& installerStrings) noexcept;
+    explicit ActionTextTable() noexcept = default;
     ~ActionTextTable() = default;
-    std::string generate() const override;
+    std::string generate() const;
+    bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
 private:
-    const InstallerStrings& installerStrings;
+    std::vector<ActionText> values;
 };
 

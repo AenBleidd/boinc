@@ -17,14 +17,12 @@
 
 #pragma once
 
-#include "Generator.h"
-#include "UI.h"
+#include <vector>
+#include "Dialog.h"
 
-class ControlTable : public Generator<Control> {
+class ControlTable {
 public:
-    explicit ControlTable(const UI& ui);
+    explicit ControlTable() noexcept = default;
     ~ControlTable() = default;
-    std::string generate() const override;
-private:
-    const UI& ui;
+    std::string generate(const std::vector<Dialog>& dialogs) const;
 };

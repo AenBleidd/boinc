@@ -20,9 +20,43 @@
 #include "Dialog.h"
 #include "Control.h"
 
-Dialog::Dialog(const std::string& dialog, int hcentering, int vcentering, int width, int height, int attributes, const std::string& title,
-    const std::string& first, const std::string& default, const std::string& cancel, const std::vector<Control>& controls)
-    : dialog(dialog), hcentering(hcentering), vcentering(vcentering), width(width), height(height), attributes(attributes), title(title), first(first), default(default), cancel(cancel), controls(controls) {};
+Dialog::Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    if (json.contains("Dialog")) {
+        dialog = json.at("Dialog").get<std::string>();
+    }
+    if (json.contains("HCentering")) {
+        hcentering = json.at("HCentering").get<int>();
+    }
+    if (json.contains("VCentering")) {
+        vcentering = json.at("VCentering").get<int>();
+    }
+    if (json.contains("Width")) {
+        width = json.at("Width").get<int>();
+    }
+    if (json.contains("Height")) {
+        height = json.at("Height").get<int>();
+    }
+    if (json.contains("Attributes")) {
+        attributes = json.at("Attributes").get<int>();
+    }
+    if (json.contains("Title")) {
+        title = installerStrings.get(json.at("Title").get<std::string>());
+    }
+    if (json.contains("Control_First")) {
+        first = json.at("Control_First").get<std::string>();
+    }
+    if (json.contains("Control_Default")) {
+        default = json.at("Control_Default").get<std::string>();
+    }
+    if (json.contains("Control_Cancel")) {
+        cancel = json.at("Control_Cancel").get<std::string>();
+    }
+    if (json.contains("Controls")) {
+        for (const auto& control : json.at("Controls")) {
+            controls.emplace_back(control, installerStrings, dialog);
+        }
+    }
+}
 std::string Dialog::get() const {
     std::ostringstream oss;
     oss << dialog << "\t" << hcentering << "\t" << vcentering << "\t" << width << "\t" << height << "\t" << attributes << "\t" << title << "\t" << first << "\t" << default << "\t" << cancel << "\n";

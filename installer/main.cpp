@@ -15,71 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
-#include <fstream>
-
-#include "SummaryInformationTable.h"
-#include "ActionTextTable.h"
-#include "AdminExecuteSequenceTable.h"
-#include "AdminUISequenceTable.h"
-#include "AdvtExecuteSequenceTable.h"
-#include "ControlTable.h"
-#include "ControlConditionTable.h"
-#include "DialogTable.h"
-#include "InstallExecuteSequenceTable.h"
-#include "InstallUISequenceTable.h"
-
-class Installer {
-public:
-    Installer() = default;
-    ~Installer() = default;
-    void load() {
-        installerStrings.load();
-    }
-    void generate_tables() {
-        UI ui(installerStrings);
-
-        SummaryInformationTable si(installerStrings);
-        std::cout << "==== SummaryInformation ====" << std::endl;
-        std::cout << si.generate() << std::endl;
-        ActionTextTable at(installerStrings);
-        std::cout << "==== ActionText Table ====" << std::endl;
-        std::cout << at.generate() << std::endl;
-        AdminExecuteSequenceTable aes;
-        std::cout << "==== AdminExecuteSequence Table ====" << std::endl;
-        std::cout << aes.generate() << std::endl;
-        AdminUISequenceTable aus;
-        std::cout << "==== AdminUISequence Table ====" << std::endl;
-        std::cout << aus.generate() << std::endl;
-        AdvtExecuteSequenceTable aes2;
-        std::cout << "==== AdvtExecuteSequence Table ====" << std::endl;
-        std::cout << aes2.generate() << std::endl;
-
-        ControlTable ct(ui);
-        std::cout << "==== Control Table ====" << std::endl;
-        std::cout << ct.generate() << std::endl;
-        ControlConditionTable cct(ui);
-        std::cout << "==== ControlCondition Table ====" << std::endl;
-        std::cout << cct.generate() << std::endl;
-
-        DialogTable dt(ui);
-        std::cout << "==== Dialog Table ====" << std::endl;
-        std::cout << dt.generate() << std::endl;
-
-        InstallExecuteSequenceTable ies;
-        std::cout << "==== InstallExecuteSequence Table ====" << std::endl;
-        std::cout << ies.generate() << std::endl;
-        InstallUISequenceTable ius;
-        std::cout << "==== InstallUISequence Table ====" << std::endl;
-        std::cout << ius.generate() << std::endl;
-    }
-private:
-    InstallerStrings installerStrings;
-};
+#include "Installer.h"
 
 int main(int argc, char** argv) {
     Installer installer;
-    installer.load();
-    installer.generate_tables();
-    return 0;
+    if (!installer.load()) {
+        return 1;
+    }
+    return installer.generate() ? 0 : 1;
 }

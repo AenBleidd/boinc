@@ -17,10 +17,51 @@
 
 #include "Control.h"
 
-Control::Control(const std::string& dialog, const std::string& control, const std::string& type, int x, int y, int width, int height, int attributes,
-    const std::string& property, const std::string& text, const std::string& next, const std::string& help, const std::vector<ControlCondition>& conditions)
-    : dialog(dialog), control(control), type(type), x(x), y(y), width(width), height(height), attributes(attributes), property(property), text(text),
-    next(next), help(help), conditions(conditions) {};
+Control::Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog) : dialog(dialog) {
+    if (json.contains("Control")) {
+        control = json["Control"];
+    }
+    if (json.contains("Type")) {
+        type = json["Type"];
+    }
+    if (json.contains("X")) {
+        x = json["X"];
+    }
+    if (json.contains("Y")) {
+        y = json["Y"];
+    }
+    if (json.contains("Width")) {
+        width = json["Width"];
+    }
+    if (json.contains("Height")) {
+        height = json["Height"];
+    }
+    if (json.contains("Attributes")) {
+        attributes = json["Attributes"];
+    }
+    if (json.contains("Property") && !json["Property"].is_null()) {
+        property = json["Property"];
+    }
+    if (json.contains("Text") && !json["Text"].is_null()) {
+        text = installerStrings.get(json["Text"]);
+    }
+    if (json.contains("Control_Next") && !json["Control_Next"].is_null()) {
+        next = json["Control_Next"];
+    }
+    if (json.contains("Help") && !json["Help"].is_null()) {
+        help = installerStrings.get(json["Help"]);
+    }
+    if (json.contains("Binary_") && !json["Binary_"].is_null()) {
+        text = json["Binary_"];
+    }
+    if (json.contains("Conditions") && !json["Conditions"].is_null()) {
+        for (const auto& condition : json["Conditions"]) {
+            conditions.emplace_back(condition, dialog, control);
+        }
+    }
+    //TODO: Make special case for LicenseAgreement -> Memo
+}
+
 std::string Control::get() const {
     std::ostringstream oss;
     oss << dialog << "\t" << control << "\t" << type << "\t" << x << "\t" << y << "\t" << width << "\t" << height << "\t" << attributes << "\t" << property << "\t" << text << "\t" << next << "\t" << help << "\n";

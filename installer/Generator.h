@@ -43,5 +43,4 @@ public:
         }
         return result;
     }
-    virtual std::string generate() const = 0;
 };

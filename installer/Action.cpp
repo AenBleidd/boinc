@@ -19,10 +19,17 @@
 
 #include "Action.h"
 
-Action::Action(const std::string& action, const std::string& condition, int sequence)
-    : action(action), condition(condition), sequence(sequence) {};
-Action::Action(const std::string& action, int sequence)
-    : action(action), condition(""), sequence(sequence) {};
+Action::Action(const nlohmann::json& json) {
+    if (json.contains("Action")) {
+        action = json["Action"];
+    }
+    if (json.contains("Condition") && !json["Condition"].is_null()) {
+        condition = json["Condition"];
+    }
+    if (json.contains("Sequence")) {
+        sequence = json["Sequence"];
+    }
+}
 std::string Action::get() const {
     std::ostringstream oss;
     oss << action << "\t" << condition << "\t" << sequence << "\n";

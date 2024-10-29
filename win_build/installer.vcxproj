@@ -34,6 +34,7 @@
     <ClCompile Include="..\installer\Dialog.cpp" />
     <ClCompile Include="..\installer\DialogTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
+    <ClCompile Include="..\installer\Installer.cpp" />
     <ClCompile Include="..\installer\InstallerStrings.cpp" />
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="..\installer\DialogTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />
+    <ClInclude Include="..\installer\Installer.h" />
     <ClInclude Include="..\installer\InstallerStrings.h" />
     <ClInclude Include="..\installer\InstallExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\InstallUISequenceTable.h" />

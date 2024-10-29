@@ -19,15 +19,20 @@
 
 #include "ActionText.h"
 
-ActionText::ActionText(const std::string& action, const std::string& description, const std::string& tmplt)
-    : action(action), description(description), tmplt(tmplt) {};
+ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    if (json.contains("Action")) {
+        action = json["Action"].get<std::string>();
+    }
+    if (json.contains("Description")) {
+        description = installerStrings.get(json["Description"].get<std::string>());
+    }
+    if (json.contains("Template") && !json["Template"].is_null()) {
+        tmplt = installerStrings.get(json["Template"].get<std::string>());
+    }
+}
 
 std::string ActionText::get() const {
     std::ostringstream oss;
     oss << action << "\t" << description << "\t" << tmplt << "\n";
     return oss.str();
-}
-
-bool ActionText::empty() const noexcept {
-    return description.empty();
 }
