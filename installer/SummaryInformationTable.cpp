@@ -26,23 +26,10 @@
 #include "SummaryInformationTable.h"
 #include "GuidHelper.h"
 
-std::string SummaryInformationTable::generate() const {
-    return {};
-    /*return Generator::generate({ {"PropertyId", "i2"}, {"Value", "l255"} }, { "_SummaryInformation", "PropertyId" }, summary);*/
-}
-
 bool SummaryInformationTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings)
 {
-    //const auto now_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    //std::tm now_tm;
-    //localtime_s(&now_tm, &now_time_t);
-    //std::ostringstream oss;
-    //oss << std::put_time(&now_tm, "%Y/%m/%d %H:%M:%S");
-    //const auto time_str = oss.str();
-
-    // Get the current system time as FILETIME
     SYSTEMTIME systemTime;
-    GetSystemTime(&systemTime); // Gets UTC time
+    GetSystemTime(&systemTime);
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
 
@@ -107,13 +94,15 @@ bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
         }
     }
 
-    if (MsiSummaryInfoPersist(hSummaryInfo) != ERROR_SUCCESS) {
-        std::cerr << "MsiSummaryInfoPersist failed" << std::endl;
+    result = MsiSummaryInfoPersist(hSummaryInfo);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiSummaryInfoPersist failed:" << result << std::endl;
         return false;
     }
 
-    if (MsiCloseHandle(hSummaryInfo) != ERROR_SUCCESS) {
-        std::cerr << "MsiCloseHandle failed" << std::endl;
+    result = MsiCloseHandle(hSummaryInfo);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiCloseHandle failed:" << result << std::endl;
         return false;
     }
 

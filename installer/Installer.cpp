@@ -48,8 +48,6 @@ bool Installer::load() {
 bool Installer::generate() const
 {
     try {
-        std::cout << "==== SummaryInformation ====" << std::endl;
-        std::cout << summary_information_table.generate() << std::endl;
         std::cout << "==== ActionText ====" << std::endl;
         std::cout << action_text_table.generate() << std::endl;
         std::cout << "==== AdminExecuteSequence ====" << std::endl;
@@ -151,6 +149,13 @@ bool Installer::create_msi() {
         return false;
     }
     std::cout << "Writing summary information done" << std::endl;
+
+    std::cout << "Writing ActionText" << std::endl;
+    if (!action_text_table.generate(hDatabase)) {
+        std::cerr << "Failed to write ActionText" << std::endl;
+        return false;
+    }
+    std::cout << "Writing ActionText done" << std::endl;
 
 
     if (MsiDatabaseCommit(hDatabase) != ERROR_SUCCESS) {

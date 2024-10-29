@@ -21,13 +21,15 @@
 
 #include "ActionText.h"
 #include "InstallerStrings.h"
+#include "Generator.h"
 
-class ActionTextTable {
+class ActionTextTable : public Generator<ActionText>{
 public:
     explicit ActionTextTable() noexcept = default;
     ~ActionTextTable() = default;
     std::string generate() const;
     bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<ActionText> values;
 };

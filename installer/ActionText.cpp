@@ -36,3 +36,12 @@ std::string ActionText::get() const {
     oss << action << "\t" << description << "\t" << tmplt << "\n";
     return oss.str();
 }
+
+MSIHANDLE ActionText::getRecord() const
+{
+    const auto hRecord = MsiCreateRecord(3);
+    MsiRecordSetString(hRecord, 1, action.c_str());
+    MsiRecordSetString(hRecord, 2, description.c_str());
+    MsiRecordSetString(hRecord, 3, tmplt.c_str());
+    return hRecord;
+}

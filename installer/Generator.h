@@ -19,6 +19,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "Windows.h"
 #include "Msi.h"
@@ -47,5 +48,43 @@ public:
         }
         return result;
     }
+
+    bool generate(MSIHANDLE hDatabase, const std::string& sql_create, const std::string& sql_insert, const std::vector<V>& records) {
+        MSIHANDLE hView;
+        if (MsiDatabaseOpenView(hDatabase, sql_create.c_str(), &hView) != ERROR_SUCCESS) {
+            std::cerr << "Error creating view for ActionTextTable" << std::endl;
+            return false;
+        }
+        if (MsiViewExecute(hView, 0) != ERROR_SUCCESS) {
+            std::cerr << "Error executing view for ActionTextTable" << std::endl;
+            return false;
+        }
+        if (MsiViewClose(hView) != ERROR_SUCCESS) {
+            std::cerr << "Error closing view for ActionTextTable" << std::endl;
+            return false;
+        }
+        if (MsiDatabaseOpenView(hDatabase, sql_insert.c_str(), &hView) != ERROR_SUCCESS) {
+            std::cerr << "Error creating view for ActionTextTable" << std::endl;
+            return false;
+        }
+        for (const auto& record : records) {
+            const auto hRecord = record.getRecord();
+            if (MsiViewExecute(hView, hRecord) != ERROR_SUCCESS) {
+                std::cerr << "Error inserting record for ActionTextTable" << std::endl;
+                return false;
+            }
+            if (MsiCloseHandle(hRecord) != ERROR_SUCCESS) {
+                std::cerr << "Error closing record for ActionTextTable" << std::endl;
+                return false;
+            }
+        }
+        if (MsiViewClose(hView) != ERROR_SUCCESS) {
+            std::cerr << "Error closing view for ActionTextTable" << std::endl;
+            return false;
+        }
+        return true;
+    }
+
     virtual bool generate(MSIHANDLE hDatabase) { return false; };
+
 };

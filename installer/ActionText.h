@@ -27,6 +27,7 @@ public:
     explicit ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~ActionText() = default;
     std::string get() const override;
+    MSIHANDLE getRecord() const override;
 private:
     std::string action;
     std::string description;

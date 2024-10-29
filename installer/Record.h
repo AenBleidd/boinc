@@ -19,9 +19,14 @@
 
 #include <string>
 
+#include "Windows.h"
+#include "Msi.h"
+#include "MsiQuery.h"
+
 class Record {
 public:
     Record() = default;
     virtual ~Record() = default;
     virtual std::string get() const = 0;
+    virtual MSIHANDLE getRecord() const { return {}; };
 };
