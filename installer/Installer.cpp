@@ -136,3 +136,32 @@ bool Installer::load_from_json(const nlohmann::json& json)
     }
     return true;
 }
+
+bool Installer::create_msi() {
+    MSIHANDLE hDatabase;
+    const auto uiResult = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
+    if (uiResult != ERROR_SUCCESS) {
+        std::cerr << "MsiOpenDatabase failed with error " << uiResult << std::endl;
+        return false;
+    }
+
+    std::cout << "Writing summary information" << std::endl;
+    if (!summary_information_table.generate(hDatabase)) {
+        std::cerr << "Failed to write summary information" << std::endl;
+        return false;
+    }
+    std::cout << "Writing summary information done" << std::endl;
+
+
+    if (MsiDatabaseCommit(hDatabase) != ERROR_SUCCESS) {
+        std::cerr << "MsiDatabaseCommit failed" << std::endl;
+        return false;
+    }
+
+    if (MsiCloseHandle(hDatabase) != ERROR_SUCCESS) {
+        std::cerr << "MsiCloseHandle failed" << std::endl;
+        return false;
+    }
+
+    return true;
+}

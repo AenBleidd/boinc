@@ -20,6 +20,10 @@
 #include <string>
 #include <vector>
 
+#include "Windows.h"
+#include "Msi.h"
+#include "MsiQuery.h"
+
 template <typename V>
 class Generator {
 public:
@@ -43,4 +47,5 @@ public:
         }
         return result;
     }
+    virtual bool generate(MSIHANDLE hDatabase) { return false; };
 };

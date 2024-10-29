@@ -32,6 +32,9 @@ public:
         oss << key << "\t" << value << "\n";
         return oss.str();
     }
+    std::tuple<K, V> getValue() const {
+        return { key, value };
+    }
 private:
     K key;
     V value;

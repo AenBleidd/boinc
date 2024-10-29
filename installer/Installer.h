@@ -36,8 +36,10 @@ public:
     ~Installer() = default;
     bool load();
     bool generate() const;
+    bool create_msi();
 private:
     bool load_from_json(const nlohmann::json& json);
+
     
     InstallerStrings installer_strings;
     SummaryInformationTable summary_information_table;

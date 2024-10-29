@@ -17,16 +17,21 @@
 
 #pragma once
 
+#include <variant>
+
 #include "InstallerStrings.h"
 #include "KeyValue.h"
+#include "Record.h"
+#include "Generator.h"
 
-class SummaryInformationTable {
+class SummaryInformationTable : public Generator<KeyValue<int, std::string>> {
 public:
     explicit SummaryInformationTable() noexcept = default;
     ~SummaryInformationTable() = default;
     std::string generate() const;
     bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<KeyValue<int, std::string>> summary;
+    std::map<int, std::variant<int, std::string, FILETIME>> summary;
 };
 
