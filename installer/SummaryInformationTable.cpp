@@ -19,10 +19,6 @@
 #include <iomanip>
 #include <iostream>
 
-//#include "Windows.h"
-//#include "Msi.h"
-//#include "MsiQuery.h"
-
 #include "SummaryInformationTable.h"
 #include "GuidHelper.h"
 

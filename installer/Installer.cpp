@@ -48,24 +48,12 @@ bool Installer::load() {
 bool Installer::generate() const
 {
     try {
-        std::cout << "==== ActionText ====" << std::endl;
-        std::cout << action_text_table.generate() << std::endl;
-        std::cout << "==== AdminExecuteSequence ====" << std::endl;
-        std::cout << admin_execute_sequence_table.generate() << std::endl;
-        std::cout << "==== AdminUISequence ====" << std::endl;
-        std::cout << admin_ui_sequence_table.generate() << std::endl;
-        std::cout << "==== AdvtExecuteSequence ====" << std::endl;
-        std::cout << advt_execute_sequence_table.generate() << std::endl;
         std::cout << "==== Control ====" << std::endl;
         std::cout << control_table.generate(dialog_table.get()) << std::endl;
         std::cout << "==== ControlCondition ====" << std::endl;
         std::cout << control_condition_table.generate(dialog_table.get()) << std::endl;
         std::cout << "==== Dialog ====" << std::endl;
         std::cout << dialog_table.generate() << std::endl;
-        std::cout << "==== InstallExecuteSequence ====" << std::endl;
-        std::cout << install_execute_sequence_table.generate() << std::endl;
-        std::cout << "==== InstallUISequence ====" << std::endl;
-        std::cout << install_ui_sequence_table.generate() << std::endl;
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
@@ -137,9 +125,9 @@ bool Installer::load_from_json(const nlohmann::json& json)
 
 bool Installer::create_msi() {
     MSIHANDLE hDatabase;
-    const auto uiResult = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
-    if (uiResult != ERROR_SUCCESS) {
-        std::cerr << "MsiOpenDatabase failed with error " << uiResult << std::endl;
+    auto result = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
         return false;
     }
 
@@ -157,14 +145,52 @@ bool Installer::create_msi() {
     }
     std::cout << "Writing ActionText done" << std::endl;
 
+    std::cout << "Writing AdminExecuteSequence" << std::endl;
+    if (!admin_execute_sequence_table.generate(hDatabase)) {
+        std::cerr << "Failed to write AdminExecuteSequence" << std::endl;
+        return false;
+    }
+    std::cout << "Writing AdminExecuteSequence done" << std::endl;
 
-    if (MsiDatabaseCommit(hDatabase) != ERROR_SUCCESS) {
-        std::cerr << "MsiDatabaseCommit failed" << std::endl;
+    std::cout << "Writing AdminUISequence" << std::endl;
+    if (!admin_ui_sequence_table.generate(hDatabase)) {
+        std::cerr << "Failed to write AdminUISequence" << std::endl;
+        return false;
+    }
+    std::cout << "Writing AdminUISequence done" << std::endl;
+
+    std::cout << "Writing AdvtExecuteSequence" << std::endl;
+    if (!advt_execute_sequence_table.generate(hDatabase)) {
+        std::cerr << "Failed to write AdvtExecuteSequence" << std::endl;
+        return false;
+    }
+    std::cout << "Writing AdvtExecuteSequence done" << std::endl;
+
+
+
+    std::cout << "Writing InstallExecuteSequence" << std::endl;
+    if (!install_execute_sequence_table.generate(hDatabase)) {
+        std::cerr << "Failed to write InstallExecuteSequence" << std::endl;
+        return false;
+    }
+    std::cout << "Writing InstallExecuteSequence done" << std::endl;
+
+    std::cout << "Writing InstallUISequence" << std::endl;
+    if (!install_ui_sequence_table.generate(hDatabase)) {
+        std::cerr << "Failed to write InstallUISequence" << std::endl;
+        return false;
+    }
+    std::cout << "Writing InstallUISequence done" << std::endl;
+
+    result = MsiDatabaseCommit(hDatabase);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiDatabaseCommit failed: " << result << std::endl;
         return false;
     }
 
-    if (MsiCloseHandle(hDatabase) != ERROR_SUCCESS) {
-        std::cerr << "MsiCloseHandle failed" << std::endl;
+    result = MsiCloseHandle(hDatabase);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiCloseHandle failed: " << result << std::endl;
         return false;
     }
 

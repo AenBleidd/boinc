@@ -27,6 +27,6 @@ class Record {
 public:
     Record() = default;
     virtual ~Record() = default;
-    virtual std::string get() const = 0;
+    virtual std::string get() const { return {}; };
     virtual MSIHANDLE getRecord() const { return {}; };
 };

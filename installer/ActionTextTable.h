@@ -27,7 +27,6 @@ class ActionTextTable : public Generator<ActionText>{
 public:
     explicit ActionTextTable() noexcept = default;
     ~ActionTextTable() = default;
-    std::string generate() const;
     bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
     bool generate(MSIHANDLE hDatabase) override;
 private:

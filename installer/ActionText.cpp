@@ -31,12 +31,6 @@ ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& insta
     }
 }
 
-std::string ActionText::get() const {
-    std::ostringstream oss;
-    oss << action << "\t" << description << "\t" << tmplt << "\n";
-    return oss.str();
-}
-
 MSIHANDLE ActionText::getRecord() const
 {
     const auto hRecord = MsiCreateRecord(3);

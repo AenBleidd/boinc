@@ -30,8 +30,12 @@ Action::Action(const nlohmann::json& json) {
         sequence = json["Sequence"];
     }
 }
-std::string Action::get() const {
-    std::ostringstream oss;
-    oss << action << "\t" << condition << "\t" << sequence << "\n";
-    return oss.str();
+
+MSIHANDLE Action::getRecord() const
+{
+    const auto hRecord = MsiCreateRecord(3);
+    MsiRecordSetString(hRecord, 1, action.c_str());
+    MsiRecordSetString(hRecord, 2, condition.c_str());
+    MsiRecordSetInteger(hRecord, 3, sequence);
+    return hRecord;
 }

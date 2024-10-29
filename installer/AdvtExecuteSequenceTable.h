@@ -18,13 +18,14 @@
 #pragma once
 
 #include "Action.h"
+#include "Generator.h"
 
-class AdvtExecuteSequenceTable {
+class AdvtExecuteSequenceTable : public Generator<Action> {
 public:
     explicit AdvtExecuteSequenceTable() noexcept = default;
     ~AdvtExecuteSequenceTable() = default;
-    std::string generate() const;
     bool load(const nlohmann::json& json);
+    bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;
 };

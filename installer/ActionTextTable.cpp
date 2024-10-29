@@ -18,11 +18,6 @@
 #include <iostream>
 
 #include "ActionTextTable.h"
-#include "Generator.h"
-
-std::string ActionTextTable::generate() const {
-    return Generator<ActionText>().generate({ { "Action", "s72" }, { "Description", "L0" }, { "Template", "L0" } }, { "ActionText", "Action" }, values);
-}
 
 bool ActionTextTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     try {
@@ -38,7 +33,7 @@ bool ActionTextTable::load(const nlohmann::json& json, const InstallerStrings& i
 }
 
 bool ActionTextTable::generate(MSIHANDLE hDatabase) {
-    const auto sql_create = "CREATE TABLE `ActionText` (`Action` CHAR(72) NOT NULL, `Description` CHAR(255) LOCALIZABLE, `Template` CHAR(255) LOCALIZABLE PRIMARY KEY `Action`)";
+    const auto sql_create = "CREATE TABLE `ActionText` (`Action` CHAR(72) NOT NULL, `Description` LONGCHAR LOCALIZABLE, `Template` LONGCHAR LOCALIZABLE PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `ActionText` (`Action`, `Description`, `Template`) VALUES (?, ?, ?)";
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

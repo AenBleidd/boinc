@@ -21,13 +21,14 @@
 #include <nlohmann/json.hpp>
 
 #include "Action.h"
+#include "Generator.h"
 
-class AdminExecuteSequenceTable {
+class AdminExecuteSequenceTable : public Generator<Action>{
 public:
     explicit AdminExecuteSequenceTable() noexcept = default;
     ~AdminExecuteSequenceTable() = default;
-    std::string generate() const;
     bool load(const nlohmann::json& json);
+    bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;
 };

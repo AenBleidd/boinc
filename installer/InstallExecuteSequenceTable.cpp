@@ -16,15 +16,16 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "InstallExecuteSequenceTable.h"
-#include "Generator.h"
-
-std::string InstallExecuteSequenceTable::generate() const {
-    return Generator<Action>().generate({{"Action", "s72"}, {"Condition", "S255"}, {"Sequence", "I2"}}, {"InstallExecuteSequence", "Action"}, actions);
-}
 
 bool InstallExecuteSequenceTable::load(const nlohmann::json& json) {
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
     return true;
+}
+
+bool InstallExecuteSequenceTable::generate(MSIHANDLE hDatabase) {
+    const auto sql_create = "CREATE TABLE `InstallExecuteSequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
+    const auto sql_insert = "INSERT INTO `InstallExecuteSequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+    return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

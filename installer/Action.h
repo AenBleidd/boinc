@@ -26,7 +26,7 @@ class Action : public Record {
 public:
     explicit Action(const nlohmann::json& json);
     ~Action() = default;
-    std::string get() const override;
+    MSIHANDLE getRecord() const override;
 private:
     std::string action;
     std::string condition;
