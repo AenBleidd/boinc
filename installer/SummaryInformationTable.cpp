@@ -67,16 +67,14 @@ bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
 
     for (auto& [id, value] : summary) {
         try {
+            std::cout << "Setting property " << id << std::endl;
             if (std::holds_alternative<int>(value)) {
-                std::cout << "Setting property " << id << " to " << std::get<int>(value) << std::endl;
                 result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_I4, std::get<int>(value), nullptr, nullptr);
             }
             else if (std::holds_alternative<FILETIME>(value)) {
-                std::cout << "Setting property " << id << " to FILETIME" << std::endl;
                 result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_FILETIME, 0, std::get_if<FILETIME>(&value), nullptr);
             }
             else {
-                std::cout << "Setting property " << id << " to " << std::get<std::string>(value) << std::endl;
                 result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_LPSTR, 0, nullptr, std::get<std::string>(value).c_str());
             }
         }

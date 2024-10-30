@@ -21,13 +21,13 @@
 
 ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     if (json.contains("Action")) {
-        action = json["Action"].get<std::string>();
+        action = json["Action"];
     }
     if (json.contains("Description")) {
-        description = installerStrings.get(json["Description"].get<std::string>());
+        description = installerStrings.get(json["Description"]);
     }
     if (json.contains("Template") && !json["Template"].is_null()) {
-        tmplt = installerStrings.get(json["Template"].get<std::string>());
+        tmplt = installerStrings.get(json["Template"]);
     }
 }
 

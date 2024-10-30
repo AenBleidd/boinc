@@ -31,6 +31,7 @@
     <ClCompile Include="..\installer\Control.cpp" />
     <ClCompile Include="..\installer\ControlCondition.cpp" />
     <ClCompile Include="..\installer\ControlConditionTable.cpp" />
+    <ClCompile Include="..\installer\ControlEventTable.cpp" />
     <ClCompile Include="..\installer\ControlTable.cpp" />
     <ClCompile Include="..\installer\Dialog.cpp" />
     <ClCompile Include="..\installer\DialogTable.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
     <ClCompile Include="..\installer\main.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
+    <ClCompile Include="..\installer\ControlEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\installer\Action.h" />
@@ -52,6 +54,7 @@
     <ClInclude Include="..\installer\Control.h" />
     <ClInclude Include="..\installer\ControlCondition.h" />
     <ClInclude Include="..\installer\ControlConditionTable.h" />
+    <ClInclude Include="..\installer\ControlEventTable.h" />
     <ClInclude Include="..\installer\ControlTable.h" />
     <ClInclude Include="..\installer\Dialog.h" />
     <ClInclude Include="..\installer\DialogTable.h" />
@@ -63,6 +66,7 @@
     <ClInclude Include="..\installer\InstallUISequenceTable.h" />
     <ClInclude Include="..\installer\Record.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />
+    <ClInclude Include="..\installer\ControlEvent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

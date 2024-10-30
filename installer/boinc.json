@@ -1201,7 +1201,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "ComboText"
+                    "Control_Next": "ComboText",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "Reset",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Combo",
@@ -1277,7 +1291,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "List",
                     "Help": "IDS__IsAdminInstallBrowse_CreateFolder",
-                    "Binary_": "NewBinary2"
+                    "Binary_": "NewBinary2",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListNew",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "OK",
@@ -1288,7 +1310,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_OK",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 0
+                        },
+                        {
+                            "Event": "SetTargetPath",
+                            "Argument": "TARGETDIR",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Tail",
@@ -1323,7 +1359,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "NewFolder",
                     "Help": "IDS__IsAdminInstallBrowse_UpOneLevel",
-                    "Binary_": "NewBinary3"
+                    "Binary_": "NewBinary3",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListUp",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -1348,7 +1392,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_BACK",
-                    "Control_Next": "InstallNow"
+                    "Control_Next": "InstallNow",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "AdminWelcome",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -1378,7 +1430,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsAdminInstallPoint_Change",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "AdminChangeFolder",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Cancel",
@@ -1389,7 +1449,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "SetupPathEdit"
+                    "Control_Next": "SetupPathEdit",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -1439,7 +1507,27 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsAdminInstallPoint_Install",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "OutOfNoRbDiskSpace <> 1",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "OutOfSpace",
+                            "Condition": "OutOfNoRbDiskSpace = 1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "SetTargetPath",
+                            "Argument": "TARGETDIR",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "LBBrowse",
@@ -1496,7 +1584,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -1526,7 +1622,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "AdminNetworkLocation",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "TextLine1",
@@ -1581,7 +1685,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsCancelDlg_No",
-                    "Control_Next": "Yes"
+                    "Control_Next": "Yes",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "Text",
@@ -1602,7 +1714,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsCancelDlg_Yes",
-                    "Control_Next": "No"
+                    "Control_Next": "No",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
+                        }
+                    ]
                 }
             ]
         },
@@ -1646,7 +1766,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "ComboText"
+                    "Control_Next": "ComboText",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "Reset",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Combo",
@@ -1722,7 +1856,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "List",
                     "Help": "IDS__IsBrowseFolderDlg_CreateFolder",
-                    "Binary_": "NewBinary2"
+                    "Binary_": "NewBinary2",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListNew",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "OK",
@@ -1733,7 +1875,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsBrowseFolderDlg_OK",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Tail",
@@ -1768,7 +1918,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "NewFolder",
                     "Help": "IDS__IsBrowseFolderDlg_UpOneLevel",
-                    "Binary_": "NewBinary3"
+                    "Binary_": "NewBinary3",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListUp",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 }
             ]
         },
@@ -1812,7 +1970,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "ComboText"
+                    "Control_Next": "ComboText",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "Reset",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Combo",
@@ -1888,7 +2060,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "List",
                     "Help": "IDS__IsBrowseFolderDlg_CreateFolder",
-                    "Binary_": "NewBinary2"
+                    "Binary_": "NewBinary2",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListNew",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "OK",
@@ -1899,7 +2079,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsBrowseFolderDlg_OK",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "SetTargetPath",
+                            "Argument": "[_BrowseInstallProperty]",
+                            "Condition": "1",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "Tail",
@@ -1934,7 +2128,15 @@
                     "Attributes": 3670019,
                     "Control_Next": "NewFolder",
                     "Help": "IDS__IsBrowseFolderDlg_UpOneLevel",
-                    "Binary_": "NewBinary3"
+                    "Binary_": "NewBinary3",
+                    "Events": [
+                        {
+                            "Event": "DirectoryListUp",
+                            "Argument": "0",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -2026,7 +2228,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsFeatureDetailsDlg_OK"
+                    "Text": "IDS__IsFeatureDetailsDlg_OK",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -2050,7 +2260,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS_BACK"
+                    "Text": "IDS_BACK",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "NoDialog",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -2079,7 +2297,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS_CANCEL"
+                    "Text": "IDS_CANCEL",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -2118,7 +2344,14 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 1,
-                    "Text": "IDS_NEXT"
+                    "Text": "IDS_NEXT",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "ReadyToInstall",
+                            "Condition": "_IsSetupTypeMin <> \"Custom\""
+                        }
+                    ]
                 }
             ]
         },
@@ -2201,7 +2434,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsFilesInUse_Exit",
-                    "Control_Next": "List"
+                    "Control_Next": "List",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "Ignore",
@@ -2212,7 +2453,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsFilesInUse_Ignore",
-                    "Control_Next": "Exit"
+                    "Control_Next": "Exit",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Ignore",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "List",
@@ -2234,7 +2483,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsFilesInUse_Retry",
-                    "Control_Next": "Ignore"
+                    "Control_Next": "Ignore",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Retry",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -2259,7 +2516,15 @@
                     "Height": 17,
                     "Attributes": 1,
                     "Text": "IDS_BACK",
-                    "Control_Next": "Copyright"
+                    "Control_Next": "Copyright",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SplashBitmap",
+                            "Condition": "Display_IsBitmapDlg",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Cancel",
@@ -2270,7 +2535,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Copyright",
@@ -2321,7 +2594,27 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CADisableProtectedApplicationExecution",
+                            "Condition": "NOT VersionNT",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CADisableUseByAllUsers",
+                            "Condition": "NOT VersionNT",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "LicenseAgreement",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "TextLine1",
@@ -2377,7 +2670,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_BACK",
-                    "Control_Next": "Next"
+                    "Control_Next": "Next",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "InstallWelcome",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -2407,7 +2708,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "ISPrintButton"
+                    "Control_Next": "ISPrintButton",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -2447,7 +2756,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_PRINT_BUTTON",
-                    "Control_Next": "Agree"
+                    "Control_Next": "Agree",
+                    "Events": [
+                        {
+                            "Event": "DoAction",
+                            "Argument": "ISPrint",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Memo",
@@ -2477,6 +2794,14 @@
                             "Action": "Enable",
                             "Condition": "AgreeToLicense = \"Yes\""
                         }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SetupConfig",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
                     ]
                 }
             ]
@@ -2502,7 +2827,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_BACK",
-                    "Control_Next": "Next"
+                    "Control_Next": "Next",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "MaintenanceWelcome",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -2532,7 +2865,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "RadioGroup"
+                    "Control_Next": "RadioGroup",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -2592,7 +2933,57 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "ReadyToInstall",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 8
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "ReadyToRemove",
+                            "Condition": "_IsMaintenance = \"Remove\"",
+                            "Ordering": 7
+                        },
+                        {
+                            "Event": "Reinstall",
+                            "Argument": "ALL",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 6
+                        },
+                        {
+                            "Event": "ReinstallMode",
+                            "Argument": "[ReinstallModeText]",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 5
+                        },
+                        {
+                            "Event": "[ProgressType0]",
+                            "Argument": "Repair",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "[ProgressType1]",
+                            "Argument": "Repairing",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[ProgressType2]",
+                            "Argument": "repairs",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "[ProgressType3]",
+                            "Argument": "repairs",
+                            "Condition": "_IsMaintenance = \"Reinstall\"",
+                            "Ordering": 4
+                        }
+                    ]
                 },
                 {
                     "Control": "RadioGroup",
@@ -2660,7 +3051,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -2690,7 +3089,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "MaintenanceType",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "TextLine1",
@@ -2754,7 +3161,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Restart"
+                    "Control_Next": "Restart",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -2815,7 +3230,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_OK",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "RMShutdownAndRestart",
+                            "Argument": "0",
+                            "Condition": "RestartManagerOption=\"CloseRestart\"",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "Restart",
@@ -2918,7 +3347,21 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsDiskSpaceDlg_OK"
+                    "Text": "IDS__IsDiskSpaceDlg_OK",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "AdminNetworkLocation",
+                            "Condition": "ACTION = \"ADMIN\"",
+                            "Ordering": 0
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "NoDialog",
+                            "Condition": "ACTION <> \"ADMIN\"",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -2943,7 +3386,15 @@
                     "Height": 17,
                     "Attributes": 1,
                     "Text": "IDS_BACK",
-                    "Control_Next": "Next"
+                    "Control_Next": "Next",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SplashBitmap",
+                            "Condition": "Display_IsBitmapDlg",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Cancel",
@@ -2954,7 +3405,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -2984,7 +3443,27 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsPatchDlg_Update",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "Reinstall",
+                            "Argument": "ALL",
+                            "Condition": "PATCH And REINSTALL=\"\"",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "ReinstallMode",
+                            "Argument": "omus",
+                            "Condition": "PATCH And REINSTALLMODE=\"\"",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "TextLine1",
@@ -3029,7 +3508,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_BACK",
-                    "Control_Next": "InstallNow"
+                    "Control_Next": "InstallNow",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "MaintenanceType",
+                            "Condition": "Installed AND _IsMaintenance = \"Reinstall\"",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SetupConfig",
+                            "Condition": "NOT Installed",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -3059,7 +3552,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -3157,7 +3658,51 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsVerifyReadyDlg_Install",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "OutOfNoRbDiskSpace <> 1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "OutOfSpace",
+                            "Condition": "OutOfNoRbDiskSpace = 1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[ALLUSERS]",
+                            "Argument": "1",
+                            "Condition": "ENABLEUSEBYALLUSERS = 1",
+                            "Ordering": 7
+                        },
+                        {
+                            "Event": "[ALLUSERS]",
+                            "Argument": "{}",
+                            "Condition": "1",
+                            "Ordering": 6
+                        },
+                        {
+                            "Event": "[ProgressType1]",
+                            "Argument": "Installing",
+                            "Condition": "1",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "[ProgressType2]",
+                            "Argument": "installed",
+                            "Condition": "1",
+                            "Ordering": 4
+                        },
+                        {
+                            "Event": "[ProgressType3]",
+                            "Argument": "installs",
+                            "Condition": "1",
+                            "Ordering": 5
+                        }
+                    ]
                 }
             ]
         },
@@ -3182,7 +3727,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_BACK",
-                    "Control_Next": "RemoveNow"
+                    "Control_Next": "RemoveNow",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "MaintenanceType",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -3212,7 +3765,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -3281,7 +3842,45 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsVerifyRemoveAllDlg_Remove",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "OutOfNoRbDiskSpace <> 1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "OutOfSpace",
+                            "Condition": "OutOfNoRbDiskSpace = 1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "Remove",
+                            "Argument": "ALL",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "[ProgressType1]",
+                            "Argument": "Uninstalling",
+                            "Condition": "1",
+                            "Ordering": 0
+                        },
+                        {
+                            "Event": "[ProgressType2]",
+                            "Argument": "uninstalled",
+                            "Condition": "1",
+                            "Ordering": 0
+                        },
+                        {
+                            "Event": "[ProgressType3]",
+                            "Argument": "uninstalls",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -3320,6 +3919,20 @@
                             "Action": "Enable",
                             "Condition": "UpdateStarted"
                         }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[Suspend]",
+                            "Argument": "{}",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
                     ]
                 },
                 {
@@ -3340,6 +3953,20 @@
                         {
                             "Action": "Enable",
                             "Condition": "UpdateStarted"
+                        }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[Suspend]",
+                            "Argument": "1",
+                            "Condition": "1",
+                            "Ordering": 1
                         }
                     ]
                 },
@@ -3366,6 +3993,14 @@
                         {
                             "Action": "Default",
                             "Condition": "NOT UpdateStarted"
+                        }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
                         }
                     ]
                 },
@@ -3579,7 +4214,45 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS__IsExitDialog_Finish",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CALaunchBOINCManager",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT >= 600",
+                            "Ordering": 5
+                        },
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CALaunchBOINCTray",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT >= 600",
+                            "Ordering": 6
+                        },
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CASaveSetupState",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "DoAction",
+                            "Argument": "LaunchBOINCManagerXP",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT < 600",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "DoAction",
+                            "Argument": "LaunchBOINCTrayXP",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT < 600",
+                            "Ordering": 4
+                        },
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "RebootText",
@@ -3694,7 +4367,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "NEW_STRING1",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SetupConfigAdvanced",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Back",
@@ -3705,7 +4386,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "ID_STRING14",
-                    "Control_Next": "CheckBox4"
+                    "Control_Next": "CheckBox4",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "LicenseAgreement",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -3754,7 +4443,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "ID_STRING15"
+                    "Text": "ID_STRING15",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "CheckBox2",
@@ -3849,7 +4546,27 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "ID_STRING13"
+                    "Text": "ID_STRING13",
+                    "Events": [
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CAVerifyInstallDirectories",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "ReadyToInstall",
+                            "Condition": "RETURN_VERIFYINSTALLDIRECTORIES = \"1\"",
+                            "Ordering": 3
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SetupConfigAdvanced",
+                            "Condition": "RETURN_VERIFYINSTALLDIRECTORIES <> \"1\"",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "Text1",
@@ -3939,7 +4656,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "ID_STRING22",
-                    "Control_Next": "ChangeInstall"
+                    "Control_Next": "ChangeInstall",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "SetupConfig",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "Banner",
@@ -3989,7 +4714,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "ID_STRING23",
-                    "Control_Next": "ChangeData"
+                    "Control_Next": "ChangeData",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "ChangeData",
@@ -4000,7 +4733,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "NEW_STRING8",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "ChangeFolderData",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "[_BrowseDataProperty]",
+                            "Argument": "DATADIR",
+                            "Condition": "1",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "ChangeInstall",
@@ -4011,7 +4758,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "NEW_STRING5",
-                    "Control_Next": "CheckBox4"
+                    "Control_Next": "CheckBox4",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "ChangeFolderInstall",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "[_BrowseInstallProperty]",
+                            "Argument": "INSTALLDIR",
+                            "Condition": "1",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "CheckBox2",
@@ -4119,7 +4880,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "ID_STRING21",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "DoAction",
+                            "Argument": "CAVerifyInstallDirectories",
+                            "Condition": "1",
+                            "Ordering": 1
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "ReadyToInstall",
+                            "Condition": "RETURN_VERIFYINSTALLDIRECTORIES = \"1\"",
+                            "Ordering": 2
+                        }
+                    ]
                 },
                 {
                     "Control": "Text1",
@@ -4228,7 +5003,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_Abort"
+                    "Text": "IDS__IsErrorDlg_Abort",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorAbort",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "C",
@@ -4238,7 +5021,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS_CANCEL2"
+                    "Text": "IDS_CANCEL2",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorCancel",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "ErrorText",
@@ -4258,7 +5049,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_Ignore"
+                    "Text": "IDS__IsErrorDlg_Ignore",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorIgnore",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "N",
@@ -4268,7 +5067,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_NO"
+                    "Text": "IDS__IsErrorDlg_NO",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorNo",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "O",
@@ -4278,7 +5085,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_OK"
+                    "Text": "IDS__IsErrorDlg_OK",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorOk",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "R",
@@ -4288,7 +5103,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_Retry"
+                    "Text": "IDS__IsErrorDlg_Retry",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorRetry",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "WarningIcon",
@@ -4308,7 +5131,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS__IsErrorDlg_Yes"
+                    "Text": "IDS__IsErrorDlg_Yes",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "ErrorYes",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         },
@@ -4362,7 +5193,15 @@
                     "Width": 66,
                     "Height": 17,
                     "Attributes": 3,
-                    "Text": "IDS_CANCEL"
+                    "Text": "IDS_CANCEL",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -4449,6 +5288,20 @@
                             "Action": "Enable",
                             "Condition": "UpdateStarted"
                         }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[Suspend]",
+                            "Argument": "{}",
+                            "Condition": "1",
+                            "Ordering": 1
+                        }
                     ]
                 },
                 {
@@ -4468,6 +5321,20 @@
                         {
                             "Action": "Enable",
                             "Condition": "UpdateStarted"
+                        }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
+                        },
+                        {
+                            "Event": "[Suspend]",
+                            "Argument": "1",
+                            "Condition": "1",
+                            "Ordering": 1
                         }
                     ]
                 },
@@ -4493,6 +5360,14 @@
                         {
                             "Action": "Default",
                             "Condition": "NOT UpdateStarted"
+                        }
+                    ],
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Exit",
+                            "Condition": "1",
+                            "Ordering": 2
                         }
                     ]
                 },
@@ -4679,7 +5554,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgDesc",
@@ -4881,7 +5764,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -4911,7 +5802,21 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "EndDialog",
+                            "Argument": "Return",
+                            "Condition": "OutOfNoRbDiskSpace <> 1",
+                            "Ordering": 0
+                        },
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "OutOfSpace",
+                            "Condition": "OutOfNoRbDiskSpace = 1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "PreselectedText",
@@ -4997,7 +5902,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_CANCEL",
-                    "Control_Next": "Back"
+                    "Control_Next": "Back",
+                    "Events": [
+                        {
+                            "Event": "SpawnDialog",
+                            "Argument": "CancelSetup",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 },
                 {
                     "Control": "DlgLine",
@@ -5027,7 +5940,15 @@
                     "Height": 17,
                     "Attributes": 3,
                     "Text": "IDS_NEXT",
-                    "Control_Next": "Cancel"
+                    "Control_Next": "Cancel",
+                    "Events": [
+                        {
+                            "Event": "NewDialog",
+                            "Argument": "InstallWelcome",
+                            "Condition": "1",
+                            "Ordering": 0
+                        }
+                    ]
                 }
             ]
         }

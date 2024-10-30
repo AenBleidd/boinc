@@ -17,35 +17,15 @@
 
 #pragma once
 
-#include <sstream>
-#include <vector>
-#include <nlohmann/json.hpp>
-
-
-#include "ControlCondition.h"
 #include "ControlEvent.h"
-#include "InstallerStrings.h"
+#include "DialogTable.h"
 
-class Control : public Record {
+class ControlEventTable : Generator<ControlEvent> {
 public:
-    explicit Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog);
-    ~Control() = default;
-    const std::vector<ControlCondition>& get_conditions() const noexcept;
-    const std::vector<ControlEvent>& get_events() const noexcept;
-    MSIHANDLE getRecord() const override;
+    explicit ControlEventTable(const DialogTable& dialogTable) noexcept;
+    ~ControlEventTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::string dialog;
-    std::string control;
-    std::string type;
-    int x;
-    int y;
-    int width;
-    int height;
-    int attributes;
-    std::string property;
-    std::string text;
-    std::string next;
-    std::string help;
-    std::vector<ControlCondition> conditions;
-    std::vector<ControlEvent> events;
+    const DialogTable& dialogTable;
 };
+

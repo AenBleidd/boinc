@@ -26,6 +26,7 @@
 #include "AdvtExecuteSequenceTable.h"
 #include "ControlTable.h"
 #include "ControlConditionTable.h"
+#include "ControlEventTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
@@ -48,6 +49,7 @@ private:
     AdvtExecuteSequenceTable advt_execute_sequence_table;
     ControlTable control_table;
     ControlConditionTable control_condition_table;
+    ControlEventTable control_event_table;
     DialogTable dialog_table;
     InstallExecuteSequenceTable install_execute_sequence_table;
     InstallUISequenceTable install_ui_sequence_table;

@@ -21,7 +21,7 @@
 
 #include "Installer.h"
 
-Installer::Installer() noexcept : control_table(dialog_table), control_condition_table(dialog_table) {
+Installer::Installer() noexcept : control_table(dialog_table), control_condition_table(dialog_table), control_event_table(dialog_table) {
 }
 
 bool Installer::load() {
@@ -165,6 +165,13 @@ bool Installer::create_msi() {
         return false;
     }
     std::cout << "Writing ControlCondition done" << std::endl;
+
+    std::cout << "Writing ControlEvent" << std::endl;
+    if (!control_event_table.generate(hDatabase)) {
+        std::cerr << "Failed to write ControlEvent" << std::endl;
+        return false;
+    }
+    std::cout << "Writing ControlEvent done" << std::endl;
 
     std::cout << "Writing Dialog" << std::endl;
     if (!dialog_table.generate(hDatabase)) {

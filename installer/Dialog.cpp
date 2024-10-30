@@ -22,37 +22,37 @@
 
 Dialog::Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     if (json.contains("Dialog")) {
-        dialog = json.at("Dialog").get<std::string>();
+        dialog = json["Dialog"];
     }
     if (json.contains("HCentering")) {
-        hcentering = json.at("HCentering").get<int>();
+        hcentering = json["HCentering"];
     }
     if (json.contains("VCentering")) {
-        vcentering = json.at("VCentering").get<int>();
+        vcentering = json["VCentering"];
     }
     if (json.contains("Width")) {
-        width = json.at("Width").get<int>();
+        width = json["Width"];
     }
     if (json.contains("Height")) {
-        height = json.at("Height").get<int>();
+        height = json["Height"];
     }
     if (json.contains("Attributes")) {
-        attributes = json.at("Attributes").get<int>();
+        attributes = json["Attributes"];
     }
     if (json.contains("Title")) {
-        title = installerStrings.get(json.at("Title").get<std::string>());
+        title = installerStrings.get(json["Title"]);
     }
     if (json.contains("Control_First")) {
-        first = json.at("Control_First").get<std::string>();
+        first = json["Control_First"];
     }
     if (json.contains("Control_Default")) {
-        default = json.at("Control_Default").get<std::string>();
+        default = json["Control_Default"];
     }
     if (json.contains("Control_Cancel")) {
-        cancel = json.at("Control_Cancel").get<std::string>();
+        cancel = json["Control_Cancel"];
     }
     if (json.contains("Controls")) {
-        for (const auto& control : json.at("Controls")) {
+        for (const auto& control : json["Controls"]) {
             controls.emplace_back(control, installerStrings, dialog);
         }
     }
