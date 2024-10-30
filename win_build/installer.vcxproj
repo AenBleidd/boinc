@@ -40,7 +40,6 @@
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
     <ClCompile Include="..\installer\main.cpp" />
-    <ClCompile Include="..\installer\Property.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -62,8 +61,6 @@
     <ClInclude Include="..\installer\InstallerStrings.h" />
     <ClInclude Include="..\installer\InstallExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\InstallUISequenceTable.h" />
-    <ClInclude Include="..\installer\KeyValue.h" />
-    <ClInclude Include="..\installer\Property.h" />
     <ClInclude Include="..\installer\Record.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />
   </ItemGroup>

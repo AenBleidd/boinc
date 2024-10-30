@@ -22,7 +22,6 @@
 #include <nlohmann/json.hpp>
 
 
-#include "Property.h"
 #include "ControlCondition.h"
 #include "InstallerStrings.h"
 
@@ -30,8 +29,8 @@ class Control : public Record {
 public:
     explicit Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog);
     ~Control() = default;
-    std::string get() const override;
     const std::vector<ControlCondition>& get_conditions() const noexcept;
+    MSIHANDLE getRecord() const override;
 private:
     std::string dialog;
     std::string control;

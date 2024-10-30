@@ -18,21 +18,24 @@
 #include "DialogTable.h"
 #include "Generator.h"
 
-std::string DialogTable::generate() const {
-    return Generator<Dialog>().generate({{"Dialog", "s72"}, {"HCentering", "i2"}, {"VCentering", "i2"}, {"Width", "i2"}, {"Height", "i2"}, {"Attributes", "I4"},
-        { "Title", "L128" }, { "Control_First", "s50" }, { "Control_Default", "S50" }, { "Control_Cancel", "S50" } }, { "Dialog", "Dialog" }, dialogs);
-}
-
 bool DialogTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     for (const auto& dialog : json) {
         dialogs.emplace_back(dialog, installerStrings);
     }
-
     return true;
 }
 
 const std::vector<Dialog>& DialogTable::get() const {
     return dialogs;
+}
+
+bool DialogTable::generate(MSIHANDLE hDatabase) {
+    const auto sql_create = "CREATE TABLE `Dialog` (`Dialog` CHAR(72) NOT NULL, `HCentering` SHORT NOT NULL, `VCentering` SHORT NOT NULL, "
+        "`Width` SHORT NOT NULL, `Height` SHORT NOT NULL, `Attributes` LONG, `Title` LONGCHAR LOCALIZABLE, `Control_First` CHAR(50) NOT NULL, "
+        "`Control_Default` CHAR(50), `Control_Cancel` CHAR(50) PRIMARY KEY `Dialog`)";
+    const auto sql_insert = "INSERT INTO `Dialog` (`Dialog`, `HCentering`, `VCentering`, `Width`, `Height`, `Attributes`, `Title`, `Control_First`, "
+        "`Control_Default`, `Control_Cancel`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    return Generator::generate(hDatabase, sql_create, sql_insert, dialogs);
 }
 
 

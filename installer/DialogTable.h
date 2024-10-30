@@ -19,14 +19,15 @@
 
 #include "Dialog.h"
 #include "InstallerStrings.h"
+#include "Generator.h"
 
-class DialogTable {
+class DialogTable : public Generator<Dialog> {
 public:
     explicit DialogTable() noexcept = default;
     ~DialogTable() = default;
-    std::string generate() const;
     bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
     const std::vector<Dialog>& get() const;
+    bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Dialog> dialogs;
 };

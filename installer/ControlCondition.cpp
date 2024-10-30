@@ -29,9 +29,11 @@ ControlCondition::ControlCondition(const nlohmann::json& json, const std::string
     }
 }
 
-std::string ControlCondition::get() const
-{
-    std::ostringstream oss;
-    oss << dialog << "\t" << control << "\t" << action << "\t" << condition << "\n";
-    return oss.str();
+MSIHANDLE ControlCondition::getRecord() const {
+    const auto hRecord = MsiCreateRecord(4);
+    MsiRecordSetString(hRecord, 1, dialog.c_str());
+    MsiRecordSetString(hRecord, 2, control.c_str());
+    MsiRecordSetString(hRecord, 3, action.c_str());
+    MsiRecordSetString(hRecord, 4, condition.c_str());
+    return hRecord;
 }

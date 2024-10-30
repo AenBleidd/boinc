@@ -57,11 +57,22 @@ Dialog::Dialog(const nlohmann::json& json, const InstallerStrings& installerStri
         }
     }
 }
-std::string Dialog::get() const {
-    std::ostringstream oss;
-    oss << dialog << "\t" << hcentering << "\t" << vcentering << "\t" << width << "\t" << height << "\t" << attributes << "\t" << title << "\t" << first << "\t" << default << "\t" << cancel << "\n";
-    return oss.str();
-}
+
 std::vector<Control> Dialog::get_controls() const {
     return controls;
+}
+
+MSIHANDLE Dialog::getRecord() const {
+    const auto hRecord = MsiCreateRecord(10);
+    MsiRecordSetString(hRecord, 1, dialog.c_str());
+    MsiRecordSetInteger(hRecord, 2, hcentering);
+    MsiRecordSetInteger(hRecord, 3, vcentering);
+    MsiRecordSetInteger(hRecord, 4, width);
+    MsiRecordSetInteger(hRecord, 5, height);
+    MsiRecordSetInteger(hRecord, 6, attributes);
+    MsiRecordSetString(hRecord, 7, title.c_str());
+    MsiRecordSetString(hRecord, 8, first.c_str());
+    MsiRecordSetString(hRecord, 9, default.c_str());
+    MsiRecordSetString(hRecord, 10, cancel.c_str());
+    return hRecord;
 }

@@ -21,6 +21,9 @@
 
 #include "Installer.h"
 
+Installer::Installer() noexcept : control_table(dialog_table), control_condition_table(dialog_table) {
+}
+
 bool Installer::load() {
     if (!installer_strings.load()) {
         return false;
@@ -43,23 +46,6 @@ bool Installer::load() {
     }
 
     return load_from_json(j);
-}
-
-bool Installer::generate() const
-{
-    try {
-        std::cout << "==== Control ====" << std::endl;
-        std::cout << control_table.generate(dialog_table.get()) << std::endl;
-        std::cout << "==== ControlCondition ====" << std::endl;
-        std::cout << control_condition_table.generate(dialog_table.get()) << std::endl;
-        std::cout << "==== Dialog ====" << std::endl;
-        std::cout << dialog_table.generate() << std::endl;
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return false;
-    }
-    return true;
 }
 
 bool Installer::load_from_json(const nlohmann::json& json)
@@ -165,6 +151,27 @@ bool Installer::create_msi() {
         return false;
     }
     std::cout << "Writing AdvtExecuteSequence done" << std::endl;
+
+    std::cout << "Writing Control" << std::endl;
+    if (!control_table.generate(hDatabase)) {
+        std::cerr << "Failed to write Control" << std::endl;
+        return false;
+    }
+    std::cout << "Writing Control done" << std::endl;
+
+    std::cout << "Writing ControlCondition" << std::endl;
+    if (!control_condition_table.generate(hDatabase)) {
+        std::cerr << "Failed to write ControlCondition" << std::endl;
+        return false;
+    }
+    std::cout << "Writing ControlCondition done" << std::endl;
+
+    std::cout << "Writing Dialog" << std::endl;
+    if (!dialog_table.generate(hDatabase)) {
+        std::cerr << "Failed to write Dialog" << std::endl;
+        return false;
+    }
+    std::cout << "Writing Dialog done" << std::endl;
 
 
 

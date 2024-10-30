@@ -22,8 +22,5 @@ int main(int argc, char** argv) {
     if (!installer.load()) {
         return 1;
     }
-    if (!installer.generate()) {
-        return 1;
-    }
     return installer.create_msi() ? 0 : 1;
 }

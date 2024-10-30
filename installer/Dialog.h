@@ -28,8 +28,8 @@ class Dialog : public Record {
 public:
     explicit Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~Dialog() = default;
-    std::string get() const override;
     std::vector<Control> get_controls() const;
+    MSIHANDLE getRecord() const override;
 private:
     std::string dialog;
     int hcentering;

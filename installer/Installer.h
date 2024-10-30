@@ -32,10 +32,9 @@
 
 class Installer {
 public:
-    explicit Installer() noexcept = default;
+    explicit Installer() noexcept;
     ~Installer() = default;
     bool load();
-    bool generate() const;
     bool create_msi();
 private:
     bool load_from_json(const nlohmann::json& json);

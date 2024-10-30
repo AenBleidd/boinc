@@ -20,11 +20,10 @@
 #include <variant>
 
 #include "InstallerStrings.h"
-#include "KeyValue.h"
 #include "Record.h"
 #include "Generator.h"
 
-class SummaryInformationTable : public Generator<KeyValue<int, std::string>> {
+class SummaryInformationTable : public Generator<std::any> {
 public:
     explicit SummaryInformationTable() noexcept = default;
     ~SummaryInformationTable() = default;

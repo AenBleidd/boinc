@@ -20,16 +20,21 @@
 
 #include "ControlTable.h"
 
-std::string ControlTable::generate(const std::vector<Dialog>& dialogs) const
+ControlTable::ControlTable(const DialogTable& dialogTable) noexcept : dialogTable(dialogTable) {}
+
+bool ControlTable::generate(MSIHANDLE hDatabase)
 {
     std::vector<Control> controls;
-    for (const auto& dialog : dialogs) {
+    for (const auto& dialog : dialogTable.get()) {
         for (const auto& control : dialog.get_controls()) {
-            controls.push_back(control);
+            controls.emplace_back(control);
         }
     }
-    return Generator<Control>().generate({ {"Dialog_", "s72"}, {"Control", "s50"}, {"Type", "s20"}, {"X", "i2"}, {"Y", "i2"}, {"Width", "i2"},
-        { "Height", "i2" }, { "Attributes", "I4", }, { "Property", "S50" }, { "Text", "L0" }, { "Control_Next", "S50" }, { "Help", "L50"} },
-        { "Control", "Dialog_", "Control" }, controls);
+    
+    const auto create_sql = "CREATE TABLE `Control` (`Dialog_` CHAR(72) NOT NULL, `Control` CHAR(50) NOT NULL, `Type` CHAR(20) NOT NULL, `X` SHORT NOT NULL, "
+        "`Y` SHORT NOT NULL, `Width` SHORT NOT NULL, `Height` SHORT NOT NULL, `Attributes` LONG, `Property` CHAR(50), `Text` LONGCHAR LOCALIZABLE, "
+        "`Control_Next` CHAR(50), `Help` CHAR(50) LOCALIZABLE PRIMARY KEY `Dialog_`, `Control`)";
+    const auto insert_sql = "INSERT INTO `Control` (`Dialog_`, `Control`, `Type`, `X`, `Y`, `Width`, `Height`, `Attributes`, `Property`, `Text`, `Control_Next`, `Help`) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    return Generator::generate(hDatabase, create_sql, insert_sql, controls);
 }
-

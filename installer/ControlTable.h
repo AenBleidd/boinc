@@ -18,11 +18,15 @@
 #pragma once
 
 #include <vector>
-#include "Dialog.h"
+#include "DialogTable.h"
+#include "Control.h"
 
-class ControlTable {
+
+class ControlTable : Generator<Control> {
 public:
-    explicit ControlTable() noexcept = default;
+    explicit ControlTable(const DialogTable& dialogTable) noexcept;
     ~ControlTable() = default;
-    std::string generate(const std::vector<Dialog>& dialogs) const;
+    bool generate(MSIHANDLE hDatabase) override;
+private:
+    const DialogTable& dialogTable;
 };
