@@ -19,20 +19,15 @@
 
 #include "ActionTextTable.h"
 
-bool ActionTextTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    try {
-        for (const auto& item : json) {
-            values.emplace_back(item, installerStrings);
-        }
+ActionTextTable::ActionTextTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    std::cout << "Loading ActionTextTable..." << std::endl;
+    for (const auto& item : json) {
+        values.emplace_back(item, installerStrings);
     }
-    catch (const std::exception& e) {
-        std::cerr << "Error loading ActionTextTable: " << e.what() << std::endl;
-        return false;
-    }
-    return true;
 }
 
 bool ActionTextTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating ActionTextTable..." << std::endl;
     const auto sql_create = "CREATE TABLE `ActionText` (`Action` CHAR(72) NOT NULL, `Description` LONGCHAR LOCALIZABLE, `Template` LONGCHAR LOCALIZABLE PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `ActionText` (`Action`, `Description`, `Template`) VALUES (?, ?, ?)";
     return Generator::generate(hDatabase, sql_create, sql_insert, values);

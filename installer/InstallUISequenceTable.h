@@ -22,9 +22,8 @@
 
 class InstallUISequenceTable : public Generator<Action> {
 public:
-    explicit InstallUISequenceTable() noexcept = default;
+    explicit InstallUISequenceTable(const nlohmann::json& json);
     ~InstallUISequenceTable() = default;
-    bool load(const nlohmann::json& json);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;

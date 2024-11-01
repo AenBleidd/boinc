@@ -22,9 +22,8 @@
 
 class InstallExecuteSequenceTable : public Generator<Action> {
 public:
-    explicit InstallExecuteSequenceTable() noexcept = default;
+    explicit InstallExecuteSequenceTable(const nlohmann::json& json);
     ~InstallExecuteSequenceTable() = default;
-    bool load(const nlohmann::json& json);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;

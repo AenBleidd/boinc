@@ -18,15 +18,19 @@
 #include "InstallUISequenceTable.h"
 #include "Generator.h"
 
-bool InstallUISequenceTable::load(const nlohmann::json& json) {
+InstallUISequenceTable::InstallUISequenceTable(const nlohmann::json& json) {
+    std::cout << "Loading InstallUISequenceTable..." << std::endl;
+
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
-    return true;
 }
 
 bool InstallUISequenceTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating InstallUISequenceTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `InstallUISequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `InstallUISequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

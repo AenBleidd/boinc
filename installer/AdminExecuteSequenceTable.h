@@ -25,9 +25,8 @@
 
 class AdminExecuteSequenceTable : public Generator<Action>{
 public:
-    explicit AdminExecuteSequenceTable() noexcept = default;
+    explicit AdminExecuteSequenceTable(const nlohmann::json& json);
     ~AdminExecuteSequenceTable() = default;
-    bool load(const nlohmann::json& json);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;

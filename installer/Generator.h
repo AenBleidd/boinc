@@ -25,11 +25,19 @@
 #include "Msi.h"
 #include "MsiQuery.h"
 
+class GeneratorTable {
+public:
+    GeneratorTable() = default;
+    virtual ~GeneratorTable() = default;
+    virtual bool generate(MSIHANDLE hDatabase) = 0;
+};
+
 template <typename V>
-class Generator {
+class Generator : public GeneratorTable {
 public:
     Generator() = default;
-    virtual ~Generator() = default;
+    virtual ~Generator() override = default;
+
     bool generate(MSIHANDLE hDatabase, const std::string& sql_create, const std::string& sql_insert, const std::vector<V>& records) {
         MSIHANDLE hView;
         auto result = MsiDatabaseOpenView(hDatabase, sql_create.c_str(), &hView);
@@ -73,6 +81,5 @@ public:
         return true;
     }
 
-    virtual bool generate(MSIHANDLE hDatabase) = 0;
-
+    virtual bool generate(MSIHANDLE hDatabase) override = 0;
 };

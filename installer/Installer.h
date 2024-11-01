@@ -17,19 +17,12 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
 #include <nlohmann/json.hpp>
-#include "SummaryInformationTable.h"
+
+#include "Generator.h"
 #include "InstallerStrings.h"
-#include "ActionTextTable.h"
-#include "AdminExecuteSequenceTable.h"
-#include "AdminUISequencetable.h"
-#include "AdvtExecuteSequenceTable.h"
-#include "ControlTable.h"
-#include "ControlConditionTable.h"
-#include "ControlEventTable.h"
-#include "DialogTable.h"
-#include "InstallExecuteSequenceTable.h"
-#include "InstallUISequenceTable.h"
 
 class Installer {
 public:
@@ -40,17 +33,6 @@ public:
 private:
     bool load_from_json(const nlohmann::json& json);
 
-    
+    std::map<std::string, std::shared_ptr<GeneratorTable>> tables;    
     InstallerStrings installer_strings;
-    SummaryInformationTable summary_information_table;
-    ActionTextTable action_text_table;
-    AdminExecuteSequenceTable admin_execute_sequence_table;
-    AdminUISequenceTable admin_ui_sequence_table;
-    AdvtExecuteSequenceTable advt_execute_sequence_table;
-    ControlTable control_table;
-    ControlConditionTable control_condition_table;
-    ControlEventTable control_event_table;
-    DialogTable dialog_table;
-    InstallExecuteSequenceTable install_execute_sequence_table;
-    InstallUISequenceTable install_ui_sequence_table;
 };

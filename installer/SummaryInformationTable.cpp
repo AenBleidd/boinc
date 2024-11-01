@@ -22,40 +22,37 @@
 #include "SummaryInformationTable.h"
 #include "GuidHelper.h"
 
-bool SummaryInformationTable::load(const nlohmann::json& json, const InstallerStrings& installerStrings)
+SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings)
 {
+    std::cout << "Loading SummaryInformationTable..." << std::endl;
+
     SYSTEMTIME systemTime;
     GetSystemTime(&systemTime);
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
 
-    try {
-        summary[1] = json.at("codepage").get<int>();
-        summary[2] = installerStrings.get(json.at("title").get<std::string>());
-        summary[3] = installerStrings.get(json.at("subject").get<std::string>());
-        summary[4] = installerStrings.get(json.at("author").get<std::string>());
-        summary[5] = json.at("keywords").get<std::string>();
-        summary[6] = installerStrings.get(json.at("comments").get<std::string>());
-        summary[7] = json.at("template").get<std::string>();
-        summary[8] = json.at("lastauthor").get<std::string>();
-        summary[9] = GuidHelper::generate_guid();
-        summary[11] = fileTime;
-        summary[12] = fileTime;
-        summary[13] = fileTime;
-        summary[14] = json.at("pagecount").get<int>();
-        summary[15] = json.at("wordcount").get<int>();
-        summary[16] = json.at("charcount").get<int>();
-        summary[18] = json.at("appname").get<std::string>();
-        summary[19] = json.at("security").get<int>();
-    }
-    catch (const nlohmann::json::exception& e) {
-        std::cerr << "JSON parsing error: " << e.what() << std::endl;
-        return false;
-    }
-    return true;
+    summary[1] = json.at("codepage").get<int>();
+    summary[2] = installerStrings.get(json.at("title").get<std::string>());
+    summary[3] = installerStrings.get(json.at("subject").get<std::string>());
+    summary[4] = installerStrings.get(json.at("author").get<std::string>());
+    summary[5] = json.at("keywords").get<std::string>();
+    summary[6] = installerStrings.get(json.at("comments").get<std::string>());
+    summary[7] = json.at("template").get<std::string>();
+    summary[8] = json.at("lastauthor").get<std::string>();
+    summary[9] = GuidHelper::generate_guid();
+    summary[11] = fileTime;
+    summary[12] = fileTime;
+    summary[13] = fileTime;
+    summary[14] = json.at("pagecount").get<int>();
+    summary[15] = json.at("wordcount").get<int>();
+    summary[16] = json.at("charcount").get<int>();
+    summary[18] = json.at("appname").get<std::string>();
+    summary[19] = json.at("security").get<int>();
 }
 
 bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating SummaryInformationTable" << std::endl;
+
     MSIHANDLE hSummaryInfo;
     const auto updateCount = summary.size();
 

@@ -22,9 +22,8 @@
 
 class AdvtExecuteSequenceTable : public Generator<Action> {
 public:
-    explicit AdvtExecuteSequenceTable() noexcept = default;
+    explicit AdvtExecuteSequenceTable(const nlohmann::json& json);
     ~AdvtExecuteSequenceTable() = default;
-    bool load(const nlohmann::json& json);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;

@@ -17,15 +17,19 @@
 
 #include "InstallExecuteSequenceTable.h"
 
-bool InstallExecuteSequenceTable::load(const nlohmann::json& json) {
+InstallExecuteSequenceTable::InstallExecuteSequenceTable(const nlohmann::json& json) {
+    std::cout << "Loading InstallExecuteSequenceTable..." << std::endl;
+
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
-    return true;
 }
 
 bool InstallExecuteSequenceTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating InstallExecuteSequenceTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `InstallExecuteSequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `InstallExecuteSequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

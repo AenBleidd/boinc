@@ -18,14 +18,15 @@
 #pragma once
 
 #include "ControlEvent.h"
-#include "DialogTable.h"
+#include "Generator.h"
+#include "Control.h"
 
 class ControlEventTable : Generator<ControlEvent> {
 public:
-    explicit ControlEventTable(const DialogTable& dialogTable) noexcept;
+    explicit ControlEventTable(const std::vector<Control>& controls) noexcept;
     ~ControlEventTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    const DialogTable& dialogTable;
+    const std::vector<Control>& controls;
 };
 

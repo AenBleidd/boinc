@@ -19,9 +19,19 @@
 #include <iostream>
 #include <tuple>
 
+#include "SummaryInformationTable.h"
+#include "ActionTextTable.h"
+#include "AdminExecuteSequenceTable.h"
+#include "AdminUISequencetable.h"
+#include "AdvtExecuteSequenceTable.h"
+#include "ControlTable.h"
+#include "DialogTable.h"
+#include "InstallExecuteSequenceTable.h"
+#include "InstallUISequenceTable.h"
+
 #include "Installer.h"
 
-Installer::Installer() noexcept : control_table(dialog_table), control_condition_table(dialog_table), control_event_table(dialog_table) {
+Installer::Installer() noexcept{
 }
 
 bool Installer::load() {
@@ -50,56 +60,30 @@ bool Installer::load() {
 
 bool Installer::load_from_json(const nlohmann::json& json)
 {
-    auto load_table_with_strings = [&](const std::string& name, auto& table, const InstallerStrings& installer_strings) -> auto {
-        if (json.find(name) == json.end()) {
-            std::cerr << "Could not find " << name << " in json" << std::endl;
-            return false;
-        };
-        if (!table.load(json.at(name), installer_strings)) {
-            std::cerr << "Could not load " << name << " table" << std::endl;
-            return false;
-        }
-        return true;
-        };
-
-    auto load_table = [&](const std::string& name, auto& table) -> auto {
-        if (json.find(name) == json.end()) {
-            std::cerr << "Could not find " << name << " in json" << std::endl;
-            return false;
-        };
-        if (!table.load(json.at(name))) {
-            std::cerr << "Could not load " << name << " table" << std::endl;
-            return false;
-        }
-        return true;
-        };
-
     try {
-        if (!load_table_with_strings("Summary", summary_information_table, installer_strings)) {
-            return false;
+        if (json.contains("Summary") && !json["Summary"].is_null()) {
+            tables["Summary"] = std::make_shared<SummaryInformationTable>(json["Summary"], installer_strings);
         }
-        if (!load_table_with_strings("ActionText", action_text_table, installer_strings)) {
-            return false;
+        if (json.contains("ActionText") && !json["ActionText"].is_null()) {
+            tables["ActionText"] = std::make_shared<ActionTextTable>(json["ActionText"], installer_strings);
         }
-        if (!load_table("AdminExecuteSequence", admin_execute_sequence_table)) {
-            return false;
+        if (json.contains("AdminExecuteSequence") && !json["AdminExecuteSequence"].is_null()) {
+            tables["AdminExecuteSequence"] = std::make_shared<AdminExecuteSequenceTable>(json["AdminExecuteSequence"]);
         }
-        if (!load_table("AdminUISequence", admin_ui_sequence_table)) {
-            return false;
+        if (json.contains("AdminUISequence") && !json["AdminUISequence"].is_null()) {
+            tables["AdminUISequence"] = std::make_shared<AdminUISequenceTable>(json["AdminUISequence"]);
         }
-        if (!load_table("AdvtExecuteSequence", advt_execute_sequence_table)) {
-            return false;
+        if (json.contains("AdvtExecuteSequence") && !json["AdvtExecuteSequence"].is_null()) {
+            tables["AdvtExecuteSequence"] = std::make_shared<AdvtExecuteSequenceTable>(json["AdvtExecuteSequence"]);
         }
-
-        if (!load_table_with_strings("Dialog", dialog_table, installer_strings)) {
-            return false;
+        if (json.contains("Dialog") && !json["Dialog"].is_null()) {
+            tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);
         }
-
-        if (!load_table("InstallExecuteSequence", install_execute_sequence_table)) {
-            return false;
+        if (json.contains("InstallExecuteSequence") && !json["InstallExecuteSequence"].is_null()) {
+            tables["InstallExecuteSequence"] = std::make_shared<InstallExecuteSequenceTable>(json["InstallExecuteSequence"]);
         }
-        if (!load_table("InstallUISequence", install_ui_sequence_table)) {
-            return false;
+        if (json.contains("InstallUISequence") && !json["InstallUISequence"].is_null()) {
+            tables["InstallUISequence"] = std::make_shared<InstallUISequenceTable>(json["InstallUISequence"]);
         }
     }
     catch (const std::exception& e) {
@@ -111,100 +95,35 @@ bool Installer::load_from_json(const nlohmann::json& json)
 
 bool Installer::create_msi() {
     MSIHANDLE hDatabase;
-    auto result = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
-    if (result != ERROR_SUCCESS) {
-        std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
-        return false;
+
+    try {
+        auto result = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
+        if (result != ERROR_SUCCESS) {
+            std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
+            return false;
+        }
+
+        for (const auto& table : tables) {
+            if (!table.second->generate(hDatabase)) {
+                std::cerr << "Failed to write table " << table.first << std::endl;
+                return false;
+            }
+        }
+
+        result = MsiDatabaseCommit(hDatabase);
+        if (result != ERROR_SUCCESS) {
+            std::cerr << "MsiDatabaseCommit failed: " << result << std::endl;
+            return false;
+        }
+
+        result = MsiCloseHandle(hDatabase);
+        if (result != ERROR_SUCCESS) {
+            std::cerr << "MsiCloseHandle failed: " << result << std::endl;
+            return false;
+        }
     }
-
-    std::cout << "Writing summary information" << std::endl;
-    if (!summary_information_table.generate(hDatabase)) {
-        std::cerr << "Failed to write summary information" << std::endl;
-        return false;
-    }
-    std::cout << "Writing summary information done" << std::endl;
-
-    std::cout << "Writing ActionText" << std::endl;
-    if (!action_text_table.generate(hDatabase)) {
-        std::cerr << "Failed to write ActionText" << std::endl;
-        return false;
-    }
-    std::cout << "Writing ActionText done" << std::endl;
-
-    std::cout << "Writing AdminExecuteSequence" << std::endl;
-    if (!admin_execute_sequence_table.generate(hDatabase)) {
-        std::cerr << "Failed to write AdminExecuteSequence" << std::endl;
-        return false;
-    }
-    std::cout << "Writing AdminExecuteSequence done" << std::endl;
-
-    std::cout << "Writing AdminUISequence" << std::endl;
-    if (!admin_ui_sequence_table.generate(hDatabase)) {
-        std::cerr << "Failed to write AdminUISequence" << std::endl;
-        return false;
-    }
-    std::cout << "Writing AdminUISequence done" << std::endl;
-
-    std::cout << "Writing AdvtExecuteSequence" << std::endl;
-    if (!advt_execute_sequence_table.generate(hDatabase)) {
-        std::cerr << "Failed to write AdvtExecuteSequence" << std::endl;
-        return false;
-    }
-    std::cout << "Writing AdvtExecuteSequence done" << std::endl;
-
-    std::cout << "Writing Control" << std::endl;
-    if (!control_table.generate(hDatabase)) {
-        std::cerr << "Failed to write Control" << std::endl;
-        return false;
-    }
-    std::cout << "Writing Control done" << std::endl;
-
-    std::cout << "Writing ControlCondition" << std::endl;
-    if (!control_condition_table.generate(hDatabase)) {
-        std::cerr << "Failed to write ControlCondition" << std::endl;
-        return false;
-    }
-    std::cout << "Writing ControlCondition done" << std::endl;
-
-    std::cout << "Writing ControlEvent" << std::endl;
-    if (!control_event_table.generate(hDatabase)) {
-        std::cerr << "Failed to write ControlEvent" << std::endl;
-        return false;
-    }
-    std::cout << "Writing ControlEvent done" << std::endl;
-
-    std::cout << "Writing Dialog" << std::endl;
-    if (!dialog_table.generate(hDatabase)) {
-        std::cerr << "Failed to write Dialog" << std::endl;
-        return false;
-    }
-    std::cout << "Writing Dialog done" << std::endl;
-
-
-
-    std::cout << "Writing InstallExecuteSequence" << std::endl;
-    if (!install_execute_sequence_table.generate(hDatabase)) {
-        std::cerr << "Failed to write InstallExecuteSequence" << std::endl;
-        return false;
-    }
-    std::cout << "Writing InstallExecuteSequence done" << std::endl;
-
-    std::cout << "Writing InstallUISequence" << std::endl;
-    if (!install_ui_sequence_table.generate(hDatabase)) {
-        std::cerr << "Failed to write InstallUISequence" << std::endl;
-        return false;
-    }
-    std::cout << "Writing InstallUISequence done" << std::endl;
-
-    result = MsiDatabaseCommit(hDatabase);
-    if (result != ERROR_SUCCESS) {
-        std::cerr << "MsiDatabaseCommit failed: " << result << std::endl;
-        return false;
-    }
-
-    result = MsiCloseHandle(hDatabase);
-    if (result != ERROR_SUCCESS) {
-        std::cerr << "MsiCloseHandle failed: " << result << std::endl;
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
         return false;
     }
 

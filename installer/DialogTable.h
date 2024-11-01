@@ -23,10 +23,8 @@
 
 class DialogTable : public Generator<Dialog> {
 public:
-    explicit DialogTable() noexcept = default;
+    explicit DialogTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~DialogTable() = default;
-    bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    const std::vector<Dialog>& get() const;
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Dialog> dialogs;

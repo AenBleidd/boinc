@@ -17,15 +17,18 @@
 
 #include "AdminUISequenceTable.h"
 
-bool AdminUISequenceTable::load(const nlohmann::json& json) {
+AdminUISequenceTable::AdminUISequenceTable(const nlohmann::json& json) {
+    std::cout << "Loading AdminUISequenceTable..." << std::endl;
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
-    return true;
 }
 
 bool AdminUISequenceTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating AdminUISequenceTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `AdminUISequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `AdminUISequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

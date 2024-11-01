@@ -17,15 +17,19 @@
 
 #include "AdminExecuteSequenceTable.h"
 
-bool AdminExecuteSequenceTable::load(const nlohmann::json& json) {
+AdminExecuteSequenceTable::AdminExecuteSequenceTable(const nlohmann::json& json) {
+    std::cout << "Loading AdminExecuteSequenceTable..." << std::endl;
+
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
-    return true;
 }
 
 bool AdminExecuteSequenceTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating AdminExecuteSequenceTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `AdminExecuteSequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `AdminExecuteSequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

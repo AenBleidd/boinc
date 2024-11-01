@@ -17,15 +17,19 @@
 
 #include "AdvtExecuteSequenceTable.h"
 
-bool AdvtExecuteSequenceTable::load(const nlohmann::json& json) {
+AdvtExecuteSequenceTable::AdvtExecuteSequenceTable(const nlohmann::json& json) {
+    std::cout << "Loading AdvtExecuteSequenceTable..." << std::endl;
+
     for (const auto& value : json) {
         actions.emplace_back(value);
     }
-    return true;
 }
 
 bool AdvtExecuteSequenceTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating AdvtExecuteSequenceTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `AdvtExecuteSequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `AdvtExecuteSequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

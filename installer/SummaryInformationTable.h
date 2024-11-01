@@ -25,9 +25,8 @@
 
 class SummaryInformationTable : public Generator<std::any> {
 public:
-    explicit SummaryInformationTable() noexcept = default;
+    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~SummaryInformationTable() = default;
-    bool load(const nlohmann::json& json, const InstallerStrings& installerStrings);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::map<int, std::variant<int, std::string, FILETIME>> summary;

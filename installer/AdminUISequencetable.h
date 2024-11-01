@@ -22,9 +22,8 @@
 
 class AdminUISequenceTable : public Generator<Action> {
 public:
-    explicit AdminUISequenceTable() noexcept = default;
+    explicit AdminUISequenceTable(const nlohmann::json& json);
     ~AdminUISequenceTable() = default;
-    bool load(const nlohmann::json& json);
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Action> actions;
