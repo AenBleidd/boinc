@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Control.h"
+#include "MsiHelper.h"
 
 Control::Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog) : dialog(dialog) {
     if (json.contains("Control")) {
@@ -77,18 +78,5 @@ const std::vector<ControlEvent>& Control::get_events() const noexcept
 }
 
 MSIHANDLE Control::getRecord() const {
-    const auto hRecord = MsiCreateRecord(12);
-    MsiRecordSetString(hRecord, 1, dialog.c_str());
-    MsiRecordSetString(hRecord, 2, control.c_str());
-    MsiRecordSetString(hRecord, 3, type.c_str());
-    MsiRecordSetInteger(hRecord, 4, x);
-    MsiRecordSetInteger(hRecord, 5, y);
-    MsiRecordSetInteger(hRecord, 6, width);
-    MsiRecordSetInteger(hRecord, 7, height);
-    MsiRecordSetInteger(hRecord, 8, attributes);
-    MsiRecordSetString(hRecord, 9, property.c_str());
-    MsiRecordSetString(hRecord, 10, text.c_str());
-    MsiRecordSetString(hRecord, 11, next.c_str());
-    MsiRecordSetString(hRecord, 12, help.c_str());
-    return hRecord;
+    return MsiHelper::MsiRecordSet({ dialog, control, type, x, y, width, height, attributes, property, text, next, help });
 }

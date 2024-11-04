@@ -15,19 +15,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "ControlCondition.h"
-#include "MsiHelper.h"
+#pragma once
 
-ControlCondition::ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control)
-    : dialog(dialog), control(control) {
-    if (json.contains("Action")) {
-        action = json["Action"];
-    }
-    if (json.contains("Condition")) {
-        condition = json["Condition"];
-    }
-}
+#include "Windows.h"
+#include "Msi.h"
+#include "MsiQuery.h"
 
-MSIHANDLE ControlCondition::getRecord() const {
-    return MsiHelper::MsiRecordSet({ dialog, control, action, condition });
-}
+class GeneratorTable {
+public:
+    GeneratorTable() = default;
+    virtual ~GeneratorTable() = default;
+    virtual bool generate(MSIHANDLE hDatabase) = 0;
+};

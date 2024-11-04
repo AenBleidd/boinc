@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Binary.h"
+#include "MsiHelper.h"
 
 Binary::Binary(const nlohmann::json& json, const std::filesystem::path& root_path) {
     const std::string configuration_template = "%%CONFIGURATION%%";
@@ -54,8 +55,5 @@ MSIHANDLE Binary::getRecord() const {
     if (!std::filesystem::exists(path)) {
         throw std::filesystem::filesystem_error("File does not exist", path.string(), std::make_error_code(std::errc::no_such_file_or_directory));
     }
-    const auto hRecord = MsiCreateRecord(2);
-    MsiRecordSetString(hRecord, 1, name.c_str());
-    MsiRecordSetStream(hRecord, 2, path.string().c_str());
-    return hRecord;
+    return MsiHelper::MsiRecordSet({ name, path });
 }

@@ -21,16 +21,7 @@
 #include <vector>
 #include <iostream>
 
-#include "Windows.h"
-#include "Msi.h"
-#include "MsiQuery.h"
-
-class GeneratorTable {
-public:
-    GeneratorTable() = default;
-    virtual ~GeneratorTable() = default;
-    virtual bool generate(MSIHANDLE hDatabase) = 0;
-};
+#include "GeneratorTable.h"
 
 template <typename V>
 class Generator : public GeneratorTable {

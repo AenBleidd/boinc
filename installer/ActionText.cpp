@@ -18,6 +18,7 @@
 #include <sstream>
 
 #include "ActionText.h"
+#include "MsiHelper.h"
 
 ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     if (json.contains("Action")) {
@@ -31,11 +32,6 @@ ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& insta
     }
 }
 
-MSIHANDLE ActionText::getRecord() const
-{
-    const auto hRecord = MsiCreateRecord(3);
-    MsiRecordSetString(hRecord, 1, action.c_str());
-    MsiRecordSetString(hRecord, 2, description.c_str());
-    MsiRecordSetString(hRecord, 3, tmplt.c_str());
-    return hRecord;
+MSIHANDLE ActionText::getRecord() const {
+    return MsiHelper::MsiRecordSet({ action, description, tmplt });
 }

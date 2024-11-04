@@ -43,6 +43,7 @@
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
     <ClCompile Include="..\installer\main.cpp" />
+    <ClCompile Include="..\installer\MsiHelper.cpp" />
     <ClCompile Include="..\installer\Property.cpp" />
     <ClCompile Include="..\installer\PropertyTable.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
@@ -67,11 +68,13 @@
     <ClInclude Include="..\installer\Dialog.h" />
     <ClInclude Include="..\installer\DialogTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
+    <ClInclude Include="..\installer\GeneratorTable.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />
     <ClInclude Include="..\installer\Installer.h" />
     <ClInclude Include="..\installer\InstallerStrings.h" />
     <ClInclude Include="..\installer\InstallExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\InstallUISequenceTable.h" />
+    <ClInclude Include="..\installer\MsiHelper.h" />
     <ClInclude Include="..\installer\Property.h" />
     <ClInclude Include="..\installer\PropertyTable.h" />
     <ClInclude Include="..\installer\Record.h" />

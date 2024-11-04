@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Property.h"
+#include "MsiHelper.h"
 
 Property::Property(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     if (json.contains("Property")) {
@@ -27,8 +28,5 @@ Property::Property(const nlohmann::json& json, const InstallerStrings& installer
 }
 
 MSIHANDLE Property::getRecord() const {
-    const auto hRecord = MsiCreateRecord(2);
-    MsiRecordSetString(hRecord, 1, property.c_str());
-    MsiRecordSetString(hRecord, 2, value.c_str());
-    return hRecord;
+    return MsiHelper::MsiRecordSet({ property, value });
 }

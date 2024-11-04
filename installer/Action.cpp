@@ -18,6 +18,7 @@
 #include <sstream>
 
 #include "Action.h"
+#include "MsiHelper.h"
 
 Action::Action(const nlohmann::json& json) {
     if (json.contains("Action")) {
@@ -31,11 +32,6 @@ Action::Action(const nlohmann::json& json) {
     }
 }
 
-MSIHANDLE Action::getRecord() const
-{
-    const auto hRecord = MsiCreateRecord(3);
-    MsiRecordSetString(hRecord, 1, action.c_str());
-    MsiRecordSetString(hRecord, 2, condition.c_str());
-    MsiRecordSetInteger(hRecord, 3, sequence);
-    return hRecord;
+MSIHANDLE Action::getRecord() const {
+    return MsiHelper::MsiRecordSet({ action, condition, sequence });
 }

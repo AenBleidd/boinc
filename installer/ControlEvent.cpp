@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ControlEvent.h"
+#include "MsiHelper.h"
 
 ControlEvent::ControlEvent(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
     if (json.contains("Event")) {
@@ -33,12 +34,5 @@ ControlEvent::ControlEvent(const nlohmann::json& json, const std::string& dialog
 }
 
 MSIHANDLE ControlEvent::getRecord() const {
-    const auto hRecord = MsiCreateRecord(6);
-    MsiRecordSetString(hRecord, 1, dialog.c_str());
-    MsiRecordSetString(hRecord, 2, control.c_str());
-    MsiRecordSetString(hRecord, 3, event.c_str());
-    MsiRecordSetString(hRecord, 4, argument.c_str());
-    MsiRecordSetString(hRecord, 5, condition.c_str());
-    MsiRecordSetInteger(hRecord, 6, ordering);
-    return hRecord;
+    return MsiHelper::MsiRecordSet({ dialog, control, event, argument, condition, ordering });
 }

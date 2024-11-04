@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TextStyle.h"
+#include "MsiHelper.h"
 
 TextStyle::TextStyle(const nlohmann::json& json) {
     if (json.contains("TextStyle")) {
@@ -36,11 +37,5 @@ TextStyle::TextStyle(const nlohmann::json& json) {
 }
 
 MSIHANDLE TextStyle::getRecord() const {
-    const auto hRecord = MsiCreateRecord(5);
-    MsiRecordSetString(hRecord, 1, textstyle.c_str());
-    MsiRecordSetString(hRecord, 2, facename.c_str());
-    MsiRecordSetInteger(hRecord, 3, size);
-    MsiRecordSetInteger(hRecord, 4, color);
-    MsiRecordSetInteger(hRecord, 5, stylebits);
-    return hRecord;
+    return MsiHelper::MsiRecordSet({ textstyle, facename, size, color, stylebits });
 }
