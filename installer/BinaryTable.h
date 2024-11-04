@@ -15,15 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+#pragma once
+
 #include <filesystem>
 
-#include "Installer.h"
+#include "Generator.h"
+#include "Binary.h"
 
-
-int main(int argc, char** argv) {
-    Installer installer;
-    if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
-        return 1;
-    }
-    return installer.create_msi() ? 0 : 1;
-}
+class BinaryTable : public Generator<Binary> {
+public:
+    explicit BinaryTable(const nlohmann::json& json, const std::filesystem::path& path) noexcept;
+    ~BinaryTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
+private:
+    std::vector<Binary> binaries;
+};

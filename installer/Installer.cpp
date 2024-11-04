@@ -24,6 +24,7 @@
 #include "AdminExecuteSequenceTable.h"
 #include "AdminUISequencetable.h"
 #include "AdvtExecuteSequenceTable.h"
+#include "BinaryTable.h"
 #include "ControlTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
@@ -34,15 +35,14 @@
 Installer::Installer() noexcept{
 }
 
-bool Installer::load() {
-    if (!installer_strings.load()) {
+bool Installer::load(const std::filesystem::path& json) {
+    if (!installer_strings.load(json.parent_path())) {
         return false;
     }
 
-    const auto filename = std::string("../installer/boinc.json");
-    std::ifstream file(filename);
+    std::ifstream file(json);
     if (!file.is_open()) {
-        std::cerr << "Could not open file " << filename << std::endl;
+        std::cerr << "Could not open file " << json << std::endl;
         return false;
     }
 
@@ -55,10 +55,10 @@ bool Installer::load() {
         return false;
     }
 
-    return load_from_json(j);
+    return load_from_json(j, json.parent_path());
 }
 
-bool Installer::load_from_json(const nlohmann::json& json)
+bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem::path& path)
 {
     try {
         if (json.contains("Summary") && !json["Summary"].is_null()) {
@@ -75,6 +75,9 @@ bool Installer::load_from_json(const nlohmann::json& json)
         }
         if (json.contains("AdvtExecuteSequence") && !json["AdvtExecuteSequence"].is_null()) {
             tables["AdvtExecuteSequence"] = std::make_shared<AdvtExecuteSequenceTable>(json["AdvtExecuteSequence"]);
+        }
+        if (json.contains("Binary") && !json["Binary"].is_null()) {
+            tables["Binary"] = std::make_shared<BinaryTable>(json["Binary"], path);
         }
         if (json.contains("Dialog") && !json["Dialog"].is_null()) {
             tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);

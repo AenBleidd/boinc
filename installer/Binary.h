@@ -15,15 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <filesystem>
+#pragma once
 
-#include "Installer.h"
+#include <nlohmann/json.hpp>
 
+#include "Record.h"
 
-int main(int argc, char** argv) {
-    Installer installer;
-    if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
-        return 1;
-    }
-    return installer.create_msi() ? 0 : 1;
-}
+class Binary : public Record {
+public:
+    explicit Binary(const nlohmann::json& json, const std::filesystem::path& root_path);
+    ~Binary() = default;
+    MSIHANDLE getRecord() const override;
+private:
+    std::string name;
+    std::filesystem::path path;
+};

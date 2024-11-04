@@ -19,6 +19,7 @@
 
 #include <string>
 #include <map>
+#include <filesystem>
 
 #include "nlohmann/json.hpp"
 
@@ -28,7 +29,7 @@ public:
     ~InstallerStrings() = default;
 
     const std::string& get(const std::string& key) const;
-    bool load();
+    bool load(const std::filesystem::path& path);
 private:
     std::map<std::string, std::string> strings;
 

@@ -22,7 +22,7 @@
 #include "ControlCondition.h"
 #include "Control.h"
 
-class ControlConditionTable : Generator<ControlCondition> {
+class ControlConditionTable : public Generator<ControlCondition> {
 public:
     explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
     ~ControlConditionTable() = default;

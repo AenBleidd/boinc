@@ -21,7 +21,7 @@
 #include "Generator.h"
 #include "Control.h"
 
-class ControlEventTable : Generator<ControlEvent> {
+class ControlEventTable : public Generator<ControlEvent> {
 public:
     explicit ControlEventTable(const std::vector<Control>& controls) noexcept;
     ~ControlEventTable() = default;

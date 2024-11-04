@@ -1,0 +1,86 @@
+[
+    {
+        "Name": "ISSetupFilesHelper",
+        "Path": "res\\SFHelper.dll"
+    },
+    {
+        "Name": "InteriorBin1",
+        "Path": "res\\IsDialogBanner.ibd"
+    },
+    {
+        "Name": "NewBinary1",
+        "Path": "res\\IsDialogBanner.ibd"
+    },
+    {
+        "Name": "NewBinary11",
+        "Path": "res\\CustomSetupIco.ibd"
+    },
+    {
+        "Name": "NewBinary12",
+        "Path": "res\\DestIcon.ibd"
+    },
+    {
+        "Name": "NewBinary13",
+        "Path": "res\\NetworkInstall.ico"
+    },
+    {
+        "Name": "NewBinary14",
+        "Path": "res\\DontInstall.ico"
+    },
+    {
+        "Name": "NewBinary15",
+        "Path": "res\\Install.ico"
+    },
+    {
+        "Name": "NewBinary16",
+        "Path": "res\\InstallFirstUse.ico"
+    },
+    {
+        "Name": "NewBinary17",
+        "Path": "res\\InstallPartial.ico"
+    },
+    {
+        "Name": "NewBinary18",
+        "Path": "res\\InstallStateMenu.ico"
+    },
+    {
+        "Name": "NewBinary19",
+        "Path": "res\\setup.bmp"
+    },
+    {
+        "Name": "NewBinary2",
+        "Path": "res\\New.ibd"
+    },
+    {
+        "Name": "NewBinary3",
+        "Path": "res\\Up.ibd"
+    },
+    {
+        "Name": "NewBinary4",
+        "Path": "res\\WarningIcon.ibd"
+    },
+    {
+        "Name": "NewBinary5",
+        "Path": "res\\IsDialogBitmap.ibd"
+    },
+    {
+        "Name": "NewBinary6",
+        "Path": "..\\Build\\x64\\Release\\boinccas.dll"
+    },
+    {
+        "Name": "NewBinary7",
+        "Path": "res\\ReinstIco.ibd"
+    },
+    {
+        "Name": "NewBinary8",
+        "Path": "res\\RemoveIco.ibd"
+    },
+    {
+        "Name": "NewBinary9",
+        "Path": "res\\SetupIcon.ibd"
+    },
+    {
+        "Name": "SetAllUsers.dll",
+        "Path": "res\\SetAllUsers.dll"
+    }
+]

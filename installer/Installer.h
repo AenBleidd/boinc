@@ -19,6 +19,7 @@
 
 #include <map>
 #include <memory>
+#include <filesystem>
 #include <nlohmann/json.hpp>
 
 #include "Generator.h"
@@ -28,10 +29,10 @@ class Installer {
 public:
     explicit Installer() noexcept;
     ~Installer() = default;
-    bool load();
+    bool load(const std::filesystem::path& json);
     bool create_msi();
 private:
-    bool load_from_json(const nlohmann::json& json);
+    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
 
     std::map<std::string, std::shared_ptr<GeneratorTable>> tables;    
     InstallerStrings installer_strings;

@@ -23,8 +23,8 @@
 const std::string& InstallerStrings::get(const std::string& key) const {
     return strings.at(key);
 };
-bool InstallerStrings::load() {
-    const auto filename = std::string("../installer/locale/en.json");
+bool InstallerStrings::load(const std::filesystem::path& path) {
+    const auto filename = path / "locale/en.json";
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Could not open file " << filename << std::endl;
