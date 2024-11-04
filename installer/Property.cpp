@@ -15,20 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Property.h"
 
-#include <variant>
+Property::Property(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    if (json.contains("Property")) {
+        property = json["Property"];
+    }
+    if (json.contains("Value")) {
+        value = installerStrings.get(json["Value"]);
+    }
+}
 
-#include "InstallerStrings.h"
-#include "Record.h"
-#include "Generator.h"
-
-class SummaryInformationTable : public Generator<std::any> {
-public:
-    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    ~SummaryInformationTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    std::map<int, std::variant<int, std::string, FILETIME>> summary{};
-};
-
+MSIHANDLE Property::getRecord() const {
+    const auto hRecord = MsiCreateRecord(2);
+    MsiRecordSetString(hRecord, 1, property.c_str());
+    MsiRecordSetString(hRecord, 2, value.c_str());
+    return hRecord;
+}

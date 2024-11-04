@@ -15,20 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "PropertyTable.h"
 
-#include <variant>
+PropertyTable::PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) noexcept {
+    std::cout << "Loading PropertyTable..." << std::endl;
+    for (const auto& item : json) {
+        properties.emplace_back(item, installerStrings);
+    }
+}
 
-#include "InstallerStrings.h"
-#include "Record.h"
-#include "Generator.h"
+bool PropertyTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating PropertyTable..." << std::endl;
+    
+    const auto sql_create = "CREATE TABLE `Property` (`Property` CHAR(72) NOT NULL, `Value` LONGCHAR NOT NULL LOCALIZABLE  PRIMARY KEY `Property`)";
+    const auto sql_insert = "INSERT INTO `Property` (`Property`, `Value`) VALUES (?, ?)";
 
-class SummaryInformationTable : public Generator<std::any> {
-public:
-    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    ~SummaryInformationTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    std::map<int, std::variant<int, std::string, FILETIME>> summary{};
-};
-
+    return Generator::generate(hDatabase, sql_create, sql_insert, properties);
+}

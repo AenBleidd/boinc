@@ -31,7 +31,7 @@ public:
     const std::string& get(const std::string& key) const;
     bool load(const std::filesystem::path& path);
 private:
-    std::map<std::string, std::string> strings;
+    std::map<std::string, std::string> strings{};
 
     bool load_from_json(const nlohmann::json& json);
 };

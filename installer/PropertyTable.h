@@ -17,18 +17,14 @@
 
 #pragma once
 
-#include <variant>
-
-#include "InstallerStrings.h"
-#include "Record.h"
 #include "Generator.h"
+#include "Property.h"
 
-class SummaryInformationTable : public Generator<std::any> {
+class PropertyTable : public Generator<Property> {
 public:
-    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    ~SummaryInformationTable() = default;
+    explicit PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) noexcept;
+    ~PropertyTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::map<int, std::variant<int, std::string, FILETIME>> summary{};
+    std::vector<Property> properties{};
 };
-

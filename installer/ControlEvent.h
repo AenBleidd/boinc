@@ -27,11 +27,11 @@ public:
     ~ControlEvent() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string dialog;
-    std::string control;
-    std::string event;
-    std::string argument;
-    std::string condition;
-    int ordering;
+    std::string dialog{};
+    std::string control{};
+    std::string event{};
+    std::string argument{};
+    std::string condition{};
+    int ordering = MSI_NULL_INTEGER;
 };
 

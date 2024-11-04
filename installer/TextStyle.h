@@ -17,18 +17,19 @@
 
 #pragma once
 
-#include <variant>
+#include <nlohmann/json.hpp>
 
-#include "InstallerStrings.h"
 #include "Record.h"
-#include "Generator.h"
 
-class SummaryInformationTable : public Generator<std::any> {
+class TextStyle : public Record {
 public:
-    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    ~SummaryInformationTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
+    explicit TextStyle(const nlohmann::json& json);
+    ~TextStyle() = default;
+    MSIHANDLE getRecord() const override;
 private:
-    std::map<int, std::variant<int, std::string, FILETIME>> summary{};
+    std::string textstyle{};
+    std::string facename{};
+    int size = 0;
+    int color = MSI_NULL_INTEGER;
+    int stylebits = MSI_NULL_INTEGER;
 };
-

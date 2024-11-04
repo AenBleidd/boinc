@@ -34,6 +34,6 @@ public:
 private:
     bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
 
-    std::map<std::string, std::shared_ptr<GeneratorTable>> tables;    
+    std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
     InstallerStrings installer_strings;
 };

@@ -21,6 +21,9 @@
 #include "InstallerStrings.h"
 
 const std::string& InstallerStrings::get(const std::string& key) const {
+    if (strings.find(key) == strings.end()) {
+        return key;
+    }
     return strings.at(key);
 };
 bool InstallerStrings::load(const std::filesystem::path& path) {

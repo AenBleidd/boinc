@@ -29,6 +29,6 @@ public:
     ~ActionTextTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<ActionText> values;
+    std::vector<ActionText> values{};
 };
 

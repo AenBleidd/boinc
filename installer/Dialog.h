@@ -31,15 +31,15 @@ public:
     std::vector<Control> get_controls() const;
     MSIHANDLE getRecord() const override;
 private:
-    std::string dialog;
-    int hcentering;
-    int vcentering;
-    int width;
-    int height;
-    int attributes;
-    std::string title;
-    std::string first;
-    std::string default;
-    std::string cancel;
-    std::vector<Control> controls;
+    std::string dialog{};
+    int hcentering = 0;
+    int vcentering = 0;
+    int width = 0;
+    int height = 0;
+    int attributes = MSI_NULL_INTEGER;
+    std::string title{};
+    std::string first{};
+    std::string default{};
+    std::string cancel{};
+    std::vector<Control> controls{};
 };

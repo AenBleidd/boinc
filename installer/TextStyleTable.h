@@ -17,18 +17,14 @@
 
 #pragma once
 
-#include <variant>
-
-#include "InstallerStrings.h"
-#include "Record.h"
 #include "Generator.h"
+#include "TextStyle.h"
 
-class SummaryInformationTable : public Generator<std::any> {
+class TextStyleTable : public Generator<TextStyle> {
 public:
-    explicit SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
-    ~SummaryInformationTable() = default;
+    explicit TextStyleTable(const nlohmann::json& json);
+    ~TextStyleTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::map<int, std::variant<int, std::string, FILETIME>> summary{};
+    std::vector<TextStyle> textStyles{};
 };
-

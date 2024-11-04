@@ -27,8 +27,8 @@ public:
     ~ControlCondition() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string dialog;
-    std::string control;
-    std::string action;
-    std::string condition;
+    std::string dialog{};
+    std::string control{};
+    std::string action{};
+    std::string condition{};
 };

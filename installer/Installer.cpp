@@ -29,6 +29,8 @@
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
+#include "PropertyTable.h"
+#include "TextStyleTable.h"
 
 #include "Installer.h"
 
@@ -87,6 +89,12 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (json.contains("InstallUISequence") && !json["InstallUISequence"].is_null()) {
             tables["InstallUISequence"] = std::make_shared<InstallUISequenceTable>(json["InstallUISequence"]);
+        }
+        if (json.contains("Property") && !json["Property"].is_null()) {
+            tables["Property"] = std::make_shared<PropertyTable>(json["Property"], installer_strings);
+        }
+        if (json.contains("TextStyle") && !json["TextStyle"].is_null()) {
+            tables["TextStyle"] = std::make_shared<TextStyleTable>(json["TextStyle"]);
         }
     }
     catch (const std::exception& e) {

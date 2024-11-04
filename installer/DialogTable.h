@@ -27,5 +27,5 @@ public:
     ~DialogTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<Dialog> dialogs;
+    std::vector<Dialog> dialogs{};
 };

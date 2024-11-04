@@ -6038,5 +6038,403 @@
             "Condition": "VersionNT",
             "Sequence": 960
         }
+    ],
+    "Property": [
+        {
+            "Property": "ARPCOMMENTS",
+            "Value": "IDS_SUMMARY_DESCRIPTION"
+        },
+        {
+            "Property": "ARPHELPLINK",
+            "Value": "COMPANY_URL"
+        },
+        {
+            "Property": "ARPNOMODIFY",
+            "Value": "1"
+        },
+        {
+            "Property": "ARPNOREPAIR",
+            "Value": "1"
+        },
+        {
+            "Property": "ARPPRODUCTICON",
+            "Value": "ARPPRODUCTICON.exe"
+        },
+        {
+            "Property": "ARPREADME",
+            "Value": "IDS_README_LOCATION"
+        },
+        {
+            "Property": "ARPURLINFOABOUT",
+            "Value": "COMPANY_URL"
+        },
+        {
+            "Property": "ARPURLUPDATEINFO",
+            "Value": "COMPANY_URL"
+        },
+        {
+            "Property": "AgreeToLicense",
+            "Value": "No"
+        },
+        {
+            "Property": "DWUSINTERVAL",
+            "Value": "30"
+        },
+        {
+            "Property": "DWUSLINK",
+            "Value": "CE5CE738F9BC809F69AC80EFCE0B978F0EBC808FCEBC8038CE9B07DF4ECBB07FC92CF058A9AC"
+        },
+        {
+            "Property": "DefaultUIFont",
+            "Value": "Tahoma8"
+        },
+        {
+            "Property": "DiskPrompt",
+            "Value": "[1]"
+        },
+        {
+            "Property": "ENABLELAUNCHATLOGON",
+            "Value": "1"
+        },
+        {
+            "Property": "ENABLESCREENSAVER",
+            "Value": "1"
+        },
+        {
+            "Property": "ENABLESTARTMENUITEMS",
+            "Value": "1"
+        },
+        {
+            "Property": "ENABLEUSEBYALLUSERS",
+            "Value": "1"
+        },
+        {
+            "Property": "ErrorDialog",
+            "Value": "SetupError"
+        },
+        {
+            "Property": "INSTALLLEVEL",
+            "Value": "100"
+        },
+        {
+            "Property": "ISVROOT_PORT_NO",
+            "Value": "0"
+        },
+        {
+            "Property": "IS_PROGMSG_TEXTFILECHANGS_REPLACE",
+            "Value": "IDS_PROGMSG_TEXTFILECHANGS_REPLACE"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_COSTING",
+            "Value": "IDS_PROGMSG_XML_COSTING"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_CREATE_FILE",
+            "Value": "IDS_PROGMSG_XML_CREATE_FILE"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_FILES",
+            "Value": "IDS_PROGMSG_XML_FILES"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_REMOVE_FILE",
+            "Value": "IDS_PROGMSG_XML_REMOVE_FILE"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_ROLLBACK_FILES",
+            "Value": "IDS_PROGMSG_XML_ROLLBACK_FILES"
+        },
+        {
+            "Property": "IS_PROGMSG_XML_UPDATE_FILE",
+            "Value": "IDS_PROGMSG_XML_UPDATE_FILE"
+        },
+        {
+            "Property": "InstallChoice",
+            "Value": "AR"
+        },
+        {
+            "Property": "LAUNCHPROGRAM",
+            "Value": "1"
+        },
+        {
+            "Property": "MSIRESTARTMANAGERCONTROL",
+            "Value": "Disable"
+        },
+        {
+            "Property": "Manufacturer",
+            "Value": "COMPANY_NAME"
+        },
+        {
+            "Property": "MsiHiddenProperties",
+            "Value": "BOINC_MASTER_PASSWORD;BOINC_PROJECT_PASSWORD"
+        },
+        {
+            "Property": "MsiLogging",
+            "Value": "voicewarmup"
+        },
+        {
+            "Property": "PIDTemplate",
+            "Value": "12345<#-%%%%%%%>@@@@@"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEAPPPOOL",
+            "Value": "IDS_PROGMSG_IIS_CREATEAPPPOOL"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEAPPPOOLS",
+            "Value": "IDS_PROGMSG_IIS_CREATEAPPPOOLS"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEWEBSERVICEEXTENSION",
+            "Value": "IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSION"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEWEBSERVICEEXTENSIONS",
+            "Value": "IDS_PROGMSG_IIS_CREATEWEBSERVICEEXTENSIONS"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEWEBSITE",
+            "Value": "IDS_PROGMSG_IIS_CREATEWEBSITE"
+        },
+        {
+            "Property": "PROGMSG_IIS_CREATEWEBSITES",
+            "Value": "IDS_PROGMSG_IIS_CREATEWEBSITES"
+        },
+        {
+            "Property": "PROGMSG_IIS_REMOVEAPPPOOL",
+            "Value": "IDS_PROGMSG_IIS_REMOVEAPPPOOL"
+        },
+        {
+            "Property": "PROGMSG_IIS_REMOVEAPPPOOLS",
+            "Value": "IDS_PROGMSG_IIS_REMOVEAPPPOOLS"
+        },
+        {
+            "Property": "PROGMSG_IIS_REMOVEWEBSERVICEEXTENSION",
+            "Value": "IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSION"
+        },
+        {
+            "Property": "PROGMSG_IIS_REMOVEWEBSERVICEEXTENSIONS",
+            "Value": "IDS_PROGMSG_IIS_REMOVEWEBSERVICEEXTENSIONS"
+        },
+        {
+            "Property": "PROGMSG_IIS_REMOVEWEBSITES",
+            "Value": "IDS_PROGMSG_IIS_REMOVEWEBSITES"
+        },
+        {
+            "Property": "PROGMSG_IIS_ROLLBACKAPPPOOLS",
+            "Value": "IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS"
+        },
+        {
+            "Property": "PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS",
+            "Value": "IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS"
+        },
+        {
+            "Property": "PROGRAMFILETOLAUNCHATEND",
+            "Value": "[#boincmgr.exe]"
+        },
+        {
+            "Property": "ProductCode",
+            "Value": "{466F675C-6F57-4B63-AECF-29C62BDF58B0}"
+        },
+        {
+            "Property": "ProductID",
+            "Value": "none"
+        },
+        {
+            "Property": "ProductLanguage",
+            "Value": "1033"
+        },
+        {
+            "Property": "ProductName",
+            "Value": "BOINC"
+        },
+        {
+            "Property": "ProductVersion",
+            "Value": "8.1.0"
+        },
+        {
+            "Property": "ProgressType0",
+            "Value": "install"
+        },
+        {
+            "Property": "ProgressType1",
+            "Value": "Installing"
+        },
+        {
+            "Property": "ProgressType2",
+            "Value": "installed"
+        },
+        {
+            "Property": "ProgressType3",
+            "Value": "installs"
+        },
+        {
+            "Property": "RETURN_REBOOTREQUESTED",
+            "Value": "0"
+        },
+        {
+            "Property": "RETURN_VALIDATEINSTALL",
+            "Value": "0"
+        },
+        {
+            "Property": "RETURN_VERIFYINSTALLDIRECTORIES",
+            "Value": "0"
+        },
+        {
+            "Property": "RebootYesNo",
+            "Value": "Yes"
+        },
+        {
+            "Property": "ReinstallModeText",
+            "Value": "omus"
+        },
+        {
+            "Property": "RestartManagerOption",
+            "Value": "CloseRestart"
+        },
+        {
+            "Property": "SecureCustomProperties",
+            "Value": "ACTPROP_E913E54D_5080_42EC_A312_B21948BA1C02;INSTALLDIR;SUPPORTDIR;ENABLEPROTECTEDAPPLICATIONEXECUTION3;LAUNCHPROGRAM;ISACTIONPROP1;ISACTIONPROP2"
+        },
+        {
+            "Property": "UpgradeCode",
+            "Value": "{E913E54D-5080-42EC-A312-B21948BA1C02}"
+        },
+        {
+            "Property": "_BrowseDataProperty",
+            "Value": "0"
+        },
+        {
+            "Property": "_BrowseInstallProperty",
+            "Value": "0"
+        },
+        {
+            "Property": "_IsMaintenance",
+            "Value": "Install"
+        }
+    ],
+    "TextStyle": [
+        {
+            "TextStyle": "Arial8",
+            "FaceName": "Arial",
+            "Size": 8
+        },
+        {
+            "TextStyle": "Arial9",
+            "FaceName": "Arial",
+            "Size": 9
+        },
+        {
+            "TextStyle": "ArialBlue10",
+            "FaceName": "Arial",
+            "Size": 10,
+            "Color": 16711680
+        },
+        {
+            "TextStyle": "ArialBlueStrike10",
+            "FaceName": "Arial",
+            "Size": 10,
+            "Color": 16711680,
+            "StyleBits": 8
+        },
+        {
+            "TextStyle": "CourierNew8",
+            "FaceName": "Courier New",
+            "Size": 8
+        },
+        {
+            "TextStyle": "CourierNew9",
+            "FaceName": "Courier New",
+            "Size": 9
+        },
+        {
+            "TextStyle": "MSGothic9",
+            "FaceName": "MS Gothic",
+            "Size": 9
+        },
+        {
+            "TextStyle": "MSSGreySerif8",
+            "FaceName": "MS Sans Serif",
+            "Size": 8,
+            "Color": 8421504
+        },
+        {
+            "TextStyle": "MSSWhiteSerif8",
+            "FaceName": "Tahoma",
+            "Size": 8,
+            "Color": 16777215
+        },
+        {
+            "TextStyle": "MSSansBold8",
+            "FaceName": "Tahoma",
+            "Size": 8,
+            "StyleBits": 1
+        },
+        {
+            "TextStyle": "MSSansSerif8",
+            "FaceName": "MS Sans Serif",
+            "Size": 8
+        },
+        {
+            "TextStyle": "MSSansSerif9",
+            "FaceName": "MS Sans Serif",
+            "Size": 9
+        },
+        {
+            "TextStyle": "Tahoma10",
+            "FaceName": "Tahoma",
+            "Size": 10
+        },
+        {
+            "TextStyle": "Tahoma8",
+            "FaceName": "Tahoma",
+            "Size": 8
+        },
+        {
+            "TextStyle": "Tahoma9",
+            "FaceName": "Tahoma",
+            "Size": 9
+        },
+        {
+            "TextStyle": "TahomaBold10",
+            "FaceName": "Tahoma",
+            "Size": 10,
+            "StyleBits": 1
+        },
+        {
+            "TextStyle": "TahomaBold8",
+            "FaceName": "Tahoma",
+            "Size": 8,
+            "StyleBits": 1
+        },
+        {
+            "TextStyle": "Times8",
+            "FaceName": "Times New Roman",
+            "Size": 8
+        },
+        {
+            "TextStyle": "Times9",
+            "FaceName": "Times New Roman",
+            "Size": 9
+        },
+        {
+            "TextStyle": "TimesItalic12",
+            "FaceName": "Times New Roman",
+            "Size": 12,
+            "StyleBits": 2
+        },
+        {
+            "TextStyle": "TimesItalicBlue10",
+            "FaceName": "Times New Roman",
+            "Size": 10,
+            "Color": 16711680,
+            "StyleBits": 2
+        },
+        {
+            "TextStyle": "TimesRed16",
+            "FaceName": "Times New Roman",
+            "Size": 16,
+            "Color": 255
+        }
     ]
 }

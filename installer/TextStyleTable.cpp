@@ -15,21 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "BinaryTable.h"
+#include "TextStyleTable.h"
 
-BinaryTable::BinaryTable(const nlohmann::json& json, const std::filesystem::path& path) {
-    std::cout << "Loading BinaryTable..." << std::endl;
+TextStyleTable::TextStyleTable(const nlohmann::json& json) {
+    std::cout << "Loading TextStyleTable..." << std::endl;
 
-    for (const auto& element : json) {
-        binaries.emplace_back(element, path);
+    for (const auto& textStyle : json) {
+        textStyles.emplace_back(textStyle);
     }
 }
 
-bool BinaryTable::generate(MSIHANDLE hDatabase) {
-    std::cout << "Generating BinaryTable..." << std::endl;
+bool TextStyleTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating TextStyleTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Binary` (`Name` CHAR(72) NOT NULL, `Data` OBJECT PRIMARY KEY `Name`)";
-    const auto sql_insert = "INSERT INTO `Binary` (`Name`, `Data`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `TextStyle` (`TextStyle` CHAR(72) NOT NULL, `FaceName` CHAR(32) NOT NULL, `Size` SHORT NOT NULL, `Color` LONG, `StyleBits` SHORT PRIMARY KEY `TextStyle`)";
+    const auto sql_insert = "INSERT INTO `TextStyle` (`TextStyle`, `FaceName`, `Size`, `Color`, `StyleBits`) VALUES (?, ?, ?, ?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, binaries);
+    return Generator::generate(hDatabase, sql_create, sql_insert, textStyles);
 }

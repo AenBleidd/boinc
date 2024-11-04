@@ -28,7 +28,7 @@ public:
     ~ActionText() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string action;
-    std::string description;
-    std::string tmplt;
+    std::string action{};
+    std::string description{};
+    std::string tmplt{};
 };

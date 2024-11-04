@@ -29,6 +29,6 @@ public:
     ~AdminExecuteSequenceTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<Action> actions;
+    std::vector<Action> actions{};
 };
 

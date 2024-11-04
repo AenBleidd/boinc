@@ -24,9 +24,9 @@
 
 class BinaryTable : public Generator<Binary> {
 public:
-    explicit BinaryTable(const nlohmann::json& json, const std::filesystem::path& path) noexcept;
+    explicit BinaryTable(const nlohmann::json& json, const std::filesystem::path& path);
     ~BinaryTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<Binary> binaries;
+    std::vector<Binary> binaries{};
 };

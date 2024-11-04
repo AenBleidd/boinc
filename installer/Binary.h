@@ -27,6 +27,6 @@ public:
     ~Binary() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string name;
-    std::filesystem::path path;
+    std::string name{};
+    std::filesystem::path path{};
 };

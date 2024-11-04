@@ -28,7 +28,7 @@ public:
     ~Action() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string action;
-    std::string condition;
-    int sequence;
+    std::string action{};
+    std::string condition{};
+    int sequence = 0;
 };
