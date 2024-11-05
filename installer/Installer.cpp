@@ -26,6 +26,7 @@
 #include "BinaryTable.h"
 #include "CheckboxTable.h"
 #include "ControlTable.h"
+#include "CustomActionTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
@@ -84,6 +85,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (json.contains("Checkbox") && !json["Checkbox"].is_null()) {
             tables["Checkbox"] = std::make_shared<CheckboxTable>(json["Checkbox"]);
+        }
+        if (json.contains("CustomAction") && !json["CustomAction"].is_null()) {
+            tables["CustomAction"] = std::make_shared<CustomActionTable>(json["CustomAction"]);
         }
         if (json.contains("Dialog") && !json["Dialog"].is_null()) {
             tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);

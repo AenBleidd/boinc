@@ -614,6 +614,346 @@
             "Value": "1"
         }
     ],
+    "CustomAction": [
+        {
+            "Action": "CAAnnounceUpgrade",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "AnnounceUpgrade"
+        },
+        {
+            "Action": "CACleanupOldBinaries",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CleanupOldBinaries"
+        },
+        {
+            "Action": "CACreateAcctMgrLoginFile",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CreateAcctMgrLoginFile"
+        },
+        {
+            "Action": "CACreateBOINCAccounts",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CreateBOINCAccounts"
+        },
+        {
+            "Action": "CACreateBOINCGroups",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CreateBOINCGroups"
+        },
+        {
+            "Action": "CACreateClientAuthFile",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CreateClientAuthFile"
+        },
+        {
+            "Action": "CACreateProjectInitFile",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "CreateProjectInitFile"
+        },
+        {
+            "Action": "CADeleteBOINCAccounts",
+            "Type": 65,
+            "Source": "NewBinary6",
+            "Target": "DeleteBOINCAccounts"
+        },
+        {
+            "Action": "CADeleteBOINCGroups",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "DeleteBOINCGroups"
+        },
+        {
+            "Action": "CADisableProtectedApplicationExecution",
+            "Type": 51,
+            "Source": "ENABLEPROTECTEDAPPLICATIONEXECUTION3"
+        },
+        {
+            "Action": "CADisableUseByAllUsers",
+            "Type": 51,
+            "Source": "ENABLEUSEBYALLUSERS"
+        },
+        {
+            "Action": "CAGetAdministratorsGroupName",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GetAdministratorsGroupName"
+        },
+        {
+            "Action": "CAGetUsersGroupName",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GetUsersGroupName"
+        },
+        {
+            "Action": "CAGrantBOINCAdminsRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCAdminsRights"
+        },
+        {
+            "Action": "CAGrantBOINCAdminsVirtualBoxRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCAdminsVirtualBoxRights"
+        },
+        {
+            "Action": "CAGrantBOINCMasterRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCMasterRights"
+        },
+        {
+            "Action": "CAGrantBOINCProjectRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCProjectRights"
+        },
+        {
+            "Action": "CAGrantBOINCProjectsRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCProjectsRights"
+        },
+        {
+            "Action": "CAGrantBOINCProjectsVirtualBoxRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCProjectsVirtualBoxRights"
+        },
+        {
+            "Action": "CAGrantBOINCUsersRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "GrantBOINCUsersRights"
+        },
+        {
+            "Action": "CALaunchBOINCManager",
+            "Type": 65,
+            "Source": "NewBinary6",
+            "Target": "LaunchBOINCManager"
+        },
+        {
+            "Action": "CALaunchBOINCTray",
+            "Type": 65,
+            "Source": "NewBinary6",
+            "Target": "LaunchBOINCTray"
+        },
+        {
+            "Action": "CARestoreExecutionState",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RestoreExecutionState"
+        },
+        {
+            "Action": "CARestorePermissionBOINCData",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RestorePermissionBOINCData"
+        },
+        {
+            "Action": "CARestoreSetupState",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RestoreSetupState"
+        },
+        {
+            "Action": "CARevokeBOINCAdminsRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RevokeBOINCAdminsRights"
+        },
+        {
+            "Action": "CARevokeBOINCMasterRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RevokeBOINCMasterRights"
+        },
+        {
+            "Action": "CARevokeBOINCProjectRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RevokeBOINCProjectRights"
+        },
+        {
+            "Action": "CARevokeBOINCProjectsRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RevokeBOINCProjectsRights"
+        },
+        {
+            "Action": "CARevokeBOINCUsersRights",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "RevokeBOINCUsersRights"
+        },
+        {
+            "Action": "CASaveExecutionState",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SaveExecutionState"
+        },
+        {
+            "Action": "CASaveSetupState",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SaveSetupState"
+        },
+        {
+            "Action": "CASetBOINCDataProjects",
+            "Type": 35,
+            "Source": "PROJECTS",
+            "Target": "[DATADIR]projects"
+        },
+        {
+            "Action": "CASetBOINCDataSlots",
+            "Type": 35,
+            "Source": "SLOTS",
+            "Target": "[DATADIR]slots"
+        },
+        {
+            "Action": "CASetPermissionBOINC",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SetPermissionBOINC"
+        },
+        {
+            "Action": "CASetPermissionBOINCData",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SetPermissionBOINCData"
+        },
+        {
+            "Action": "CASetPermissionBOINCDataProjects",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SetPermissionBOINCDataProjects"
+        },
+        {
+            "Action": "CASetPermissionBOINCDataSlots",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "SetPermissionBOINCDataSlots"
+        },
+        {
+            "Action": "CAShutdownBOINC",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ShutdownBOINC"
+        },
+        {
+            "Action": "CAShutdownBOINCManager",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ShutdownBOINCManager"
+        },
+        {
+            "Action": "CAShutdownBOINCScreensaver",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ShutdownBOINCScreensaver"
+        },
+        {
+            "Action": "CAValidateInstall",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ValidateInstall"
+        },
+        {
+            "Action": "CAValidateRebootRequest",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ValidateRebootRequest"
+        },
+        {
+            "Action": "CAValidateSetupType",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "ValidateSetupType"
+        },
+        {
+            "Action": "CAVerifyInstallDirectories",
+            "Type": 1,
+            "Source": "NewBinary6",
+            "Target": "VerifyInstallDirectories"
+        },
+        {
+            "Action": "ISPreventDowngrade",
+            "Type": 19,
+            "Target": "[IS_PREVENT_DOWNGRADE_EXIT]"
+        },
+        {
+            "Action": "ISPrint",
+            "Type": 1,
+            "Source": "SetAllUsers.dll",
+            "Target": "PrintScrollableText",
+            "ISComments": "Prints the contents of a ScrollableText control on a dialog."
+        },
+        {
+            "Action": "ISSetAllUsers",
+            "Type": 257,
+            "Source": "SetAllUsers.dll",
+            "Target": "SetAllUsers"
+        },
+        {
+            "Action": "ISSetupFilesCleanup",
+            "Type": 257,
+            "Source": "ISSetupFilesHelper",
+            "Target": "SFCleanupEx"
+        },
+        {
+            "Action": "ISSetupFilesExtract",
+            "Type": 257,
+            "Source": "ISSetupFilesHelper",
+            "Target": "SFStartupEx"
+        },
+        {
+            "Action": "LaunchBOINCManagerXP",
+            "Type": 210,
+            "Source": "boincmgr.exe"
+        },
+        {
+            "Action": "LaunchBOINCTrayXP",
+            "Type": 210,
+            "Source": "boinctray.exe"
+        },
+        {
+            "Action": "SetARPINSTALLLOCATION",
+            "Type": 51,
+            "Source": "ARPINSTALLLOCATION",
+            "Target": "[INSTALLDIR]"
+        },
+        {
+            "Action": "SetARPReadme",
+            "Type": 51,
+            "Source": "ARPREADME",
+            "Target": "[#readme.txt]"
+        },
+        {
+            "Action": "SetAllUsersProfileNT",
+            "Type": 51,
+            "Source": "ALLUSERSPROFILE",
+            "Target": "[%SystemRoot]\\Profiles\\All Users"
+        },
+        {
+            "Action": "setAllUsersProfile2K",
+            "Type": 51,
+            "Source": "ALLUSERSPROFILE",
+            "Target": "[%ALLUSERSPROFILE]"
+        },
+        {
+            "Action": "setUserProfileNT",
+            "Type": 51,
+            "Source": "USERPROFILE",
+            "Target": "[%USERPROFILE]"
+        }
+    ],
     "Dialog": [
         {
             "Dialog": "AdminChangeFolder",

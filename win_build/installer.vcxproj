@@ -37,6 +37,8 @@
     <ClCompile Include="..\installer\ControlConditionTable.cpp" />
     <ClCompile Include="..\installer\ControlEventTable.cpp" />
     <ClCompile Include="..\installer\ControlTable.cpp" />
+    <ClCompile Include="..\installer\CustomAction.cpp" />
+    <ClCompile Include="..\installer\CustomActionTable.cpp" />
     <ClCompile Include="..\installer\Dialog.cpp" />
     <ClCompile Include="..\installer\DialogTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
@@ -71,6 +73,8 @@
     <ClInclude Include="..\installer\ControlConditionTable.h" />
     <ClInclude Include="..\installer\ControlEventTable.h" />
     <ClInclude Include="..\installer\ControlTable.h" />
+    <ClInclude Include="..\installer\CustomAction.h" />
+    <ClInclude Include="..\installer\CustomActionTable.h" />
     <ClInclude Include="..\installer\Dialog.h" />
     <ClInclude Include="..\installer\DialogTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
