@@ -9042,10 +9042,6 @@
             "Value": "[#boincmgr.exe]"
         },
         {
-            "Property": "ProductCode",
-            "Value": "{466F675C-6F57-4B63-AECF-29C62BDF58B0}"
-        },
-        {
             "Property": "ProductID",
             "Value": "none"
         },

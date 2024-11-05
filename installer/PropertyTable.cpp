@@ -16,12 +16,15 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "PropertyTable.h"
+#include "GuidHelper.h"
 
 PropertyTable::PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading PropertyTable..." << std::endl;
     for (const auto& item : json) {
         properties.emplace_back(item, installerStrings);
     }
+    std::cout << "Generating new ProductCode..." << std::endl;
+    properties.emplace_back("ProductCode", GuidHelper::generate_guid());
 }
 
 bool PropertyTable::generate(MSIHANDLE hDatabase) {

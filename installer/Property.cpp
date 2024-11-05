@@ -27,6 +27,9 @@ Property::Property(const nlohmann::json& json, const InstallerStrings& installer
     }
 }
 
+Property::Property(const std::string& property, const std::string& value) : property(property), value(value) {
+}
+
 MSIHANDLE Property::getRecord() const {
     return MsiHelper::MsiRecordSet({ property, value });
 }
