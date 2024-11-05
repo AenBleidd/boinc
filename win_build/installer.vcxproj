@@ -30,6 +30,8 @@
     <ClCompile Include="..\installer\AdvtExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\Binary.cpp" />
     <ClCompile Include="..\installer\BinaryTable.cpp" />
+    <ClCompile Include="..\installer\Checkbox.cpp" />
+    <ClCompile Include="..\installer\CheckboxTable.cpp" />
     <ClCompile Include="..\installer\Control.cpp" />
     <ClCompile Include="..\installer\ControlCondition.cpp" />
     <ClCompile Include="..\installer\ControlConditionTable.cpp" />
@@ -46,6 +48,8 @@
     <ClCompile Include="..\installer\MsiHelper.cpp" />
     <ClCompile Include="..\installer\Property.cpp" />
     <ClCompile Include="..\installer\PropertyTable.cpp" />
+    <ClCompile Include="..\installer\RadioButton.cpp" />
+    <ClCompile Include="..\installer\RadioButtonTable.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
     <ClCompile Include="..\installer\ControlEvent.cpp" />
     <ClCompile Include="..\installer\TextStyle.cpp" />
@@ -60,6 +64,8 @@
     <ClInclude Include="..\installer\AdvtExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\Binary.h" />
     <ClInclude Include="..\installer\BinaryTable.h" />
+    <ClInclude Include="..\installer\Checkbox.h" />
+    <ClInclude Include="..\installer\CheckboxTable.h" />
     <ClInclude Include="..\installer\Control.h" />
     <ClInclude Include="..\installer\ControlCondition.h" />
     <ClInclude Include="..\installer\ControlConditionTable.h" />
@@ -77,6 +83,8 @@
     <ClInclude Include="..\installer\MsiHelper.h" />
     <ClInclude Include="..\installer\Property.h" />
     <ClInclude Include="..\installer\PropertyTable.h" />
+    <ClInclude Include="..\installer\RadioButton.h" />
+    <ClInclude Include="..\installer\RadioButtonTable.h" />
     <ClInclude Include="..\installer\Record.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />
     <ClInclude Include="..\installer\ControlEvent.h" />

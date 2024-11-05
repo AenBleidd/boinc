@@ -22,7 +22,7 @@
 
 class PropertyTable : public Generator<Property> {
 public:
-    explicit PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) noexcept;
+    explicit PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
     ~PropertyTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:

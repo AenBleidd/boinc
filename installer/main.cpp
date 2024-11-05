@@ -25,5 +25,5 @@ int main(int argc, char** argv) {
     if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
         return 1;
     }
-    return installer.create_msi() ? 0 : 1;
+    return installer.create_msi(std::filesystem::current_path() / "boinc.msi") ? 0 : 1;
 }

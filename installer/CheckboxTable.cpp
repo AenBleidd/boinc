@@ -15,25 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "CheckboxTable.h"
 
-#include <map>
-#include <memory>
-#include <filesystem>
-#include <nlohmann/json.hpp>
+CheckboxTable::CheckboxTable(const nlohmann::json& json) {
+    std::cout << "Loading CheckboxTable..." << std::endl;
+    for (const auto& item : json) {
+        properties.emplace_back(item);
+    }
+}
 
-#include "Generator.h"
-#include "InstallerStrings.h"
+bool CheckboxTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating CheckboxTable..." << std::endl;
 
-class Installer {
-public:
-    explicit Installer() noexcept;
-    ~Installer() = default;
-    bool load(const std::filesystem::path& json);
-    bool create_msi(const std::filesystem::path& msi);
-private:
-    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
+    const auto sql_create = "CREATE TABLE `Checkbox` (`Property` CHAR(72) NOT NULL, `Value` CHAR(64) PRIMARY KEY `Property`)";
+    const auto sql_insert = "INSERT INTO `Checkbox` (`Property`, `Value`) VALUES (?, ?)";
 
-    std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
-    InstallerStrings installer_strings;
-};
+    return Generator::generate(hDatabase, sql_create, sql_insert, properties);
+}

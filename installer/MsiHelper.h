@@ -31,9 +31,4 @@ public:
     explicit MsiHelper() noexcept = delete;
     ~MsiHelper() = delete;
     static MSIHANDLE MsiRecordSet(const std::vector<std::variant<std::string, int, std::filesystem::path>>& values);
-private:
-    static void MsiRecordSet(MSIHANDLE hRecord, UINT iField, const std::string& value);
-    static void MsiRecordSet(MSIHANDLE hRecord, UINT iField, int value);
-    static void MsiRecordSet(MSIHANDLE hRecord, UINT iField, const std::filesystem::path& value);
-    static void MsiRecordSet(MSIHANDLE hRecord, UINT iField, const std::variant<std::string, int, std::filesystem::path>& value);
 };

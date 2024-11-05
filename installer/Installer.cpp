@@ -17,7 +17,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <tuple>
 
 #include "SummaryInformationTable.h"
 #include "ActionTextTable.h"
@@ -25,11 +24,13 @@
 #include "AdminUISequencetable.h"
 #include "AdvtExecuteSequenceTable.h"
 #include "BinaryTable.h"
+#include "CheckboxTable.h"
 #include "ControlTable.h"
 #include "DialogTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
 #include "PropertyTable.h"
+#include "RadioButtonTable.h"
 #include "TextStyleTable.h"
 
 #include "Installer.h"
@@ -81,6 +82,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         if (json.contains("Binary") && !json["Binary"].is_null()) {
             tables["Binary"] = std::make_shared<BinaryTable>(json["Binary"], path);
         }
+        if (json.contains("Checkbox") && !json["Checkbox"].is_null()) {
+            tables["Checkbox"] = std::make_shared<CheckboxTable>(json["Checkbox"]);
+        }
         if (json.contains("Dialog") && !json["Dialog"].is_null()) {
             tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);
         }
@@ -93,6 +97,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         if (json.contains("Property") && !json["Property"].is_null()) {
             tables["Property"] = std::make_shared<PropertyTable>(json["Property"], installer_strings);
         }
+        if (json.contains("RadioButton") && !json["RadioButton"].is_null()) {
+            tables["RadioButton"] = std::make_shared<RadioButtonTable>(json["RadioButton"], installer_strings);
+        }
         if (json.contains("TextStyle") && !json["TextStyle"].is_null()) {
             tables["TextStyle"] = std::make_shared<TextStyleTable>(json["TextStyle"]);
         }
@@ -104,11 +111,11 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
     return true;
 }
 
-bool Installer::create_msi() {
+bool Installer::create_msi(const std::filesystem::path& msi) {
     MSIHANDLE hDatabase;
 
     try {
-        auto result = MsiOpenDatabase("boinc.msi", MSIDBOPEN_CREATE, &hDatabase);
+        auto result = MsiOpenDatabase(msi.string().c_str(), MSIDBOPEN_CREATE, &hDatabase);
         if (result != ERROR_SUCCESS) {
             std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
             return false;

@@ -15,25 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Checkbox.h"
+#include "MsiHelper.h"
 
-#include <map>
-#include <memory>
-#include <filesystem>
-#include <nlohmann/json.hpp>
+Checkbox::Checkbox(const nlohmann::json& json) {
+    if (json.contains("Property")) {
+        property = json["Property"];
+    }
+    if (json.contains("Value")) {
+        value = json["Value"];
+    }
+}
 
-#include "Generator.h"
-#include "InstallerStrings.h"
-
-class Installer {
-public:
-    explicit Installer() noexcept;
-    ~Installer() = default;
-    bool load(const std::filesystem::path& json);
-    bool create_msi(const std::filesystem::path& msi);
-private:
-    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
-
-    std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
-    InstallerStrings installer_strings;
-};
+MSIHANDLE Checkbox::getRecord() const {
+    return MsiHelper::MsiRecordSet({ property, value });
+}

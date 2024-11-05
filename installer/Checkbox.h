@@ -17,23 +17,16 @@
 
 #pragma once
 
-#include <map>
-#include <memory>
-#include <filesystem>
 #include <nlohmann/json.hpp>
 
-#include "Generator.h"
-#include "InstallerStrings.h"
+#include "Record.h"
 
-class Installer {
+class Checkbox : public Record {
 public:
-    explicit Installer() noexcept;
-    ~Installer() = default;
-    bool load(const std::filesystem::path& json);
-    bool create_msi(const std::filesystem::path& msi);
+    explicit Checkbox(const nlohmann::json& json);
+    ~Checkbox() = default;
+    MSIHANDLE getRecord() const override;
 private:
-    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
-
-    std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
-    InstallerStrings installer_strings;
+    std::string property{};
+    std::string value{};
 };

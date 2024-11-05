@@ -17,23 +17,24 @@
 
 #pragma once
 
-#include <map>
-#include <memory>
-#include <filesystem>
 #include <nlohmann/json.hpp>
 
-#include "Generator.h"
+#include "Record.h"
 #include "InstallerStrings.h"
 
-class Installer {
+class RadioButton : public Record {
 public:
-    explicit Installer() noexcept;
-    ~Installer() = default;
-    bool load(const std::filesystem::path& json);
-    bool create_msi(const std::filesystem::path& msi);
+    explicit RadioButton(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    ~RadioButton() = default;
+    MSIHANDLE getRecord() const override;
 private:
-    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
-
-    std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
-    InstallerStrings installer_strings;
+    std::string property{};
+    int order = 0;
+    std::string value{};
+    int x = 0;
+    int y = 0;
+    int width = 0;
+    int height = 0;
+    std::string text{};
+    std::string help{};
 };

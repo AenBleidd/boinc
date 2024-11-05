@@ -596,6 +596,24 @@
             "Path": "res\\SetAllUsers.dll"
         }
     ],
+    "Checkbox": [
+        {
+            "Property": "ENABLEPROTECTEDAPPLICATIONEXECUTION3",
+            "Value": "1"
+        },
+        {
+            "Property": "ENABLESCREENSAVER",
+            "Value": "1"
+        },
+        {
+            "Property": "ENABLEUSEBYALLUSERS",
+            "Value": "1"
+        },
+        {
+            "Property": "LAUNCHPROGRAM",
+            "Value": "1"
+        }
+    ],
     "Dialog": [
         {
             "Dialog": "AdminChangeFolder",
@@ -2209,7 +2227,8 @@
                     "Y": 55,
                     "Width": 358,
                     "Height": 130,
-                    "Attributes": 7
+                    "Attributes": 7,
+                    "Text": "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033\\deflangfe1033{\\fonttbl{\\f0\\fmodern\\fprq1\\fcharset0 Courier New;}}\n{\\colortbl ;\\red0\\green0\\blue255;}\n{\\*\\generator Msftedit 5.41.21.2506;}\\viewkind4\\uc1\\pard\\nowidctlpar\\f0\\fs20 Berkeley Open Infrastructure for Network Computing (BOINC)\\par\n\\par\nLicense Agreement\\par\n\\par\nPlease carefully read the following terms and conditions before using this software. Your use of this software indicates your acceptance of this license agreement and warranty.\\par\n\\par\nDisclaimer of Warranty\\par\n\\par\nTHIS SOFTWARE AND THE ACCOMPANYING FILES ARE DISTRIBUTED \"AS IS\" AND WITHOUT WARRANTIES OF ANY KIND, AND THE IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE ARE HEREBY DISCLAIMED. ANY STATUTORY WARRANTY OF NON-INFRINGEMENT IS ALSO DISCLAIMED.\\par\n\\par\nRestrictions\\par\n\\par\nYou may use this software on a computer system only if you own the system or have the permission of the owner.\\par\n\\par\nDistribution\\par\n\\par\n\\pard This is free software. It is distributed under the terms of the GNU Lesser General Public License as published by the Free Software Foundation (https://www.fsf.org/). The source code may be obtained from the BOINC official repository on GitHub (https://github.com/BOINC/boinc/).\\par\n\\par\n}\n"
                 },
                 {
                     "Control": "Next",
@@ -6311,6 +6330,98 @@
         {
             "Property": "_IsMaintenance",
             "Value": "Install"
+        }
+    ],
+    "RadioButton": [
+        {
+            "Property": "AgreeToLicense",
+            "Order": 1,
+            "Value": "No",
+            "X": 0,
+            "Y": 15,
+            "Width": 291,
+            "Height": 15,
+            "Text": "IDS__AgreeToLicense_0"
+        },
+        {
+            "Property": "AgreeToLicense",
+            "Order": 2,
+            "Value": "Yes",
+            "X": 0,
+            "Y": 0,
+            "Width": 291,
+            "Height": 15,
+            "Text": "IDS__AgreeToLicense_1"
+        },
+        {
+            "Property": "RestartManagerOption",
+            "Order": 1,
+            "Value": "CloseRestart",
+            "X": 6,
+            "Y": 9,
+            "Width": 331,
+            "Height": 14,
+            "Text": "IDS__IsMsiRMFilesInUse_CloseRestart"
+        },
+        {
+            "Property": "RestartManagerOption",
+            "Order": 2,
+            "Value": "Reboot",
+            "X": 6,
+            "Y": 21,
+            "Width": 331,
+            "Height": 14,
+            "Text": "IDS__IsMsiRMFilesInUse_RebootAfter"
+        },
+        {
+            "Property": "SETUPTYPE",
+            "Order": 1,
+            "Value": "Single",
+            "X": 0,
+            "Y": 0,
+            "Width": 270,
+            "Height": 15,
+            "Text": "IDS__IsSetupTypeDlg_Single"
+        },
+        {
+            "Property": "SETUPTYPE",
+            "Order": 2,
+            "Value": "Shared",
+            "X": 0,
+            "Y": 38,
+            "Width": 270,
+            "Height": 15,
+            "Text": "IDS__IsSetupTypeDlg_Shared"
+        },
+        {
+            "Property": "SETUPTYPE",
+            "Order": 3,
+            "Value": "Service",
+            "X": 0,
+            "Y": 75,
+            "Width": 270,
+            "Height": 15,
+            "Text": "IDS__IsSetupTypeDlg_Service"
+        },
+        {
+            "Property": "_IsMaintenance",
+            "Order": 2,
+            "Value": "Reinstall",
+            "X": 0,
+            "Y": 0,
+            "Width": 290,
+            "Height": 14,
+            "Text": "IDS__IsMaintenanceDlg_Repair"
+        },
+        {
+            "Property": "_IsMaintenance",
+            "Order": 3,
+            "Value": "Remove",
+            "X": 0,
+            "Y": 60,
+            "Width": 290,
+            "Height": 14,
+            "Text": "IDS__IsMaintenanceDlg_Remove"
         }
     ],
     "TextStyle": [
