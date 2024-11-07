@@ -1,18 +1,18 @@
 {
     "Summary": {
-		"codepage": 1252,
-		"title": "COMPANY_PRODUCT",
-		"subject": "COMPANY_PRODUCT_SUBJECT",
-		"author": "COMPANY_NAME",
-		"keywords": "BOINC",
-		"comments": "IDS_FEATURE_BOINC_DESCRIPTION",
-		"template": "AMD64;1033",
-		"lastauthor": "BOINC",
-		"pagecount": 200,
-		"wordcount": 0,
-		"charcount": 0,
-		"appname":"BOINC",
-		"security": 1
+        "codepage": 1252,
+        "title": "COMPANY_PRODUCT",
+        "subject": "COMPANY_PRODUCT_SUBJECT",
+        "author": "COMPANY_NAME",
+        "keywords": "BOINC",
+        "comments": "IDS_FEATURE_BOINC_DESCRIPTION",
+        "template": "AMD64;1033",
+        "lastauthor": "BOINC",
+        "pagecount": 200,
+        "wordcount": 0,
+        "charcount": 0,
+        "appname": "BOINC",
+        "security": 1
     },
     "ActionText": [
         {
@@ -5800,6 +5800,252 @@
                             "Ordering": 0
                         }
                     ]
+                }
+            ]
+        }
+    ],
+    "Directory": [
+        {
+            "Directory": "TARGETDIR",
+            "DefaultDir": "SourceDir",
+            "Directories": [
+                {
+                    "Directory": "ALLUSERSPROFILE",
+                    "DefaultDir": ".:ALLUSE~1|All Users"
+                },
+                {
+                    "Directory": "CommonAppDataFolder",
+                    "DefaultDir": ".:Common~1|CommonAppData",
+                    "Directories": [
+                        {
+                            "Directory": "DATADIR",
+                            "DefaultDir": "BOINC",
+                            "Directories": [
+                                {
+                                    "Directory": "PROJECTS",
+                                    "DefaultDir": "projects"
+                                },
+                                {
+                                    "Directory": "SLOTS",
+                                    "DefaultDir": "slots"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Directory": "ProgramFiles64Folder",
+                    "DefaultDir": ".:Prog64~1|Program Files 64",
+                    "Directories": [
+                        {
+                            "Directory": "INSTALLDIR",
+                            "DefaultDir": "BOINC",
+                            "Directories": [
+                                {
+                                    "Directory": "SKINS",
+                                    "DefaultDir": "Skins",
+                                    "Directories": [
+                                        {
+                                            "Directory": "DEFAULT",
+                                            "DefaultDir": "Default"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Directory": "LOCALE",
+                                    "DefaultDir": "locale",
+                                    "Directories": [
+                                        {
+                                            "Directory": "ar",
+                                            "DefaultDir": "ar"
+                                        },
+                                        {
+                                            "Directory": "az",
+                                            "DefaultDir": "az"
+                                        },
+                                        {
+                                            "Directory": "bg",
+                                            "DefaultDir": "bg"
+                                        },
+                                        {
+                                            "Directory": "ca",
+                                            "DefaultDir": "ca"
+                                        },
+                                        {
+                                            "Directory": "cs",
+                                            "DefaultDir": "cs"
+                                        },
+                                        {
+                                            "Directory": "da",
+                                            "DefaultDir": "da"
+                                        },
+                                        {
+                                            "Directory": "de",
+                                            "DefaultDir": "de"
+                                        },
+                                        {
+                                            "Directory": "el",
+                                            "DefaultDir": "el"
+                                        },
+                                        {
+                                            "Directory": "eo",
+                                            "DefaultDir": "eo"
+                                        },
+                                        {
+                                            "Directory": "es",
+                                            "DefaultDir": "es"
+                                        },
+                                        {
+                                            "Directory": "eu",
+                                            "DefaultDir": "eu"
+                                        },
+                                        {
+                                            "Directory": "fa_IR",
+                                            "DefaultDir": "fa_IR"
+                                        },
+                                        {
+                                            "Directory": "fi",
+                                            "DefaultDir": "fi"
+                                        },
+                                        {
+                                            "Directory": "fr",
+                                            "DefaultDir": "fr"
+                                        },
+                                        {
+                                            "Directory": "he",
+                                            "DefaultDir": "he"
+                                        },
+                                        {
+                                            "Directory": "hu",
+                                            "DefaultDir": "hu"
+                                        },
+                                        {
+                                            "Directory": "id",
+                                            "DefaultDir": "id"
+                                        },
+                                        {
+                                            "Directory": "it",
+                                            "DefaultDir": "it"
+                                        },
+                                        {
+                                            "Directory": "it_IT",
+                                            "DefaultDir": "it_IT"
+                                        },
+                                        {
+                                            "Directory": "ja",
+                                            "DefaultDir": "ja"
+                                        },
+                                        {
+                                            "Directory": "ka",
+                                            "DefaultDir": "ka"
+                                        },
+                                        {
+                                            "Directory": "ko",
+                                            "DefaultDir": "ko"
+                                        },
+                                        {
+                                            "Directory": "ku",
+                                            "DefaultDir": "ku"
+                                        },
+                                        {
+                                            "Directory": "lt",
+                                            "DefaultDir": "lt"
+                                        },
+                                        {
+                                            "Directory": "lv",
+                                            "DefaultDir": "lv"
+                                        },
+                                        {
+                                            "Directory": "nb",
+                                            "DefaultDir": "nb"
+                                        },
+                                        {
+                                            "Directory": "nl",
+                                            "DefaultDir": "nl"
+                                        },
+                                        {
+                                            "Directory": "pl",
+                                            "DefaultDir": "pl"
+                                        },
+                                        {
+                                            "Directory": "pt_BR",
+                                            "DefaultDir": "pt_BR"
+                                        },
+                                        {
+                                            "Directory": "pt_PT",
+                                            "DefaultDir": "pt_PT"
+                                        },
+                                        {
+                                            "Directory": "ro",
+                                            "DefaultDir": "ro"
+                                        },
+                                        {
+                                            "Directory": "ru",
+                                            "DefaultDir": "ru"
+                                        },
+                                        {
+                                            "Directory": "sk",
+                                            "DefaultDir": "sk"
+                                        },
+                                        {
+                                            "Directory": "sr@latin",
+                                            "DefaultDir": "sr@latin"
+                                        },
+                                        {
+                                            "Directory": "sv",
+                                            "DefaultDir": "sv"
+                                        },
+                                        {
+                                            "Directory": "th",
+                                            "DefaultDir": "th"
+                                        },
+                                        {
+                                            "Directory": "tr",
+                                            "DefaultDir": "tr"
+                                        },
+                                        {
+                                            "Directory": "uk",
+                                            "DefaultDir": "uk"
+                                        },
+                                        {
+                                            "Directory": "vi",
+                                            "DefaultDir": "vi"
+                                        },
+                                        {
+                                            "Directory": "zh-Hans",
+                                            "DefaultDir": "zh-Hans"
+                                        },
+                                        {
+                                            "Directory": "zh_CN",
+                                            "DefaultDir": "zh_CN"
+                                        },
+                                        {
+                                            "Directory": "zh_TW",
+                                            "DefaultDir": "zh_TW"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Directory": "ProgramMenuFolder",
+                    "DefaultDir": ".:Programs",
+                    "Directories": [
+                        {
+                            "Directory": "newfolder1",
+                            "DefaultDir": "BOINC"
+                        }
+                    ]
+                },
+                {
+                    "Directory": "USERPROFILE",
+                    "DefaultDir": ".:USERPR~1|UserProfile"
+                },
+                {
+                    "Directory": "WindowsFolder",
+                    "DefaultDir": ".:Windows"
                 }
             ]
         }

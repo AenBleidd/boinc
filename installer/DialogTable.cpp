@@ -30,7 +30,7 @@ DialogTable::DialogTable(const nlohmann::json& json, const InstallerStrings& ins
 bool DialogTable::generate(MSIHANDLE hDatabase) {
     ControlTable(dialogs).generate(hDatabase);
 
-    std::cout << "Generating Dialogs..." << std::endl;
+    std::cout << "Generating DialogsTable..." << std::endl;
 
     const auto sql_create = "CREATE TABLE `Dialog` (`Dialog` CHAR(72) NOT NULL, `HCentering` SHORT NOT NULL, `VCentering` SHORT NOT NULL, "
         "`Width` SHORT NOT NULL, `Height` SHORT NOT NULL, `Attributes` LONG, `Title` LONGCHAR LOCALIZABLE, `Control_First` CHAR(50) NOT NULL, "

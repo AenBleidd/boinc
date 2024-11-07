@@ -41,6 +41,8 @@
     <ClCompile Include="..\installer\CustomActionTable.cpp" />
     <ClCompile Include="..\installer\Dialog.cpp" />
     <ClCompile Include="..\installer\DialogTable.cpp" />
+    <ClCompile Include="..\installer\Directory.cpp" />
+    <ClCompile Include="..\installer\DirectoryTable.cpp" />
     <ClCompile Include="..\installer\Error.cpp" />
     <ClCompile Include="..\installer\ErrorTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
@@ -83,6 +85,8 @@
     <ClInclude Include="..\installer\CustomActionTable.h" />
     <ClInclude Include="..\installer\Dialog.h" />
     <ClInclude Include="..\installer\DialogTable.h" />
+    <ClInclude Include="..\installer\Directory.h" />
+    <ClInclude Include="..\installer\DirectoryTable.h" />
     <ClInclude Include="..\installer\Error.h" />
     <ClInclude Include="..\installer\ErrorTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
