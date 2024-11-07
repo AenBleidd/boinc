@@ -15,19 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "UIText.h"
+#include "MsiHelper.h"
 
-#include <vector>
+UIText::UIText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    if (json.contains("Key")) {
+        key = json["Key"];
+    }
+    if (json.contains("Text")) {
+        text = installerStrings.get(json["Text"]);
+    }
+}
 
-#include "Generator.h"
-#include "ControlCondition.h"
-#include "Control.h"
-
-class ControlConditionTable : public Generator<ControlCondition> {
-public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
-    ~ControlConditionTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    const std::vector<Control>& controls;
-};
+MSIHANDLE UIText::getRecord() const {
+    return MsiHelper::MsiRecordSet({ key, text });
+}

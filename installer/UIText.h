@@ -17,38 +17,18 @@
 
 #pragma once
 
-#include <sstream>
-#include <vector>
 #include <nlohmann/json.hpp>
 
-
-#include "ControlCondition.h"
-#include "ControlEvent.h"
-#include "EventMapping.h"
+#include "Record.h"
 #include "InstallerStrings.h"
 
-class Control : public Record {
+class UIText : public Record {
 public:
-    explicit Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog);
-    ~Control() = default;
-    const std::vector<ControlCondition>& get_conditions() const noexcept;
-    const std::vector<ControlEvent>& get_events() const noexcept;
-    const std::vector<EventMapping>& get_event_mappings() const noexcept;
+    explicit UIText(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    ~UIText() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string dialog{};
-    std::string control{};
-    std::string type{};
-    int x = 0;
-    int y = 0;
-    int width = 0;
-    int height = 0;
-    int attributes = MSI_NULL_INTEGER;
-    std::string property{};
+    std::string key{};
     std::string text{};
-    std::string next{};
-    std::string help{};
-    std::vector<ControlCondition> conditions{};
-    std::vector<ControlEvent> events{};
-    std::vector<EventMapping> eventMappings{};
 };
+

@@ -17,16 +17,14 @@
 
 #pragma once
 
-#include <vector>
-
 #include "Generator.h"
-#include "ControlCondition.h"
+#include "EventMapping.h"
 #include "Control.h"
 
-class ControlConditionTable : public Generator<ControlCondition> {
+class EventMappingTable : public Generator<EventMapping> {
 public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
-    ~ControlConditionTable() = default;
+    explicit EventMappingTable(const std::vector<Control>& controls);
+    ~EventMappingTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
     const std::vector<Control>& controls;

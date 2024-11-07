@@ -65,16 +65,23 @@ Control::Control(const nlohmann::json& json, const InstallerStrings& installerSt
             events.emplace_back(event, dialog, control);
         }
     }
-    //TODO: Make special case for LicenseAgreement -> Memo
+    if (json.contains("EventMappings") && !json["EventMappings"].is_null()) {
+        for (const auto& eventMapping : json["EventMappings"]) {
+            eventMappings.emplace_back(eventMapping, dialog, control);
+        }
+    }
 }
 
 const std::vector<ControlCondition>& Control::get_conditions() const noexcept {
     return conditions;
 }
 
-const std::vector<ControlEvent>& Control::get_events() const noexcept
-{
+const std::vector<ControlEvent>& Control::get_events() const noexcept {
     return events;
+}
+
+const std::vector<EventMapping>& Control::get_event_mappings() const noexcept {
+    return eventMappings;
 }
 
 MSIHANDLE Control::getRecord() const {

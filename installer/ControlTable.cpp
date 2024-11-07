@@ -19,6 +19,7 @@
 #include "Control.h"
 #include "ControlConditionTable.h"
 #include "ControlEventTable.h"
+#include "EventMappingTable.h"
 
 #include "ControlTable.h"
 
@@ -35,6 +36,7 @@ bool ControlTable::generate(MSIHANDLE hDatabase)
 
     ControlConditionTable(controls).generate(hDatabase);
     ControlEventTable(controls).generate(hDatabase);
+    EventMappingTable(controls).generate(hDatabase);
     
     std::cout << "Generating ControlTable..." << std::endl;
 

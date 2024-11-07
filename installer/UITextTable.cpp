@@ -15,19 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "UITextTable.h"
 
-#include <vector>
+UITextTable::UITextTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+    std::cout << "Loading UITextTable.." << std::endl;
+    for (const auto& item : json) {
+        uiTexts.emplace_back(item, installerStrings);
+    }
+}
 
-#include "Generator.h"
-#include "ControlCondition.h"
-#include "Control.h"
+bool UITextTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating UITextTable.." << std::endl;
 
-class ControlConditionTable : public Generator<ControlCondition> {
-public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
-    ~ControlConditionTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    const std::vector<Control>& controls;
-};
+    const auto sql_create = "CREATE TABLE `UIText` (`Key` CHAR(72) NOT NULL, `Text` CHAR(255) LOCALIZABLE PRIMARY KEY `Key`)";
+    const auto sql_insert = "INSERT INTO `UIText` (`Key`, `Text`) VALUES (?, ?)";
+
+    return Generator::generate(hDatabase, sql_create, sql_insert, uiTexts);
+}

@@ -15,19 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "EventMapping.h"
+#include "MsiHelper.h"
 
-#include <vector>
+EventMapping::EventMapping(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
+    if (json.contains("Event")) {
+        event = json["Event"];
+    }
+    if (json.contains("Attribute")) {
+        attribute = json["Attribute"];
+    }
+}
 
-#include "Generator.h"
-#include "ControlCondition.h"
-#include "Control.h"
-
-class ControlConditionTable : public Generator<ControlCondition> {
-public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
-    ~ControlConditionTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    const std::vector<Control>& controls;
-};
+MSIHANDLE EventMapping::getRecord() const {
+    return MsiHelper::MsiRecordSet({ dialog, control, event, attribute });
+}

@@ -58,6 +58,10 @@
     <ClCompile Include="..\installer\ControlEvent.cpp" />
     <ClCompile Include="..\installer\TextStyle.cpp" />
     <ClCompile Include="..\installer\TextStyleTable.cpp" />
+    <ClCompile Include="..\installer\UIText.cpp" />
+    <ClCompile Include="..\installer\UITextTable.cpp" />
+    <ClCompile Include="..\installer\EventMapping.cpp" />
+    <ClCompile Include="..\installer\EventMappingTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\installer\Action.h" />
@@ -98,6 +102,10 @@
     <ClInclude Include="..\installer\ControlEvent.h" />
     <ClInclude Include="..\installer\TextStyle.h" />
     <ClInclude Include="..\installer\TextStyleTable.h" />
+    <ClInclude Include="..\installer\UIText.h" />
+    <ClInclude Include="..\installer\UITextTable.h" />
+    <ClInclude Include="..\installer\EventMapping.h" />
+    <ClInclude Include="..\installer\EventMappingTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

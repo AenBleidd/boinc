@@ -17,17 +17,14 @@
 
 #pragma once
 
-#include <vector>
-
 #include "Generator.h"
-#include "ControlCondition.h"
-#include "Control.h"
+#include "UIText.h"
 
-class ControlConditionTable : public Generator<ControlCondition> {
+class UITextTable : public Generator<UIText> {
 public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
-    ~ControlConditionTable() = default;
+    explicit UITextTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    ~UITextTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    const std::vector<Control>& controls;
+    std::vector<UIText> uiTexts{};
 };

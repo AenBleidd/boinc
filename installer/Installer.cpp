@@ -34,6 +34,7 @@
 #include "PropertyTable.h"
 #include "RadioButtonTable.h"
 #include "TextStyleTable.h"
+#include "UITextTable.h"
 
 #include "Installer.h"
 
@@ -110,6 +111,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (json.contains("TextStyle") && !json["TextStyle"].is_null()) {
             tables["TextStyle"] = std::make_shared<TextStyleTable>(json["TextStyle"]);
+        }
+        if (json.contains("UIText") && !json["UIText"].is_null()) {
+            tables["UIText"] = std::make_shared<UITextTable>(json["UIText"], installer_strings);
         }
     }
     catch (const std::exception& e) {
