@@ -20,19 +20,18 @@
 #include <nlohmann/json.hpp>
 
 #include "Record.h"
-#include "Component.h"
 
-class Directory : public Record {
+class Component : public Record {
 public:
-    explicit Directory(const nlohmann::json& json, const std::string& parent);
-    ~Directory() = default;
+    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
+    ~Component() = default;
     MSIHANDLE getRecord() const override;
-    std::vector<Directory> getDirectories() const;
-    std::vector<Component> getComponents() const;
+    std::string get_component() const;
 private:
+    std::string component{};
+    std::string componentId{};
     std::string directory{};
-    std::string parent{};
-    std::string default{};
-    std::vector<Directory> directories{};
-    std::vector<Component> components{};
+    int attributes = MSI_NULL_INTEGER;
+    std::string condition{};
+    std::string keyPath{};
 };

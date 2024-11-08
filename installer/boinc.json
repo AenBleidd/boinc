@@ -5823,11 +5823,29 @@
                             "Directories": [
                                 {
                                     "Directory": "PROJECTS",
-                                    "DefaultDir": "projects"
+                                    "DefaultDir": "projects",
+                                    "Components": [
+                                        {
+                                            "Component": "_BOINCDataProjects",
+                                            "Attributes": 272
+                                        }
+                                    ]
                                 },
                                 {
                                     "Directory": "SLOTS",
-                                    "DefaultDir": "slots"
+                                    "DefaultDir": "slots",
+                                    "Components": [
+                                        {
+                                            "Component": "_BOINCDataSlots",
+                                            "Attributes": 272
+                                        }
+                                    ]
+                                }
+                            ],
+                            "Components": [
+                                {
+                                    "Component": "_BOINCData",
+                                    "Attributes": 272
                                 }
                             ]
                         }
@@ -5847,7 +5865,13 @@
                                     "Directories": [
                                         {
                                             "Directory": "DEFAULT",
-                                            "DefaultDir": "Default"
+                                            "DefaultDir": "Default",
+                                            "Components": [
+                                                {
+                                                    "Component": "_BOINCManagerSkin",
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -5857,173 +5881,454 @@
                                     "Directories": [
                                         {
                                             "Directory": "ar",
-                                            "DefaultDir": "ar"
+                                            "DefaultDir": "ar",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "az",
-                                            "DefaultDir": "az"
+                                            "DefaultDir": "az",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "bg",
-                                            "DefaultDir": "bg"
+                                            "DefaultDir": "bg",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ca",
-                                            "DefaultDir": "ca"
+                                            "DefaultDir": "ca",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "cs",
-                                            "DefaultDir": "cs"
+                                            "DefaultDir": "cs",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "da",
-                                            "DefaultDir": "da"
+                                            "DefaultDir": "da",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "de",
-                                            "DefaultDir": "de"
+                                            "DefaultDir": "de",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "el",
-                                            "DefaultDir": "el"
+                                            "DefaultDir": "el",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "eo",
-                                            "DefaultDir": "eo"
+                                            "DefaultDir": "eo",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "es",
-                                            "DefaultDir": "es"
+                                            "DefaultDir": "es",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "eu",
-                                            "DefaultDir": "eu"
+                                            "DefaultDir": "eu",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "fa_IR",
-                                            "DefaultDir": "fa_IR"
+                                            "DefaultDir": "fa_IR",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "fi",
-                                            "DefaultDir": "fi"
+                                            "DefaultDir": "fi",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "fr",
-                                            "DefaultDir": "fr"
+                                            "DefaultDir": "fr",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "he",
-                                            "DefaultDir": "he"
+                                            "DefaultDir": "he",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "hu",
-                                            "DefaultDir": "hu"
+                                            "DefaultDir": "hu",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "id",
-                                            "DefaultDir": "id"
+                                            "DefaultDir": "id",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "it",
-                                            "DefaultDir": "it"
+                                            "DefaultDir": "it",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "it_IT",
-                                            "DefaultDir": "it_IT"
+                                            "DefaultDir": "it_IT",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ja",
-                                            "DefaultDir": "ja"
+                                            "DefaultDir": "ja",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ka",
-                                            "DefaultDir": "ka"
+                                            "DefaultDir": "ka",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ko",
-                                            "DefaultDir": "ko"
+                                            "DefaultDir": "ko",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ku",
-                                            "DefaultDir": "ku"
+                                            "DefaultDir": "ku",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "lt",
-                                            "DefaultDir": "lt"
+                                            "DefaultDir": "lt",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "lv",
-                                            "DefaultDir": "lv"
+                                            "DefaultDir": "lv",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "nb",
-                                            "DefaultDir": "nb"
+                                            "DefaultDir": "nb",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "nl",
-                                            "DefaultDir": "nl"
+                                            "DefaultDir": "nl",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "pl",
-                                            "DefaultDir": "pl"
+                                            "DefaultDir": "pl",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "pt_BR",
-                                            "DefaultDir": "pt_BR"
+                                            "DefaultDir": "pt_BR",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "pt_PT",
-                                            "DefaultDir": "pt_PT"
+                                            "DefaultDir": "pt_PT",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ro",
-                                            "DefaultDir": "ro"
+                                            "DefaultDir": "ro",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "ru",
-                                            "DefaultDir": "ru"
+                                            "DefaultDir": "ru",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "sk",
-                                            "DefaultDir": "sk"
+                                            "DefaultDir": "sk",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "sr@latin",
-                                            "DefaultDir": "sr@latin"
+                                            "DefaultDir": "sr@latin",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "sv",
-                                            "DefaultDir": "sv"
+                                            "DefaultDir": "sv",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "th",
-                                            "DefaultDir": "th"
+                                            "DefaultDir": "th",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "tr",
-                                            "DefaultDir": "tr"
+                                            "DefaultDir": "tr",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "uk",
-                                            "DefaultDir": "uk"
+                                            "DefaultDir": "uk",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "vi",
-                                            "DefaultDir": "vi"
+                                            "DefaultDir": "vi",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "zh-Hans",
-                                            "DefaultDir": "zh-Hans"
+                                            "DefaultDir": "zh-Hans",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "zh_CN",
-                                            "DefaultDir": "zh_CN"
+                                            "DefaultDir": "zh_CN",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
                                         },
                                         {
                                             "Directory": "zh_TW",
-                                            "DefaultDir": "zh_TW"
+                                            "DefaultDir": "zh_TW",
+                                            "Components": [
+                                                {
+                                                    "Attributes": 256
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "Components": [
+                                        {
+                                            "Component": "_BOINCManagerGlobalization",
+                                            "Attributes": 256
                                         }
                                     ]
+                                }
+                            ],
+                            "Components": [
+                                {
+                                    "Component": "BOINCServiceConfig",
+                                    "Attributes": 256,
+                                    "Condition": "VersionNT AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"
+                                },
+                                {
+                                    "Component": "_BOINC",
+                                    "Attributes": 256
+                                },
+                                {
+                                    "Component": "_BOINCCMD",
+                                    "Attributes": 256
+                                },
+                                {
+                                    "Component": "_BOINCDepends",
+                                    "Attributes": 256
+                                },
+                                {
+                                    "Component": "_BOINCManager",
+                                    "Attributes": 256
+                                },
+                                {
+                                    "Component": "_BOINCManagerStartMenu",
+                                    "Attributes": 256,
+                                    "Condition": "ENABLESTARTMENUITEMS = 1"
+                                },
+                                {
+                                    "Component": "_BOINCManagerStartup",
+                                    "Attributes": 256,
+                                    "Condition": "ENABLEUSEBYALLUSERS <> 1"
+                                },
+                                {
+                                    "Component": "_BOINCManagerStartupAll",
+                                    "Attributes": 256,
+                                    "Condition": "ENABLEUSEBYALLUSERS = 1"
+                                },
+                                {
+                                    "Component": "_BOINCScreensaver",
+                                    "Attributes": 264
+                                },
+                                {
+                                    "Component": "_BOINCSvcCtrl",
+                                    "Attributes": 256
+                                },
+                                {
+                                    "Component": "_BOINCTray",
+                                    "Attributes": 256,
+                                    "Condition": "VersionNT"
+                                },
+                                {
+                                    "Component": "_BOINCTrayStartup",
+                                    "Attributes": 264
+                                },
+                                {
+                                    "Component": "_ScreensaverEnable9x",
+                                    "Attributes": 256,
+                                    "Condition": "Version9X AND ENABLESCREENSAVER = 1"
+                                },
+                                {
+                                    "Component": "_ScreensaverEnableNT",
+                                    "Attributes": 256,
+                                    "Condition": "VersionNT AND ENABLESCREENSAVER = 1"
                                 }
                             ]
                         }
@@ -6045,7 +6350,13 @@
                 },
                 {
                     "Directory": "WindowsFolder",
-                    "DefaultDir": ".:Windows"
+                    "DefaultDir": ".:Windows",
+                    "Components": [
+                        {
+                            "Component": "_Screensaver",
+                            "Attributes": 256
+                        }
+                    ]
                 }
             ]
         }

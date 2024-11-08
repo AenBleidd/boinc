@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DirectoryTable.h"
+#include "ComponentTable.h"
 
 DirectoryTable::DirectoryTable(const nlohmann::json& json) {
     std::cout << "Loading DirectoryTable..." << std::endl;
@@ -25,14 +26,16 @@ DirectoryTable::DirectoryTable(const nlohmann::json& json) {
 }
 
 bool DirectoryTable::generate(MSIHANDLE hDatabase) {
-    std::cout << "Generating DirectoryTable..." << std::endl;
-
     std::vector<Directory> all;
     for (const auto& directory : directories) {
         all.push_back(directory);
         auto subdirs = directory.getDirectories();
         all.insert(all.end(), subdirs.begin(), subdirs.end());
     }
+
+    ComponentTable(all).generate(hDatabase);
+
+    std::cout << "Generating DirectoryTable..." << std::endl;
 
     const auto sql_create = "CREATE TABLE `Directory` (`Directory` CHAR(72) NOT NULL, `Directory_Parent` CHAR(72), `DefaultDir` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Directory`)";
     const auto sql_insert = "INSERT INTO `Directory` (`Directory`, `Directory_Parent`, `DefaultDir`) VALUES (?, ?, ?)";

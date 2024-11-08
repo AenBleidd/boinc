@@ -32,6 +32,8 @@
     <ClCompile Include="..\installer\BinaryTable.cpp" />
     <ClCompile Include="..\installer\Checkbox.cpp" />
     <ClCompile Include="..\installer\CheckboxTable.cpp" />
+    <ClCompile Include="..\installer\Component.cpp" />
+    <ClCompile Include="..\installer\ComponentTable.cpp" />
     <ClCompile Include="..\installer\Control.cpp" />
     <ClCompile Include="..\installer\ControlCondition.cpp" />
     <ClCompile Include="..\installer\ControlConditionTable.cpp" />
@@ -78,6 +80,8 @@
     <ClInclude Include="..\installer\BinaryTable.h" />
     <ClInclude Include="..\installer\Checkbox.h" />
     <ClInclude Include="..\installer\CheckboxTable.h" />
+    <ClInclude Include="..\installer\Component.h" />
+    <ClInclude Include="..\installer\ComponentTable.h" />
     <ClInclude Include="..\installer\Control.h" />
     <ClInclude Include="..\installer\ControlCondition.h" />
     <ClInclude Include="..\installer\ControlConditionTable.h" />

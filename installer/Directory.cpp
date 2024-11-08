@@ -30,6 +30,11 @@ Directory::Directory(const nlohmann::json& json, const std::string& parent) : pa
             directories.emplace_back(dir, directory);
         }
     }
+    if (json.contains("Components") && !json["Components"].is_null()) {
+        for (const auto& comp : json["Components"]) {
+            components.emplace_back(comp, directory, parent);
+        }
+    }
 }
 
 MSIHANDLE Directory::getRecord() const {
@@ -42,6 +47,18 @@ std::vector<Directory> Directory::getDirectories() const {
         all.push_back(dir);
         auto subdirs = dir.getDirectories();
         all.insert(all.end(), subdirs.begin(), subdirs.end());
+    }
+    return all;
+}
+
+std::vector<Component> Directory::getComponents() const {
+    std::vector<Component> all;
+    for (const auto& comp : components) {
+        all.push_back(comp);
+    }
+    for (const auto& dir : directories) {
+        auto comps = dir.getComponents();
+        all.insert(all.end(), comps.begin(), comps.end());
     }
     return all;
 }
