@@ -32,6 +32,9 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     if (json.contains("Feature_") && !json["Feature_"].is_null()) {
         feature = json["Feature_"];
     }
+    if (json.contains("CreateFolder") && !json["CreateFolder"].is_null()) {
+        create_folder = json["CreateFolder"];
+    }
     if (component.empty()) {
         component = parent + "_" + directory;
     }
@@ -45,4 +48,11 @@ MSIHANDLE Component::getRecord() const {
 
 FeatureComponents Component::getFeatureComponent() const {
     return { feature, component };
+}
+
+std::tuple<bool, CreateFolder> Component::getCreateFolder() const {
+    if (create_folder) {
+        return { true, { directory, component } };
+    }
+    return { false, {} };
 }

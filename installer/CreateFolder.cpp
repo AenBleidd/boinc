@@ -15,28 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <nlohmann/json.hpp>
-
-#include "Record.h"
-#include "FeatureComponents.h"
 #include "CreateFolder.h"
+#include "MsiHelper.h"
 
-class Component : public Record {
-public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
-    MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
-    std::tuple<bool, CreateFolder> getCreateFolder() const;
-private:
-    std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
-    bool create_folder = false;
-};
+CreateFolder::CreateFolder(const std::string& directory, const std::string& component) : directory(directory), component(component) {
+}
+
+MSIHANDLE CreateFolder::getRecord() const {
+    return MsiHelper::MsiRecordSet({directory, component});
+}

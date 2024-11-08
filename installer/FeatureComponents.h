@@ -17,13 +17,11 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-
 #include "Record.h"
 
 class FeatureComponents : public Record {
 public:
-    FeatureComponents(const std::string& feature, const std::string& component) noexcept;
+    FeatureComponents(const std::string& feature, const std::string& component);
     ~FeatureComponents() = default;
     MSIHANDLE getRecord() const override;
 private:

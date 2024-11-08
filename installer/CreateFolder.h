@@ -17,26 +17,15 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-
 #include "Record.h"
-#include "FeatureComponents.h"
-#include "CreateFolder.h"
 
-class Component : public Record {
+class CreateFolder : public Record {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
+    CreateFolder() = default;
+    CreateFolder(const std::string& directory, const std::string& component);
+    ~CreateFolder() = default;
     MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
-    std::tuple<bool, CreateFolder> getCreateFolder() const;
 private:
-    std::string component{};
-    std::string componentId{};
     std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
-    bool create_folder = false;
+    std::string component{};
 };

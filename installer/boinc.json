@@ -6308,7 +6308,8 @@
                                         {
                                             "Feature_": "BOINCManagerGlobalization",
                                             "Component": "_BOINCManagerGlobalization",
-                                            "Attributes": 256
+                                            "Attributes": 256,
+                                            "CreateFolder": true
                                         }
                                     ]
                                 }
@@ -6318,12 +6319,14 @@
                                     "Feature_": "BOINC",
                                     "Component": "BOINCServiceConfig",
                                     "Attributes": 256,
-                                    "Condition": "VersionNT AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"
+                                    "Condition": "VersionNT AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINC",
                                     "Component": "_BOINC",
-                                    "Attributes": 256
+                                    "Attributes": 256,
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINC",
@@ -6344,19 +6347,22 @@
                                     "Feature_": "BOINCManager",
                                     "Component": "_BOINCManagerStartMenu",
                                     "Attributes": 256,
-                                    "Condition": "ENABLESTARTMENUITEMS = 1"
+                                    "Condition": "ENABLESTARTMENUITEMS = 1",
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINCManagerStartup",
                                     "Component": "_BOINCManagerStartup",
                                     "Attributes": 256,
-                                    "Condition": "ENABLEUSEBYALLUSERS <> 1"
+                                    "Condition": "ENABLEUSEBYALLUSERS <> 1",
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINCManagerStartup",
                                     "Component": "_BOINCManagerStartupAll",
                                     "Attributes": 256,
-                                    "Condition": "ENABLEUSEBYALLUSERS = 1"
+                                    "Condition": "ENABLEUSEBYALLUSERS = 1",
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
@@ -6366,7 +6372,8 @@
                                 {
                                     "Feature_": "BOINC",
                                     "Component": "_BOINCSvcCtrl",
-                                    "Attributes": 256
+                                    "Attributes": 256,
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINC",
@@ -6377,19 +6384,22 @@
                                 {
                                     "Feature_": "BOINC",
                                     "Component": "_BOINCTrayStartup",
-                                    "Attributes": 264
+                                    "Attributes": 264,
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnable9x",
                                     "Attributes": 256,
-                                    "Condition": "Version9X AND ENABLESCREENSAVER = 1"
+                                    "Condition": "Version9X AND ENABLESCREENSAVER = 1",
+                                    "CreateFolder": true
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnableNT",
                                     "Attributes": 256,
-                                    "Condition": "VersionNT AND ENABLESCREENSAVER = 1"
+                                    "Condition": "VersionNT AND ENABLESCREENSAVER = 1",
+                                    "CreateFolder": true
                                 }
                             ]
                         }

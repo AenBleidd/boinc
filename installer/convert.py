@@ -3,29 +3,18 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="FeatureComponents">
-		<col key="yes" def="s38">Feature_</col>
+	<table name="CreateFolder">
+		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>BOINC</td><td>BOINCServiceConfig</td></row>
-		<row><td>BOINC</td><td>_BOINC</td></row>
-		<row><td>BOINC</td><td>_BOINCCMD</td></row>
-		<row><td>BOINC</td><td>_BOINCData</td></row>
-		<row><td>BOINC</td><td>_BOINCDataProjects</td></row>
-		<row><td>BOINC</td><td>_BOINCDataSlots</td></row>
-		<row><td>BOINC</td><td>_BOINCDepends</td></row>
-		<row><td>BOINC</td><td>_BOINCSvcCtrl</td></row>
-		<row><td>BOINC</td><td>_BOINCTray</td></row>
-		<row><td>BOINC</td><td>_BOINCTrayStartup</td></row>
-		<row><td>BOINCManager</td><td>_BOINCManager</td></row>
-		<row><td>BOINCManager</td><td>_BOINCManagerSkin</td></row>
-		<row><td>BOINCManager</td><td>_BOINCManagerStartMenu</td></row>
-		<row><td>BOINCManagerGlobalization</td><td>_BOINCManagerGlobalization</td></row>
-		<row><td>BOINCManagerStartup</td><td>_BOINCManagerStartup</td></row>
-		<row><td>BOINCManagerStartup</td><td>_BOINCManagerStartupAll</td></row>
-		<row><td>BOINCScreensaver</td><td>_BOINCScreensaver</td></row>
-		<row><td>BOINCScreensaver</td><td>_Screensaver</td></row>
-		<row><td>BOINCScreensaver</td><td>_ScreensaverEnable9x</td></row>
-		<row><td>BOINCScreensaver</td><td>_ScreensaverEnableNT</td></row>
+		<row><td>INSTALLDIR</td><td>BOINCServiceConfig</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINC</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINCManagerStartMenu</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINCManagerStartup</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINCManagerStartupAll</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINCSvcCtrl</td></row>
+		<row><td>INSTALLDIR</td><td>_BOINCTrayStartup</td></row>
+		<row><td>INSTALLDIR</td><td>_ScreensaverEnable9x</td></row>
+		<row><td>INSTALLDIR</td><td>_ScreensaverEnableNT</td></row>
 	</table>
 '''
 
