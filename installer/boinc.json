@@ -5826,6 +5826,7 @@
                                     "DefaultDir": "projects",
                                     "Components": [
                                         {
+                                            "Feature_": "BOINC",
                                             "Component": "_BOINCDataProjects",
                                             "Attributes": 272
                                         }
@@ -5836,6 +5837,7 @@
                                     "DefaultDir": "slots",
                                     "Components": [
                                         {
+                                            "Feature_": "BOINC",
                                             "Component": "_BOINCDataSlots",
                                             "Attributes": 272
                                         }
@@ -5844,6 +5846,7 @@
                             ],
                             "Components": [
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCData",
                                     "Attributes": 272
                                 }
@@ -5868,6 +5871,7 @@
                                             "DefaultDir": "Default",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManager",
                                                     "Component": "_BOINCManagerSkin",
                                                     "Attributes": 256
                                                 }
@@ -5884,6 +5888,7 @@
                                             "DefaultDir": "ar",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5893,6 +5898,7 @@
                                             "DefaultDir": "az",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5902,6 +5908,7 @@
                                             "DefaultDir": "bg",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5911,6 +5918,7 @@
                                             "DefaultDir": "ca",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5920,6 +5928,7 @@
                                             "DefaultDir": "cs",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5929,6 +5938,7 @@
                                             "DefaultDir": "da",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5938,6 +5948,7 @@
                                             "DefaultDir": "de",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5947,6 +5958,7 @@
                                             "DefaultDir": "el",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5956,6 +5968,7 @@
                                             "DefaultDir": "eo",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5965,6 +5978,7 @@
                                             "DefaultDir": "es",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5974,6 +5988,7 @@
                                             "DefaultDir": "eu",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5983,6 +5998,7 @@
                                             "DefaultDir": "fa_IR",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -5992,6 +6008,7 @@
                                             "DefaultDir": "fi",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6001,6 +6018,7 @@
                                             "DefaultDir": "fr",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6010,6 +6028,7 @@
                                             "DefaultDir": "he",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6019,6 +6038,7 @@
                                             "DefaultDir": "hu",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6028,6 +6048,7 @@
                                             "DefaultDir": "id",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6037,6 +6058,7 @@
                                             "DefaultDir": "it",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6046,6 +6068,7 @@
                                             "DefaultDir": "it_IT",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6055,6 +6078,7 @@
                                             "DefaultDir": "ja",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6064,6 +6088,7 @@
                                             "DefaultDir": "ka",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6073,6 +6098,7 @@
                                             "DefaultDir": "ko",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6082,6 +6108,7 @@
                                             "DefaultDir": "ku",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6091,6 +6118,7 @@
                                             "DefaultDir": "lt",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6100,6 +6128,7 @@
                                             "DefaultDir": "lv",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6109,6 +6138,7 @@
                                             "DefaultDir": "nb",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6118,6 +6148,7 @@
                                             "DefaultDir": "nl",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6127,6 +6158,7 @@
                                             "DefaultDir": "pl",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6136,6 +6168,7 @@
                                             "DefaultDir": "pt_BR",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6145,6 +6178,7 @@
                                             "DefaultDir": "pt_PT",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6154,6 +6188,7 @@
                                             "DefaultDir": "ro",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6163,6 +6198,7 @@
                                             "DefaultDir": "ru",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6172,6 +6208,7 @@
                                             "DefaultDir": "sk",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6181,6 +6218,7 @@
                                             "DefaultDir": "sr@latin",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6190,6 +6228,7 @@
                                             "DefaultDir": "sv",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6199,6 +6238,7 @@
                                             "DefaultDir": "th",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6208,6 +6248,7 @@
                                             "DefaultDir": "tr",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6217,6 +6258,7 @@
                                             "DefaultDir": "uk",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6226,6 +6268,7 @@
                                             "DefaultDir": "vi",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6235,6 +6278,7 @@
                                             "DefaultDir": "zh-Hans",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6244,6 +6288,7 @@
                                             "DefaultDir": "zh_CN",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6253,6 +6298,7 @@
                                             "DefaultDir": "zh_TW",
                                             "Components": [
                                                 {
+                                                    "Feature_": "BOINCManagerGlobalization",
                                                     "Attributes": 256
                                                 }
                                             ]
@@ -6260,6 +6306,7 @@
                                     ],
                                     "Components": [
                                         {
+                                            "Feature_": "BOINCManagerGlobalization",
                                             "Component": "_BOINCManagerGlobalization",
                                             "Attributes": 256
                                         }
@@ -6268,64 +6315,78 @@
                             ],
                             "Components": [
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "BOINCServiceConfig",
                                     "Attributes": 256,
                                     "Condition": "VersionNT AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1"
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINC",
                                     "Attributes": 256
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCCMD",
                                     "Attributes": 256
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCDepends",
                                     "Attributes": 256
                                 },
                                 {
+                                    "Feature_": "BOINCManager",
                                     "Component": "_BOINCManager",
                                     "Attributes": 256
                                 },
                                 {
+                                    "Feature_": "BOINCManager",
                                     "Component": "_BOINCManagerStartMenu",
                                     "Attributes": 256,
                                     "Condition": "ENABLESTARTMENUITEMS = 1"
                                 },
                                 {
+                                    "Feature_": "BOINCManagerStartup",
                                     "Component": "_BOINCManagerStartup",
                                     "Attributes": 256,
                                     "Condition": "ENABLEUSEBYALLUSERS <> 1"
                                 },
                                 {
+                                    "Feature_": "BOINCManagerStartup",
                                     "Component": "_BOINCManagerStartupAll",
                                     "Attributes": 256,
                                     "Condition": "ENABLEUSEBYALLUSERS = 1"
                                 },
                                 {
+                                    "Feature_": "BOINCScreensaver",
                                     "Component": "_BOINCScreensaver",
                                     "Attributes": 264
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCSvcCtrl",
                                     "Attributes": 256
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCTray",
                                     "Attributes": 256,
                                     "Condition": "VersionNT"
                                 },
                                 {
+                                    "Feature_": "BOINC",
                                     "Component": "_BOINCTrayStartup",
                                     "Attributes": 264
                                 },
                                 {
+                                    "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnable9x",
                                     "Attributes": 256,
                                     "Condition": "Version9X AND ENABLESCREENSAVER = 1"
                                 },
                                 {
+                                    "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnableNT",
                                     "Attributes": 256,
                                     "Condition": "VersionNT AND ENABLESCREENSAVER = 1"
@@ -6353,6 +6414,7 @@
                     "DefaultDir": ".:Windows",
                     "Components": [
                         {
+                            "Feature_": "BOINCScreensaver",
                             "Component": "_Screensaver",
                             "Attributes": 256
                         }

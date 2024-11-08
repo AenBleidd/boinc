@@ -29,6 +29,9 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     if (json.contains("Condition") && !json["Condition"].is_null()) {
         condition = json["Condition"];
     }
+    if (json.contains("Feature_") && !json["Feature_"].is_null()) {
+        feature = json["Feature_"];
+    }
     if (component.empty()) {
         component = parent + "_" + directory;
     }
@@ -40,6 +43,6 @@ MSIHANDLE Component::getRecord() const {
     return MsiHelper::MsiRecordSet({ component, componentId, directory, attributes, condition, keyPath });
 }
 
-std::string Component::get_component() const {
-    return component;
+FeatureComponents Component::getFeatureComponent() const {
+    return { feature, component };
 }

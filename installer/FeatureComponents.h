@@ -20,20 +20,13 @@
 #include <nlohmann/json.hpp>
 
 #include "Record.h"
-#include "FeatureComponents.h"
 
-class Component : public Record {
+class FeatureComponents : public Record {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
+    FeatureComponents(const std::string& feature, const std::string& component) noexcept;
+    ~FeatureComponents() = default;
     MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
 private:
-    std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
     std::string feature{};
+    std::string component{};
 };

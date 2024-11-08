@@ -17,23 +17,15 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-
-#include "Record.h"
+#include "Generator.h"
 #include "FeatureComponents.h"
+#include "Directory.h"
 
-class Component : public Record {
+class FeatureComponentsTable : public Generator<FeatureComponents> {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
-    MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
+    explicit FeatureComponentsTable(const std::vector<Directory>& directories);
+    ~FeatureComponentsTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
+    std::vector<FeatureComponents> featureComponents{};
 };

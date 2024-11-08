@@ -15,22 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "ComponentTable.h"
+#include "FeatureComponentsTable.h"
 
-ComponentTable::ComponentTable(const std::vector<Directory>& directories) {
+FeatureComponentsTable::FeatureComponentsTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
-            components.push_back(component);
+            featureComponents.emplace_back(component.getFeatureComponent());
         }
     }
 }
 
-bool ComponentTable::generate(MSIHANDLE hDatabase) {
-    std::cout << "Generating ComponentTable..." << std::endl;
+bool FeatureComponentsTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating FeatureComponentsTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Component` (`Component` CHAR(72) NOT NULL, `ComponentId` CHAR(38), `Directory_` CHAR(72) NOT NULL, "
-        "`Attributes` SHORT NOT NULL, `Condition` CHAR(255), KeyPath CHAR(72) PRIMARY KEY `Component`)";
-    const auto sql_insert = "INSERT INTO `Component` (`Component`, `ComponentId`, `Directory_`, `Attributes`, `Condition`, `KeyPath`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `FeatureComponents` (`Feature_` CHAR(38) NOT NULL, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Feature_`, `Component_`)";
+    const auto sql_insert = "INSERT INTO `FeatureComponents` (`Feature_`, `Component_`) VALUES (?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, components);
+    return Generator::generate(hDatabase, sql_create, sql_insert, featureComponents);
 }
