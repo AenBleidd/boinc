@@ -15,18 +15,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "EventMapping.h"
-#include "MsiHelper.h"
+#pragma once
 
-EventMapping::EventMapping(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
-    if (json.contains("Event") && !json["Event"].is_null()) {
-        event = json["Event"];
-    }
-    if (json.contains("Attribute") && !json["Attribute"].is_null()) {
-        attribute = json["Attribute"];
-    }
-}
+#include <nlohmann/json.hpp>
 
-MSIHANDLE EventMapping::getRecord() const {
-    return MsiHelper::MsiRecordSet({ dialog, control, event, attribute });
-}
+#include "Record.h"
+#include "InstallerStrings.h"
+
+class Feature : public Record {
+public:
+    explicit Feature(const nlohmann::json& json, const std::string& parent, const InstallerStrings& installerStrings);
+    ~Feature() = default;
+    MSIHANDLE getRecord() const override;
+    std::vector<Feature> getFeatures() const;
+private:
+    std::string feature{};
+    std::string feature_parent{};
+    std::string title{};
+    std::string description{};
+    int display = MSI_NULL_INTEGER;
+    int level = MSI_NULL_INTEGER;
+    std::string directory{};
+    int attributes = MSI_NULL_INTEGER;
+    std::vector<Feature> features{};
+};

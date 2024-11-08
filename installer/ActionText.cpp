@@ -21,10 +21,10 @@
 #include "MsiHelper.h"
 
 ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Action")) {
+    if (json.contains("Action") && !json["Action"].is_null()) {
         action = json["Action"];
     }
-    if (json.contains("Description")) {
+    if (json.contains("Description") && !json["Description"].is_null()) {
         description = installerStrings.get(json["Description"]);
     }
     if (json.contains("Template") && !json["Template"].is_null()) {

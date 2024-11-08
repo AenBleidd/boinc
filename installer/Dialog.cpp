@@ -22,37 +22,37 @@
 #include "MsiHelper.h"
 
 Dialog::Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Dialog")) {
+    if (json.contains("Dialog") && !json["Dialog"].is_null()) {
         dialog = json["Dialog"];
     }
-    if (json.contains("HCentering")) {
+    if (json.contains("HCentering") && !json["HCentering"].is_null()) {
         hcentering = json["HCentering"];
     }
-    if (json.contains("VCentering")) {
+    if (json.contains("VCentering") && !json["VCentering"].is_null()) {
         vcentering = json["VCentering"];
     }
-    if (json.contains("Width")) {
+    if (json.contains("Width") && !json["Width"].is_null()) {
         width = json["Width"];
     }
-    if (json.contains("Height")) {
+    if (json.contains("Height") && !json["Height"].is_null()) {
         height = json["Height"];
     }
-    if (json.contains("Attributes")) {
+    if (json.contains("Attributes") && !json["Attributes"].is_null()) {
         attributes = json["Attributes"];
     }
-    if (json.contains("Title")) {
+    if (json.contains("Title") && !json["Title"].is_null()) {
         title = installerStrings.get(json["Title"]);
     }
-    if (json.contains("Control_First")) {
+    if (json.contains("Control_First") && !json["Control_First"].is_null()) {
         first = json["Control_First"];
     }
-    if (json.contains("Control_Default")) {
+    if (json.contains("Control_Default") && !json["Control_Default"].is_null()) {
         default = json["Control_Default"];
     }
-    if (json.contains("Control_Cancel")) {
+    if (json.contains("Control_Cancel") && !json["Control_Cancel"].is_null()) {
         cancel = json["Control_Cancel"];
     }
-    if (json.contains("Controls")) {
+    if (json.contains("Controls") && !json["Controls"].is_null()) {
         for (const auto& control : json["Controls"]) {
             controls.emplace_back(control, installerStrings, dialog);
         }

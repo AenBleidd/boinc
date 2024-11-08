@@ -19,13 +19,13 @@
 #include "MsiHelper.h"
 
 ControlEvent::ControlEvent(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
-    if (json.contains("Event")) {
+    if (json.contains("Event") && !json["Event"].is_null()) {
         event = json["Event"];
     }
-    if (json.contains("Argument")) {
+    if (json.contains("Argument") && !json["Argument"].is_null()) {
         argument = json["Argument"];
     }
-    if (json.contains("Condition")) {
+    if (json.contains("Condition") && !json["Condition"].is_null()) {
         condition = json["Condition"];
     }
     if (json.contains("Ordering") && !json["Ordering"].is_null()) {

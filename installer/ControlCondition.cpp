@@ -20,10 +20,10 @@
 
 ControlCondition::ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control)
     : dialog(dialog), control(control) {
-    if (json.contains("Action")) {
+    if (json.contains("Action") && !json["Action"].is_null()) {
         action = json["Action"];
     }
-    if (json.contains("Condition")) {
+    if (json.contains("Condition") && !json["Condition"].is_null()) {
         condition = json["Condition"];
     }
 }

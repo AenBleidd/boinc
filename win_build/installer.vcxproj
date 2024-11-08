@@ -45,6 +45,8 @@
     <ClCompile Include="..\installer\DirectoryTable.cpp" />
     <ClCompile Include="..\installer\Error.cpp" />
     <ClCompile Include="..\installer\ErrorTable.cpp" />
+    <ClCompile Include="..\installer\Feature.cpp" />
+    <ClCompile Include="..\installer\FeatureTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
     <ClCompile Include="..\installer\Installer.cpp" />
     <ClCompile Include="..\installer\InstallerStrings.cpp" />
@@ -89,6 +91,8 @@
     <ClInclude Include="..\installer\DirectoryTable.h" />
     <ClInclude Include="..\installer\Error.h" />
     <ClInclude Include="..\installer\ErrorTable.h" />
+    <ClInclude Include="..\installer\Feature.h" />
+    <ClInclude Include="..\installer\FeatureTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
     <ClInclude Include="..\installer\GeneratorTable.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />

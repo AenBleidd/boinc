@@ -19,25 +19,25 @@
 #include "MsiHelper.h"
 
 Control::Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog) : dialog(dialog) {
-    if (json.contains("Control")) {
+    if (json.contains("Control") && !json["Control"].is_null()) {
         control = json["Control"];
     }
-    if (json.contains("Type")) {
+    if (json.contains("Type") && !json["Type"].is_null()) {
         type = json["Type"];
     }
-    if (json.contains("X")) {
+    if (json.contains("X") && !json["X"].is_null()) {
         x = json["X"];
     }
-    if (json.contains("Y")) {
+    if (json.contains("Y") && !json["Y"].is_null()) {
         y = json["Y"];
     }
-    if (json.contains("Width")) {
+    if (json.contains("Width") && !json["Width"].is_null()) {
         width = json["Width"];
     }
-    if (json.contains("Height")) {
+    if (json.contains("Height") && !json["Height"].is_null()) {
         height = json["Height"];
     }
-    if (json.contains("Attributes")) {
+    if (json.contains("Attributes") && !json["Attributes"].is_null()) {
         attributes = json["Attributes"];
     }
     if (json.contains("Property") && !json["Property"].is_null()) {

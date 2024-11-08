@@ -21,13 +21,13 @@
 #include "MsiHelper.h"
 
 Action::Action(const nlohmann::json& json) {
-    if (json.contains("Action")) {
+    if (json.contains("Action") && !json["Action"].is_null()) {
         action = json["Action"];
     }
     if (json.contains("Condition") && !json["Condition"].is_null()) {
         condition = json["Condition"];
     }
-    if (json.contains("Sequence")) {
+    if (json.contains("Sequence") && !json["Sequence"].is_null()) {
         sequence = json["Sequence"];
     }
 }

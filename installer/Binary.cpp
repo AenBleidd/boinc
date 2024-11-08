@@ -34,10 +34,10 @@ Binary::Binary(const nlohmann::json& json, const std::filesystem::path& root_pat
         "x64";
 #endif
 
-    if (json.contains("Name")) {
+    if (json.contains("Name") && !json["Name"].is_null()) {
         name = json["Name"];
     }
-    if (json.contains("Path")) {
+    if (json.contains("Path") && !json["Path"].is_null()) {
         auto p = std::string(json["Path"]);
         auto index = p.find(configuration_template);
         if (index != std::string::npos) {

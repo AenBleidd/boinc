@@ -19,13 +19,13 @@
 #include "MsiHelper.h"
 
 Directory::Directory(const nlohmann::json& json, const std::string& parent) : parent(parent) {
-    if (json.contains("Directory")) {
+    if (json.contains("Directory") && !json["Directory"].is_null()) {
         directory = json["Directory"];
     }
-    if (json.contains("DefaultDir")) {
+    if (json.contains("DefaultDir") && !json["DefaultDir"].is_null()) {
         default = json["DefaultDir"];
     }
-    if (json.contains("Directories")) {
+    if (json.contains("Directories") && !json["Directories"].is_null()) {
         for (const auto& dir : json["Directories"]) {
             directories.emplace_back(dir, directory);
         }

@@ -19,19 +19,19 @@
 #include "MsiHelper.h"
 
 TextStyle::TextStyle(const nlohmann::json& json) {
-    if (json.contains("TextStyle")) {
+    if (json.contains("TextStyle") && !json["TextStyle"].is_null()) {
         textstyle = json["TextStyle"];
     }
-    if (json.contains("FaceName")) {
+    if (json.contains("FaceName") && !json["FaceName"].is_null()) {
         facename = json["FaceName"];
     }
-    if (json.contains("Size")) {
+    if (json.contains("Size") && !json["Size"].is_null()) {
         size = json["Size"];
     }
-    if (json.contains("Color")) {
+    if (json.contains("Color") && !json["Color"].is_null()) {
         color = json["Color"];
     }
-    if (json.contains("StyleBits")) {
+    if (json.contains("StyleBits") && !json["StyleBits"].is_null()) {
         stylebits = json["StyleBits"];
     }
 }

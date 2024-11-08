@@ -19,10 +19,10 @@
 #include "MsiHelper.h"
 
 UIText::UIText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Key")) {
+    if (json.contains("Key") && !json["Key"].is_null()) {
         key = json["Key"];
     }
-    if (json.contains("Text")) {
+    if (json.contains("Text") && !json["Text"].is_null()) {
         text = installerStrings.get(json["Text"]);
     }
 }

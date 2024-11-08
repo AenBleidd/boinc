@@ -19,10 +19,10 @@
 #include "MsiHelper.h"
 
 Checkbox::Checkbox(const nlohmann::json& json) {
-    if (json.contains("Property")) {
+    if (json.contains("Property") && !json["Property"].is_null()) {
         property = json["Property"];
     }
-    if (json.contains("Value")) {
+    if (json.contains("Value") && !json["Value"].is_null()) {
         value = json["Value"];
     }
 }

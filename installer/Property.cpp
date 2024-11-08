@@ -19,10 +19,10 @@
 #include "MsiHelper.h"
 
 Property::Property(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Property")) {
+    if (json.contains("Property") && !json["Property"].is_null()) {
         property = json["Property"];
     }
-    if (json.contains("Value")) {
+    if (json.contains("Value") && !json["Value"].is_null()) {
         value = installerStrings.get(json["Value"]);
     }
 }
