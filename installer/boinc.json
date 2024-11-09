@@ -6772,11 +6772,6 @@
                                     "Attributes": 256,
                                     "Files": [
                                         {
-                                            "File": "ca_bundle.crt",
-                                            "FileName": "CA-BUN~1.CRT|ca-bundle.crt",
-                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\ca-bundle.crt"
-                                        },
-                                        {
                                             "File": "copying",
                                             "FileName": "COPYING",
                                             "FilePath": "..\\COPYING"

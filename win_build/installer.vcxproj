@@ -16,8 +16,8 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">libcmtd.lib;libcpmtd.lib;msi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)'=='Release'">libcmt.lib;libcpmt.lib;msi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">libcmtd.lib;libcpmtd.lib;msi.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Release'">libcmt.lib;libcpmt.lib;msi.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -30,6 +30,7 @@
     <ClCompile Include="..\installer\AdvtExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\Binary.cpp" />
     <ClCompile Include="..\installer\BinaryTable.cpp" />
+    <ClCompile Include="..\installer\CabHelper.cpp" />
     <ClCompile Include="..\installer\Checkbox.cpp" />
     <ClCompile Include="..\installer\CheckboxTable.cpp" />
     <ClCompile Include="..\installer\Component.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="..\installer\AdvtExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\Binary.h" />
     <ClInclude Include="..\installer\BinaryTable.h" />
+    <ClInclude Include="..\installer\CabHelper.h" />
     <ClInclude Include="..\installer\Checkbox.h" />
     <ClInclude Include="..\installer\CheckboxTable.h" />
     <ClInclude Include="..\installer\Component.h" />

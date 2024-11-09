@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "FileTable.h"
+#include "CabHelper.h"
 
 FileTable::FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path) : root_path(root_path) {
     for (const auto& directory : directories) {
@@ -28,6 +29,10 @@ FileTable::FileTable(const std::vector<Directory>& directories, const std::files
 }
 
 bool FileTable::generate(MSIHANDLE hDatabase) {
+    if (!CabHelper::create(root_path, files)) {
+        return false;
+    }
+
     std::cout << "Generating FileTable..." << std::endl;
 
     const auto sql_create = "CREATE TABLE `File` (`File` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, `FileName` CHAR(255) NOT NULL LOCALIZABLE, `FileSize` LONG NOT NULL, `Version` CHAR(72), `Language` CHAR(20), `Attributes` SHORT, `Sequence` SHORT NOT NULL PRIMARY KEY `File`)";
