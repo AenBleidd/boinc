@@ -97,7 +97,7 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
             tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);
         }
         if (json.contains("Directory") && !json["Directory"].is_null()) {
-            tables["Directory"] = std::make_shared<DirectoryTable>(json["Directory"]);
+            tables["Directory"] = std::make_shared<DirectoryTable>(json["Directory"], path);
         }
         if (json.contains("Error") && !json["Error"].is_null()) {
             tables["Error"] = std::make_shared<ErrorTable>(json["Error"], installer_strings);

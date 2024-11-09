@@ -53,6 +53,8 @@
     <ClCompile Include="..\installer\FeatureComponents.cpp" />
     <ClCompile Include="..\installer\FeatureComponentsTable.cpp" />
     <ClCompile Include="..\installer\FeatureTable.cpp" />
+    <ClCompile Include="..\installer\File.cpp" />
+    <ClCompile Include="..\installer\FileTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
     <ClCompile Include="..\installer\Installer.cpp" />
     <ClCompile Include="..\installer\InstallerStrings.cpp" />
@@ -105,6 +107,8 @@
     <ClInclude Include="..\installer\FeatureComponents.h" />
     <ClInclude Include="..\installer\FeatureComponentsTable.h" />
     <ClInclude Include="..\installer\FeatureTable.h" />
+    <ClInclude Include="..\installer\File.h" />
+    <ClInclude Include="..\installer\FileTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
     <ClInclude Include="..\installer\GeneratorTable.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />

@@ -19,8 +19,9 @@
 #include "ComponentTable.h"
 #include "FeatureComponentsTable.h"
 #include "CreateFolderTable.h"
+#include "FileTable.h"
 
-DirectoryTable::DirectoryTable(const nlohmann::json& json) {
+DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path) : root_path (root_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
     for (const auto& directory : json) {
         directories.emplace_back(directory, "");
@@ -31,6 +32,7 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
     ComponentTable(directories).generate(hDatabase);
     FeatureComponentsTable(directories).generate(hDatabase);
     CreateFolderTable(directories).generate(hDatabase);
+    FileTable(directories, root_path).generate(hDatabase);
 
     std::vector<Directory> all;
     for (const auto& directory : directories) {

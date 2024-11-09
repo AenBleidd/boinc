@@ -22,6 +22,7 @@
 #include "Record.h"
 #include "FeatureComponents.h"
 #include "CreateFolder.h"
+#include "File.h"
 
 class Component : public Record {
 public:
@@ -30,6 +31,7 @@ public:
     MSIHANDLE getRecord() const override;
     FeatureComponents getFeatureComponent() const;
     std::tuple<bool, CreateFolder> getCreateFolder() const;
+    std::vector<File> getFiles() const;
 private:
     std::string component{};
     std::string componentId{};
@@ -39,4 +41,5 @@ private:
     std::string keyPath{};
     std::string feature{};
     bool create_folder = false;
+    std::vector<File> files{};
 };

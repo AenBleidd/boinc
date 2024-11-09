@@ -38,8 +38,15 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     if (component.empty()) {
         component = parent + "_" + directory;
     }
+    if (json.contains("Files") && !json["Files"].is_null()) {
+        for (const auto& file : json["Files"]) {
+            files.emplace_back(file, component);
+        }
+    }
     componentId = GuidHelper::generate_guid();
-    // add keypath
+    if (!files.empty()) {
+        keyPath = files.front().getFileId();
+    }
 }
 
 MSIHANDLE Component::getRecord() const {
@@ -55,4 +62,8 @@ std::tuple<bool, CreateFolder> Component::getCreateFolder() const {
         return { true, { directory, component } };
     }
     return { false, {} };
+}
+
+std::vector<File> Component::getFiles() const {
+    return files;
 }

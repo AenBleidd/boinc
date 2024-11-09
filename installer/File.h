@@ -17,15 +17,30 @@
 
 #pragma once
 
-#include "Generator.h"
-#include "Directory.h"
+#include <nlohmann/json.hpp>
 
-class DirectoryTable : public Generator<Directory> {
+#include "Record.h"
+
+class File : public Record {
 public:
-    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path);
-    ~DirectoryTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
+    explicit File(const nlohmann::json& json, const std::string& component);
+    ~File() = default;
+    MSIHANDLE getRecord() const override;
+    std::filesystem::path getFilePath() const;
+    std::string getFileId() const;
+    void setFilesize(int size);
+    void setVersion(const std::string& v);
+    void setLanguage(const std::string& l);
+    void setAttributes(int a);
+    void setSequence(int s);
 private:
-    std::vector<Directory> directories{};
-    std::filesystem::path root_path{};
+    std::string file{};
+    std::string component{};
+    std::string filename{};
+    int filesize = MSI_NULL_INTEGER;
+    std::string version{};
+    std::string language{};
+    int attributes = MSI_NULL_INTEGER;
+    int sequence = MSI_NULL_INTEGER;
+    std::filesystem::path filepath{};
 };

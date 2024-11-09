@@ -19,13 +19,14 @@
 
 #include "Generator.h"
 #include "Directory.h"
+#include "File.h"
 
-class DirectoryTable : public Generator<Directory> {
+class FileTable : public Generator<File> {
 public:
-    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path);
-    ~DirectoryTable() = default;
+    explicit FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path);
+    ~FileTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<Directory> directories{};
+    std::vector<File> files{};
     std::filesystem::path root_path{};
 };
