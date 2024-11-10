@@ -27,6 +27,10 @@ public:
     ~FileTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
+    int GetFileLanguage(const std::string& filePath);
+    std::string GetFileVersion(const std::string& filePath);
+    size_t GetFileSize(const std::string& filePath);
+    std::filesystem::path GetAbsolutePath(const std::filesystem::path& filePath);
     std::vector<File> files{};
     std::filesystem::path root_path{};
 };

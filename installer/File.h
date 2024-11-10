@@ -26,13 +26,14 @@ public:
     explicit File(const nlohmann::json& json, const std::string& component);
     ~File() = default;
     MSIHANDLE getRecord() const override;
-    std::filesystem::path getFilePath() const;
+    std::filesystem::path getFilepath() const;
     std::string getFileId() const;
     void setFilesize(int size);
     void setVersion(const std::string& v);
     void setLanguage(const std::string& l);
     void setAttributes(int a);
     void setSequence(int s);
+    void setFilepath(const std::filesystem::path& p);
 private:
     std::string file{};
     std::string component{};

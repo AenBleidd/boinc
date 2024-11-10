@@ -15,13 +15,130 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <sstream>
+
 #include "FileTable.h"
 #include "CabHelper.h"
 
+int FileTable::GetFileLanguage(const std::string& filePath) {
+    DWORD handle;
+    const auto size = GetFileVersionInfoSize(filePath.c_str(), &handle);
+    if (size == 0) {
+        return 0;
+    }
+
+    std::vector<BYTE> buffer(size);
+    if (!GetFileVersionInfo(filePath.c_str(), handle, size, buffer.data())) {
+        return 0;
+    }
+
+    struct LANGANDCODEPAGE {
+        WORD wLanguage;
+        WORD wCodePage;
+    } *lpTranslate;
+
+    UINT cbTranslate;
+    if (!VerQueryValue(buffer.data(), TEXT("\\VarFileInfo\\Translation"), reinterpret_cast<LPVOID*>(&lpTranslate), &cbTranslate)) {
+        return 0;
+    }
+
+    if (cbTranslate < sizeof(LANGANDCODEPAGE)) {
+        return 0;
+    }
+
+    return lpTranslate->wLanguage;
+}
+
+std::string FileTable::GetFileVersion(const std::string& filePath) {
+    DWORD handle;
+    const auto size = GetFileVersionInfoSize(filePath.c_str(), &handle);
+    if (size == 0) {
+        return {};
+    }
+
+    std::vector<BYTE> buffer(size);
+    if (!GetFileVersionInfo(filePath.c_str(), handle, size, buffer.data())) {
+        return {};
+    }
+
+    VS_FIXEDFILEINFO* fileInfo = nullptr;
+    UINT fileInfoSize = 0;
+    if (!VerQueryValue(buffer.data(), TEXT("\\"), reinterpret_cast<LPVOID*>(&fileInfo), &fileInfoSize) || fileInfoSize == 0) {
+        return {};
+    }
+
+    DWORD majorVersion = HIWORD(fileInfo->dwFileVersionMS);
+    DWORD minorVersion = LOWORD(fileInfo->dwFileVersionMS);
+    DWORD buildNumber = HIWORD(fileInfo->dwFileVersionLS);
+    DWORD revisionNumber = LOWORD(fileInfo->dwFileVersionLS);
+
+    std::stringstream ss;
+    ss << majorVersion << "." << minorVersion << "." << buildNumber << "." << revisionNumber;
+    return ss.str();
+}
+
+size_t FileTable::GetFileSize(const std::string& filePath) {
+    const auto hFile = CreateFile(filePath.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        return 0;
+    }
+
+    LARGE_INTEGER fileSize;
+    if (!GetFileSizeEx(hFile, &fileSize)) {
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    CloseHandle(hFile);
+    return fileSize.QuadPart;
+}
+
+std::filesystem::path FileTable::GetAbsolutePath(const std::filesystem::path& filePath) {
+    const std::string configuration_template = "%%CONFIGURATION%%";
+    const std::string configuration =
+#ifdef _DEBUG
+        "Debug";
+#else
+        "Release";
+#endif
+    const std::string platform_template = "%%PLATFORM%%";
+    const std::string platform =
+#ifdef _ARM64_
+        "ARM64";
+#else
+        "x64";
+#endif
+
+    auto p = filePath.string();
+    auto index = p.find(configuration_template);
+    if (index != std::string::npos) {
+        p.replace(index, configuration_template.size(), configuration);
+    }
+    index = p.find(platform_template);
+    if (index != std::string::npos) {
+        p.replace(index, platform_template.size(), platform);
+    }
+    return root_path / p;
+}
+
 FileTable::FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path) : root_path(root_path) {
+    int sequence = 0;
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
-            for (const auto& file : component.getFiles()) {
+            for (auto file : component.getFiles()) {
+                file.setFilepath(GetAbsolutePath(file.getFilepath()));
+                file.setAttributes(16384);
+                file.setSequence(++sequence);
+                const auto language = GetFileLanguage(file.getFilepath().string());
+                if (language > 0) {
+                    file.setLanguage(std::to_string(language));
+                }
+                const auto version = GetFileVersion(file.getFilepath().string());
+                if (!version.empty()) {
+                    file.setVersion(version);
+                }
+                file.setFilesize(static_cast<int>(GetFileSize(file.getFilepath().string())));
                 files.push_back(file);
             }
         }

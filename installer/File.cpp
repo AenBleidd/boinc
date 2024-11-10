@@ -63,7 +63,7 @@ MSIHANDLE File::getRecord() const {
     return MsiHelper::MsiRecordSet({ file, component, filename, filesize, version, language, attributes, sequence });
 }
 
-std::filesystem::path File::getFilePath() const {
+std::filesystem::path File::getFilepath() const {
     return filepath;
 }
 
@@ -89,4 +89,8 @@ void File::setAttributes(int a) {
 
 void File::setSequence(int s) {
     sequence = s;
+}
+
+void File::setFilepath(const std::filesystem::path& p) {
+    filepath = p;
 }
