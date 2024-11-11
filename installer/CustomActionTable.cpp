@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CustomActionTable.h"
+#include "ValidationTable.h"
 
 CustomActionTable::CustomActionTable(const nlohmann::json& json) {
     std::cout << "Loading CustomActionTable..." << std::endl;
@@ -26,8 +27,20 @@ CustomActionTable::CustomActionTable(const nlohmann::json& json) {
 
 bool CustomActionTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating CustomActionTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `CustomAction` (`Action` CHAR(72) NOT NULL, `Type` SHORT NOT NULL, `Source` CHAR(64), `Target` CHAR(255), `ExtendedType` LONG PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `CustomAction` (`Action`, `Type`, `Source`, `Target`, `ExtendedType`) VALUES (?, ?, ?, ?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("CustomAction", "Action", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key, name of action, normally appears in sequence table unless private use.");
+    records.emplace_back("CustomAction", "Type", "N", 1, 32767, "", "", "", "", "The numeric custom action type, consisting of source location, code type, entry, option flags.");
+    records.emplace_back("CustomAction", "Source", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "CustomSource", "", "The table reference of the source of the code.");
+    records.emplace_back("CustomAction", "Target", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Excecution parameter, depends on the type of custom action");
+    records.emplace_back("CustomAction", "ExtendedType", "Y", 0, 2147483647, "", "", "", "", "The numeric custom action type info flags.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, customActions);
 }

@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BinaryTable.h"
+#include "ValidationTable.h"
 
 BinaryTable::BinaryTable(const nlohmann::json& json, const std::filesystem::path& path) {
     std::cout << "Loading BinaryTable..." << std::endl;
@@ -30,6 +31,14 @@ bool BinaryTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `Binary` (`Name` CHAR(72) NOT NULL, `Data` OBJECT PRIMARY KEY `Name`)";
     const auto sql_insert = "INSERT INTO `Binary` (`Name`, `Data`) VALUES (?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("Binary", "Name", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Unique key identifying the binary data.");
+    records.emplace_back("Binary", "Data", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Binary", "", "The unformatted binary data.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, binaries);
 }

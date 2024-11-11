@@ -15,16 +15,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Validation.h"
+#include "MsiHelper.h"
 
-#include "Generator.h"
-#include "Media.h"
+Validation::Validation(const std::string& table, const std::string& column, const std::string& nullable, int minValue, int maxValue, const std::string& keyTable, 
+    const std::string& keyColumn, const std::string& category, const std::string& set, const std::string& description) : 
+    table(table), column(column), nullable(nullable), minValue(minValue), maxValue(maxValue), keyTable(keyTable), 
+    keyColumn(keyColumn), category(category), set(set), description(description) {
+}
 
-class MediaTable : public Generator<Media> {
-public:
-    explicit MediaTable(const std::vector<Media>& media);
-    ~MediaTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
-private:
-    std::vector<Media> media{};
-};
+MSIHANDLE Validation::getRecord() const {
+    return MsiHelper::MsiRecordSet({ table, column, nullable, minValue, maxValue, keyTable, keyColumn, category, set, description });
+}

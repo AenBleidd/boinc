@@ -79,6 +79,8 @@
     <ClCompile Include="..\installer\UITextTable.cpp" />
     <ClCompile Include="..\installer\EventMapping.cpp" />
     <ClCompile Include="..\installer\EventMappingTable.cpp" />
+    <ClCompile Include="..\installer\Validation.cpp" />
+    <ClCompile Include="..\installer\ValidationTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\installer\Action.h" />
@@ -140,6 +142,8 @@
     <ClInclude Include="..\installer\UITextTable.h" />
     <ClInclude Include="..\installer\EventMapping.h" />
     <ClInclude Include="..\installer\EventMappingTable.h" />
+    <ClInclude Include="..\installer\Validation.h" />
+    <ClInclude Include="..\installer\ValidationTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

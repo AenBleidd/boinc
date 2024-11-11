@@ -17,6 +17,7 @@
 
 #include "PropertyTable.h"
 #include "GuidHelper.h"
+#include "ValidationTable.h"
 
 PropertyTable::PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading PropertyTable..." << std::endl;
@@ -32,6 +33,14 @@ bool PropertyTable::generate(MSIHANDLE hDatabase) {
     
     const auto sql_create = "CREATE TABLE `Property` (`Property` CHAR(72) NOT NULL, `Value` LONGCHAR NOT NULL LOCALIZABLE  PRIMARY KEY `Property`)";
     const auto sql_insert = "INSERT INTO `Property` (`Property`, `Value`) VALUES (?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("Property", "Property", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Name of property, uppercase if settable by launcher or loader.");
+    records.emplace_back("Property", "Value", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "String value for property. Never null or empty.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, properties);
 }

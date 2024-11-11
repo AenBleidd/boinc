@@ -37,6 +37,7 @@
 #include "RadioButtonTable.h"
 #include "TextStyleTable.h"
 #include "UITextTable.h"
+#include "ValidationTable.h"
 
 #include "Installer.h"
 
@@ -135,9 +136,21 @@ bool Installer::create_msi(const std::filesystem::path& msi) {
     MSIHANDLE hDatabase;
 
     try {
+        if (std::filesystem::exists(msi)) {
+            if (!std::filesystem::remove(msi)) {
+                std::cerr << "Failed to remove existing file " << msi << std::endl;
+                return false;
+            }
+        }
         auto result = MsiOpenDatabase(msi.string().c_str(), MSIDBOPEN_CREATE, &hDatabase);
         if (result != ERROR_SUCCESS) {
             std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
+            return false;
+        }
+
+        // _Validation table should always be first
+        if (!ValidationTable().generate(hDatabase)) {
+            std::cerr << "Failed to write _Validation table" << std::endl;
             return false;
         }
 

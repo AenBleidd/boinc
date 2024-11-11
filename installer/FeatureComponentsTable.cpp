@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "FeatureComponentsTable.h"
+#include "ValidationTable.h"
 
 FeatureComponentsTable::FeatureComponentsTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
@@ -30,6 +31,14 @@ bool FeatureComponentsTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `FeatureComponents` (`Feature_` CHAR(38) NOT NULL, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Feature_`, `Component_`)";
     const auto sql_insert = "INSERT INTO `FeatureComponents` (`Feature_`, `Component_`) VALUES (?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("FeatureComponents", "Feature_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Feature", "1", "Identifier", "", "Foreign key into Feature table.");
+    records.emplace_back("FeatureComponents", "Component_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Component", "1", "Identifier", "", "Foreign key into Component table.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, featureComponents);
 }

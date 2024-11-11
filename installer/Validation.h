@@ -17,14 +17,22 @@
 
 #pragma once
 
-#include "Generator.h"
-#include "Media.h"
+#include "Record.h"
 
-class MediaTable : public Generator<Media> {
+class Validation : public Record {
 public:
-    explicit MediaTable(const std::vector<Media>& media);
-    ~MediaTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
+    explicit Validation(const std::string& table, const std::string& column, const std::string& nullable, int minValue, int maxValue, const std::string& keyTable, const std::string& keyColumn, const std::string& category, const std::string& set, const std::string& description);
+    ~Validation() = default;
+    MSIHANDLE getRecord() const override;
 private:
-    std::vector<Media> media{};
+    std::string table{};
+    std::string column{};
+    std::string nullable{};
+    int minValue = MSI_NULL_INTEGER;
+    int maxValue = MSI_NULL_INTEGER;
+    std::string keyTable{};
+    std::string keyColumn{};
+    std::string category{};
+    std::string set{};
+    std::string description{};
 };

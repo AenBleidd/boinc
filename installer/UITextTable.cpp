@@ -16,6 +16,7 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "UITextTable.h"
+#include "ValidationTable.h"
 
 UITextTable::UITextTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading UITextTable.." << std::endl;
@@ -29,6 +30,14 @@ bool UITextTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `UIText` (`Key` CHAR(72) NOT NULL, `Text` CHAR(255) LOCALIZABLE PRIMARY KEY `Key`)";
     const auto sql_insert = "INSERT INTO `UIText` (`Key`, `Text`) VALUES (?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("UIText", "Key", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "A unique key that identifies the particular string.");
+    records.emplace_back("UIText", "Text", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "The localized version of the string.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, uiTexts);
 }

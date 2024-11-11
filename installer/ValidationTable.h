@@ -18,13 +18,12 @@
 #pragma once
 
 #include "Generator.h"
-#include "Media.h"
+#include "Validation.h"
 
-class MediaTable : public Generator<Media> {
+class ValidationTable : public Generator<Validation> {
 public:
-    explicit MediaTable(const std::vector<Media>& media);
-    ~MediaTable() = default;
+    explicit ValidationTable() = default;
+    ~ValidationTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
-private:
-    std::vector<Media> media{};
+    bool insert(MSIHANDLE hDatabase, const std::vector<Validation>& records);
 };

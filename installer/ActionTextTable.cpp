@@ -18,6 +18,7 @@
 #include <iostream>
 
 #include "ActionTextTable.h"
+#include "ValidationTable.h"
 
 ActionTextTable::ActionTextTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading ActionTextTable..." << std::endl;
@@ -28,7 +29,18 @@ ActionTextTable::ActionTextTable(const nlohmann::json& json, const InstallerStri
 
 bool ActionTextTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ActionTextTable..." << std::endl;
+
     const auto sql_create = "CREATE TABLE `ActionText` (`Action` CHAR(72) NOT NULL, `Description` LONGCHAR LOCALIZABLE, `Template` LONGCHAR LOCALIZABLE PRIMARY KEY `Action`)";
     const auto sql_insert = "INSERT INTO `ActionText` (`Action`, `Description`, `Template`) VALUES (?, ?, ?)";
+
+    std::vector<Validation> records;
+    records.emplace_back("ActionText", "Action", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Name of action to be described.");
+    records.emplace_back("ActionText", "Description", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "Localized description displayed in progress dialog and log when action is executing.");
+    records.emplace_back("ActionText", "Template", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Template", "", "Optional localized format template used to format action data records for display during action execution.");
+
+    if (!ValidationTable().insert(hDatabase, records)) {
+        return false;
+    }
+
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }
