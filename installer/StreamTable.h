@@ -17,14 +17,14 @@
 
 #pragma once
 
-#include <filesystem>
-#include <vector>
+#include "Stream.h"
+#include "Generator.h"
 
-#include "File.h"
-
-class CabHelper {
+class StreamTable : public Generator<Stream> {
 public:
-    CabHelper() noexcept = delete;
-    ~CabHelper() = delete;
-    static bool create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files);
+    explicit StreamTable(const std::vector<Stream>& records);
+    ~StreamTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
+private:
+    std::vector<Stream> records{};
 };

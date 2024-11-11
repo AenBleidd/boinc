@@ -171,12 +171,12 @@ int chGetTemp(char* pszTempName, int cbTempName, void*) {
     return 1;
 }
 
-bool CabHelper::create(const std::filesystem::path& root_path, std::vector<File>& files) {
+bool CabHelper::create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files) {
     std::cout << "Creating CAB file..." << std::endl;
 
     CCAB ccab;
     memset(&ccab, 0, sizeof(ccab));
-    const auto cab_name = std::string("\\boinc.cab");
+    const auto cab_name = "\\" + cabname;
     strncpy_s(ccab.szCabPath, CB_MAX_CAB_PATH, root_path.string().c_str(), root_path.string().size());
     strncpy_s(ccab.szCab, CB_MAX_CABINET_NAME, cab_name.c_str(), cab_name.size());
 

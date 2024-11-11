@@ -15,16 +15,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "StreamTable.h"
 
-#include <filesystem>
-#include <vector>
+StreamTable::StreamTable(const std::vector<Stream>& records) : records(records) {
+}
 
-#include "File.h"
+bool StreamTable::generate(MSIHANDLE hDatabase) {
+    std::cout << "Generating StreamTable..." << std::endl;
 
-class CabHelper {
-public:
-    CabHelper() noexcept = delete;
-    ~CabHelper() = delete;
-    static bool create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files);
-};
+    const auto sql_insert = "INSERT INTO `_Streams` (`Name`, `Data`) VALUES (?, ?)";
+
+    return Generator::generate(hDatabase, "", sql_insert, records);
+}

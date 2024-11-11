@@ -28,7 +28,10 @@ DialogTable::DialogTable(const nlohmann::json& json, const InstallerStrings& ins
 }
 
 bool DialogTable::generate(MSIHANDLE hDatabase) {
-    ControlTable(dialogs).generate(hDatabase);
+    if (!ControlTable(dialogs).generate(hDatabase)) {
+        std::cerr << "Failed to generate ControlTable" << std::endl;
+        return false;
+    }
 
     std::cout << "Generating DialogsTable..." << std::endl;
 

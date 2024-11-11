@@ -67,6 +67,8 @@
     <ClCompile Include="..\installer\PropertyTable.cpp" />
     <ClCompile Include="..\installer\RadioButton.cpp" />
     <ClCompile Include="..\installer\RadioButtonTable.cpp" />
+    <ClCompile Include="..\installer\Stream.cpp" />
+    <ClCompile Include="..\installer\StreamTable.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
     <ClCompile Include="..\installer\ControlEvent.cpp" />
     <ClCompile Include="..\installer\TextStyle.cpp" />
@@ -124,6 +126,8 @@
     <ClInclude Include="..\installer\RadioButton.h" />
     <ClInclude Include="..\installer\RadioButtonTable.h" />
     <ClInclude Include="..\installer\Record.h" />
+    <ClInclude Include="..\installer\Stream.h" />
+    <ClInclude Include="..\installer\StreamTable.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />
     <ClInclude Include="..\installer\ControlEvent.h" />
     <ClInclude Include="..\installer\TextStyle.h" />

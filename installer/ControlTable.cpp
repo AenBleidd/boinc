@@ -34,10 +34,19 @@ bool ControlTable::generate(MSIHANDLE hDatabase)
         }
     }
 
-    ControlConditionTable(controls).generate(hDatabase);
-    ControlEventTable(controls).generate(hDatabase);
-    EventMappingTable(controls).generate(hDatabase);
-    
+    if (!ControlConditionTable(controls).generate(hDatabase)) {
+        std::cerr << "Failed to generate ControlConditionTable" << std::endl;
+        return false;
+    }
+    if (!ControlEventTable(controls).generate(hDatabase)) {
+        std::cerr << "Failed to generate ControlEventTable" << std::endl;
+        return false;
+    }
+    if (!EventMappingTable(controls).generate(hDatabase)) {
+        std::cerr << "Failed to generate EventMappingTable" << std::endl;
+        return false;
+    }
+
     std::cout << "Generating ControlTable..." << std::endl;
 
     const auto create_sql = "CREATE TABLE `Control` (`Dialog_` CHAR(72) NOT NULL, `Control` CHAR(50) NOT NULL, `Type` CHAR(20) NOT NULL, `X` SHORT NOT NULL, "

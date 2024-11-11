@@ -31,43 +31,47 @@ public:
 
     bool generate(MSIHANDLE hDatabase, const std::string& sql_create, const std::string& sql_insert, const std::vector<V>& records) {
         MSIHANDLE hView;
-        auto result = MsiDatabaseOpenView(hDatabase, sql_create.c_str(), &hView);
-        if (result != ERROR_SUCCESS) {
-            std::cerr << "Error creating view: " << result << std::endl;
-            return false;
-        }
-        result = MsiViewExecute(hView, 0);
-        if (result != ERROR_SUCCESS) {
-            std::cerr << "Error executing view: " << result << std::endl;
-            return false;
-        }
-        result = MsiViewClose(hView);
-        if (result != ERROR_SUCCESS) {
-            std::cerr << "Error closing view: " << result << std::endl;
-            return false;
-        }
-        result = MsiDatabaseOpenView(hDatabase, sql_insert.c_str(), &hView);
-        if (result != ERROR_SUCCESS) {
-            std::cerr << "Error creating view: " << result << std::endl;
-            return false;
-        }
-        for (const auto& record : records) {
-            const auto hRecord = record.getRecord();
-            result = MsiViewExecute(hView, hRecord);
+        if (!sql_create.empty()) {
+            auto result = MsiDatabaseOpenView(hDatabase, sql_create.c_str(), &hView);
             if (result != ERROR_SUCCESS) {
-                std::cerr << "Error inserting record: " << result << std::endl;
+                std::cerr << "Error creating view: " << result << std::endl;
                 return false;
             }
-            result = MsiCloseHandle(hRecord);
+            result = MsiViewExecute(hView, 0);
             if (result != ERROR_SUCCESS) {
-                std::cerr << "Error closing record: " << result << std::endl;
+                std::cerr << "Error executing view: " << result << std::endl;
+                return false;
+            }
+            result = MsiViewClose(hView);
+            if (result != ERROR_SUCCESS) {
+                std::cerr << "Error closing view: " << result << std::endl;
                 return false;
             }
         }
-        result = MsiViewClose(hView);
-        if (result != ERROR_SUCCESS) {
-            std::cerr << "Error closing view: " << result << std::endl;
-            return false;
+        if (!sql_insert.empty() && !records.empty()) {
+            auto result = MsiDatabaseOpenView(hDatabase, sql_insert.c_str(), &hView);
+            if (result != ERROR_SUCCESS) {
+                std::cerr << "Error creating view: " << result << std::endl;
+                return false;
+            }
+            for (const auto& record : records) {
+                const auto hRecord = record.getRecord();
+                result = MsiViewExecute(hView, hRecord);
+                if (result != ERROR_SUCCESS) {
+                    std::cerr << "Error inserting record: " << result << std::endl;
+                    return false;
+                }
+                result = MsiCloseHandle(hRecord);
+                if (result != ERROR_SUCCESS) {
+                    std::cerr << "Error closing record: " << result << std::endl;
+                    return false;
+                }
+            }
+            result = MsiViewClose(hView);
+            if (result != ERROR_SUCCESS) {
+                std::cerr << "Error closing view: " << result << std::endl;
+                return false;
+            }
         }
         return true;
     }

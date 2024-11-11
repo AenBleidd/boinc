@@ -29,10 +29,22 @@ DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem
 }
 
 bool DirectoryTable::generate(MSIHANDLE hDatabase) {
-    ComponentTable(directories).generate(hDatabase);
-    FeatureComponentsTable(directories).generate(hDatabase);
-    CreateFolderTable(directories).generate(hDatabase);
-    FileTable(directories, root_path).generate(hDatabase);
+    if (!ComponentTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate ComponentTable" << std::endl;
+        return false;
+    }
+    if (!FeatureComponentsTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate FeatureComponentsTable" << std::endl;
+        return false;
+    }
+    if (!CreateFolderTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate CreateFolderTable" << std::endl;
+        return false;
+    }
+    if (!FileTable(directories, root_path).generate(hDatabase)) {
+        std::cerr << "Failed to generate FileTable" << std::endl;
+        return false;
+    }
 
     std::vector<Directory> all;
     for (const auto& directory : directories) {

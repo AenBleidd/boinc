@@ -19,6 +19,7 @@
 
 #include "FileTable.h"
 #include "CabHelper.h"
+#include "StreamTable.h"
 
 int FileTable::GetFileLanguage(const std::string& filePath) {
     DWORD handle;
@@ -146,9 +147,17 @@ FileTable::FileTable(const std::vector<Directory>& directories, const std::files
 }
 
 bool FileTable::generate(MSIHANDLE hDatabase) {
-    if (!CabHelper::create(root_path, files)) {
+    const auto cabname = std::string("boinc.cab");
+    if (!CabHelper::create(root_path, cabname, files)) {
         return false;
     }
+    
+    if (!StreamTable({ Stream("#" + cabname, root_path / cabname) }).generate(hDatabase)) {
+        std::cerr << "Failed to generate StreamTable" << std::endl;
+        return false;
+    }
+
+    std::filesystem::remove(root_path / cabname);
 
     std::cout << "Generating FileTable..." << std::endl;
 

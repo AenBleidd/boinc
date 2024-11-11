@@ -15,16 +15,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Stream.h"
+#include "MsiHelper.h"
 
-#include <filesystem>
-#include <vector>
+Stream::Stream(const std::string& name, const std::filesystem::path& data) : name(name), data(data) {
+}
 
-#include "File.h"
-
-class CabHelper {
-public:
-    CabHelper() noexcept = delete;
-    ~CabHelper() = delete;
-    static bool create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files);
-};
+MSIHANDLE Stream::getRecord() const {
+    return MsiHelper::MsiRecordSet({ name, data });
+}

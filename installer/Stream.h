@@ -17,14 +17,16 @@
 
 #pragma once
 
-#include <filesystem>
-#include <vector>
+#include <nlohmann/json.hpp>
 
-#include "File.h"
+#include "Record.h"
 
-class CabHelper {
+class Stream : public Record {
 public:
-    CabHelper() noexcept = delete;
-    ~CabHelper() = delete;
-    static bool create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files);
+    explicit Stream(const std::string& name, const std::filesystem::path& data);
+    ~Stream() = default;
+    MSIHANDLE getRecord() const override;
+private:
+    std::string name{};
+    std::filesystem::path data{};
 };
