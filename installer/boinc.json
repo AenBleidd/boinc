@@ -6835,7 +6835,8 @@
                                         {
                                             "File": "liberationsans_regular.ttf",
                                             "FileName": "LIBERA~1.TTF|LiberationSans-Regular.ttf",
-                                            "FilePath": "..\\api\\ttf\\liberation-fonts-ttf-2.00.0\\LiberationSans-Regular.ttf"
+                                            "FilePath": "..\\api\\ttf\\liberation-fonts-ttf-2.00.0\\LiberationSans-Regular.ttf",
+                                            "IsFont": true
                                         }
                                     ]
                                 },

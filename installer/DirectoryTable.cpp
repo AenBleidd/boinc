@@ -21,6 +21,7 @@
 #include "CreateFolderTable.h"
 #include "FileTable.h"
 #include "ValidationTable.h"
+#include "FontTable.h"
 
 DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path) : root_path (root_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
@@ -44,6 +45,10 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
     }
     if (!FileTable(directories, root_path).generate(hDatabase)) {
         std::cerr << "Failed to generate FileTable" << std::endl;
+        return false;
+    }
+    if (!FontTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate FontTable" << std::endl;
         return false;
     }
 

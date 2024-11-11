@@ -17,33 +17,14 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-
 #include "Record.h"
 
-class File : public Record {
+class Font : public Record {
 public:
-    explicit File(const nlohmann::json& json, const std::string& component);
-    ~File() = default;
+    explicit Font(const std::string& file, const std::string& title);
+    ~Font() = default;
     MSIHANDLE getRecord() const override;
-    std::filesystem::path getFilepath() const;
-    std::string getFileId() const;
-    bool isFontFile() const noexcept;
-    void setFilesize(int size) noexcept;
-    void setVersion(const std::string& v);
-    void setLanguage(const std::string& l);
-    void setAttributes(int a) noexcept;
-    void setSequence(int s) noexcept;
-    void setFilepath(const std::filesystem::path& p);
 private:
     std::string file{};
-    std::string component{};
-    std::string filename{};
-    int filesize = MSI_NULL_INTEGER;
-    std::string version{};
-    std::string language{};
-    int attributes = MSI_NULL_INTEGER;
-    int sequence = MSI_NULL_INTEGER;
-    std::filesystem::path filepath{};
-    bool isFont = false;
+    std::string title{};
 };

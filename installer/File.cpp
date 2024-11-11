@@ -19,21 +19,6 @@
 #include "MsiHelper.h"
 
 File::File(const nlohmann::json& json, const std::string& component) : component(component) {
-//    const std::string configuration_template = "%%CONFIGURATION%%";
-//    const std::string configuration =
-//#ifdef _DEBUG
-//        "Debug";
-//#else
-//        "Release";
-//#endif
-//    const std::string platform_template = "%%PLATFORM%%";
-//    const std::string platform =
-//#ifdef _ARM64_
-//        "ARM64";
-//#else
-//        "x64";
-//#endif
-
     if (json.contains("File") && !json["File"].is_null()) {
         file = json["File"];
     }
@@ -41,22 +26,11 @@ File::File(const nlohmann::json& json, const std::string& component) : component
         filename = json["FileName"];
     }
     if (json.contains("FilePath") && !json["FilePath"].is_null()) {
-        //auto p = std::string(json["FilePath"]);
-        //auto index = p.find(configuration_template);
-        //if (index != std::string::npos) {
-        //    p.replace(index, configuration_template.size(), configuration);
-        //}
-        //index = p.find(platform_template);
-        //if (index != std::string::npos) {
-        //    p.replace(index, platform_template.size(), platform);
-        //}
-        //filepath = root_path / p;
         filepath = std::string(json["FilePath"]);
     }
-
-    // temporary
-    filesize = 0;
-    sequence = 0;
+    if (json.contains("IsFont") && !json["IsFont"].is_null()) {
+        isFont = json["IsFont"];
+    }
 }
 
 MSIHANDLE File::getRecord() const {
@@ -71,7 +45,11 @@ std::string File::getFileId() const {
     return file;
 }
 
-void File::setFilesize(int size) {
+bool File::isFontFile() const noexcept {
+    return isFont;
+}
+
+void File::setFilesize(int size) noexcept {
     filesize = size;
 }
 
@@ -83,11 +61,11 @@ void File::setLanguage(const std::string& l) {
     language = l;
 }
 
-void File::setAttributes(int a) {
+void File::setAttributes(int a) noexcept {
     attributes = a;
 }
 
-void File::setSequence(int s) {
+void File::setSequence(int s) noexcept {
     sequence = s;
 }
 
