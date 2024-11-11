@@ -17,16 +17,18 @@
 
 #pragma once
 
-#include <filesystem>
-
 #include "Record.h"
 
-class Stream : public Record {
+class Media : public Record {
 public:
-    explicit Stream(const std::string& name, const std::filesystem::path& data);
-    ~Stream() = default;
+    explicit Media(int diskId, int lastSequence, const std::string& diskPromt, const std::string& cabinet, const std::string& volumeLabel, const std::string& source);
+    ~Media() = default;
     MSIHANDLE getRecord() const override;
 private:
-    std::string name{};
-    std::filesystem::path data{};
+    int diskId = MSI_NULL_INTEGER;
+    int lastSequence = MSI_NULL_INTEGER;
+    std::string diskPrompt{};
+    std::string cabinet{};
+    std::string volumeLabel{};
+    std::string source{};
 };

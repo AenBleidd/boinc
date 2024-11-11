@@ -20,6 +20,7 @@
 #include "FileTable.h"
 #include "CabHelper.h"
 #include "StreamTable.h"
+#include "MediaTable.h"
 
 int FileTable::GetFileLanguage(const std::string& filePath) {
     DWORD handle;
@@ -158,6 +159,11 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
     }
 
     std::filesystem::remove(root_path / cabname);
+
+    if (!MediaTable({ Media(1, static_cast<int>(files.size()), "1", "#" + cabname, "DISK1", "")}).generate(hDatabase)) {
+        std::cerr << "Failed to generate MediaTable" << std::endl;
+        return false;
+    }
 
     std::cout << "Generating FileTable..." << std::endl;
 

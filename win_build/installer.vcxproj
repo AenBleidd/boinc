@@ -62,6 +62,8 @@
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
     <ClCompile Include="..\installer\InstallUISequenceTable.cpp" />
     <ClCompile Include="..\installer\main.cpp" />
+    <ClCompile Include="..\installer\Media.cpp" />
+    <ClCompile Include="..\installer\MediaTable.cpp" />
     <ClCompile Include="..\installer\MsiHelper.cpp" />
     <ClCompile Include="..\installer\Property.cpp" />
     <ClCompile Include="..\installer\PropertyTable.cpp" />
@@ -120,6 +122,8 @@
     <ClInclude Include="..\installer\InstallerStrings.h" />
     <ClInclude Include="..\installer\InstallExecuteSequenceTable.h" />
     <ClInclude Include="..\installer\InstallUISequenceTable.h" />
+    <ClInclude Include="..\installer\Media.h" />
+    <ClInclude Include="..\installer\MediaTable.h" />
     <ClInclude Include="..\installer\MsiHelper.h" />
     <ClInclude Include="..\installer\Property.h" />
     <ClInclude Include="..\installer\PropertyTable.h" />

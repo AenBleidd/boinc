@@ -17,16 +17,14 @@
 
 #pragma once
 
-#include <filesystem>
+#include "Generator.h"
+#include "Media.h"
 
-#include "Record.h"
-
-class Stream : public Record {
+class MediaTable : public Generator<Media> {
 public:
-    explicit Stream(const std::string& name, const std::filesystem::path& data);
-    ~Stream() = default;
-    MSIHANDLE getRecord() const override;
+    explicit MediaTable(const std::vector<Media>& records);
+    ~MediaTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::string name{};
-    std::filesystem::path data{};
+    std::vector<Media> records{};
 };
