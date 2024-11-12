@@ -41,9 +41,6 @@
 
 #include "Installer.h"
 
-Installer::Installer() noexcept{
-}
-
 bool Installer::load(const std::filesystem::path& json) {
     if (!installer_strings.load(json.parent_path())) {
         return false;

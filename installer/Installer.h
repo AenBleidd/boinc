@@ -27,7 +27,7 @@
 
 class Installer {
 public:
-    explicit Installer() noexcept;
+    explicit Installer() noexcept = default;
     ~Installer() = default;
     bool load(const std::filesystem::path& json);
     bool create_msi(const std::filesystem::path& msi);

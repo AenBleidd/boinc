@@ -670,16 +670,6 @@
             "Target": "DeleteBOINCGroups"
         },
         {
-            "Action": "CADisableProtectedApplicationExecution",
-            "Type": 51,
-            "Source": "ENABLEPROTECTEDAPPLICATIONEXECUTION3"
-        },
-        {
-            "Action": "CADisableUseByAllUsers",
-            "Type": 51,
-            "Source": "ENABLEUSEBYALLUSERS"
-        },
-        {
             "Action": "CAGetAdministratorsGroupName",
             "Type": 1,
             "Source": "NewBinary6",
@@ -914,16 +904,6 @@
             "Target": "SFStartupEx"
         },
         {
-            "Action": "LaunchBOINCManagerXP",
-            "Type": 210,
-            "Source": "boincmgr.exe"
-        },
-        {
-            "Action": "LaunchBOINCTrayXP",
-            "Type": 210,
-            "Source": "boinctray.exe"
-        },
-        {
             "Action": "SetARPINSTALLLOCATION",
             "Type": 51,
             "Source": "ARPINSTALLLOCATION",
@@ -934,12 +914,6 @@
             "Type": 51,
             "Source": "ARPREADME",
             "Target": "[#readme.txt]"
-        },
-        {
-            "Action": "SetAllUsersProfileNT",
-            "Type": 51,
-            "Source": "ALLUSERSPROFILE",
-            "Target": "[%SystemRoot]\\Profiles\\All Users"
         },
         {
             "Action": "setAllUsersProfile2K",
@@ -2390,18 +2364,6 @@
                     "Text": "IDS_NEXT",
                     "Control_Next": "Cancel",
                     "Events": [
-                        {
-                            "Event": "DoAction",
-                            "Argument": "CADisableProtectedApplicationExecution",
-                            "Condition": "NOT VersionNT",
-                            "Ordering": 2
-                        },
-                        {
-                            "Event": "DoAction",
-                            "Argument": "CADisableUseByAllUsers",
-                            "Condition": "NOT VersionNT",
-                            "Ordering": 3
-                        },
                         {
                             "Event": "NewDialog",
                             "Argument": "LicenseAgreement",
@@ -4014,13 +3976,13 @@
                         {
                             "Event": "DoAction",
                             "Argument": "CALaunchBOINCManager",
-                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT >= 600",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\")",
                             "Ordering": 5
                         },
                         {
                             "Event": "DoAction",
                             "Argument": "CALaunchBOINCTray",
-                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT >= 600",
+                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\")",
                             "Ordering": 6
                         },
                         {
@@ -4028,18 +3990,6 @@
                             "Argument": "CASaveSetupState",
                             "Condition": "1",
                             "Ordering": 2
-                        },
-                        {
-                            "Event": "DoAction",
-                            "Argument": "LaunchBOINCManagerXP",
-                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT < 600",
-                            "Ordering": 3
-                        },
-                        {
-                            "Event": "DoAction",
-                            "Argument": "LaunchBOINCTrayXP",
-                            "Condition": "LAUNCHPROGRAM And (ACTION <> \"ADMIN\") And VersionNT < 600",
-                            "Ordering": 4
                         },
                         {
                             "Event": "EndDialog",
@@ -4591,13 +4541,7 @@
                     "Attributes": 3,
                     "Property": "ENABLEPROTECTEDAPPLICATIONEXECUTION3",
                     "Text": "NEW_STRING13",
-                    "Control_Next": "Next",
-                    "Conditions": [
-                        {
-                            "Action": "Disable",
-                            "Condition": "NOT VersionNT"
-                        }
-                    ]
+                    "Control_Next": "Next"
                 },
                 {
                     "Control": "CheckBox4",
@@ -4609,13 +4553,7 @@
                     "Attributes": 3,
                     "Property": "ENABLEUSEBYALLUSERS",
                     "Text": "NEW_STRING15",
-                    "Control_Next": "CheckBox2",
-                    "Conditions": [
-                        {
-                            "Action": "Disable",
-                            "Condition": "NOT VersionNT"
-                        }
-                    ]
+                    "Control_Next": "CheckBox2"
                 },
                 {
                     "Control": "DlgDesc",
@@ -4736,26 +4674,6 @@
                     "Text": "NEW_STRING10"
                 },
                 {
-                    "Control": "Text5",
-                    "Type": "Text",
-                    "X": 34,
-                    "Y": 158,
-                    "Width": 328,
-                    "Height": 44,
-                    "Attributes": 3,
-                    "Text": "IS_STRING_NOT_DEFINED",
-                    "Conditions": [
-                        {
-                            "Action": "Hide",
-                            "Condition": "VersionNT >= 600"
-                        },
-                        {
-                            "Action": "Show",
-                            "Condition": "Version9X OR VersionNT < 600"
-                        }
-                    ]
-                },
-                {
                     "Control": "Text6",
                     "Type": "Text",
                     "X": 34,
@@ -4764,17 +4682,7 @@
                     "Height": 44,
                     "Attributes": 3,
                     "Property": "NewProperty1",
-                    "Text": "NEW_STRING31",
-                    "Conditions": [
-                        {
-                            "Action": "Hide",
-                            "Condition": "Version9X OR VersionNT < 600"
-                        },
-                        {
-                            "Action": "Show",
-                            "Condition": "VersionNT >= 600"
-                        }
-                    ]
+                    "Text": "NEW_STRING31"
                 }
             ]
         },
@@ -6731,7 +6639,7 @@
                                     "Feature_": "BOINC",
                                     "Component": "BOINCServiceConfig",
                                     "Attributes": 256,
-                                    "Condition": "VersionNT AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+                                    "Condition": "ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
                                     "CreateFolder": true,
                                     "Files": [
                                         {
@@ -6857,7 +6765,6 @@
                                     "Feature_": "BOINC",
                                     "Component": "_BOINCTray",
                                     "Attributes": 256,
-                                    "Condition": "VersionNT",
                                     "Files": [
                                         {
                                             "File": "boinctray.exe",
@@ -6874,16 +6781,9 @@
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
-                                    "Component": "_ScreensaverEnable9x",
-                                    "Attributes": 256,
-                                    "Condition": "Version9X AND ENABLESCREENSAVER = 1",
-                                    "CreateFolder": true
-                                },
-                                {
-                                    "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnableNT",
                                     "Attributes": 256,
-                                    "Condition": "VersionNT AND ENABLESCREENSAVER = 1",
+                                    "Condition": "ENABLESCREENSAVER = 1",
                                     "CreateFolder": true
                                 }
                             ]
@@ -9441,7 +9341,7 @@
         },
         {
             "Action": "CAAnnounceUpgrade",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 1001
         },
         {
@@ -9456,17 +9356,17 @@
         },
         {
             "Action": "CACreateBOINCAccounts",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1546
         },
         {
             "Action": "CACreateBOINCGroups",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1552
         },
         {
             "Action": "CACreateClientAuthFile",
-            "Condition": "VersionNT And NOT Installed",
+            "Condition": "NOT Installed",
             "Sequence": 6604
         },
         {
@@ -9476,92 +9376,92 @@
         },
         {
             "Action": "CADeleteBOINCAccounts",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1551
         },
         {
             "Action": "CADeleteBOINCGroups",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1561
         },
         {
             "Action": "CAGetAdministratorsGroupName",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 1537
         },
         {
             "Action": "CAGetUsersGroupName",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 1543
         },
         {
             "Action": "CAGrantBOINCAdminsRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1553
         },
         {
             "Action": "CAGrantBOINCAdminsVirtualBoxRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1555
         },
         {
             "Action": "CAGrantBOINCMasterRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1547
         },
         {
             "Action": "CAGrantBOINCProjectRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1549
         },
         {
             "Action": "CAGrantBOINCProjectsRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1558
         },
         {
             "Action": "CAGrantBOINCProjectsVirtualBoxRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1560
         },
         {
             "Action": "CAGrantBOINCUsersRights",
-            "Condition": "VersionNT And REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE <> \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1556
         },
         {
             "Action": "CARestorePermissionBOINCData",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 6612
         },
         {
             "Action": "CARestoreSetupState",
-            "Condition": "VersionNT And REMOVE = \"ALL\"",
+            "Condition": "REMOVE = \"ALL\"",
             "Sequence": 1002
         },
         {
             "Action": "CARevokeBOINCAdminsRights",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1554
         },
         {
             "Action": "CARevokeBOINCMasterRights",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1548
         },
         {
             "Action": "CARevokeBOINCProjectRights",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1550
         },
         {
             "Action": "CARevokeBOINCProjectsRights",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1559
         },
         {
             "Action": "CARevokeBOINCUsersRights",
-            "Condition": "VersionNT And REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
+            "Condition": "REMOVE = \"ALL\" AND ENABLEPROTECTEDAPPLICATIONEXECUTION3 = 1",
             "Sequence": 1557
         },
         {
@@ -9582,37 +9482,34 @@
         },
         {
             "Action": "CASetPermissionBOINC",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 6607
         },
         {
             "Action": "CASetPermissionBOINCData",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 6609
         },
         {
             "Action": "CASetPermissionBOINCDataProjects",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 6610
         },
         {
             "Action": "CASetPermissionBOINCDataSlots",
-            "Condition": "VersionNT And REMOVE <> \"ALL\"",
+            "Condition": "REMOVE <> \"ALL\"",
             "Sequence": 6611
         },
         {
             "Action": "CAShutdownBOINC",
-            "Condition": "VersionNT",
             "Sequence": 403
         },
         {
             "Action": "CAShutdownBOINCManager",
-            "Condition": "VersionNT",
             "Sequence": 404
         },
         {
             "Action": "CAShutdownBOINCScreensaver",
-            "Condition": "VersionNT",
             "Sequence": 408
         },
         {
@@ -9652,7 +9549,6 @@
         },
         {
             "Action": "DeleteServices",
-            "Condition": "VersionNT",
             "Sequence": 2000
         },
         {
@@ -9704,7 +9600,6 @@
         },
         {
             "Action": "InstallServices",
-            "Condition": "VersionNT",
             "Sequence": 5800
         },
         {
@@ -9871,12 +9766,10 @@
         },
         {
             "Action": "StartServices",
-            "Condition": "VersionNT",
             "Sequence": 5900
         },
         {
             "Action": "StopServices",
-            "Condition": "VersionNT",
             "Sequence": 1900
         },
         {
@@ -10031,11 +9924,6 @@
             "Sequence": 1002
         },
         {
-            "Action": "SetAllUsersProfileNT",
-            "Condition": "VersionNT = 400",
-            "Sequence": 970
-        },
-        {
             "Action": "SetupCompleteError",
             "Sequence": -3
         },
@@ -10066,12 +9954,10 @@
         },
         {
             "Action": "setAllUsersProfile2K",
-            "Condition": "VersionNT >= 500",
             "Sequence": 980
         },
         {
             "Action": "setUserProfileNT",
-            "Condition": "VersionNT",
             "Sequence": 960
         }
     ],
