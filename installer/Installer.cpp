@@ -33,6 +33,7 @@
 #include "FeatureTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
+#include "LaunchConditionTable.h"
 #include "PropertyTable.h"
 #include "RadioButtonTable.h"
 #include "TextStyleTable.h"
@@ -108,6 +109,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (json.contains("InstallUISequence") && !json["InstallUISequence"].is_null()) {
             tables["InstallUISequence"] = std::make_shared<InstallUISequenceTable>(json["InstallUISequence"]);
+        }
+        if (json.contains("LaunchCondition") && !json["LaunchCondition"].is_null()) {
+            tables["LaunchCondition"] = std::make_shared<LaunchConditionTable>(json["LaunchCondition"], installer_strings);
         }
         if (json.contains("Property") && !json["Property"].is_null()) {
             tables["Property"] = std::make_shared<PropertyTable>(json["Property"], installer_strings);

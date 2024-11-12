@@ -21,6 +21,7 @@
 #include "CabHelper.h"
 #include "StreamTable.h"
 #include "MediaTable.h"
+#include "MsiFileHashTable.h"
 #include "ValidationTable.h"
 
 int FileTable::GetFileLanguage(const std::string& filePath) {
@@ -163,6 +164,10 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
 
     if (!MediaTable({ Media(1, static_cast<int>(files.size()), "1", "#" + cabname, "DISK1", "")}).generate(hDatabase)) {
         std::cerr << "Failed to generate MediaTable" << std::endl;
+        return false;
+    }
+    if (!MsiFileHashTable(files).generate(hDatabase)) {
+        std::cerr << "Failed to generate MsiFileHashTable" << std::endl;
         return false;
     }
 
