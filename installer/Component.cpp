@@ -43,6 +43,11 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
             files.emplace_back(file, component);
         }
     }
+    if (json.contains("Registry") && !json["Registry"].is_null()) {
+        for (const auto& registry : json["Registry"]) {
+            registries.emplace_back(registry, component);
+        }
+    }
     componentId = GuidHelper::generate_guid();
     if (!files.empty()) {
         keyPath = files.front().getFileId();
@@ -66,4 +71,8 @@ std::tuple<bool, CreateFolder> Component::getCreateFolder() const {
 
 std::vector<File> Component::getFiles() const {
     return files;
+}
+
+std::vector<Registry> Component::getRegistries() const {
+    return registries;
 }

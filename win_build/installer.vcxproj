@@ -75,6 +75,8 @@
     <ClCompile Include="..\installer\PropertyTable.cpp" />
     <ClCompile Include="..\installer\RadioButton.cpp" />
     <ClCompile Include="..\installer\RadioButtonTable.cpp" />
+    <ClCompile Include="..\installer\Registry.cpp" />
+    <ClCompile Include="..\installer\RegistryTable.cpp" />
     <ClCompile Include="..\installer\Stream.cpp" />
     <ClCompile Include="..\installer\StreamTable.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
@@ -122,7 +124,6 @@
     <ClInclude Include="..\installer\FeatureComponentsTable.h" />
     <ClInclude Include="..\installer\FeatureTable.h" />
     <ClInclude Include="..\installer\FileTable.h" />
-    <ClInclude Include="..\installer\Fint.h" />
     <ClInclude Include="..\installer\Font.h" />
     <ClInclude Include="..\installer\FontTable.h" />
     <ClInclude Include="..\installer\Generator.h" />
@@ -144,6 +145,8 @@
     <ClInclude Include="..\installer\RadioButton.h" />
     <ClInclude Include="..\installer\RadioButtonTable.h" />
     <ClInclude Include="..\installer\Record.h" />
+    <ClInclude Include="..\installer\Registry.h" />
+    <ClInclude Include="..\installer\RegistryTable.h" />
     <ClInclude Include="..\installer\Stream.h" />
     <ClInclude Include="..\installer\StreamTable.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />

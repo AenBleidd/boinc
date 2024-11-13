@@ -22,6 +22,7 @@
 #include "FileTable.h"
 #include "ValidationTable.h"
 #include "FontTable.h"
+#include "RegistryTable.h"
 
 DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path) : root_path (root_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
@@ -49,6 +50,10 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
     }
     if (!FontTable(directories).generate(hDatabase)) {
         std::cerr << "Failed to generate FontTable" << std::endl;
+        return false;
+    }
+    if (!RegistryTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate RegistryTable" << std::endl;
         return false;
     }
 

@@ -17,32 +17,15 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-
-#include "Record.h"
-#include "FeatureComponents.h"
-#include "CreateFolder.h"
-#include "File.h"
+#include "Generator.h"
 #include "Registry.h"
+#include "Directory.h"
 
-class Component : public Record {
+class RegistryTable : public Generator<Registry> {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
-    MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
-    std::tuple<bool, CreateFolder> getCreateFolder() const;
-    std::vector<File> getFiles() const;
-    std::vector<Registry> getRegistries() const;
+    explicit RegistryTable(const std::vector<Directory>& directories);
+    ~RegistryTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
-    bool create_folder = false;
-    std::vector<File> files{};
     std::vector<Registry> registries{};
 };

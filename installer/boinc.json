@@ -6716,14 +6716,32 @@
                                     "Component": "_BOINCManagerStartup",
                                     "Attributes": 256,
                                     "Condition": "ENABLEUSEBYALLUSERS <> 1",
-                                    "CreateFolder": true
+                                    "CreateFolder": true,
+                                    "Registry": [
+                                        {
+                                            "Registry": "Registry3",
+                                            "Root": 1,
+                                            "Key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                            "Name": "boincmgr",
+                                            "Value": "\"[INSTALLDIR]boincmgr.exe\" /a /s"
+                                        }
+                                    ]
                                 },
                                 {
                                     "Feature_": "BOINCManagerStartup",
                                     "Component": "_BOINCManagerStartupAll",
                                     "Attributes": 256,
                                     "Condition": "ENABLEUSEBYALLUSERS = 1",
-                                    "CreateFolder": true
+                                    "CreateFolder": true,
+                                    "Registry": [
+                                        {
+                                            "Registry": "Registry5",
+                                            "Root": 2,
+                                            "Key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                            "Name": "boincmgr",
+                                            "Value": "\"[INSTALLDIR]boincmgr.exe\" /a /s"
+                                        }
+                                    ]
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
@@ -6777,14 +6795,46 @@
                                     "Feature_": "BOINC",
                                     "Component": "_BOINCTrayStartup",
                                     "Attributes": 264,
-                                    "CreateFolder": true
+                                    "CreateFolder": true,
+                                    "Registry": [
+                                        {
+                                            "Registry": "Registry30",
+                                            "Root": 2,
+                                            "Key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                            "Name": "boinctray",
+                                            "Value": "\"[INSTALLDIR]boinctray.exe\""
+                                        }
+                                    ]
                                 },
                                 {
                                     "Feature_": "BOINCScreensaver",
                                     "Component": "_ScreensaverEnableNT",
                                     "Attributes": 256,
                                     "Condition": "ENABLESCREENSAVER = 1",
-                                    "CreateFolder": true
+                                    "CreateFolder": true,
+                                    "Registry": [
+                                        {
+                                            "Registry": "Registry1",
+                                            "Root": 1,
+                                            "Key": "Control Panel\\Desktop",
+                                            "Name": "SCRNSAVE.EXE",
+                                            "Value": "boinc.scr"
+                                        },
+                                        {
+                                            "Registry": "Registry2",
+                                            "Root": 1,
+                                            "Key": "Control Panel\\Desktop",
+                                            "Name": "ScreenSaveActive",
+                                            "Value": "1"
+                                        },
+                                        {
+                                            "Registry": "Registry4",
+                                            "Root": 1,
+                                            "Key": "Control Panel\\Desktop",
+                                            "Name": "ScreenSaveTimeOut",
+                                            "Value": "300"
+                                        }
+                                    ]
                                 }
                             ]
                         }

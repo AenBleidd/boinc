@@ -3,11 +3,20 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="LaunchCondition">
-		<col key="yes" def="s255">Condition</col>
-		<col def="l255">Description</col>
-		<row><td>((Not Version9X=400) And (Not Version9X=410) And (Not Version9X=490) And (Not VersionNT=400)) And (VersionNT&gt;500)</td><td>##ID_STRING39##</td></row>
-		<row><td>AdminUser</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_ADMIN##</td></row>
+	<table name="Registry">
+		<col key="yes" def="s72">Registry</col>
+		<col def="i2">Root</col>
+		<col def="s255">Key</col>
+		<col def="S255">Name</col>
+		<col def="S0">Value</col>
+		<col def="s72">Component_</col>
+		<col def="I4">ISAttributes</col>
+		<row><td>Registry1</td><td>1</td><td>Control Panel\Desktop</td><td>SCRNSAVE.EXE</td><td>boinc.scr</td><td>_ScreensaverEnableNT</td><td>0</td></row>
+		<row><td>Registry2</td><td>1</td><td>Control Panel\Desktop</td><td>ScreenSaveActive</td><td>1</td><td>_ScreensaverEnableNT</td><td>0</td></row>
+		<row><td>Registry3</td><td>1</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boincmgr</td><td>"[INSTALLDIR]boincmgr.exe" /a /s</td><td>_BOINCManagerStartup</td><td>0</td></row>
+		<row><td>Registry30</td><td>2</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boinctray</td><td>"[INSTALLDIR]boinctray.exe"</td><td>_BOINCTrayStartup</td><td>0</td></row>
+		<row><td>Registry4</td><td>1</td><td>Control Panel\Desktop</td><td>ScreenSaveTimeOut</td><td>300</td><td>_ScreensaverEnableNT</td><td>0</td></row>
+		<row><td>Registry5</td><td>2</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boincmgr</td><td>"[INSTALLDIR]boincmgr.exe" /a /s</td><td>_BOINCManagerStartupAll</td><td>0</td></row>
 	</table>
 '''
 

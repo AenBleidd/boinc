@@ -1,10 +1,5 @@
 [
-    {
-        "Condition": "VersionNT>500",
-        "Description": "##ID_STRING39##"
-    },
-    {
-        "Condition": "AdminUser",
-        "Description": "##IDPROP_EXPRESS_LAUNCH_CONDITION_ADMIN##"
-    }
+    ,
+    ,
+
 ]

@@ -20,29 +20,17 @@
 #include <nlohmann/json.hpp>
 
 #include "Record.h"
-#include "FeatureComponents.h"
-#include "CreateFolder.h"
-#include "File.h"
-#include "Registry.h"
 
-class Component : public Record {
+class Registry : public Record {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
+    explicit Registry(const nlohmann::json& json, const std::string& component);
+    ~Registry() = default;
     MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
-    std::tuple<bool, CreateFolder> getCreateFolder() const;
-    std::vector<File> getFiles() const;
-    std::vector<Registry> getRegistries() const;
 private:
+    std::string registry{};
+    int root = MSI_NULL_INTEGER;
+    std::string key{};
+    std::string name{};
+    std::string value{};
     std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
-    bool create_folder = false;
-    std::vector<File> files{};
-    std::vector<Registry> registries{};
 };
