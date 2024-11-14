@@ -17,20 +17,13 @@
 
 #include "File.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 File::File(const nlohmann::json& json, const std::string& component) : component(component) {
-    if (json.contains("File") && !json["File"].is_null()) {
-        file = json["File"];
-    }
-    if (json.contains("FileName") && !json["FileName"].is_null()) {
-        filename = json["FileName"];
-    }
-    if (json.contains("FilePath") && !json["FilePath"].is_null()) {
-        filepath = std::string(json["FilePath"]);
-    }
-    if (json.contains("IsFont") && !json["IsFont"].is_null()) {
-        isFont = json["IsFont"];
-    }
+    JsonHelper::get(json, "File", file);
+    JsonHelper::get(json, "FileName", filename);
+    JsonHelper::get(json, "FilePath", filepath);
+    JsonHelper::get(json, "IsFont", isFont);
 }
 
 MSIHANDLE File::getRecord() const {

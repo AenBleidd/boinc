@@ -17,14 +17,11 @@
 
 #include "Error.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Error::Error(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Error") && !json["Error"].is_null()) {
-        error = json["Error"];
-    }
-    if (json.contains("Message") && !json["Message"].is_null()) {
-        message = installerStrings.get(json["Message"]);
-    }
+    JsonHelper::get(json, "Error", error);
+    JsonHelper::get(json, "Message", message, installerStrings);
 }
 
 MSIHANDLE Error::getRecord() const {

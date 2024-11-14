@@ -17,34 +17,19 @@
 
 #include "Feature.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Feature::Feature(const nlohmann::json& json, const std::string& parent, const InstallerStrings& installerStrings) : feature_parent(parent) {
-    if (json.contains("Feature") && !json["Feature"].is_null()) {
-        feature = json["Feature"];
-    }
-    if (json.contains("Title") && !json["Title"].is_null()) {
-        title = installerStrings.get(json["Title"]);
-    }
-    if (json.contains("Description") && !json["Description"].is_null()) {
-        description = installerStrings.get(json["Description"]);
-    }
-    if (json.contains("Display") && !json["Display"].is_null()) {
-        display = json["Display"];
-    }
-    if (json.contains("Level") && !json["Level"].is_null()) {
-        level = json["Level"];
-    }
-    if (json.contains("Directory_") && !json["Directory_"].is_null()) {
-        directory = json["Directory_"];
-    }
-    if (json.contains("Attributes") && !json["Attributes"].is_null()) {
-        attributes = json["Attributes"];
-    }
-    if (json.contains("Features") && !json["Features"].is_null()) {
-        for (const auto& f : json["Features"]) {
-            features.emplace_back(f, feature, installerStrings);
-        }
-    }
+    JsonHelper::get(json, "Feature", feature);
+    JsonHelper::get(json, "Title", title, installerStrings);
+    JsonHelper::get(json, "Description", description, installerStrings);
+    JsonHelper::get(json, "Display", display);
+    JsonHelper::get(json, "Level", level);
+    JsonHelper::get(json, "Directory_", directory);
+    JsonHelper::get(json, "Attributes", attributes);
+    JsonHelper::handle(json, "Features", [&](const auto& f) {
+        features.emplace_back(f, feature, installerStrings);
+        });
 }
 
 MSIHANDLE Feature::getRecord() const {

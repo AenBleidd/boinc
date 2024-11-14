@@ -17,23 +17,14 @@
 
 #include "CustomAction.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 CustomAction::CustomAction(const nlohmann::json& json) {
-    if (json.contains("Action") && !json["Action"].is_null()) {
-        action = json["Action"];
-    }
-    if (json.contains("Type") && !json["Type"].is_null()) {
-        type = json["Type"];
-    }
-    if (json.contains("Source") && !json["Source"].is_null()) {
-        source = json["Source"];
-    }
-    if (json.contains("Target") && !json["Target"].is_null()) {
-        target = json["Target"];
-    }
-    if (json.contains("ExtendedType") && !json["ExtendedType"].is_null()) {
-        extendedtype = json["ExtendedType"];
-    }
+    JsonHelper::get(json, "Action", action);
+    JsonHelper::get(json, "Type", type);
+    JsonHelper::get(json, "Source", source);
+    JsonHelper::get(json, "Target", target);
+    JsonHelper::get(json, "ExtendedType", extendedtype);
 }
 
 MSIHANDLE CustomAction::getRecord() const {

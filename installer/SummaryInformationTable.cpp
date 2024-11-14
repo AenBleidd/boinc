@@ -19,8 +19,9 @@
 #include <iomanip>
 #include <iostream>
 
-#include "SummaryInformationTable.h"
+#include "JsonHelper.h"
 #include "GuidHelper.h"
+#include "SummaryInformationTable.h"
 
 SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings)
 {
@@ -30,24 +31,23 @@ SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json, con
     GetSystemTime(&systemTime);
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
-
-    summary[1] = json.at("codepage").get<int>();
-    summary[2] = installerStrings.get(json.at("title").get<std::string>());
-    summary[3] = installerStrings.get(json.at("subject").get<std::string>());
-    summary[4] = installerStrings.get(json.at("author").get<std::string>());
-    summary[5] = json.at("keywords").get<std::string>();
-    summary[6] = installerStrings.get(json.at("comments").get<std::string>());
-    summary[7] = json.at("template").get<std::string>();
-    summary[8] = json.at("lastauthor").get<std::string>();
+    summary[1] = JsonHelper::get<int>(json, "codepage");
+    summary[2] = JsonHelper::get<std::string>(json, "title", installerStrings);
+    summary[3] = JsonHelper::get<std::string>(json, "subject", installerStrings);
+    summary[4] = JsonHelper::get<std::string>(json, "author", installerStrings);
+    summary[5] = JsonHelper::get<std::string>(json, "keywords");
+    summary[6] = JsonHelper::get<std::string>(json, "comments", installerStrings);
+    summary[7] = JsonHelper::get<std::string>(json, "template");
+    summary[8] = JsonHelper::get<std::string>(json, "lastauthor");
     summary[9] = GuidHelper::generate_guid();
     summary[11] = fileTime;
     summary[12] = fileTime;
     summary[13] = fileTime;
-    summary[14] = json.at("pagecount").get<int>();
-    summary[15] = json.at("wordcount").get<int>();
-    summary[16] = json.at("charcount").get<int>();
-    summary[18] = json.at("appname").get<std::string>();
-    summary[19] = json.at("security").get<int>();
+    summary[14] = JsonHelper::get<int>(json, "pagecount");
+    summary[15] = JsonHelper::get<int>(json, "wordcount");
+    summary[16] = JsonHelper::get<int>(json, "charcount");
+    summary[18] = JsonHelper::get<std::string>(json, "appname");
+    summary[19] = JsonHelper::get<int>(json, "security");
 }
 
 bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {

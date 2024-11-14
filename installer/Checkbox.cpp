@@ -17,14 +17,11 @@
 
 #include "Checkbox.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Checkbox::Checkbox(const nlohmann::json& json) {
-    if (json.contains("Property") && !json["Property"].is_null()) {
-        property = json["Property"];
-    }
-    if (json.contains("Value") && !json["Value"].is_null()) {
-        value = json["Value"];
-    }
+    JsonHelper::get(json, "Property", property);
+    JsonHelper::get(json, "Value", value);
 }
 
 MSIHANDLE Checkbox::getRecord() const {

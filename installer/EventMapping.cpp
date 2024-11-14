@@ -17,14 +17,11 @@
 
 #include "EventMapping.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 EventMapping::EventMapping(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
-    if (json.contains("Event") && !json["Event"].is_null()) {
-        event = json["Event"];
-    }
-    if (json.contains("Attribute") && !json["Attribute"].is_null()) {
-        attribute = json["Attribute"];
-    }
+    JsonHelper::get(json, "Event", event);
+    JsonHelper::get(json, "Attribute", attribute);
 }
 
 MSIHANDLE EventMapping::getRecord() const {

@@ -17,14 +17,11 @@
 
 #include "LaunchCondition.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 LaunchCondition::LaunchCondition(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Condition") && !json["Condition"].is_null()) {
-        condition = json["Condition"];
-    }
-    if (json.contains("Description") && !json["Description"].is_null()) {
-        description = installerStrings.get(json["Description"]);
-    }
+    JsonHelper::get(json, "Condition", condition);
+    JsonHelper::get(json, "Description", description, installerStrings);
 }
 
 MSIHANDLE LaunchCondition::getRecord() const {

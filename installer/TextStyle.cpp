@@ -17,23 +17,14 @@
 
 #include "TextStyle.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 TextStyle::TextStyle(const nlohmann::json& json) {
-    if (json.contains("TextStyle") && !json["TextStyle"].is_null()) {
-        textstyle = json["TextStyle"];
-    }
-    if (json.contains("FaceName") && !json["FaceName"].is_null()) {
-        facename = json["FaceName"];
-    }
-    if (json.contains("Size") && !json["Size"].is_null()) {
-        size = json["Size"];
-    }
-    if (json.contains("Color") && !json["Color"].is_null()) {
-        color = json["Color"];
-    }
-    if (json.contains("StyleBits") && !json["StyleBits"].is_null()) {
-        stylebits = json["StyleBits"];
-    }
+    JsonHelper::get(json, "TextStyle", textstyle);
+    JsonHelper::get(json, "FaceName", facename);
+    JsonHelper::get(json, "Size", size);
+    JsonHelper::get(json, "Color", color);
+    JsonHelper::get(json, "StyleBits", stylebits);
 }
 
 MSIHANDLE TextStyle::getRecord() const {

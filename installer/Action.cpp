@@ -19,17 +19,12 @@
 
 #include "Action.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Action::Action(const nlohmann::json& json) {
-    if (json.contains("Action") && !json["Action"].is_null()) {
-        action = json["Action"];
-    }
-    if (json.contains("Condition") && !json["Condition"].is_null()) {
-        condition = json["Condition"];
-    }
-    if (json.contains("Sequence") && !json["Sequence"].is_null()) {
-        sequence = json["Sequence"];
-    }
+    JsonHelper::get(json, "Action", action);
+    JsonHelper::get(json, "Condition", condition);
+    JsonHelper::get(json, "Sequence", sequence);
 }
 
 MSIHANDLE Action::getRecord() const {

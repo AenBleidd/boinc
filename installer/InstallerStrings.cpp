@@ -18,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "JsonHelper.h"
 #include "InstallerStrings.h"
 
 const std::string& InstallerStrings::get(const std::string& key) const {
@@ -39,10 +40,12 @@ bool InstallerStrings::load(const std::filesystem::path& path) {
 }
 bool InstallerStrings::load_from_json(const nlohmann::json& json) {
     for (const auto& item : json) {
-        const auto& id = item.at("Id");
-        const auto& value = item.at("Value");
-        if (!id.is_null()) {
-            strings.insert(std::make_pair(id.get<std::string>(), value.is_null() ? "" : value.get<std::string>()));
+        std::string id{};
+        std::string value{};
+        JsonHelper::get(item, "Id", id);
+        JsonHelper::get(item, "Value", value);        
+        if (!id.empty()) {
+            strings.emplace(id, value);
         }
         else {
             std::cerr << "WARNING: Skipped record with no Id specified." << std::endl;

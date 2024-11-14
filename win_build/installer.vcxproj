@@ -123,6 +123,7 @@
     <ClInclude Include="..\installer\FeatureComponents.h" />
     <ClInclude Include="..\installer\FeatureComponentsTable.h" />
     <ClInclude Include="..\installer\FeatureTable.h" />
+    <ClInclude Include="..\installer\File.h" />
     <ClInclude Include="..\installer\FileTable.h" />
     <ClInclude Include="..\installer\Font.h" />
     <ClInclude Include="..\installer\FontTable.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="..\installer\EventMappingTable.h" />
     <ClInclude Include="..\installer\Validation.h" />
     <ClInclude Include="..\installer\ValidationTable.h" />
+    <ClInclude Include="..\installer\JsonHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

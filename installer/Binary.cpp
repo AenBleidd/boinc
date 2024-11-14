@@ -17,6 +17,7 @@
 
 #include "Binary.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Binary::Binary(const nlohmann::json& json, const std::filesystem::path& root_path) {
     const std::string configuration_template = "%%CONFIGURATION%%";
@@ -34,11 +35,8 @@ Binary::Binary(const nlohmann::json& json, const std::filesystem::path& root_pat
         "x64";
 #endif
 
-    if (json.contains("Name") && !json["Name"].is_null()) {
-        name = json["Name"];
-    }
-    if (json.contains("Path") && !json["Path"].is_null()) {
-        auto p = std::string(json["Path"]);
+    JsonHelper::get(json, "Name", name);
+    JsonHelper::handle(json, "Path", [&](std::string p) {
         auto index = p.find(configuration_template);
         if (index != std::string::npos) {
             p.replace(index, configuration_template.size(), configuration);
@@ -48,7 +46,7 @@ Binary::Binary(const nlohmann::json& json, const std::filesystem::path& root_pat
             p.replace(index, platform_template.size(), platform);
         }
         path = root_path / p;
-    }
+        });
 }
 
 MSIHANDLE Binary::getRecord() const {

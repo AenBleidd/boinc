@@ -18,36 +18,24 @@
 #include "Component.h"
 #include "GuidHelper.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Component::Component(const nlohmann::json& json, const std::string& directory, const std::string& parent) : directory(directory) {
-    if (json.contains("Component") && !json["Component"].is_null()) {
-        component = json["Component"];
-    }
-    if (json.contains("Attributes") && !json["Attributes"].is_null()) {
-        attributes = json["Attributes"];
-    }
-    if (json.contains("Condition") && !json["Condition"].is_null()) {
-        condition = json["Condition"];
-    }
-    if (json.contains("Feature_") && !json["Feature_"].is_null()) {
-        feature = json["Feature_"];
-    }
-    if (json.contains("CreateFolder") && !json["CreateFolder"].is_null()) {
-        create_folder = json["CreateFolder"];
-    }
+    JsonHelper::get(json, "Component", component);
+    JsonHelper::get(json, "Attributes", attributes);
+    JsonHelper::get(json, "Condition", condition);
+    JsonHelper::get(json, "Feature_", feature);
+    JsonHelper::get(json, "CreateFolder", create_folder);
+
     if (component.empty()) {
         component = parent + "_" + directory;
     }
-    if (json.contains("Files") && !json["Files"].is_null()) {
-        for (const auto& file : json["Files"]) {
-            files.emplace_back(file, component);
-        }
-    }
-    if (json.contains("Registry") && !json["Registry"].is_null()) {
-        for (const auto& registry : json["Registry"]) {
-            registries.emplace_back(registry, component);
-        }
-    }
+    JsonHelper::handle(json, "Files", [&](const auto& file) {
+        files.emplace_back(file, component);
+        });
+    JsonHelper::handle(json, "Registry", [&](const auto& registry) {
+        registries.emplace_back(registry, component);
+        });
     componentId = GuidHelper::generate_guid();
     if (!files.empty()) {
         keyPath = files.front().getFileId();

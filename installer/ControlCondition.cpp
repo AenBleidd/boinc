@@ -17,15 +17,12 @@
 
 #include "ControlCondition.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 ControlCondition::ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control)
     : dialog(dialog), control(control) {
-    if (json.contains("Action") && !json["Action"].is_null()) {
-        action = json["Action"];
-    }
-    if (json.contains("Condition") && !json["Condition"].is_null()) {
-        condition = json["Condition"];
-    }
+    JsonHelper::get(json, "Action", action);
+    JsonHelper::get(json, "Condition", condition);
 }
 
 MSIHANDLE ControlCondition::getRecord() const {

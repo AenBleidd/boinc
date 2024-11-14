@@ -17,14 +17,11 @@
 
 #include "Property.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Property::Property(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Property") && !json["Property"].is_null()) {
-        property = json["Property"];
-    }
-    if (json.contains("Value") && !json["Value"].is_null()) {
-        value = installerStrings.get(json["Value"]);
-    }
+    JsonHelper::get(json, "Property", property);
+    JsonHelper::get(json, "Value", value, installerStrings);
 }
 
 Property::Property(const std::string& property, const std::string& value) : property(property), value(value) {

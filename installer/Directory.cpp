@@ -17,24 +17,18 @@
 
 #include "Directory.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Directory::Directory(const nlohmann::json& json, const std::string& parent) : parent(parent) {
-    if (json.contains("Directory") && !json["Directory"].is_null()) {
-        directory = json["Directory"];
-    }
-    if (json.contains("DefaultDir") && !json["DefaultDir"].is_null()) {
-        default = json["DefaultDir"];
-    }
-    if (json.contains("Directories") && !json["Directories"].is_null()) {
-        for (const auto& dir : json["Directories"]) {
-            directories.emplace_back(dir, directory);
-        }
-    }
-    if (json.contains("Components") && !json["Components"].is_null()) {
-        for (const auto& comp : json["Components"]) {
-            components.emplace_back(comp, directory, parent);
-        }
-    }
+    JsonHelper::get(json, "Directory", directory);
+    JsonHelper::get(json, "DefaultDir", default);
+    JsonHelper::handle(json, "Directories", [&](const auto& dir) {
+        directories.emplace_back(dir, directory);
+        });
+
+    JsonHelper::handle(json, "Components", [&](const auto& comp) {
+        components.emplace_back(comp, directory, parent);
+        });
 }
 
 MSIHANDLE Directory::getRecord() const {

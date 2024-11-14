@@ -17,35 +17,18 @@
 
 #include "RadioButton.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 RadioButton::RadioButton(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    if (json.contains("Property") && !json["Property"].is_null()) {
-        property = json["Property"];
-    }
-    if (json.contains("Order") && !json["Order"].is_null()) {
-        order = json["Order"];
-    }
-    if (json.contains("Value") && !json["Value"].is_null()) {
-        value = json["Value"];
-    }
-    if (json.contains("X") && !json["X"].is_null()) {
-        x = json["X"];
-    }
-    if (json.contains("Y") && !json["Y"].is_null()) {
-        y = json["Y"];
-    }
-    if (json.contains("Width") && !json["Width"].is_null()) {
-        width = json["Width"];
-    }
-    if (json.contains("Height") && !json["Height"].is_null()) {
-        height = json["Height"];
-    }
-    if (json.contains("Text") && !json["Text"].is_null()) {
-        text = installerStrings.get(json["Text"]);
-    }
-    if (json.contains("Help") && !json["Help"].is_null()) {
-        help = installerStrings.get(json["Help"]);
-    }
+    JsonHelper::get(json, "Property", property);
+    JsonHelper::get(json, "Order", order);
+    JsonHelper::get(json, "Value", value);
+    JsonHelper::get(json, "X", x);
+    JsonHelper::get(json, "Y", y);
+    JsonHelper::get(json, "Width", width);
+    JsonHelper::get(json, "Height", height);
+    JsonHelper::get(json, "Text", text, installerStrings);
+    JsonHelper::get(json, "Help", help, installerStrings);
 }
 
 MSIHANDLE RadioButton::getRecord() const {

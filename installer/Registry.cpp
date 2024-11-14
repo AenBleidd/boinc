@@ -17,23 +17,14 @@
 
 #include "Registry.h"
 #include "MsiHelper.h"
+#include "JsonHelper.h"
 
 Registry::Registry(const nlohmann::json& json, const std::string& component) : component(component) {
-    if (json.contains("Registry") && !json["Registry"].is_null()) {
-        registry = json["Registry"];
-    }
-    if (json.contains("Root") && !json["Root"].is_null()) {
-        root = json["Root"];
-    }
-    if (json.contains("Key") && !json["Key"].is_null()) {
-        key = json["Key"];
-    }
-    if (json.contains("Name") && !json["Name"].is_null()) {
-        name = json["Name"];
-    }
-    if (json.contains("Value") && !json["Value"].is_null()) {
-        value = json["Value"];
-    }
+    JsonHelper::get(json, "Registry", registry);
+    JsonHelper::get(json, "Root", root);
+    JsonHelper::get(json, "Key", key);
+    JsonHelper::get(json, "Name", name);
+    JsonHelper::get(json, "Value", value);
 }
 
 MSIHANDLE Registry::getRecord() const {
