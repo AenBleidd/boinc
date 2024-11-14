@@ -3,17 +3,14 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="RemoveFile">
-		<col key="yes" def="s72">FileKey</col>
+	<table name="ServiceControl">
+		<col key="yes" def="s72">ServiceControl</col>
+		<col def="s255">Name</col>
+		<col def="i2">Event</col>
+		<col def="S255">Arguments</col>
+		<col def="I2">Wait</col>
 		<col def="s72">Component_</col>
-		<col def="L255">FileName</col>
-		<col def="s72">DirProperty</col>
-		<col def="i2">InstallMode</col>
-		<row><td>NewShortcut1</td><td>_BOINCManager</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
-		<row><td>NewShortcut2</td><td>_BOINCTray</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
-		<row><td>NewShortcut3</td><td>_BOINCManager</td><td/><td>BOINCLOCATIONMANAGER</td><td>2</td></row>
-		<row><td>NewShortcut4</td><td>_BOINCManagerStartMenu</td><td/><td>newfolder1</td><td>2</td></row>
-		<row><td>_BOINCTray</td><td>_BOINCTray</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
+		<row><td>BOINC</td><td>BOINC</td><td>128</td><td/><td/><td>BOINCServiceConfig</td></row>
 	</table>
 '''
 

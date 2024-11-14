@@ -6647,6 +6647,13 @@
                                             "FileName": "boinc.exe",
                                             "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\boinc.exe"
                                         }
+                                    ],
+                                    "ServiceControl": [
+                                        {
+                                            "ServiceControl": "BOINC",
+                                            "Name": "BOINC",
+                                            "Event": 128
+                                        }
                                     ]
                                 },
                                 {

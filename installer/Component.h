@@ -25,6 +25,7 @@
 #include "File.h"
 #include "Registry.h"
 #include "RemoveFile.h"
+#include "ServiceControl.h"
 
 class Component : public Record {
 public:
@@ -36,6 +37,7 @@ public:
     std::vector<File> getFiles() const;
     std::vector<Registry> getRegistries() const;
     std::vector<RemoveFile> getRemoveFiles() const;
+    std::vector<ServiceControl> getServiceControls() const;
 private:
     std::string component{};
     std::string componentId{};
@@ -48,4 +50,5 @@ private:
     std::vector<File> files{};
     std::vector<Registry> registries{};
     std::vector<RemoveFile> removeFiles{};
+    std::vector<ServiceControl> serviceControls{};
 };

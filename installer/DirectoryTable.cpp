@@ -24,6 +24,7 @@
 #include "FontTable.h"
 #include "RegistryTable.h"
 #include "RemoveFileTable.h"
+#include "ServiceControlTable.h"
 
 DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path) : root_path (root_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
@@ -59,6 +60,10 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
     }
     if (!RemoveFileTable(directories).generate(hDatabase)) {
         std::cerr << "Failed to generate RemoveFileTable" << std::endl;
+        return false;
+    }
+    if (!ServiceControlTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate ServiceControlTable" << std::endl;
         return false;
     }
 

@@ -1,9 +1,10 @@
 [
     {
-        "FileKey": "NewShortcut4",
-        "Component_": "_BOINCManagerStartMenu",
-        "FileName": null,
-        "DirProperty": "newfolder1",
-        "InstallMode": "2"
+        "ServiceControl": "BOINC",
+        "Name": "BOINC",
+        "Event": "128",
+        "Arguments": null,
+        "Wait": null,
+        "Component_": "BOINCServiceConfig"
     }
 ]
