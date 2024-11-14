@@ -1,5 +1,9 @@
 [
-    ,
-    ,
-
+    {
+        "FileKey": "NewShortcut4",
+        "Component_": "_BOINCManagerStartMenu",
+        "FileName": null,
+        "DirProperty": "newfolder1",
+        "InstallMode": "2"
+    }
 ]

@@ -6698,9 +6698,20 @@
                                     "Files": [
                                         {
                                             "File": "boincmgr.exe",
-                                            "Component_": "_BOINCManager",
                                             "FileName": "boincmgr.exe",
                                             "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\boincmgr.exe"
+                                        }
+                                    ],
+                                    "RemoveFile": [
+                                        {
+                                            "FileKey": "NewShortcut1",
+                                            "DirProperty": "BOINCLOCATIONTRAY",
+                                            "InstallMode": 2
+                                        },
+                                        {
+                                            "FileKey": "NewShortcut3",
+                                            "DirProperty": "BOINCLOCATIONMANAGER",
+                                            "InstallMode": 2
                                         }
                                     ]
                                 },
@@ -6709,7 +6720,14 @@
                                     "Component": "_BOINCManagerStartMenu",
                                     "Attributes": 256,
                                     "Condition": "ENABLESTARTMENUITEMS = 1",
-                                    "CreateFolder": true
+                                    "CreateFolder": true,
+                                    "RemoveFile": [
+                                        {
+                                            "FileKey": "NewShortcut4",
+                                            "DirProperty": "newfolder1",
+                                            "InstallMode": 2
+                                        }
+                                    ]
                                 },
                                 {
                                     "Feature_": "BOINCManagerStartup",
@@ -6788,6 +6806,18 @@
                                             "File": "boinctray.exe",
                                             "FileName": "BOINCT~1.EXE|boinctray.exe",
                                             "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\boinctray.exe"
+                                        }
+                                    ],
+                                    "RemoveFile": [
+                                        {
+                                            "FileKey": "NewShortcut2",
+                                            "DirProperty": "BOINCLOCATIONTRAY",
+                                            "InstallMode": 2
+                                        },
+                                        {
+                                            "FileKey": "_BOINCTray",
+                                            "DirProperty": "BOINCLOCATIONTRAY",
+                                            "InstallMode": 2
                                         }
                                     ]
                                 },

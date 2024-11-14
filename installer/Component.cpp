@@ -36,6 +36,9 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     JsonHelper::handle(json, "Registry", [&](const auto& registry) {
         registries.emplace_back(registry, component);
         });
+    JsonHelper::handle(json, "RemoveFile", [&](const auto& removeFile) {
+        removeFiles.emplace_back(removeFile, component);
+        });
     componentId = GuidHelper::generate_guid();
     if (!files.empty()) {
         keyPath = files.front().getFileId();
@@ -63,4 +66,8 @@ std::vector<File> Component::getFiles() const {
 
 std::vector<Registry> Component::getRegistries() const {
     return registries;
+}
+
+std::vector<RemoveFile> Component::getRemoveFiles() const {
+    return removeFiles;
 }

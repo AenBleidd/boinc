@@ -3,20 +3,17 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="Registry">
-		<col key="yes" def="s72">Registry</col>
-		<col def="i2">Root</col>
-		<col def="s255">Key</col>
-		<col def="S255">Name</col>
-		<col def="S0">Value</col>
+	<table name="RemoveFile">
+		<col key="yes" def="s72">FileKey</col>
 		<col def="s72">Component_</col>
-		<col def="I4">ISAttributes</col>
-		<row><td>Registry1</td><td>1</td><td>Control Panel\Desktop</td><td>SCRNSAVE.EXE</td><td>boinc.scr</td><td>_ScreensaverEnableNT</td><td>0</td></row>
-		<row><td>Registry2</td><td>1</td><td>Control Panel\Desktop</td><td>ScreenSaveActive</td><td>1</td><td>_ScreensaverEnableNT</td><td>0</td></row>
-		<row><td>Registry3</td><td>1</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boincmgr</td><td>"[INSTALLDIR]boincmgr.exe" /a /s</td><td>_BOINCManagerStartup</td><td>0</td></row>
-		<row><td>Registry30</td><td>2</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boinctray</td><td>"[INSTALLDIR]boinctray.exe"</td><td>_BOINCTrayStartup</td><td>0</td></row>
-		<row><td>Registry4</td><td>1</td><td>Control Panel\Desktop</td><td>ScreenSaveTimeOut</td><td>300</td><td>_ScreensaverEnableNT</td><td>0</td></row>
-		<row><td>Registry5</td><td>2</td><td>SOFTWARE\Microsoft\Windows\CurrentVersion\Run</td><td>boincmgr</td><td>"[INSTALLDIR]boincmgr.exe" /a /s</td><td>_BOINCManagerStartupAll</td><td>0</td></row>
+		<col def="L255">FileName</col>
+		<col def="s72">DirProperty</col>
+		<col def="i2">InstallMode</col>
+		<row><td>NewShortcut1</td><td>_BOINCManager</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
+		<row><td>NewShortcut2</td><td>_BOINCTray</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
+		<row><td>NewShortcut3</td><td>_BOINCManager</td><td/><td>BOINCLOCATIONMANAGER</td><td>2</td></row>
+		<row><td>NewShortcut4</td><td>_BOINCManagerStartMenu</td><td/><td>newfolder1</td><td>2</td></row>
+		<row><td>_BOINCTray</td><td>_BOINCTray</td><td/><td>BOINCLOCATIONTRAY</td><td>2</td></row>
 	</table>
 '''
 

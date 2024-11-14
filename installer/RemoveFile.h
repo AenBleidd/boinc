@@ -20,32 +20,16 @@
 #include <nlohmann/json.hpp>
 
 #include "Record.h"
-#include "FeatureComponents.h"
-#include "CreateFolder.h"
-#include "File.h"
-#include "Registry.h"
-#include "RemoveFile.h"
 
-class Component : public Record {
+class RemoveFile : public Record {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
-    ~Component() = default;
+    explicit RemoveFile(const nlohmann::json& json, const std::string& component);
+    ~RemoveFile() = default;
     MSIHANDLE getRecord() const override;
-    FeatureComponents getFeatureComponent() const;
-    std::tuple<bool, CreateFolder> getCreateFolder() const;
-    std::vector<File> getFiles() const;
-    std::vector<Registry> getRegistries() const;
-    std::vector<RemoveFile> getRemoveFiles() const;
 private:
+    std::string fileKey{};
     std::string component{};
-    std::string componentId{};
-    std::string directory{};
-    int attributes = MSI_NULL_INTEGER;
-    std::string condition{};
-    std::string keyPath{};
-    std::string feature{};
-    bool create_folder = false;
-    std::vector<File> files{};
-    std::vector<Registry> registries{};
-    std::vector<RemoveFile> removeFiles{};
+    std::string fileName{};
+    std::string dirProperty{};
+    int installMode = MSI_NULL_INTEGER;
 };
