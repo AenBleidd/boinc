@@ -17,15 +17,28 @@
 
 #pragma once
 
-#include "Generator.h"
-#include "Directory.h"
+#include <nlohmann/json.hpp>
 
-class DirectoryTable : public Generator<Directory> {
+#include "Record.h"
+#include "InstallerStrings.h"
+
+class ServiceInstall : public Record {
 public:
-    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const InstallerStrings& installerStrings);
-    ~DirectoryTable() = default;
-    bool generate(MSIHANDLE hDatabase) override;
+    explicit ServiceInstall(const nlohmann::json& json, const std::string& component, const InstallerStrings& installerStrings);
+    ~ServiceInstall() = default;
+    MSIHANDLE getRecord() const override;
 private:
-    std::vector<Directory> directories{};
-    std::filesystem::path root_path{};
+    std::string serviceInstall{};
+    std::string name{};
+    std::string displayName{};
+    int serviceType = MSI_NULL_INTEGER;
+    int startType = MSI_NULL_INTEGER;
+    int errorControl = MSI_NULL_INTEGER;
+    std::string loadOrderGroup{};
+    std::string dependencies{};
+    std::string startName{};
+    std::string password{};
+    std::string arguments{};
+    std::string component{};
+    std::string description{};
 };

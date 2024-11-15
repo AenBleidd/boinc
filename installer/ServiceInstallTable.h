@@ -17,15 +17,15 @@
 
 #pragma once
 
+#include "ServiceInstall.h"
 #include "Generator.h"
 #include "Directory.h"
 
-class DirectoryTable : public Generator<Directory> {
+class ServiceInstallTable : public Generator<ServiceInstall> {
 public:
-    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const InstallerStrings& installerStrings);
-    ~DirectoryTable() = default;
+    explicit ServiceInstallTable(const std::vector<Directory>& directories);
+    ~ServiceInstallTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
-    std::vector<Directory> directories{};
-    std::filesystem::path root_path{};
+    std::vector<ServiceInstall> values{};
 };

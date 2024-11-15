@@ -3,14 +3,21 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="ServiceControl">
-		<col key="yes" def="s72">ServiceControl</col>
+	<table name="ServiceInstall">
+		<col key="yes" def="s72">ServiceInstall</col>
 		<col def="s255">Name</col>
-		<col def="i2">Event</col>
+		<col def="L255">DisplayName</col>
+		<col def="i4">ServiceType</col>
+		<col def="i4">StartType</col>
+		<col def="i4">ErrorControl</col>
+		<col def="S255">LoadOrderGroup</col>
+		<col def="S255">Dependencies</col>
+		<col def="S255">StartName</col>
+		<col def="S255">Password</col>
 		<col def="S255">Arguments</col>
-		<col def="I2">Wait</col>
 		<col def="s72">Component_</col>
-		<row><td>BOINC</td><td>BOINC</td><td>128</td><td/><td/><td>BOINCServiceConfig</td></row>
+		<col def="L255">Description</col>
+		<row><td>NewServiceInstall1</td><td>BOINC</td><td>##IDS_FEATURE_BOINC_NAME##</td><td>16</td><td>2</td><td>1</td><td/><td>RpcSs[~][~]</td><td>[BOINC_MASTER_ISUSERNAME]</td><td>[BOINC_MASTER_PASSWORD]</td><td>-daemon</td><td>BOINCServiceConfig</td><td>##IDS_FEATURE_BOINC_DESCRIPTION##</td></row>
 	</table>
 '''
 

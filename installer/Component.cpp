@@ -20,7 +20,7 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Component::Component(const nlohmann::json& json, const std::string& directory, const std::string& parent) : directory(directory) {
+Component::Component(const nlohmann::json& json, const std::string& directory, const std::string& parent, const InstallerStrings& installerStrings) : directory(directory) {
     JsonHelper::get(json, "Component", component);
     JsonHelper::get(json, "Attributes", attributes);
     JsonHelper::get(json, "Condition", condition);
@@ -41,6 +41,9 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
         });
     JsonHelper::handle(json, "ServiceControl", [&](const auto& serviceControl) {
         serviceControls.emplace_back(serviceControl, component);
+        });
+    JsonHelper::handle(json, "ServiceInstall", [&](const auto& serviceInstall) {
+        serviceInstalls.emplace_back(serviceInstall, component, installerStrings);
         });
     componentId = GuidHelper::generate_guid();
     if (!files.empty()) {
@@ -77,4 +80,8 @@ std::vector<RemoveFile> Component::getRemoveFiles() const {
 
 std::vector<ServiceControl> Component::getServiceControls() const {
     return serviceControls;
+}
+
+std::vector<ServiceInstall> Component::getServiceInstalls() const {
+    return serviceInstalls;
 }

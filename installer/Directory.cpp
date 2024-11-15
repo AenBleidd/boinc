@@ -19,15 +19,15 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Directory::Directory(const nlohmann::json& json, const std::string& parent) : parent(parent) {
+Directory::Directory(const nlohmann::json& json, const std::string& parent, const InstallerStrings& installerStrings) : parent(parent) {
     JsonHelper::get(json, "Directory", directory);
     JsonHelper::get(json, "DefaultDir", default);
     JsonHelper::handle(json, "Directories", [&](const auto& dir) {
-        directories.emplace_back(dir, directory);
+        directories.emplace_back(dir, directory, installerStrings);
         });
 
     JsonHelper::handle(json, "Components", [&](const auto& comp) {
-        components.emplace_back(comp, directory, parent);
+        components.emplace_back(comp, directory, parent, installerStrings);
         });
 }
 

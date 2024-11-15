@@ -26,10 +26,12 @@
 #include "Registry.h"
 #include "RemoveFile.h"
 #include "ServiceControl.h"
+#include "ServiceInstall.h"
+#include "InstallerStrings.h"
 
 class Component : public Record {
 public:
-    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent);
+    explicit Component(const nlohmann::json& json, const std::string& directory, const std::string& parent, const InstallerStrings& installerStrings);
     ~Component() = default;
     MSIHANDLE getRecord() const override;
     FeatureComponents getFeatureComponent() const;
@@ -38,6 +40,7 @@ public:
     std::vector<Registry> getRegistries() const;
     std::vector<RemoveFile> getRemoveFiles() const;
     std::vector<ServiceControl> getServiceControls() const;
+    std::vector<ServiceInstall> getServiceInstalls() const;
 private:
     std::string component{};
     std::string componentId{};
@@ -51,4 +54,5 @@ private:
     std::vector<Registry> registries{};
     std::vector<RemoveFile> removeFiles{};
     std::vector<ServiceControl> serviceControls{};
+    std::vector<ServiceInstall> serviceInstalls{};
 };

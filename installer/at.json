@@ -1,10 +1,16 @@
 [
     {
-        "ServiceControl": "BOINC",
+        "ServiceInstall": "NewServiceInstall1",
         "Name": "BOINC",
-        "Event": "128",
-        "Arguments": null,
-        "Wait": null,
-        "Component_": "BOINCServiceConfig"
+        "DisplayName": "IDS_FEATURE_BOINC_NAME",
+        "ServiceType": 16,
+        "StartType": 2,
+        "ErrorControl": 1,
+        "Dependencies": "RpcSs[~][~]",
+        "StartName": "[BOINC_MASTER_ISUSERNAME]",
+        "Password": "[BOINC_MASTER_PASSWORD]",
+        "Arguments": "-daemon",
+        "Component_": "BOINCServiceConfig",
+        "Description": "IDS_FEATURE_BOINC_DESCRIPTION"
     }
 ]

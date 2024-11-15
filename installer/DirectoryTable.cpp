@@ -25,11 +25,12 @@
 #include "RegistryTable.h"
 #include "RemoveFileTable.h"
 #include "ServiceControlTable.h"
+#include "ServiceInstallTable.h"
 
-DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path) : root_path (root_path) {
+DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const InstallerStrings& installerStrings) : root_path (root_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
     for (const auto& directory : json) {
-        directories.emplace_back(directory, "");
+        directories.emplace_back(directory, "", installerStrings);
     }
 }
 
@@ -64,6 +65,10 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
     }
     if (!ServiceControlTable(directories).generate(hDatabase)) {
         std::cerr << "Failed to generate ServiceControlTable" << std::endl;
+        return false;
+    }
+    if (!ServiceInstallTable(directories).generate(hDatabase)) {
+        std::cerr << "Failed to generate ServiceInstallTable" << std::endl;
         return false;
     }
 
