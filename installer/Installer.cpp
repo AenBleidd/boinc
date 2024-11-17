@@ -40,6 +40,7 @@
 #include "TextStyleTable.h"
 #include "UITextTable.h"
 #include "ValidationTable.h"
+#include "UpgradeTable.h"
 
 #include "Installer.h"
 
@@ -125,6 +126,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (JsonHelper::exists(json, "UIText")) {
             tables["UIText"] = std::make_shared<UITextTable>(json["UIText"], installer_strings);
+        }
+        if (JsonHelper::exists(json, "Upgrade")) {
+            tables["Upgrade"] = std::make_shared<UpgradeTable>(json["Upgrade"]);
         }
     }
     catch (const std::exception& e) {

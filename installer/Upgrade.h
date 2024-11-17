@@ -15,14 +15,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <filesystem>
+#pragma once
 
-#include "Installer.h"
+#include <nlohmann/json.hpp>
+#include "Record.h"
 
-int main(int argc, char** argv) {
-    Installer installer;
-    if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
-        return 1;
-    }
-    return installer.create_msi(std::filesystem::current_path() / "boinc.msi") ? 0 : 1;
-}
+class Upgrade : public Record {
+public:
+    explicit Upgrade(const nlohmann::json& json);
+    ~Upgrade() = default;
+    MSIHANDLE getRecord() const override;
+private:
+    std::string upgradeCode{};
+    std::string versionMin{};
+    std::string versionMax{};
+    std::string language{};
+    int attributes = MSI_NULL_INTEGER;
+    std::string remove{};
+    std::string actionProperty{};
+};

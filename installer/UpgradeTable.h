@@ -15,14 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <filesystem>
+#pragma once
 
-#include "Installer.h"
+#include "Upgrade.h"
+#include "Generator.h"
 
-int main(int argc, char** argv) {
-    Installer installer;
-    if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
-        return 1;
-    }
-    return installer.create_msi(std::filesystem::current_path() / "boinc.msi") ? 0 : 1;
-}
+class UpgradeTable : public Generator<Upgrade> {
+public:
+    explicit UpgradeTable(const nlohmann::json& json);
+    ~UpgradeTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
+private:
+    std::vector<Upgrade> values{};
+};

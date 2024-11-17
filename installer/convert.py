@@ -3,21 +3,18 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="ServiceInstall">
-		<col key="yes" def="s72">ServiceInstall</col>
-		<col def="s255">Name</col>
-		<col def="L255">DisplayName</col>
-		<col def="i4">ServiceType</col>
-		<col def="i4">StartType</col>
-		<col def="i4">ErrorControl</col>
-		<col def="S255">LoadOrderGroup</col>
-		<col def="S255">Dependencies</col>
-		<col def="S255">StartName</col>
-		<col def="S255">Password</col>
-		<col def="S255">Arguments</col>
-		<col def="s72">Component_</col>
-		<col def="L255">Description</col>
-		<row><td>NewServiceInstall1</td><td>BOINC</td><td>##IDS_FEATURE_BOINC_NAME##</td><td>16</td><td>2</td><td>1</td><td/><td>RpcSs[~][~]</td><td>[BOINC_MASTER_ISUSERNAME]</td><td>[BOINC_MASTER_PASSWORD]</td><td>-daemon</td><td>BOINCServiceConfig</td><td>##IDS_FEATURE_BOINC_DESCRIPTION##</td></row>
+	<table name="Upgrade">
+		<col key="yes" def="s38">UpgradeCode</col>
+		<col key="yes" def="S20">VersionMin</col>
+		<col key="yes" def="S20">VersionMax</col>
+		<col key="yes" def="S255">Language</col>
+		<col key="yes" def="i4">Attributes</col>
+		<col def="S255">Remove</col>
+		<col def="s72">ActionProperty</col>
+		<col def="S72">ISDisplayName</col>
+		<row><td>{76DD37FC-EE51-408D-9FB5-3D59FC8ED22A}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ISACTIONPROP2</td><td>World Community Grid Upgrade (7.14.2)</td></row>
+		<row><td>{862B80F6-835D-4F72-8C4F-EE68ED34C6F8}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ISACTIONPROP1</td><td>World Community Grid Upgrade</td></row>
+		<row><td>{E913E54D-5080-42EC-A312-B21948BA1C02}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ACTPROP_E913E54D_5080_42EC_A312_B21948BA1C02</td><td>General Upgrade</td></row>
 	</table>
 '''
 
