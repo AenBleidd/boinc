@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "IconTable.h"
-#include "ValidationTable.h"
 
 IconTable::IconTable(const nlohmann::json& json, const std::filesystem::path& path) {
     std::cout << "Loading IconTable..." << std::endl;
@@ -31,14 +30,6 @@ bool IconTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `Icon` (`Name` CHAR(72) NOT NULL, `Data` OBJECT PRIMARY KEY `Name`)";
     const auto sql_insert = "INSERT INTO `Icon` (`Name`, `Data`) VALUES (?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Icon", "Name", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key. Name of the icon file.");
-    records.emplace_back("Icon", "Data", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Binary", "", "Binary stream. The binary icon data in PE (.DLL or .EXE) or icon (.ICO) format.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

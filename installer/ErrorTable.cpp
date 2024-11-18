@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ErrorTable.h"
-#include "ValidationTable.h"
 
 ErrorTable::ErrorTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading ErrorTable..." << std::endl;
@@ -31,14 +30,6 @@ bool ErrorTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `Error` (`Error` SHORT NOT NULL, `Message` LONGCHAR LOCALIZABLE PRIMARY KEY `Error`)";
     const auto sql_insert = "INSERT INTO `Error` (`Error`, `Message`) VALUES (?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Error", "Error", "N", 0, 32767, "", "", "", "", "Integer error number, obtained from header file IError(...) macros.");
-    records.emplace_back("Error", "Message", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Template", "", "Error formatting template, obtained from user ed. or localizers.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, errors);    
 }

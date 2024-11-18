@@ -17,7 +17,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ServiceInstallTable.h"
-#include "ValidationTable.h"
 
 ServiceInstallTable::ServiceInstallTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
@@ -38,25 +37,6 @@ bool ServiceInstallTable::generate(MSIHANDLE hDatabase) {
         "PRIMARY KEY `ServiceInstall`)";
     const auto sql_insert = "INSERT INTO `ServiceInstall` (`ServiceInstall`, `Name`, `DisplayName`, `ServiceType`, `StartType`, `ErrorControl`, `LoadOrderGroup`, "
         "`Dependencies`, `StartName`, `Password`, `Arguments`, `Component_`, `Description`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("ServiceInstall", "ServiceInstall", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key, non-localized token.");
-    records.emplace_back("ServiceInstall", "Name", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Internal Name of the Service");
-    records.emplace_back("ServiceInstall", "DisplayName", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "External Name of the Service");
-    records.emplace_back("ServiceInstall", "ServiceType", "N", -2147483647, 2147483647, "", "", "", "", "Type of the service");
-    records.emplace_back("ServiceInstall", "StartType", "N", 0, 4, "", "", "", "", "Type of the service");
-    records.emplace_back("ServiceInstall", "ErrorControl", "N", -2147483647, 2147483647, "", "", "", "", "Severity of error if service fails to start");
-    records.emplace_back("ServiceInstall", "LoadOrderGroup", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Group name that must start before this service");
-    records.emplace_back("ServiceInstall", "Dependencies", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Other services this depends on to start.  Separate by [~], and end with [~][~]");
-    records.emplace_back("ServiceInstall", "StartName", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "User or object name to run service as");
-    records.emplace_back("ServiceInstall", "Password", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Password to run service with. (with StartName)");
-    records.emplace_back("ServiceInstall", "Arguments", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Arguments to include in every start of the service, passed to WinMain");
-    records.emplace_back("ServiceInstall", "Component_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Component", "1", "Identifier", "", "Required foreign key into the Component Table that controls the startup of the service");
-    records.emplace_back("ServiceInstall", "Description", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "Description of service.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

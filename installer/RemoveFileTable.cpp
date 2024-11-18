@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RemoveFileTable.h"
-#include "ValidationTable.h"
 
 RemoveFileTable::RemoveFileTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
@@ -33,17 +32,6 @@ bool RemoveFileTable::generate(MSIHANDLE hDatabase) {
     const auto sql_create = "CREATE TABLE `RemoveFile` (`FileKey` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, `FileName` CHAR(255) LOCALIZABLE, "
         "`DirProperty` CHAR(72) NOT NULL, `InstallMode` SHORT NOT NULL PRIMARY KEY `FileKey`)";
     const auto sql_insert = "INSERT INTO `RemoveFile` (`FileKey`, `Component_`, `FileName`, `DirProperty`, `InstallMode`) VALUES (?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("RemoveFile", "FileKey", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key used to identify a particular file entry");
-    records.emplace_back("RemoveFile", "Component_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Component", "1", "Identifier", "", "Foreign key referencing Component that controls the file to be removed.");
-    records.emplace_back("RemoveFile", "FileName", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "WildCardFilename", "", "Name of the file to be removed.");
-    records.emplace_back("RemoveFile", "DirProperty", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Name of a property whose value is assumed to resolve to the full pathname to the folder of the file to be removed.");
-    records.emplace_back("RemoveFile", "InstallMode", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "", "1;2;3", "Installation option, one of iimEnum.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

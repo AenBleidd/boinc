@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "FontTable.h"
-#include "ValidationTable.h"
 
 FontTable::FontTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
@@ -35,14 +34,6 @@ bool FontTable::generate(MSIHANDLE database) {
 
     const auto sql_create = "CREATE TABLE `Font` (`File_` CHAR(72) NOT NULL, `FontTitle` CHAR(128) PRIMARY KEY `File_`)";
     const auto sql_insert = "INSERT INTO `Font` (`File_`, `FontTitle`) VALUES (?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Font", "File_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "File", "1", "Identifier", "", "Primary key, foreign key into File table referencing font file.");
-    records.emplace_back("Font", "FontTitle", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "Font name.");
-
-    if (!ValidationTable().insert(database, records)) {
-        return false;
-    }
 
     return Generator::generate(database, sql_create, sql_insert, fonts);
 }

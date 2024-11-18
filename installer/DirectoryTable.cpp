@@ -20,7 +20,6 @@
 #include "FeatureComponentsTable.h"
 #include "CreateFolderTable.h"
 #include "FileTable.h"
-#include "ValidationTable.h"
 #include "FontTable.h"
 #include "RegistryTable.h"
 #include "RemoveFileTable.h"
@@ -88,15 +87,6 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `Directory` (`Directory` CHAR(72) NOT NULL, `Directory_Parent` CHAR(72), `DefaultDir` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Directory`)";
     const auto sql_insert = "INSERT INTO `Directory` (`Directory`, `Directory_Parent`, `DefaultDir`) VALUES (?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Directory", "Directory", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Unique identifier for directory entry, primary key. If a property by this name is defined, it contains the full path to the directory.");
-    records.emplace_back("Directory", "Directory_Parent", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Directory", "1", "Identifier", "", "Reference to the entry in this table specifying the default parent directory. A record parented to itself or with a Null parent represents a root of the install tree.");
-    records.emplace_back("Directory", "DefaultDir", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "DefaultDir", "", "The default sub-path under parent's path.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, all);
 }

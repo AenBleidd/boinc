@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "UpgradeTable.h"
-#include "ValidationTable.h"
 
 UpgradeTable::UpgradeTable(const nlohmann::json& json) {
     std::cout << "Loading UpgradeTable..." << std::endl;
@@ -32,19 +31,6 @@ bool UpgradeTable::generate(MSIHANDLE hDatabase) {
     const auto sql_create = "CREATE TABLE `Upgrade` (`UpgradeCode` CHAR(38) NOT NULL, `VersionMin` CHAR(20), `VersionMax` CHAR(20), `Language` CHAR(255), "
         "`Attributes` LONG NOT NULL, `Remove` CHAR(255), `ActionProperty` CHAR(72) NOT NULL PRIMARY KEY `UpgradeCode`, `VersionMin`, `VersionMax`, `Language`, `Attributes`)";
     const auto sql_insert = "INSERT INTO `Upgrade` (`UpgradeCode`, `VersionMin`, `VersionMax`, `Language`, `Attributes`, `Remove`, `ActionProperty`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Upgrade", "UpgradeCode", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Guid", "", "The UpgradeCode GUID belonging to the products in this set.");
-    records.emplace_back("Upgrade", "VersionMin", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "The minimum ProductVersion of the products in this set. The set may or may not include products with this particular version.");
-    records.emplace_back("Upgrade", "VersionMax", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "The maximum ProductVersion of the products in this set. The set may or may not include products with this particular version.");
-    records.emplace_back("Upgrade", "Language", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Language", "", "A comma-separated list of languages for either products in this set or products not in this set.");
-    records.emplace_back("Upgrade", "Attributes", "N", 0, 2147483647, "", "", "", "", "The attributes of this product set.");
-    records.emplace_back("Upgrade", "Remove", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "The list of features to remove when uninstalling a product from this set.  The default is \"ALL\".");
-    records.emplace_back("Upgrade", "ActionProperty", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "UpperCase", "", "The property to set when a product in this set is found.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

@@ -20,7 +20,6 @@
 #include "ControlConditionTable.h"
 #include "ControlEventTable.h"
 #include "EventMappingTable.h"
-#include "ValidationTable.h"
 #include "ControlTable.h"
 
 ControlTable::ControlTable(const std::vector<Dialog>& dialogs) noexcept : dialogs(dialogs) {}
@@ -54,24 +53,6 @@ bool ControlTable::generate(MSIHANDLE hDatabase)
         "`Control_Next` CHAR(50), `Help` CHAR(50) LOCALIZABLE PRIMARY KEY `Dialog_`, `Control`)";
     const auto insert_sql = "INSERT INTO `Control` (`Dialog_`, `Control`, `Type`, `X`, `Y`, `Width`, `Height`, `Attributes`, `Property`, `Text`, `Control_Next`, `Help`) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Control", "Dialog_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Dialog", "1", "Identifier", "", "External key to the Dialog table, name of the dialog.");
-    records.emplace_back("Control", "Control", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Name of the control. This name must be unique within a dialog, but can repeat on different dialogs. ");
-    records.emplace_back("Control", "Type", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "The type of the control.");
-    records.emplace_back("Control", "X", "N", 0, 32767, "", "", "", "", "Horizontal coordinate of the upper left corner of the bounding rectangle of the control.");
-    records.emplace_back("Control", "Y", "N", 0, 32767, "", "", "", "", "Vertical coordinate of the upper left corner of the bounding rectangle of the control.");
-    records.emplace_back("Control", "Width", "N", 0, 32767, "", "", "", "", "Width of the bounding rectangle of the control.");
-    records.emplace_back("Control", "Height", "N", 0, 32767, "", "", "", "", "Height of the bounding rectangle of the control.");
-    records.emplace_back("Control", "Attributes", "Y", 0, 2147483647, "", "", "", "", "A 32-bit word that specifies the attribute flags to be applied to this control.");
-    records.emplace_back("Control", "Property", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "The name of a defined property to be linked to this control. ");
-    records.emplace_back("Control", "Text", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "A string used to set the initial text contained within a control (if appropriate).");
-    records.emplace_back("Control", "Control_Next", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Control", "2", "Identifier", "", "The name of an other control on the same dialog. This link defines the tab order of the controls. The links have to form one or more cycles!");
-    records.emplace_back("Control", "Help", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Text", "", "The help strings used with the button. The text is optional.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, create_sql, insert_sql, controls);
 }

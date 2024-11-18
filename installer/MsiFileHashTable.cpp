@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "MsiFileHashTable.h"
-#include "ValidationTable.h"
 
 MsiFileHashTable::MsiFileHashTable(const std::vector<File>& files) {
     for (const auto& file : files) {
@@ -35,18 +34,6 @@ bool MsiFileHashTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `MsiFileHash` (`File_` CHAR(72) NOT NULL, `Options` SHORT NOT NULL, `HashPart1` LONG NOT NULL, `HashPart2` LONG NOT NULL, `HashPart3` LONG NOT NULL, `HashPart4` LONG NOT NULL PRIMARY KEY `File_`)";
     const auto sql_insert = "INSERT INTO `MsiFileHash` (`File_`, `Options`, `HashPart1`, `HashPart2`, `HashPart3`, `HashPart4`) VALUES (?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("MsiFileHash", "File_", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "File", "1", "Identifier", "", "Primary key, foreign key into File table referencing file with this hash");
-    records.emplace_back("MsiFileHash", "Options", "N", 0, 32767, "", "", "", "", "Various options and attributes for this hash.");
-    records.emplace_back("MsiFileHash", "HashPart1", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "", "", "First part of the hash.");
-    records.emplace_back("MsiFileHash", "HashPart2", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "", "", "Second part of the hash.");
-    records.emplace_back("MsiFileHash", "HashPart3", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "", "", "Third part of the hash.");
-    records.emplace_back("MsiFileHash", "HashPart4", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "", "", "Fourth part of the hash.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, msiFileHashes);
 }

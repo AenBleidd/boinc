@@ -5807,7 +5807,34 @@
                                                 {
                                                     "Feature_": "BOINCManager",
                                                     "Component": "_BOINCManagerSkin",
-                                                    "Attributes": 256
+                                                    "Attributes": 256,
+                                                    "Files": [
+                                                        {
+                                                            "File": "DEFAULT_skin.xml",
+                                                            "FileName": "skin.xml",
+                                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\skins\\\\Default\\skin.xml"
+                                                        },
+                                                        {
+                                                            "File": "DEFAULT_background_image.png",
+                                                            "FileName": "background_image.png",
+                                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\skins\\\\Default\\background_image.png"
+                                                        },
+                                                        {
+                                                            "File": "DEFAULT_workunit_running_image.png",
+                                                            "FileName": "workunit_running_image.png",
+                                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\skins\\\\Default\\workunit_running_image.png"
+                                                        },
+                                                        {
+                                                            "File": "DEFAULT_workunit_suspended_image.png",
+                                                            "FileName": "workunit_suspended_image.png",
+                                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\skins\\\\Default\\workunit_suspended_image.png"
+                                                        },
+                                                        {
+                                                            "File": "DEFAULT_workunit_waiting_image.png",
+                                                            "FileName": "workunit_waiting_image.png",
+                                                            "FilePath": "..\\win_build\\Build\\%%PLATFORM%%\\%%CONFIGURATION%%\\skins\\\\Default\\workunit_waiting_image.png"
+                                                        }
+                                                    ]
                                                 }
                                             ]
                                         }

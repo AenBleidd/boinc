@@ -99,8 +99,6 @@
     <ClCompile Include="..\installer\EventMappingTable.cpp" />
     <ClCompile Include="..\installer\Upgrade.cpp" />
     <ClCompile Include="..\installer\UpgradeTable.cpp" />
-    <ClCompile Include="..\installer\Validation.cpp" />
-    <ClCompile Include="..\installer\ValidationTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\installer\Action.h" />
@@ -182,8 +180,6 @@
     <ClInclude Include="..\installer\EventMappingTable.h" />
     <ClInclude Include="..\installer\Upgrade.h" />
     <ClInclude Include="..\installer\UpgradeTable.h" />
-    <ClInclude Include="..\installer\Validation.h" />
-    <ClInclude Include="..\installer\ValidationTable.h" />
     <ClInclude Include="..\installer\JsonHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

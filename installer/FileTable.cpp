@@ -22,7 +22,6 @@
 #include "StreamTable.h"
 #include "MediaTable.h"
 #include "MsiFileHashTable.h"
-#include "ValidationTable.h"
 
 int FileTable::GetFileLanguage(const std::string& filePath) {
     DWORD handle;
@@ -175,20 +174,6 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `File` (`File` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, `FileName` CHAR(255) NOT NULL LOCALIZABLE, `FileSize` LONG NOT NULL, `Version` CHAR(72), `Language` CHAR(20), `Attributes` SHORT, `Sequence` SHORT NOT NULL PRIMARY KEY `File`)";
     const auto sql_insert = "INSERT INTO `File` (`File`, `Component_`, `FileName`, `FileSize`, `Version`, `Language`, `Attributes`, `Sequence`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("File", "File", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key, non-localized token, must match identifier in cabinet.  For uncompressed files, this field is ignored.");
-    records.emplace_back("File", "Component_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Component", "1", "Identifier", "", "Foreign key referencing Component that controls the file.");
-    records.emplace_back("File", "FileName", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Filename", "", "File name used for installation, may be localized.  This may contain a \"short name | long name\" pair.");
-    records.emplace_back("File", "FileSize", "N", 0, 2147483647, "", "", "", "", "Size of file in bytes (long integer).");
-    records.emplace_back("File", "Version", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "File", "1", "Version", "", "Version string for versioned files;  Blank for unversioned files.");
-    records.emplace_back("File", "Language", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Language", "", "List of decimal language Ids, comma-separated if more than one.");
-    records.emplace_back("File", "Attributes", "Y", 0, 32767, "", "", "", "", "Integer containing bit flags representing file attributes (with the decimal value of each bit position in parentheses)");
-    records.emplace_back("File", "Sequence", "N", 0, 32767, "", "", "", "", "Sequence with respect to the media images; order must track cabinet order.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, files);
 }

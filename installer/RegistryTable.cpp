@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RegistryTable.h"
-#include "ValidationTable.h"
 
 RegistryTable::RegistryTable(const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
@@ -34,18 +33,6 @@ bool RegistryTable::generate(MSIHANDLE hDatabase) {
     const auto sql_create = "CREATE TABLE `Registry` (`Registry` CHAR(72) NOT NULL, `Root` SHORT NOT NULL, `Key` CHAR(255) NOT NULL LOCALIZABLE, "
         "`Name` CHAR(255) LOCALIZABLE, `Value` LONGCHAR LOCALIZABLE, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Registry`)";
     const auto sql_insert = "INSERT INTO `Registry` (`Registry`, `Root`, `Key`, `Name`, `Value`, `Component_`) VALUES (?, ?, ?, ?, ?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Registry", "Registry", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "Primary key, non-localized token.");
-    records.emplace_back("Registry", "Root", "N", -1, 3, "", "", "", "", "The predefined root key for the registry value, one of rrkEnum.");
-    records.emplace_back("Registry", "Key", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "RegPath", "", "The key for the registry value.");
-    records.emplace_back("Registry", "Name", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "The registry value name.");
-    records.emplace_back("Registry", "Value", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "The registry value.");
-    records.emplace_back("Registry", "Component_", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "Component", "1", "Identifier", "", "Foreign key into the Component table referencing component that controls the installing of the registry value.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, registries);
 }

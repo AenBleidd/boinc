@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LaunchConditionTable.h"
-#include "ValidationTable.h"
 
 LaunchConditionTable::LaunchConditionTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
     std::cout << "Loading LaunchConditionTable..." << std::endl;
@@ -31,14 +30,6 @@ bool LaunchConditionTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `LaunchCondition` (`Condition` CHAR(255) NOT NULL, `Description` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Condition`)";
     const auto sql_insert = "INSERT INTO `LaunchCondition` (`Condition`, `Description`) VALUES (?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("LaunchCondition", "Condition", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Condition", "", "Expression which must evaluate to TRUE in order for install to commence.");
-    records.emplace_back("LaunchCondition", "Description", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "Localizable text to display when condition fails and install must abort.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, launchConditions);
 }

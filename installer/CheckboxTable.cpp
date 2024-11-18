@@ -16,7 +16,6 @@
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CheckboxTable.h"
-#include "ValidationTable.h"
 
 CheckboxTable::CheckboxTable(const nlohmann::json& json) {
     std::cout << "Loading CheckboxTable..." << std::endl;
@@ -30,14 +29,6 @@ bool CheckboxTable::generate(MSIHANDLE hDatabase) {
 
     const auto sql_create = "CREATE TABLE `Checkbox` (`Property` CHAR(72) NOT NULL, `Value` CHAR(64) PRIMARY KEY `Property`)";
     const auto sql_insert = "INSERT INTO `Checkbox` (`Property`, `Value`) VALUES (?, ?)";
-
-    std::vector<Validation> records;
-    records.emplace_back("Checkbox", "Property", "N", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Identifier", "", "A named property to be tied to the item.");
-    records.emplace_back("Checkbox", "Value", "Y", MSI_NULL_INTEGER, MSI_NULL_INTEGER, "", "", "Formatted", "", "The visible text to be assigned to the item. Optional. If this entry or the entire column is missing, the text is the same as the value.");
-
-    if (!ValidationTable().insert(hDatabase, records)) {
-        return false;
-    }
 
     return Generator::generate(hDatabase, sql_create, sql_insert, properties);
 }
