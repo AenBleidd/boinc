@@ -32,6 +32,7 @@
 #include "DirectoryTable.h"
 #include "ErrorTable.h"
 #include "FeatureTable.h"
+#include "IconTable.h"
 #include "InstallExecuteSequenceTable.h"
 #include "InstallUISequenceTable.h"
 #include "LaunchConditionTable.h"
@@ -105,6 +106,9 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
         }
         if (JsonHelper::exists(json, "Feature")) {
             tables["Feature"] = std::make_shared<FeatureTable>(json["Feature"], installer_strings);
+        }
+        if (JsonHelper::exists(json, "Icon")) {
+            tables["Icon"] = std::make_shared<IconTable>(json["Icon"], path);
         }
         if (JsonHelper::exists(json, "InstallExecuteSequence")) {
             tables["InstallExecuteSequence"] = std::make_shared<InstallExecuteSequenceTable>(json["InstallExecuteSequence"]);

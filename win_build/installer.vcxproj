@@ -59,6 +59,8 @@
     <ClCompile Include="..\installer\Font.cpp" />
     <ClCompile Include="..\installer\FontTable.cpp" />
     <ClCompile Include="..\installer\GuidHelper.cpp" />
+    <ClCompile Include="..\installer\Icon.cpp" />
+    <ClCompile Include="..\installer\IconTable.cpp" />
     <ClCompile Include="..\installer\Installer.cpp" />
     <ClCompile Include="..\installer\InstallerStrings.cpp" />
     <ClCompile Include="..\installer\InstallExecuteSequenceTable.cpp" />
@@ -138,6 +140,8 @@
     <ClInclude Include="..\installer\Generator.h" />
     <ClInclude Include="..\installer\GeneratorTable.h" />
     <ClInclude Include="..\installer\GuidHelper.h" />
+    <ClInclude Include="..\installer\Icon.h" />
+    <ClInclude Include="..\installer\IconTable.h" />
     <ClInclude Include="..\installer\Installer.h" />
     <ClInclude Include="..\installer\InstallerStrings.h" />
     <ClInclude Include="..\installer\InstallExecuteSequenceTable.h" />
