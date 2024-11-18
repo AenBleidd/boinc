@@ -186,4 +186,7 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <Import Project="boinc_signing.targets" />
+  <Target Name="BuildMsi" DependsOnTargets="Build" AfterTargets="Build" BeforeTargets="Signing">
+    <Exec Command="$(OutDir)$(ProjectName).exe" WorkingDirectory="$(MSBuildThisFileDirectory)" ConsoleToMSBuild="true" />
+  </Target>
 </Project>

@@ -30,5 +30,6 @@ Upgrade::Upgrade(const nlohmann::json& json) {
 }
 
 MSIHANDLE Upgrade::getRecord() const {
-    return MsiHelper::MsiRecordSet({ upgradeCode, versionMin, versionMax, language, attributes, remove, actionProperty });
+    return MsiHelper::MsiRecordSet({ upgradeCode, versionMin, versionMax,
+        language, attributes, remove, actionProperty });
 }

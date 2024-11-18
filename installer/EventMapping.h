@@ -23,7 +23,8 @@
 
 class EventMapping : public Record {
 public:
-    explicit EventMapping(const nlohmann::json& json, const std::string& dialog, const std::string& control);
+    explicit EventMapping(const nlohmann::json& json,
+        const std::string& dialog, const std::string& control);
     ~EventMapping() = default;
     MSIHANDLE getRecord() const override;
 private:

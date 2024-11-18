@@ -23,7 +23,8 @@
 #include "GuidHelper.h"
 #include "SummaryInformationTable.h"
 
-SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json, const InstallerStrings& installerStrings)
+SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings)
 {
     std::cout << "Loading SummaryInformationTable..." << std::endl;
 
@@ -32,11 +33,15 @@ SummaryInformationTable::SummaryInformationTable(const nlohmann::json& json, con
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
     summary[1] = JsonHelper::get<int>(json, "codepage");
-    summary[2] = JsonHelper::get<std::string>(json, "title", installerStrings);
-    summary[3] = JsonHelper::get<std::string>(json, "subject", installerStrings);
-    summary[4] = JsonHelper::get<std::string>(json, "author", installerStrings);
+    summary[2] =
+        JsonHelper::get<std::string>(json, "title", installerStrings);
+    summary[3] =
+        JsonHelper::get<std::string>(json, "subject", installerStrings);
+    summary[4] =
+        JsonHelper::get<std::string>(json, "author", installerStrings);
     summary[5] = JsonHelper::get<std::string>(json, "keywords");
-    summary[6] = JsonHelper::get<std::string>(json, "comments", installerStrings);
+    summary[6] =
+        JsonHelper::get<std::string>(json, "comments", installerStrings);
     summary[7] = JsonHelper::get<std::string>(json, "template");
     summary[8] = JsonHelper::get<std::string>(json, "lastauthor");
     summary[9] = GuidHelper::generate_guid();
@@ -56,9 +61,11 @@ bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
     MSIHANDLE hSummaryInfo;
     const auto updateCount = summary.size();
 
-    auto result = MsiGetSummaryInformation(hDatabase, nullptr, updateCount, &hSummaryInfo);
+    auto result =MsiGetSummaryInformation(hDatabase, nullptr, updateCount,
+        &hSummaryInfo);
     if (result != ERROR_SUCCESS) {
-        std::cerr << "MsiGetSummaryInformation failed: " << result << std::endl;
+        std::cerr << "MsiGetSummaryInformation failed: " << result
+            << std::endl;
         return false;
     }
 
@@ -66,13 +73,17 @@ bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
         try {
             std::cout << "Setting property " << id << std::endl;
             if (std::holds_alternative<int>(value)) {
-                result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_I4, std::get<int>(value), nullptr, nullptr);
+                result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_I4,
+                    std::get<int>(value), nullptr, nullptr);
             }
             else if (std::holds_alternative<FILETIME>(value)) {
-                result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_FILETIME, 0, std::get_if<FILETIME>(&value), nullptr);
+                result = MsiSummaryInfoSetProperty(hSummaryInfo, id,
+                    VT_FILETIME, 0, std::get_if<FILETIME>(&value), nullptr);
             }
             else {
-                result = MsiSummaryInfoSetProperty(hSummaryInfo, id, VT_LPSTR, 0, nullptr, std::get<std::string>(value).c_str());
+                result = MsiSummaryInfoSetProperty(hSummaryInfo, id,
+                    VT_LPSTR, 0, nullptr,
+                    std::get<std::string>(value).c_str());
             }
         }
         catch (const std::bad_variant_access& e) {
@@ -80,7 +91,8 @@ bool SummaryInformationTable::generate(MSIHANDLE hDatabase) {
             return false;
         }
         if (result != ERROR_SUCCESS) {
-            std::cerr << "MsiSummaryInfoSetProperty failed: " << result << std::endl;
+            std::cerr << "MsiSummaryInfoSetProperty failed: " << result
+                << std::endl;
             return false;
         }
     }

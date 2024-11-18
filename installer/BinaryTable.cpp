@@ -17,7 +17,8 @@
 
 #include "BinaryTable.h"
 
-BinaryTable::BinaryTable(const nlohmann::json& json, const std::filesystem::path& path) {
+BinaryTable::BinaryTable(const nlohmann::json& json,
+    const std::filesystem::path& path) {
     std::cout << "Loading BinaryTable..." << std::endl;
 
     for (const auto& element : json) {
@@ -28,8 +29,10 @@ BinaryTable::BinaryTable(const nlohmann::json& json, const std::filesystem::path
 bool BinaryTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating BinaryTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Binary` (`Name` CHAR(72) NOT NULL, `Data` OBJECT PRIMARY KEY `Name`)";
-    const auto sql_insert = "INSERT INTO `Binary` (`Name`, `Data`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Binary` (`Name` CHAR(72) NOT NULL, "
+        "`Data` OBJECT PRIMARY KEY `Name`)";
+    const auto sql_insert = "INSERT INTO `Binary` (`Name`, `Data`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, binaries);
 }

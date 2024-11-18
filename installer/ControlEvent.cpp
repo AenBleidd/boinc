@@ -19,7 +19,9 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-ControlEvent::ControlEvent(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
+ControlEvent::ControlEvent(const nlohmann::json& json,
+    const std::string& dialog, const std::string& control) :
+    dialog(dialog), control(control) {
     JsonHelper::get(json, "Event", event);
     JsonHelper::get(json, "Argument", argument);
     JsonHelper::get(json, "Condition", condition);
@@ -27,5 +29,6 @@ ControlEvent::ControlEvent(const nlohmann::json& json, const std::string& dialog
 }
 
 MSIHANDLE ControlEvent::getRecord() const {
-    return MsiHelper::MsiRecordSet({ dialog, control, event, argument, condition, ordering });
+    return MsiHelper::MsiRecordSet({ dialog, control, event, argument,
+        condition, ordering });
 }

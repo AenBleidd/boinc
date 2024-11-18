@@ -28,8 +28,11 @@ InstallUISequenceTable::InstallUISequenceTable(const nlohmann::json& json) {
 bool InstallUISequenceTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating InstallUISequenceTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `InstallUISequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
-    const auto sql_insert = "INSERT INTO `InstallUISequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `InstallUISequence` "
+        "(`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), "
+        "`Sequence` SHORT PRIMARY KEY `Action`)";
+    const auto sql_insert = "INSERT INTO `InstallUISequence` "
+        "(`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

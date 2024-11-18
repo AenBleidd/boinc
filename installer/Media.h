@@ -21,7 +21,9 @@
 
 class Media : public Record {
 public:
-    explicit Media(int diskId, int lastSequence, const std::string& diskPromt, const std::string& cabinet, const std::string& volumeLabel, const std::string& source);
+    explicit Media(int diskId, int lastSequence, const std::string& diskPromt,
+        const std::string& cabinet, const std::string& volumeLabel,
+        const std::string& source);
     ~Media() = default;
     MSIHANDLE getRecord() const override;
 private:

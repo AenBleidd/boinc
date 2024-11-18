@@ -19,7 +19,8 @@
 #include "JsonHelper.h"
 #include "MsiHelper.h"
 
-RemoveFile::RemoveFile(const nlohmann::json& json, const std::string& component) : component(component) {
+RemoveFile::RemoveFile(const nlohmann::json& json,
+    const std::string& component) : component(component) {
     JsonHelper::get(json, "FileKey", fileKey);
     JsonHelper::get(json, "FileName", fileName);
     JsonHelper::get(json, "DirProperty", dirProperty);
@@ -27,5 +28,6 @@ RemoveFile::RemoveFile(const nlohmann::json& json, const std::string& component)
 }
 
 MSIHANDLE RemoveFile::getRecord() const {
-    return MsiHelper::MsiRecordSet({ fileKey, component, fileName, dirProperty, installMode });
+    return MsiHelper::MsiRecordSet({ fileKey, component, fileName, dirProperty,
+        installMode });
 }

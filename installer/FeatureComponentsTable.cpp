@@ -17,7 +17,8 @@
 
 #include "FeatureComponentsTable.h"
 
-FeatureComponentsTable::FeatureComponentsTable(const std::vector<Directory>& directories) {
+FeatureComponentsTable::FeatureComponentsTable(
+    const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
             featureComponents.emplace_back(component.getFeatureComponent());
@@ -28,8 +29,12 @@ FeatureComponentsTable::FeatureComponentsTable(const std::vector<Directory>& dir
 bool FeatureComponentsTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating FeatureComponentsTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `FeatureComponents` (`Feature_` CHAR(38) NOT NULL, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Feature_`, `Component_`)";
-    const auto sql_insert = "INSERT INTO `FeatureComponents` (`Feature_`, `Component_`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `FeatureComponents` "
+        "(`Feature_` CHAR(38) NOT NULL, `Component_` CHAR(72) NOT NULL "
+        "PRIMARY KEY `Feature_`, `Component_`)";
+    const auto sql_insert = "INSERT INTO `FeatureComponents` "
+        "(`Feature_`, `Component_`) VALUES (?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, featureComponents);
+    return Generator::generate(hDatabase, sql_create, sql_insert,
+        featureComponents);
 }

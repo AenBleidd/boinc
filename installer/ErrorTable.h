@@ -23,7 +23,8 @@
 
 class ErrorTable : public Generator<Error> {
 public:
-    explicit ErrorTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit ErrorTable(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~ErrorTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:

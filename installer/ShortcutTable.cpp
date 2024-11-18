@@ -30,13 +30,23 @@ ShortcutTable::ShortcutTable(const std::vector<Directory>& directories) {
 bool ShortcutTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ShortcutTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Shortcut` (`Shortcut` CHAR(72) NOT NULL, `Directory_` CHAR(72) NOT NULL, `Name` CHAR(128) NOT NULL LOCALIZABLE, "
-        "`Component_` CHAR(72) NOT NULL, `Target` CHAR(255) NOT NULL, `Arguments` CHAR(255), `Description` CHAR(255) LOCALIZABLE, `Hotkey` SHORT, "
-        "`Icon_` CHAR(72), `IconIndex` SHORT, `ShowCmd` SHORT, `WkDir` CHAR(72) NOT NULL, `DisplayResourceDll` CHAR(255), `DisplayResourceId` SHORT, "
-        "`DescriptionResourceDll` CHAR(255), `DescriptionResourceId` SHORT PRIMARY KEY `Shortcut`)";
+    const auto sql_create = "CREATE TABLE `Shortcut` "
+        "(`Shortcut` CHAR(72) NOT NULL, `Directory_` CHAR(72) NOT NULL, "
+        "`Name` CHAR(128) NOT NULL LOCALIZABLE, "
+        "`Component_` CHAR(72) NOT NULL, `Target` CHAR(255) NOT NULL, "
+        "`Arguments` CHAR(255), `Description` CHAR(255) LOCALIZABLE, "
+        "`Hotkey` SHORT, `Icon_` CHAR(72), `IconIndex` SHORT, "
+        "`ShowCmd` SHORT, `WkDir` CHAR(72) NOT NULL, "
+        "`DisplayResourceDll` CHAR(255), `DisplayResourceId` SHORT, "
+        "`DescriptionResourceDll` CHAR(255), `DescriptionResourceId` SHORT "
+        "PRIMARY KEY `Shortcut`)";
 
-    const auto sql_insert = "INSERT INTO `Shortcut` (`Shortcut`, `Directory_`, `Name`, `Component_`, `Target`, `Arguments`, `Description`, `Hotkey`, `Icon_`, "
-        "`IconIndex`, `ShowCmd`, `WkDir`, `DisplayResourceDll`, `DisplayResourceId`, `DescriptionResourceDll`, `DescriptionResourceId`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const auto sql_insert = "INSERT INTO `Shortcut` (`Shortcut`, "
+        "`Directory_`, `Name`, `Component_`, `Target`, `Arguments`, "
+        "`Description`, `Hotkey`, `Icon_`, `IconIndex`, `ShowCmd`, `WkDir`, "
+        "`DisplayResourceDll`, `DisplayResourceId`, `DescriptionResourceDll`, "
+        "`DescriptionResourceId`) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

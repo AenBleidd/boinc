@@ -32,8 +32,10 @@ FontTable::FontTable(const std::vector<Directory>& directories) {
 bool FontTable::generate(MSIHANDLE database) {
     std::cout << "Generating FontTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Font` (`File_` CHAR(72) NOT NULL, `FontTitle` CHAR(128) PRIMARY KEY `File_`)";
-    const auto sql_insert = "INSERT INTO `Font` (`File_`, `FontTitle`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Font` (`File_` CHAR(72) NOT NULL, "
+        "`FontTitle` CHAR(128) PRIMARY KEY `File_`)";
+    const auto sql_insert = "INSERT INTO `Font` (`File_`, `FontTitle`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(database, sql_create, sql_insert, fonts);
 }

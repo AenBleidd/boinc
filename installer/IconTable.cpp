@@ -17,7 +17,8 @@
 
 #include "IconTable.h"
 
-IconTable::IconTable(const nlohmann::json& json, const std::filesystem::path& path) {
+IconTable::IconTable(const nlohmann::json& json,
+    const std::filesystem::path& path) {
     std::cout << "Loading IconTable..." << std::endl;
 
     for (const auto& item : json) {
@@ -28,8 +29,10 @@ IconTable::IconTable(const nlohmann::json& json, const std::filesystem::path& pa
 bool IconTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating IconTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Icon` (`Name` CHAR(72) NOT NULL, `Data` OBJECT PRIMARY KEY `Name`)";
-    const auto sql_insert = "INSERT INTO `Icon` (`Name`, `Data`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Icon` (`Name` CHAR(72) NOT NULL, "
+        "`Data` OBJECT PRIMARY KEY `Name`)";
+    const auto sql_insert = "INSERT INTO `Icon` (`Name`, `Data`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

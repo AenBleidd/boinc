@@ -21,7 +21,8 @@
 
 class MsiFileHash : public Record {
 public:
-    explicit MsiFileHash(const std::string& file, int hashPart1, int hashPart2, int hashPart3, int hashPart4);
+    explicit MsiFileHash(const std::string& file, int hashPart1, int hashPart2,
+        int hashPart3, int hashPart4);
     ~MsiFileHash() = default;
     MSIHANDLE getRecord() const override;
 private:

@@ -28,9 +28,14 @@ ComponentTable::ComponentTable(const std::vector<Directory>& directories) {
 bool ComponentTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ComponentTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Component` (`Component` CHAR(72) NOT NULL, `ComponentId` CHAR(38), `Directory_` CHAR(72) NOT NULL, "
-        "`Attributes` SHORT NOT NULL, `Condition` CHAR(255), KeyPath CHAR(72) PRIMARY KEY `Component`)";
-    const auto sql_insert = "INSERT INTO `Component` (`Component`, `ComponentId`, `Directory_`, `Attributes`, `Condition`, `KeyPath`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Component` "
+        "(`Component` CHAR(72) NOT NULL, `ComponentId` CHAR(38), "
+        "`Directory_` CHAR(72) NOT NULL, "
+        "`Attributes` SHORT NOT NULL, `Condition` CHAR(255), KeyPath CHAR(72) "
+        "PRIMARY KEY `Component`)";
+    const auto sql_insert = "INSERT INTO `Component` (`Component`, "
+        "`ComponentId`, `Directory_`, `Attributes`, `Condition`, `KeyPath`) "
+        "VALUES (?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, components);
 }

@@ -27,8 +27,13 @@ CustomActionTable::CustomActionTable(const nlohmann::json& json) {
 bool CustomActionTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating CustomActionTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `CustomAction` (`Action` CHAR(72) NOT NULL, `Type` SHORT NOT NULL, `Source` CHAR(64), `Target` CHAR(255), `ExtendedType` LONG PRIMARY KEY `Action`)";
-    const auto sql_insert = "INSERT INTO `CustomAction` (`Action`, `Type`, `Source`, `Target`, `ExtendedType`) VALUES (?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `CustomAction` "
+        "(`Action` CHAR(72) NOT NULL, `Type` SHORT NOT NULL, "
+        "`Source` CHAR(64), `Target` CHAR(255), `ExtendedType` LONG "
+        "PRIMARY KEY `Action`)";
+    const auto sql_insert = "INSERT INTO `CustomAction` (`Action`, `Type`, "
+        "`Source`, `Target`, `ExtendedType`) VALUES (?, ?, ?, ?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, customActions);
+    return Generator::generate(hDatabase, sql_create, sql_insert,
+        customActions);
 }

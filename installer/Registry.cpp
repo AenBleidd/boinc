@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Registry::Registry(const nlohmann::json& json, const std::string& component) : component(component) {
+Registry::Registry(const nlohmann::json& json, const std::string& component) :
+    component(component) {
     JsonHelper::get(json, "Registry", registry);
     JsonHelper::get(json, "Root", root);
     JsonHelper::get(json, "Key", key);
@@ -28,5 +29,6 @@ Registry::Registry(const nlohmann::json& json, const std::string& component) : c
 }
 
 MSIHANDLE Registry::getRecord() const {
-    return MsiHelper::MsiRecordSet({ registry, root, key, name, value, component });
+    return MsiHelper::MsiRecordSet({ registry, root, key, name, value,
+        component });
 }

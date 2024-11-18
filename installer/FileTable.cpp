@@ -41,7 +41,8 @@ int FileTable::GetFileLanguage(const std::string& filePath) {
     } *lpTranslate;
 
     UINT cbTranslate;
-    if (!VerQueryValue(buffer.data(), TEXT("\\VarFileInfo\\Translation"), reinterpret_cast<LPVOID*>(&lpTranslate), &cbTranslate)) {
+    if (!VerQueryValue(buffer.data(), TEXT("\\VarFileInfo\\Translation"),
+        reinterpret_cast<LPVOID*>(&lpTranslate), &cbTranslate)) {
         return 0;
     }
 
@@ -66,22 +67,26 @@ std::string FileTable::GetFileVersion(const std::string& filePath) {
 
     VS_FIXEDFILEINFO* fileInfo = nullptr;
     UINT fileInfoSize = 0;
-    if (!VerQueryValue(buffer.data(), TEXT("\\"), reinterpret_cast<LPVOID*>(&fileInfo), &fileInfoSize) || fileInfoSize == 0) {
+    if (!VerQueryValue(buffer.data(), TEXT("\\"),
+        reinterpret_cast<LPVOID*>(&fileInfo), &fileInfoSize) ||
+        fileInfoSize == 0) {
         return {};
     }
 
-    DWORD majorVersion = HIWORD(fileInfo->dwFileVersionMS);
-    DWORD minorVersion = LOWORD(fileInfo->dwFileVersionMS);
-    DWORD buildNumber = HIWORD(fileInfo->dwFileVersionLS);
-    DWORD revisionNumber = LOWORD(fileInfo->dwFileVersionLS);
+    const DWORD majorVersion = HIWORD(fileInfo->dwFileVersionMS);
+    const DWORD minorVersion = LOWORD(fileInfo->dwFileVersionMS);
+    const DWORD buildNumber = HIWORD(fileInfo->dwFileVersionLS);
+    const DWORD revisionNumber = LOWORD(fileInfo->dwFileVersionLS);
 
     std::stringstream ss;
-    ss << majorVersion << "." << minorVersion << "." << buildNumber << "." << revisionNumber;
+    ss << majorVersion << "." << minorVersion << "." << buildNumber << "."
+        << revisionNumber;
     return ss.str();
 }
 
 size_t FileTable::GetFileSize(const std::string& filePath) {
-    const auto hFile = CreateFile(filePath.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    const auto hFile = CreateFile(filePath.c_str(), GENERIC_READ,
+        FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
     if (hFile == INVALID_HANDLE_VALUE) {
         return 0;
@@ -97,7 +102,8 @@ size_t FileTable::GetFileSize(const std::string& filePath) {
     return fileSize.QuadPart;
 }
 
-std::filesystem::path FileTable::GetAbsolutePath(const std::filesystem::path& filePath) {
+std::filesystem::path FileTable::GetAbsolutePath(
+    const std::filesystem::path& filePath) {
     const std::string configuration_template = "%%CONFIGURATION%%";
     const std::string configuration =
 #ifdef _DEBUG
@@ -125,7 +131,10 @@ std::filesystem::path FileTable::GetAbsolutePath(const std::filesystem::path& fi
     return root_path / p;
 }
 
-FileTable::FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path, const std::filesystem::path& output_path) : root_path(root_path), output_path(output_path) {
+FileTable::FileTable(const std::vector<Directory>& directories,
+    const std::filesystem::path& root_path,
+    const std::filesystem::path& output_path) : root_path(root_path),
+    output_path(output_path) {
     int sequence = 0;
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
@@ -133,15 +142,18 @@ FileTable::FileTable(const std::vector<Directory>& directories, const std::files
                 file.setFilepath(GetAbsolutePath(file.getFilepath()));
                 file.setAttributes(16384);
                 file.setSequence(++sequence);
-                const auto language = GetFileLanguage(file.getFilepath().string());
+                const auto language = GetFileLanguage(
+                    file.getFilepath().string());
                 if (language > 0) {
                     file.setLanguage(std::to_string(language));
                 }
-                const auto version = GetFileVersion(file.getFilepath().string());
+                const auto version = GetFileVersion(
+                    file.getFilepath().string());
                 if (!version.empty()) {
                     file.setVersion(version);
                 }
-                file.setFilesize(static_cast<int>(GetFileSize(file.getFilepath().string())));
+                file.setFilesize(static_cast<int>(
+                    GetFileSize(file.getFilepath().string())));
                 files.push_back(file);
             }
         }
@@ -154,14 +166,16 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
         return false;
     }
     
-    if (!StreamTable({ Stream(cabname, output_path / cabname) }).generate(hDatabase)) {
+    if (!StreamTable(
+        { Stream(cabname, output_path / cabname) }).generate(hDatabase)) {
         std::cerr << "Failed to generate StreamTable" << std::endl;
         return false;
     }
 
     std::filesystem::remove(output_path / cabname);
 
-    if (!MediaTable({ Media(1, static_cast<int>(files.size()), "1", "#" + cabname, "DISK1", "")}).generate(hDatabase)) {
+    if (!MediaTable({ Media(1, static_cast<int>(files.size()), "1",
+        "#" + cabname, "DISK1", "")}).generate(hDatabase)) {
         std::cerr << "Failed to generate MediaTable" << std::endl;
         return false;
     }
@@ -172,8 +186,14 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
 
     std::cout << "Generating FileTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `File` (`File` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, `FileName` CHAR(255) NOT NULL LOCALIZABLE, `FileSize` LONG NOT NULL, `Version` CHAR(72), `Language` CHAR(20), `Attributes` SHORT, `Sequence` SHORT NOT NULL PRIMARY KEY `File`)";
-    const auto sql_insert = "INSERT INTO `File` (`File`, `Component_`, `FileName`, `FileSize`, `Version`, `Language`, `Attributes`, `Sequence`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `File` (`File` CHAR(72) NOT NULL, "
+        "`Component_` CHAR(72) NOT NULL, "
+        "`FileName` CHAR(255) NOT NULL LOCALIZABLE, `FileSize` LONG NOT NULL, "
+        "`Version` CHAR(72), `Language` CHAR(20), `Attributes` SHORT, "
+        "`Sequence` SHORT NOT NULL PRIMARY KEY `File`)";
+    const auto sql_insert = "INSERT INTO `File` (`File`, `Component_`, "
+        "`FileName`, `FileSize`, `Version`, `Language`, `Attributes`, "
+        "`Sequence`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, files);
 }

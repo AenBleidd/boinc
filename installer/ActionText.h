@@ -24,7 +24,8 @@
 
 class ActionText : public Record {
 public:
-    explicit ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit ActionText(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~ActionText() = default;
     MSIHANDLE getRecord() const override;
 private:

@@ -23,7 +23,8 @@
 
 class RadioButtonTable : public Generator<RadioButton> {
 public:
-    explicit RadioButtonTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit RadioButtonTable(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~RadioButtonTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:

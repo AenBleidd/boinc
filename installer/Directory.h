@@ -25,7 +25,8 @@
 
 class Directory : public Record {
 public:
-    explicit Directory(const nlohmann::json& json, const std::string& parent, const InstallerStrings& installerStrings);
+    explicit Directory(const nlohmann::json& json, const std::string& parent,
+        const InstallerStrings& installerStrings);
     ~Directory() = default;
     MSIHANDLE getRecord() const override;
     std::vector<Directory> getDirectories() const;

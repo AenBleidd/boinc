@@ -19,7 +19,9 @@
 #include "JsonHelper.h"
 #include "MsiHelper.h"
 
-ServiceInstall::ServiceInstall(const nlohmann::json& json, const std::string& component, const InstallerStrings& installerStrings) : component(component) {
+ServiceInstall::ServiceInstall(const nlohmann::json& json,
+    const std::string& component, const InstallerStrings& installerStrings) :
+    component(component) {
     JsonHelper::get(json, "ServiceInstall", serviceInstall);
     JsonHelper::get(json, "Name", name);
     JsonHelper::get(json, "DisplayName", displayName, installerStrings);
@@ -35,5 +37,7 @@ ServiceInstall::ServiceInstall(const nlohmann::json& json, const std::string& co
 }
 
 MSIHANDLE ServiceInstall::getRecord() const {
-    return MsiHelper::MsiRecordSet({ serviceInstall, name, displayName, serviceType, startType, errorControl, loadOrderGroup, dependencies, startName, password, arguments, component, description });
+    return MsiHelper::MsiRecordSet({ serviceInstall, name, displayName,
+        serviceType, startType, errorControl, loadOrderGroup, dependencies,
+        startName, password, arguments, component, description });
 }

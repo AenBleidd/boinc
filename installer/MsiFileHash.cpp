@@ -18,10 +18,13 @@
 #include "MsiFileHash.h"
 #include "MsiHelper.h"
 
-MsiFileHash::MsiFileHash(const std::string& file, int hashPart1, int hashPart2, int hashPart3, int hashPart4) : 
-    file(file), hashPart1(hashPart1), hashPart2(hashPart2), hashPart3(hashPart3), hashPart4(hashPart4) {
+MsiFileHash::MsiFileHash(const std::string& file, int hashPart1, int hashPart2,
+    int hashPart3, int hashPart4) : 
+    file(file), hashPart1(hashPart1), hashPart2(hashPart2),
+    hashPart3(hashPart3), hashPart4(hashPart4) {
 }
 
 MSIHANDLE MsiFileHash::getRecord() const {
-    return MsiHelper::MsiRecordSet({ file, options, hashPart1, hashPart2, hashPart3, hashPart4 });
+    return MsiHelper::MsiRecordSet({ file, options, hashPart1, hashPart2,
+        hashPart3, hashPart4 });
 }

@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Feature::Feature(const nlohmann::json& json, const std::string& parent, const InstallerStrings& installerStrings) : feature_parent(parent) {
+Feature::Feature(const nlohmann::json& json, const std::string& parent,
+    const InstallerStrings& installerStrings) : feature_parent(parent) {
     JsonHelper::get(json, "Feature", feature);
     JsonHelper::get(json, "Title", title, installerStrings);
     JsonHelper::get(json, "Description", description, installerStrings);
@@ -33,7 +34,8 @@ Feature::Feature(const nlohmann::json& json, const std::string& parent, const In
 }
 
 MSIHANDLE Feature::getRecord() const {
-    return MsiHelper::MsiRecordSet({ feature, feature_parent, title, description, display, level, directory, attributes });
+    return MsiHelper::MsiRecordSet({ feature, feature_parent, title,
+        description, display, level, directory, attributes });
 }
 
 std::vector<Feature> Feature::getFeatures() const {

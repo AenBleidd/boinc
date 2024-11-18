@@ -17,7 +17,8 @@
 
 #include "LaunchConditionTable.h"
 
-LaunchConditionTable::LaunchConditionTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+LaunchConditionTable::LaunchConditionTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading LaunchConditionTable..." << std::endl;
 
     for (const auto& launchCondition : json) {
@@ -28,8 +29,13 @@ LaunchConditionTable::LaunchConditionTable(const nlohmann::json& json, const Ins
 bool LaunchConditionTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating LaunchConditionTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `LaunchCondition` (`Condition` CHAR(255) NOT NULL, `Description` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Condition`)";
-    const auto sql_insert = "INSERT INTO `LaunchCondition` (`Condition`, `Description`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `LaunchCondition` "
+        "(`Condition` CHAR(255) NOT NULL, "
+        "`Description` CHAR(255) NOT NULL LOCALIZABLE "
+        "PRIMARY KEY `Condition`)";
+    const auto sql_insert = "INSERT INTO `LaunchCondition` "
+        "(`Condition`, `Description`) VALUES (?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, launchConditions);
+    return Generator::generate(hDatabase, sql_create, sql_insert,
+        launchConditions);
 }

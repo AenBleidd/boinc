@@ -17,7 +17,8 @@
 
 #include "CreateFolderTable.h"
 
-CreateFolderTable::CreateFolderTable(const std::vector<Directory>& directories) {
+CreateFolderTable::CreateFolderTable(
+    const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
             auto [result, record] = component.getCreateFolder();
@@ -31,8 +32,12 @@ CreateFolderTable::CreateFolderTable(const std::vector<Directory>& directories) 
 bool CreateFolderTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating CreateFolderTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `CreateFolder` (`Directory_` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Directory_`, `Component_`)";
-    const auto sql_insert = "INSERT INTO `CreateFolder` (`Directory_`, `Component_`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `CreateFolder` "
+        "(`Directory_` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL "
+        "PRIMARY KEY `Directory_`, `Component_`)";
+    const auto sql_insert = "INSERT INTO `CreateFolder` "
+        "(`Directory_`, `Component_`) VALUES (?, ?)";
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, createFolders);
+    return Generator::generate(hDatabase, sql_create, sql_insert,
+        createFolders);
 }

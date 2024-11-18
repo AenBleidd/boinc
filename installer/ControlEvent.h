@@ -23,7 +23,8 @@
 
 class ControlEvent : public Record {
 public:
-    explicit ControlEvent(const nlohmann::json& json, const std::string& dialog, const std::string& control);
+    explicit ControlEvent(const nlohmann::json& json,
+        const std::string& dialog, const std::string& control);
     ~ControlEvent() = default;
     MSIHANDLE getRecord() const override;
 private:

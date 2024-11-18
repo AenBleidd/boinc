@@ -18,7 +18,8 @@
 #include "Stream.h"
 #include "MsiHelper.h"
 
-Stream::Stream(const std::string& name, const std::filesystem::path& data) : name(name), data(data) {
+Stream::Stream(const std::string& name, const std::filesystem::path& data) :
+    name(name), data(data) {
 }
 
 MSIHANDLE Stream::getRecord() const {

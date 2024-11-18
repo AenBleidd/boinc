@@ -48,7 +48,8 @@ bool InstallerStrings::load_from_json(const nlohmann::json& json) {
             strings.emplace(id, value);
         }
         else {
-            std::cerr << "WARNING: Skipped record with no Id specified." << std::endl;
+            std::cerr << "WARNING: Skipped record with no Id specified."
+                << std::endl;
         }
     }
     return true;

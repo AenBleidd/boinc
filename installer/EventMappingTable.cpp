@@ -17,7 +17,8 @@
 
 #include "EventMappingTable.h"
 
-EventMappingTable::EventMappingTable(const std::vector<Control>& controls) : controls(controls) {
+EventMappingTable::EventMappingTable(const std::vector<Control>& controls) :
+    controls(controls) {
 }
 
 bool EventMappingTable::generate(MSIHANDLE hDatabase) {
@@ -30,9 +31,12 @@ bool EventMappingTable::generate(MSIHANDLE hDatabase) {
         }
     }
 
-    const auto sql_create = "CREATE TABLE `EventMapping` (`Dialog_` CHAR(72) NOT NULL, `Control_` CHAR(50) NOT NULL, `Event` CHAR(50) NOT NULL, `Attribute` CHAR(50) "
+    const auto sql_create = "CREATE TABLE `EventMapping` "
+        "(`Dialog_` CHAR(72) NOT NULL, `Control_` CHAR(50) NOT NULL, "
+        "`Event` CHAR(50) NOT NULL, `Attribute` CHAR(50) "
         "PRIMARY KEY Dialog_, Control_, Event)";
-    const auto sql_insert = "INSERT INTO `EventMapping` (`Dialog_`, `Control_`, `Event`, `Attribute`) VALUES (?, ?, ?, ?)";
+    const auto sql_insert = "INSERT INTO `EventMapping` "
+        "(`Dialog_`, `Control_`, `Event`, `Attribute`) VALUES (?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, eventMappings);
 }

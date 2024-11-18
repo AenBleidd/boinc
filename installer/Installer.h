@@ -27,15 +27,16 @@
 
 class Installer {
 public:
-    explicit Installer(const std::filesystem::path& output_path) noexcept;
+    explicit Installer(const std::filesystem::path& output_path);
     ~Installer() = default;
     bool load(const std::filesystem::path& json);
     bool create_msi(const std::filesystem::path& msi);
 private:
-    bool load_from_json(const nlohmann::json& json, const std::filesystem::path& path);
+    bool load_from_json(const nlohmann::json& json,
+        const std::filesystem::path& path);
     bool forceCodePage(MSIHANDLE hDatabase);
 
     std::map<std::string, std::shared_ptr<GeneratorTable>> tables{};
     InstallerStrings installer_strings;
-    std::filesystem::path output_path;
+    std::filesystem::path output_path{};
 };

@@ -27,8 +27,11 @@ CheckboxTable::CheckboxTable(const nlohmann::json& json) {
 bool CheckboxTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating CheckboxTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Checkbox` (`Property` CHAR(72) NOT NULL, `Value` CHAR(64) PRIMARY KEY `Property`)";
-    const auto sql_insert = "INSERT INTO `Checkbox` (`Property`, `Value`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Checkbox` "
+        "(`Property` CHAR(72) NOT NULL, `Value` CHAR(64) "
+        "PRIMARY KEY `Property`)";
+    const auto sql_insert = "INSERT INTO `Checkbox` "
+        "(`Property`, `Value`) VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, properties);
 }

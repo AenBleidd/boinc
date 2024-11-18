@@ -18,7 +18,8 @@
 #include "FeatureComponents.h"
 #include "MsiHelper.h"
 
-FeatureComponents::FeatureComponents(const std::string& feature, const std::string& component) : feature(feature), component(component) {
+FeatureComponents::FeatureComponents(const std::string& feature,
+    const std::string& component) : feature(feature), component(component) {
 }
 
 MSIHANDLE FeatureComponents::getRecord() const {

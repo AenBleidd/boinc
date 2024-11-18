@@ -17,13 +17,15 @@
 
 #include "StreamTable.h"
 
-StreamTable::StreamTable(const std::vector<Stream>& records) : records(records) {
+StreamTable::StreamTable(const std::vector<Stream>& records) :
+    records(records) {
 }
 
 bool StreamTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating StreamTable..." << std::endl;
 
-    const auto sql_insert = "INSERT INTO `_Streams` (`Name`, `Data`) VALUES (?, ?)";
+    const auto sql_insert = "INSERT INTO `_Streams` (`Name`, `Data`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, "", sql_insert, records);
 }

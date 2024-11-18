@@ -37,8 +37,10 @@ static void chFree(void* memory) noexcept {
 }
 
 static intptr_t chFileOpen(LPSTR pszFile, int, int, int* err, void*) {
-    const auto handle = CreateFile(pszFile, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-        GetFileAttributes(pszFile) == INVALID_FILE_ATTRIBUTES ? CREATE_NEW : OPEN_EXISTING, 0, NULL);
+    const auto handle = CreateFile(pszFile, GENERIC_READ | GENERIC_WRITE,
+        FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+        GetFileAttributes(pszFile) == INVALID_FILE_ATTRIBUTES ? 
+        CREATE_NEW : OPEN_EXISTING, 0, NULL);
 
     if (handle == INVALID_HANDLE_VALUE) {
         std::cerr << "Failed to CreateFile " << pszFile << std::endl;
@@ -51,7 +53,8 @@ static intptr_t chFileOpen(LPSTR pszFile, int, int, int* err, void*) {
     return reinterpret_cast<intptr_t>(handle);
 }
 
-static unsigned int chFileRead(intptr_t hf, void* memory, unsigned int cb, int* err, void*) {
+static unsigned int chFileRead(intptr_t hf, void* memory, unsigned int cb,
+    int* err, void*) {
     DWORD dwRead;
 
     if (!ReadFile(reinterpret_cast<HANDLE>(hf), memory, cb, &dwRead, NULL))
@@ -66,10 +69,12 @@ static unsigned int chFileRead(intptr_t hf, void* memory, unsigned int cb, int* 
     return dwRead;
 }
 
-static unsigned int chFileWrite(intptr_t hf, void* memory, unsigned int cb, int* err, void*) {
+static unsigned int chFileWrite(intptr_t hf, void* memory, unsigned int cb,
+    int* err, void*) {
     DWORD dwWritten;
 
-    if (!WriteFile(reinterpret_cast<HANDLE>(hf), memory, cb, &dwWritten, NULL)) {
+    if (!WriteFile(reinterpret_cast<HANDLE>(hf), memory, cb, &dwWritten,
+        NULL)) {
         std::cerr << "Failed to WriteFile " << GetLastError() << std::endl;
         if (err) {
             *err = GetLastError();
@@ -91,9 +96,11 @@ static int chFileClose(intptr_t hf, int* err, void*) {
 }
 
 static long chFileSeek(intptr_t hf, long dist, int seektype, int* err, void*) {
-    const auto ret = SetFilePointer(reinterpret_cast<HANDLE>(hf), dist, NULL, seektype);
+    const auto ret = SetFilePointer(reinterpret_cast<HANDLE>(hf), dist, NULL,
+        seektype);
     if (ret == INVALID_SET_FILE_POINTER) {
-        std::cerr << "Failed to SetFilePointer " << GetLastError() << std::endl;
+        std::cerr << "Failed to SetFilePointer " << GetLastError()
+            << std::endl;
         if (err) {
             *err = GetLastError();
         }
@@ -121,9 +128,11 @@ static long chProgress(UINT, ULONG, ULONG, void*) noexcept {
     return 0;
 }
 
-static intptr_t chGetFileInfo(LPSTR pszName, USHORT* pdate, USHORT* ptime, USHORT* pattribs, int* err, void*) {
-    const auto handle = CreateFile(pszName, GENERIC_READ, FILE_SHARE_READ, NULL,
-        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+static intptr_t chGetFileInfo(LPSTR pszName, USHORT* pdate, USHORT* ptime,
+    USHORT* pattribs, int* err, void*) {
+    const auto handle = CreateFile(pszName, GENERIC_READ, FILE_SHARE_READ,
+        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN,
+        NULL);
 
     if (handle == INVALID_HANDLE_VALUE) {
         std::cerr << "Failed to CreateFile " << pszName << std::endl;
@@ -135,7 +144,8 @@ static intptr_t chGetFileInfo(LPSTR pszName, USHORT* pdate, USHORT* ptime, USHOR
 
     BY_HANDLE_FILE_INFORMATION finfo;
     if (!GetFileInformationByHandle(handle, &finfo)) {
-        std::cerr << "Expected GetFileInformationByHandle to succeed" << std::endl;
+        std::cerr << "Expected GetFileInformationByHandle to succeed"
+            << std::endl;
         if (err)
             *err = GetLastError();
         return -1;
@@ -171,21 +181,27 @@ int chGetTemp(char* pszTempName, int cbTempName, void*) {
     return 1;
 }
 
-bool CabHelper::create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files) {
+bool CabHelper::create(const std::filesystem::path& root_path,
+    const std::string& cabname, std::vector<File>& files) {
     std::cout << "Creating CAB file..." << std::endl;
 
     CCAB ccab;
     memset(&ccab, 0, sizeof(ccab));
     const auto cab_name = "\\" + cabname;
-    strncpy_s(ccab.szCabPath, CB_MAX_CAB_PATH, root_path.string().c_str(), root_path.string().size());
-    strncpy_s(ccab.szCab, CB_MAX_CABINET_NAME, cab_name.c_str(), cab_name.size());
+    strncpy_s(ccab.szCabPath, CB_MAX_CAB_PATH, root_path.string().c_str(),
+        root_path.string().size());
+    strncpy_s(ccab.szCab, CB_MAX_CABINET_NAME, cab_name.c_str(),
+        cab_name.size());
 
     ERF erf{};
 
-    const auto cab = FCICreate(&erf, chFilePlaced, chAlloc, chFree, chFileOpen, chFileRead, chFileWrite, chFileClose, chFileSeek, chFileDelete, chGetTemp, &ccab, nullptr);
+    const auto cab = FCICreate(&erf, chFilePlaced, chAlloc, chFree, chFileOpen,
+        chFileRead, chFileWrite, chFileClose, chFileSeek, chFileDelete,
+        chGetTemp, &ccab, nullptr);
     if (!cab) {
         if (erf.fError)
-            std::cerr << "Failed to create CAB file: " << erf.erfOper << ":" << erf.erfType << std::endl;
+            std::cerr << "Failed to create CAB file: " << erf.erfOper << ":"
+            << erf.erfType << std::endl;
         else
             std::cerr << "Failed to create CAB file" << std::endl;
         return false;
@@ -193,10 +209,14 @@ bool CabHelper::create(const std::filesystem::path& root_path, const std::string
 
     for (auto& file : files) {
         const auto file_path = file.getFilepath();
-        std::cout << "Adding file: " << file_path << " as " << file.getFileId() << std::endl;
+        std::cout << "Adding file: " << file_path << " as " << file.getFileId()
+            << std::endl;
 
-        if (!FCIAddFile(cab, file_path.string().data(), file.getFileId().data(), FALSE, chGetNextCabinet, chProgress, chGetFileInfo, tcompTYPE_LZX | tcompLZX_WINDOW_HI)) {
-            std::cerr << "Failed to add file. Error: " << erf.erfOper << std::endl;
+        if (!FCIAddFile(cab, file_path.string().data(),
+            file.getFileId().data(), FALSE, chGetNextCabinet, chProgress,
+            chGetFileInfo, tcompTYPE_LZX | tcompLZX_WINDOW_HI)) {
+            std::cerr << "Failed to add file. Error: " << erf.erfOper
+                << std::endl;
             FCIDestroy(cab);
             return false;
         }

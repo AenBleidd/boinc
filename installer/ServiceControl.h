@@ -23,7 +23,8 @@
 
 class ServiceControl : public Record {
 public:
-    explicit ServiceControl(const nlohmann::json& json, const std::string& component);
+    explicit ServiceControl(const nlohmann::json& json,
+        const std::string& component);
     ~ServiceControl() = default;
     MSIHANDLE getRecord() const override;
 private:

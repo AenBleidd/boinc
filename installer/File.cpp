@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-File::File(const nlohmann::json& json, const std::string& component) : component(component) {
+File::File(const nlohmann::json& json, const std::string& component) :
+    component(component) {
     JsonHelper::get(json, "File", file);
     JsonHelper::get(json, "FileName", filename);
     JsonHelper::get(json, "FilePath", filepath);
@@ -27,7 +28,8 @@ File::File(const nlohmann::json& json, const std::string& component) : component
 }
 
 MSIHANDLE File::getRecord() const {
-    return MsiHelper::MsiRecordSet({ file, component, filename, filesize, version, language, attributes, sequence });
+    return MsiHelper::MsiRecordSet({ file, component, filename, filesize,
+        version, language, attributes, sequence });
 }
 
 std::filesystem::path File::getFilepath() const {

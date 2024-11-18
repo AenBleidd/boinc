@@ -23,7 +23,8 @@
 
 class ControlCondition : public Record {
 public:
-    explicit ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control);
+    explicit ControlCondition(const nlohmann::json& json,
+        const std::string& dialog, const std::string& control);
     ~ControlCondition() = default;
     MSIHANDLE getRecord() const override;
 private:

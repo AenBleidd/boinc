@@ -20,7 +20,9 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Component::Component(const nlohmann::json& json, const std::string& directory, const std::string& parent, const InstallerStrings& installerStrings) : directory(directory) {
+Component::Component(const nlohmann::json& json, const std::string& directory,
+    const std::string& parent, const InstallerStrings& installerStrings) :
+    directory(directory) {
     JsonHelper::get(json, "Component", component);
     JsonHelper::get(json, "Attributes", attributes);
     JsonHelper::get(json, "Condition", condition);
@@ -39,11 +41,14 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     JsonHelper::handle(json, "RemoveFile", [&](const auto& removeFile) {
         removeFiles.emplace_back(removeFile, component);
         });
-    JsonHelper::handle(json, "ServiceControl", [&](const auto& serviceControl) {
+    JsonHelper::handle(json, "ServiceControl",
+        [&](const auto& serviceControl) {
         serviceControls.emplace_back(serviceControl, component);
         });
-    JsonHelper::handle(json, "ServiceInstall", [&](const auto& serviceInstall) {
-        serviceInstalls.emplace_back(serviceInstall, component, installerStrings);
+    JsonHelper::handle(json, "ServiceInstall",
+        [&](const auto& serviceInstall) {
+        serviceInstalls.emplace_back(serviceInstall, component,
+            installerStrings);
         });
     JsonHelper::handle(json, "Shortcut", [&](const auto& shortcut) {
         shortcuts.emplace_back(shortcut, component, installerStrings);
@@ -56,7 +61,8 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
 }
 
 MSIHANDLE Component::getRecord() const {
-    return MsiHelper::MsiRecordSet({ component, componentId, directory, attributes, condition, keyPath });
+    return MsiHelper::MsiRecordSet({ component, componentId, directory,
+        attributes, condition, keyPath });
 }
 
 FeatureComponents Component::getFeatureComponent() const {

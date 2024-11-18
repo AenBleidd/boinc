@@ -19,7 +19,9 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-EventMapping::EventMapping(const nlohmann::json& json, const std::string& dialog, const std::string& control) : dialog(dialog), control(control) {
+EventMapping::EventMapping(const nlohmann::json& json,
+    const std::string& dialog, const std::string& control) :
+    dialog(dialog), control(control) {
     JsonHelper::get(json, "Event", event);
     JsonHelper::get(json, "Attribute", attribute);
 }

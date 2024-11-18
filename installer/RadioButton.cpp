@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-RadioButton::RadioButton(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+RadioButton::RadioButton(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     JsonHelper::get(json, "Property", property);
     JsonHelper::get(json, "Order", order);
     JsonHelper::get(json, "Value", value);
@@ -32,5 +33,6 @@ RadioButton::RadioButton(const nlohmann::json& json, const InstallerStrings& ins
 }
 
 MSIHANDLE RadioButton::getRecord() const {
-    return MsiHelper::MsiRecordSet({ property, order, value, x, y, width, height, text, help });
+    return MsiHelper::MsiRecordSet({ property, order, value, x, y, width,
+        height, text, help });
 }

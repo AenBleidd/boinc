@@ -37,7 +37,8 @@ public:
     }
 
     template <class T>
-    static void get(const nlohmann::json& json, const std::string& key, T& value) {
+    static void get(const nlohmann::json& json, const std::string& key,
+        T& value) {
         if (exists(json, key)) {
             if constexpr (std::is_same_v<T, std::filesystem::path>) {
                 value = json[key].get<std::string>();
@@ -55,20 +56,23 @@ public:
         return {};
     }
     template <class T>
-    static void get(const nlohmann::json& json, const std::string& key, T& value, const InstallerStrings& installerStrings) {
+    static void get(const nlohmann::json& json, const std::string& key,
+        T& value, const InstallerStrings& installerStrings) {
         if (exists(json, key)) {
             value = installerStrings.get(json[key]);
         }
     }
     template <class T>
-    static T get(const nlohmann::json& json, const std::string& key, const InstallerStrings& installerStrings) {
+    static T get(const nlohmann::json& json, const std::string& key,
+        const InstallerStrings& installerStrings) {
         if (exists(json, key)) {
             return installerStrings.get(json[key]);
         }
         return {};
     }
     template <class T>
-    static void handle(const nlohmann::json& json, const std::string& key, T handler) {
+    static void handle(const nlohmann::json& json, const std::string& key,
+        T handler) {
         if (exists(json, key)) {
             if (json[key].is_array()) {
                 for (const auto& item : json[key]) {

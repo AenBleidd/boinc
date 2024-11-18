@@ -21,7 +21,8 @@
 
 class FeatureComponents : public Record {
 public:
-    FeatureComponents(const std::string& feature, const std::string& component);
+    FeatureComponents(const std::string& feature,
+        const std::string& component);
     ~FeatureComponents() = default;
     MSIHANDLE getRecord() const override;
 private:

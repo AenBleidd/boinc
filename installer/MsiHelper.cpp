@@ -19,24 +19,28 @@
 
 #include <stdexcept>
 
-MSIHANDLE MsiHelper::MsiRecordSet(const std::vector<std::variant<std::string, int, std::filesystem::path>>& values) {
+MSIHANDLE MsiHelper::MsiRecordSet(const std::vector<std::variant<
+    std::string, int, std::filesystem::path>>& values) {
     const auto hRecord = MsiCreateRecord(values.size());
     if (hRecord == 0) {
         throw std::runtime_error("Failed to create record");
     }
 
     auto i = 0u;
-    const auto error_message = std::string("Failed to set record, errorcode: ");
+    const auto error_message =
+        std::string("Failed to set record, errorcode: ");
     for (const auto& value : values) {
         UINT result = 0;
         if (std::holds_alternative<std::string>(value)) {
-            result = MsiRecordSetString(hRecord, ++i, std::get<std::string>(value).c_str());
+            result = MsiRecordSetString(hRecord, ++i,
+                std::get<std::string>(value).c_str());
         }
         else if (std::holds_alternative<int>(value)) {
             result = MsiRecordSetInteger(hRecord, ++i, std::get<int>(value));
         }
         else if (std::holds_alternative<std::filesystem::path>(value)) {
-            result = MsiRecordSetStream(hRecord, ++i, std::get<std::filesystem::path>(value).string().c_str());
+            result = MsiRecordSetStream(hRecord, ++i,
+                std::get<std::filesystem::path>(value).string().c_str());
         }
         if (result != ERROR_SUCCESS) {
             throw std::runtime_error(error_message + std::to_string(result));

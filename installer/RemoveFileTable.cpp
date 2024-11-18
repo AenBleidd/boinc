@@ -29,9 +29,13 @@ RemoveFileTable::RemoveFileTable(const std::vector<Directory>& directories) {
 bool RemoveFileTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating RemoveFileTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `RemoveFile` (`FileKey` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, `FileName` CHAR(255) LOCALIZABLE, "
-        "`DirProperty` CHAR(72) NOT NULL, `InstallMode` SHORT NOT NULL PRIMARY KEY `FileKey`)";
-    const auto sql_insert = "INSERT INTO `RemoveFile` (`FileKey`, `Component_`, `FileName`, `DirProperty`, `InstallMode`) VALUES (?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `RemoveFile` "
+        "(`FileKey` CHAR(72) NOT NULL, `Component_` CHAR(72) NOT NULL, "
+        "`FileName` CHAR(255) LOCALIZABLE, `DirProperty` CHAR(72) NOT NULL, "
+        "`InstallMode` SHORT NOT NULL PRIMARY KEY `FileKey`)";
+    const auto sql_insert = "INSERT INTO `RemoveFile` "
+        "(`FileKey`, `Component_`, `FileName`, `DirProperty`, `InstallMode`) "
+        "VALUES (?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

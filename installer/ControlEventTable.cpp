@@ -17,14 +17,20 @@
 
 #include "ControlEventTable.h"
 
-ControlEventTable::ControlEventTable(const std::vector<Control>& controls) noexcept : controls(controls) {}
+ControlEventTable::ControlEventTable(
+    const std::vector<Control>& controls) noexcept : controls(controls) {}
 
 bool ControlEventTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ControlEventTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `ControlEvent` (`Dialog_` CHAR(72) NOT NULL, `Control_` CHAR(50) NOT NULL, `Event` CHAR(50) NOT NULL, "
-        "`Argument` CHAR(255) NOT NULL, `Condition` CHAR(255), `Ordering` SHORT PRIMARY KEY `Dialog_`, `Control_`, `Event`, `Argument`, `Condition`)";
-    const auto sql_insert = "INSERT INTO `ControlEvent` (`Dialog_`, `Control_`, `Event`, `Argument`, `Condition`, `Ordering`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `ControlEvent` "
+        "(`Dialog_` CHAR(72) NOT NULL, `Control_` CHAR(50) NOT NULL, "
+        "`Event` CHAR(50) NOT NULL, `Argument` CHAR(255) NOT NULL, "
+        "`Condition` CHAR(255), `Ordering` SHORT "
+        "PRIMARY KEY `Dialog_`, `Control_`, `Event`, `Argument`, `Condition`)";
+    const auto sql_insert = "INSERT INTO `ControlEvent` (`Dialog_`, "
+        "`Control_`, `Event`, `Argument`, `Condition`, `Ordering`) "
+        "VALUES (?, ?, ?, ?, ?, ?)";
 
     std::vector<ControlEvent> controlEvents;
     for (const auto& control : controls) {
@@ -33,5 +39,6 @@ bool ControlEventTable::generate(MSIHANDLE hDatabase) {
         }
     }
 
-    return Generator::generate(hDatabase, sql_create, sql_insert, controlEvents);
+    return Generator::generate(hDatabase, sql_create, sql_insert,
+        controlEvents);
 }

@@ -26,7 +26,8 @@
 
 class Dialog : public Record {
 public:
-    explicit Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit Dialog(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~Dialog() = default;
     std::vector<Control> get_controls() const;
     MSIHANDLE getRecord() const override;

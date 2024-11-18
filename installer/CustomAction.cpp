@@ -28,5 +28,6 @@ CustomAction::CustomAction(const nlohmann::json& json) {
 }
 
 MSIHANDLE CustomAction::getRecord() const {
-    return MsiHelper::MsiRecordSet({ action, type, source, target, extendedtype });
+    return MsiHelper::MsiRecordSet({ action, type, source, target,
+        extendedtype });
 }

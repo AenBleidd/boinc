@@ -32,9 +32,11 @@ int main(int argc, char** argv) {
 #else
         "x64";
 #endif
-    const auto output_path = std::filesystem::current_path() / "Build" / platform / configuration;
+    const auto output_path =
+        std::filesystem::current_path() / "Build" / platform / configuration;
     Installer installer(output_path);
-    if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
+    if (!installer.load(
+        std::filesystem::current_path() / "../installer/boinc.json")) {
         return 1;
     }
     return installer.create_msi(output_path / "boinc.msi") ? 0 : 1;

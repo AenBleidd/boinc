@@ -19,7 +19,8 @@
 #include "JsonHelper.h"
 #include "MsiHelper.h"
 
-Shortcut::Shortcut(const nlohmann::json& json, const std::string& component, const InstallerStrings& installerStrings) : component(component) {
+Shortcut::Shortcut(const nlohmann::json& json, const std::string& component,
+    const InstallerStrings& installerStrings) : component(component) {
     JsonHelper::get(json, "Shortcut", shortcut);
     JsonHelper::get(json, "Directory_", directory);
     JsonHelper::get(json, "Name", name, installerStrings);
@@ -38,5 +39,8 @@ Shortcut::Shortcut(const nlohmann::json& json, const std::string& component, con
 }
 
 MSIHANDLE Shortcut::getRecord() const {
-    return MsiHelper::MsiRecordSet({ shortcut, directory, name, component, target, arguments, description, hotkey, icon, iconIndex, showCmd, wkDir, displayResourceDll, displayResourceId, descriptionResourceDll, descriptionResourceId });
+    return MsiHelper::MsiRecordSet({ shortcut, directory, name, component,
+        target, arguments, description, hotkey, icon, iconIndex, showCmd,
+        wkDir, displayResourceDll, displayResourceId, descriptionResourceDll,
+        descriptionResourceId });
 }

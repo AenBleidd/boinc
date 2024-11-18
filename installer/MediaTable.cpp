@@ -23,8 +23,13 @@ MediaTable::MediaTable(const std::vector<Media>& media) : media(media) {
 bool MediaTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating MediaTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Media` (`DiskId` SHORT NOT NULL, `LastSequence` SHORT NOT NULL, `DiskPrompt` CHAR(64) LOCALIZABLE, `Cabinet` CHAR(255), `VolumeLabel` CHAR(32), `Source` CHAR(72) PRIMARY KEY `DiskId`)";
-    const auto sql_insert = "INSERT INTO `Media` (`DiskId`, `LastSequence`, `DiskPrompt`, `Cabinet`, `VolumeLabel`, `Source`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Media` (`DiskId` SHORT NOT NULL, "
+        "`LastSequence` SHORT NOT NULL, `DiskPrompt` CHAR(64) LOCALIZABLE, "
+        "`Cabinet` CHAR(255), `VolumeLabel` CHAR(32), `Source` CHAR(72) "
+        "PRIMARY KEY `DiskId`)";
+    const auto sql_insert = "INSERT INTO `Media` (`DiskId`, `LastSequence`, "
+        "`DiskPrompt`, `Cabinet`, `VolumeLabel`, `Source`) "
+        "VALUES (?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, media);
 }

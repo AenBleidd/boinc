@@ -28,9 +28,15 @@ UpgradeTable::UpgradeTable(const nlohmann::json& json) {
 bool UpgradeTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating UpgradeTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Upgrade` (`UpgradeCode` CHAR(38) NOT NULL, `VersionMin` CHAR(20), `VersionMax` CHAR(20), `Language` CHAR(255), "
-        "`Attributes` LONG NOT NULL, `Remove` CHAR(255), `ActionProperty` CHAR(72) NOT NULL PRIMARY KEY `UpgradeCode`, `VersionMin`, `VersionMax`, `Language`, `Attributes`)";
-    const auto sql_insert = "INSERT INTO `Upgrade` (`UpgradeCode`, `VersionMin`, `VersionMax`, `Language`, `Attributes`, `Remove`, `ActionProperty`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Upgrade` "
+        "(`UpgradeCode` CHAR(38) NOT NULL, `VersionMin` CHAR(20), "
+        "`VersionMax` CHAR(20), `Language` CHAR(255), "
+        "`Attributes` LONG NOT NULL, `Remove` CHAR(255), "
+        "`ActionProperty` CHAR(72) NOT NULL PRIMARY KEY `UpgradeCode`, "
+        "`VersionMin`, `VersionMax`, `Language`, `Attributes`)";
+    const auto sql_insert = "INSERT INTO `Upgrade` (`UpgradeCode`, "
+        "`VersionMin`, `VersionMax`, `Language`, `Attributes`, `Remove`, "
+        "`ActionProperty`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

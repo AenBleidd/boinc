@@ -17,7 +17,8 @@
 
 #include "RadioButtonTable.h"
 
-RadioButtonTable::RadioButtonTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+RadioButtonTable::RadioButtonTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading RadioButtonTable..." << std::endl;
     for (const auto& item : json) {
         properties.emplace_back(item, installerStrings);
@@ -26,9 +27,15 @@ RadioButtonTable::RadioButtonTable(const nlohmann::json& json, const InstallerSt
 
 bool RadioButtonTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating RadioButtonTable..." << std::endl;
-    const auto sql_create = "CREATE TABLE `RadioButton` (`Property` CHAR(72) NOT NULL, `Order` SHORT NOT NULL, `Value` CHAR(64) NOT NULL, `X` SHORT NOT NULL, "
-        "`Y` SHORT NOT NULL, `Width` SHORT NOT NULL, `Height` SHORT NOT NULL, `Text` CHAR(64) LOCALIZABLE, `Help` CHAR(50) LOCALIZABLE PRIMARY KEY `Property`, `Order`)";
-    const auto sql_insert = "INSERT INTO `RadioButton` (`Property`, `Order`, `Value`, `X`, `Y`, `Width`, `Height`, `Text`, `Help`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `RadioButton` "
+        "(`Property` CHAR(72) NOT NULL, `Order` SHORT NOT NULL, "
+        "`Value` CHAR(64) NOT NULL, `X` SHORT NOT NULL, `Y` SHORT NOT NULL, "
+        "`Width` SHORT NOT NULL, `Height` SHORT NOT NULL, "
+        "`Text` CHAR(64) LOCALIZABLE, `Help` CHAR(50) LOCALIZABLE "
+        "PRIMARY KEY `Property`, `Order`)";
+    const auto sql_insert = "INSERT INTO `RadioButton` (`Property`, `Order`, "
+        "`Value`, `X`, `Y`, `Width`, `Height`, `Text`, `Help`) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, properties);
 }

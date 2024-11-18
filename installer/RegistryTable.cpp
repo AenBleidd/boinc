@@ -30,9 +30,13 @@ RegistryTable::RegistryTable(const std::vector<Directory>& directories) {
 bool RegistryTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating RegistryTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Registry` (`Registry` CHAR(72) NOT NULL, `Root` SHORT NOT NULL, `Key` CHAR(255) NOT NULL LOCALIZABLE, "
-        "`Name` CHAR(255) LOCALIZABLE, `Value` LONGCHAR LOCALIZABLE, `Component_` CHAR(72) NOT NULL PRIMARY KEY `Registry`)";
-    const auto sql_insert = "INSERT INTO `Registry` (`Registry`, `Root`, `Key`, `Name`, `Value`, `Component_`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Registry` "
+        "(`Registry` CHAR(72) NOT NULL, `Root` SHORT NOT NULL, "
+        "`Key` CHAR(255) NOT NULL LOCALIZABLE, `Name` CHAR(255) LOCALIZABLE, "
+        "`Value` LONGCHAR LOCALIZABLE, `Component_` CHAR(72) NOT NULL "
+        "PRIMARY KEY `Registry`)";
+    const auto sql_insert = "INSERT INTO `Registry` (`Registry`, `Root`, "
+        "`Key`, `Name`, `Value`, `Component_`) VALUES (?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, registries);
 }

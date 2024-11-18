@@ -17,7 +17,8 @@
 
 #include "UITextTable.h"
 
-UITextTable::UITextTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+UITextTable::UITextTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading UITextTable.." << std::endl;
     for (const auto& item : json) {
         uiTexts.emplace_back(item, installerStrings);
@@ -27,8 +28,10 @@ UITextTable::UITextTable(const nlohmann::json& json, const InstallerStrings& ins
 bool UITextTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating UITextTable.." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `UIText` (`Key` CHAR(72) NOT NULL, `Text` CHAR(255) LOCALIZABLE PRIMARY KEY `Key`)";
-    const auto sql_insert = "INSERT INTO `UIText` (`Key`, `Text`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `UIText` (`Key` CHAR(72) NOT NULL, "
+        "`Text` CHAR(255) LOCALIZABLE PRIMARY KEY `Key`)";
+    const auto sql_insert = "INSERT INTO `UIText` (`Key`, `Text`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, uiTexts);
 }

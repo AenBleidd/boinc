@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-UIText::UIText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+UIText::UIText(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     JsonHelper::get(json, "Key", key);
     JsonHelper::get(json, "Text", text, installerStrings);
 }

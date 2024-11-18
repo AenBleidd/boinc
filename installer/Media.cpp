@@ -18,10 +18,14 @@
 #include "Media.h"
 #include "MsiHelper.h"
 
-Media::Media(int diskId, int lastSequence, const std::string& diskPromt, const std::string& cabinet, const std::string& volumeLabel, const std::string& source) : 
-    diskId(diskId), lastSequence(lastSequence), diskPrompt(diskPromt), cabinet(cabinet), volumeLabel(volumeLabel), source(source) {
+Media::Media(int diskId, int lastSequence, const std::string& diskPromt,
+    const std::string& cabinet, const std::string& volumeLabel,
+    const std::string& source) : 
+    diskId(diskId), lastSequence(lastSequence), diskPrompt(diskPromt),
+    cabinet(cabinet), volumeLabel(volumeLabel), source(source) {
 }
 
 MSIHANDLE Media::getRecord() const {
-    return MsiHelper::MsiRecordSet({ diskId, lastSequence, diskPrompt, cabinet, volumeLabel, source });
+    return MsiHelper::MsiRecordSet({ diskId, lastSequence, diskPrompt, cabinet,
+        volumeLabel, source });
 }

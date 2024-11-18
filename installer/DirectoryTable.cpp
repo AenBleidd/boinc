@@ -27,7 +27,11 @@
 #include "ServiceInstallTable.h"
 #include "ShortcutTable.h"
 
-DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const std::filesystem::path& output_path, const InstallerStrings& installerStrings) : root_path (root_path), output_path(output_path) {
+DirectoryTable::DirectoryTable(const nlohmann::json& json,
+    const std::filesystem::path& root_path,
+    const std::filesystem::path& output_path,
+    const InstallerStrings& installerStrings) :
+    root_path (root_path), output_path(output_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
     for (const auto& directory : json) {
         directories.emplace_back(directory, "", installerStrings);
@@ -85,8 +89,11 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
 
     std::cout << "Generating DirectoryTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Directory` (`Directory` CHAR(72) NOT NULL, `Directory_Parent` CHAR(72), `DefaultDir` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Directory`)";
-    const auto sql_insert = "INSERT INTO `Directory` (`Directory`, `Directory_Parent`, `DefaultDir`) VALUES (?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Directory` "
+        "(`Directory` CHAR(72) NOT NULL, `Directory_Parent` CHAR(72), "
+        "`DefaultDir` CHAR(255) NOT NULL LOCALIZABLE PRIMARY KEY `Directory`)";
+    const auto sql_insert = "INSERT INTO `Directory` "
+        "(`Directory`, `Directory_Parent`, `DefaultDir`) VALUES (?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, all);
 }

@@ -17,7 +17,8 @@
 
 #include "ServiceControlTable.h"
 
-ServiceControlTable::ServiceControlTable(const std::vector<Directory>& directories) {
+ServiceControlTable::ServiceControlTable(
+    const std::vector<Directory>& directories) {
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
             for (const auto& serviceControl : component.getServiceControls()) {
@@ -30,9 +31,14 @@ ServiceControlTable::ServiceControlTable(const std::vector<Directory>& directori
 bool ServiceControlTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ServiceControlTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `ServiceControl` (`ServiceControl` CHAR(72) NOT NULL, `Name` CHAR(255) NOT NULL LOCALIZABLE, `Event` SHORT NOT NULL, "
-        "`Arguments` CHAR(255) LOCALIZABLE, `Wait` SHORT, `Component_` CHAR(72) NOT NULL PRIMARY KEY `ServiceControl`)";
-    const auto sql_insert = "INSERT INTO `ServiceControl` (`ServiceControl`, `Name`, `Event`, `Arguments`, `Wait`, `Component_`) VALUES (?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `ServiceControl` "
+        "(`ServiceControl` CHAR(72) NOT NULL, "
+        "`Name` CHAR(255) NOT NULL LOCALIZABLE, `Event` SHORT NOT NULL, "
+        "`Arguments` CHAR(255) LOCALIZABLE, `Wait` SHORT, "
+        "`Component_` CHAR(72) NOT NULL PRIMARY KEY `ServiceControl`)";
+    const auto sql_insert = "INSERT INTO `ServiceControl` (`ServiceControl`, "
+        "`Name`, `Event`, `Arguments`, `Wait`, `Component_`) "
+        "VALUES (?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, values);
 }

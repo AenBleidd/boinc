@@ -22,7 +22,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Dialog::Dialog(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+Dialog::Dialog(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     JsonHelper::get(json, "Dialog", dialog);
     JsonHelper::get(json, "HCentering", hcentering);
     JsonHelper::get(json, "VCentering", vcentering);
@@ -43,5 +44,6 @@ std::vector<Control> Dialog::get_controls() const {
 }
 
 MSIHANDLE Dialog::getRecord() const {
-    return MsiHelper::MsiRecordSet({ dialog, hcentering, vcentering, width, height, attributes, title, first, default, cancel });
+    return MsiHelper::MsiRecordSet({ dialog, hcentering, vcentering, width,
+        height, attributes, title, first, default, cancel });
 }

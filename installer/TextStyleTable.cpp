@@ -28,8 +28,12 @@ TextStyleTable::TextStyleTable(const nlohmann::json& json) {
 bool TextStyleTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating TextStyleTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `TextStyle` (`TextStyle` CHAR(72) NOT NULL, `FaceName` CHAR(32) NOT NULL, `Size` SHORT NOT NULL, `Color` LONG, `StyleBits` SHORT PRIMARY KEY `TextStyle`)";
-    const auto sql_insert = "INSERT INTO `TextStyle` (`TextStyle`, `FaceName`, `Size`, `Color`, `StyleBits`) VALUES (?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `TextStyle` "
+        "(`TextStyle` CHAR(72) NOT NULL, `FaceName` CHAR(32) NOT NULL, "
+        "`Size` SHORT NOT NULL, `Color` LONG, `StyleBits` SHORT "
+        "PRIMARY KEY `TextStyle`)";
+    const auto sql_insert = "INSERT INTO `TextStyle` (`TextStyle`, "
+        "`FaceName`, `Size`, `Color`, `StyleBits`) VALUES (?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, textStyles);
 }

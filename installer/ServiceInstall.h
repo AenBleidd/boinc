@@ -24,7 +24,9 @@
 
 class ServiceInstall : public Record {
 public:
-    explicit ServiceInstall(const nlohmann::json& json, const std::string& component, const InstallerStrings& installerStrings);
+    explicit ServiceInstall(const nlohmann::json& json,
+        const std::string& component,
+        const InstallerStrings& installerStrings);
     ~ServiceInstall() = default;
     MSIHANDLE getRecord() const override;
 private:

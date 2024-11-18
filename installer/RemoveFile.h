@@ -23,7 +23,8 @@
 
 class RemoveFile : public Record {
 public:
-    explicit RemoveFile(const nlohmann::json& json, const std::string& component);
+    explicit RemoveFile(const nlohmann::json& json,
+        const std::string& component);
     ~RemoveFile() = default;
     MSIHANDLE getRecord() const override;
 private:

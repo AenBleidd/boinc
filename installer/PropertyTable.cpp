@@ -18,7 +18,8 @@
 #include "PropertyTable.h"
 #include "GuidHelper.h"
 
-PropertyTable::PropertyTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+PropertyTable::PropertyTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading PropertyTable..." << std::endl;
     for (const auto& item : json) {
         properties.emplace_back(item, installerStrings);
@@ -30,8 +31,11 @@ PropertyTable::PropertyTable(const nlohmann::json& json, const InstallerStrings&
 bool PropertyTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating PropertyTable..." << std::endl;
     
-    const auto sql_create = "CREATE TABLE `Property` (`Property` CHAR(72) NOT NULL, `Value` LONGCHAR NOT NULL LOCALIZABLE  PRIMARY KEY `Property`)";
-    const auto sql_insert = "INSERT INTO `Property` (`Property`, `Value`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Property` "
+        "(`Property` CHAR(72) NOT NULL, `Value` LONGCHAR NOT NULL LOCALIZABLE "
+        "PRIMARY KEY `Property`)";
+    const auto sql_insert = "INSERT INTO `Property` (`Property`, `Value`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, properties);
 }

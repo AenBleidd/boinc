@@ -19,7 +19,8 @@
 #include "JsonHelper.h"
 #include "MsiHelper.h"
 
-ServiceControl::ServiceControl(const nlohmann::json& json, const std::string& component) : component(component) {
+ServiceControl::ServiceControl(const nlohmann::json& json,
+    const std::string& component) : component(component) {
     JsonHelper::get(json, "ServiceControl", serviceControl);
     JsonHelper::get(json, "Name", name);
     JsonHelper::get(json, "Event", event);
@@ -28,5 +29,6 @@ ServiceControl::ServiceControl(const nlohmann::json& json, const std::string& co
 }
 
 MSIHANDLE ServiceControl::getRecord() const {
-    return MsiHelper::MsiRecordSet({ serviceControl, name, event, arguments, wait, component });
+    return MsiHelper::MsiRecordSet({ serviceControl, name, event, arguments,
+        wait, component });
 }

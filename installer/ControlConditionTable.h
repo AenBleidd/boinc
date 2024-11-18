@@ -25,7 +25,8 @@
 
 class ControlConditionTable : public Generator<ControlCondition> {
 public:
-    explicit ControlConditionTable(const std::vector<Control>& controls) noexcept;
+    explicit ControlConditionTable(
+        const std::vector<Control>& controls) noexcept;
     ~ControlConditionTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:

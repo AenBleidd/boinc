@@ -23,7 +23,8 @@
 
 class Stream : public Record {
 public:
-    explicit Stream(const std::string& name, const std::filesystem::path& data);
+    explicit Stream(const std::string& name,
+        const std::filesystem::path& data);
     ~Stream() = default;
     MSIHANDLE getRecord() const override;
 private:

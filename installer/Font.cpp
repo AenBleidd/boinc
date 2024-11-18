@@ -18,7 +18,8 @@
 #include "Font.h"
 #include "MsiHelper.h"
 
-Font::Font(const std::string& file, const std::string& title) : file(file), title(title) {
+Font::Font(const std::string& file, const std::string& title) :
+    file(file), title(title) {
 }
 
 MSIHANDLE Font::getRecord() const {

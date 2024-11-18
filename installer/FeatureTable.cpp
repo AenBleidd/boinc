@@ -17,7 +17,8 @@
 
 #include "FeatureTable.h"
 
-FeatureTable::FeatureTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+FeatureTable::FeatureTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading FeatureTable..." << std::endl;
     for (const auto& feature : json) {
         features.emplace_back(feature, "", installerStrings);
@@ -35,9 +36,14 @@ bool FeatureTable::generate(MSIHANDLE hDatabase) {
         }
     }
 
-    const auto sql_create = "CREATE TABLE `Feature` (`Feature` CHAR(38) NOT NULL, `Feature_Parent` CHAR(38), `Title` CHAR(64) LOCALIZABLE, "
-        "`Description` CHAR(255) LOCALIZABLE, `Display` SHORT, `Level` SHORT NOT NULL, `Directory_` CHAR(72), `Attributes` SHORT NOT NULL PRIMARY KEY `Feature`)";
-    const auto sql_insert = "INSERT INTO `Feature` (`Feature`, `Feature_Parent`, `Title`, `Description`, `Display`, `Level`, `Directory_`, `Attributes`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `Feature` "
+        "(`Feature` CHAR(38) NOT NULL, `Feature_Parent` CHAR(38), "
+        "`Title` CHAR(64) LOCALIZABLE, `Description` CHAR(255) LOCALIZABLE, "
+        "`Display` SHORT, `Level` SHORT NOT NULL, `Directory_` CHAR(72), "
+        "`Attributes` SHORT NOT NULL PRIMARY KEY `Feature`)";
+    const auto sql_insert = "INSERT INTO `Feature` (`Feature`, "
+        "`Feature_Parent`, `Title`, `Description`, `Display`, `Level`, "
+        "`Directory_`, `Attributes`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, all);
 }

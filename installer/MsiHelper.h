@@ -30,5 +30,6 @@ class MsiHelper {
 public:
     explicit MsiHelper() noexcept = delete;
     ~MsiHelper() = delete;
-    static MSIHANDLE MsiRecordSet(const std::vector<std::variant<std::string, int, std::filesystem::path>>& values);
+    static MSIHANDLE MsiRecordSet(const std::vector<std::variant<std::string,
+        int, std::filesystem::path>>& values);
 };

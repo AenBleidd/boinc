@@ -24,7 +24,8 @@
 
 class UIText : public Record {
 public:
-    explicit UIText(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit UIText(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~UIText() = default;
     MSIHANDLE getRecord() const override;
 private:

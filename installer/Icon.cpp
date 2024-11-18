@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Icon::Icon(const nlohmann::json& json, const std::filesystem::path& root_path) {
+Icon::Icon(const nlohmann::json& json,
+    const std::filesystem::path& root_path) {
     const std::string configuration_template = "%%CONFIGURATION%%";
     const std::string configuration =
 #ifdef _DEBUG
@@ -51,7 +52,9 @@ Icon::Icon(const nlohmann::json& json, const std::filesystem::path& root_path) {
 
 MSIHANDLE Icon::getRecord() const {
     if (!std::filesystem::exists(path)) {
-        throw std::filesystem::filesystem_error("File does not exist", path.string(), std::make_error_code(std::errc::no_such_file_or_directory));
+        throw std::filesystem::filesystem_error("File does not exist",
+            path.string(),
+            std::make_error_code(std::errc::no_such_file_or_directory));
     }
     return MsiHelper::MsiRecordSet({ name, path });
 }

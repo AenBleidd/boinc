@@ -23,7 +23,8 @@
 
 class DialogTable : public Generator<Dialog> {
 public:
-    explicit DialogTable(const nlohmann::json& json, const InstallerStrings& installerStrings);
+    explicit DialogTable(const nlohmann::json& json,
+        const InstallerStrings& installerStrings);
     ~DialogTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:

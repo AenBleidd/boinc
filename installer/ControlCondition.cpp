@@ -19,7 +19,8 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-ControlCondition::ControlCondition(const nlohmann::json& json, const std::string& dialog, const std::string& control)
+ControlCondition::ControlCondition(const nlohmann::json& json,
+    const std::string& dialog, const std::string& control)
     : dialog(dialog), control(control) {
     JsonHelper::get(json, "Action", action);
     JsonHelper::get(json, "Condition", condition);

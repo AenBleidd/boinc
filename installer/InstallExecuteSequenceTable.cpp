@@ -17,7 +17,8 @@
 
 #include "InstallExecuteSequenceTable.h"
 
-InstallExecuteSequenceTable::InstallExecuteSequenceTable(const nlohmann::json& json) {
+InstallExecuteSequenceTable::InstallExecuteSequenceTable(
+    const nlohmann::json& json) {
     std::cout << "Loading InstallExecuteSequenceTable..." << std::endl;
 
     for (const auto& value : json) {
@@ -28,8 +29,11 @@ InstallExecuteSequenceTable::InstallExecuteSequenceTable(const nlohmann::json& j
 bool InstallExecuteSequenceTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating InstallExecuteSequenceTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `InstallExecuteSequence` (`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), `Sequence` SHORT PRIMARY KEY `Action`)";
-    const auto sql_insert = "INSERT INTO `InstallExecuteSequence` (`Action`, `Condition`, `Sequence`) VALUES (?, ?, ?)";
+    const auto sql_create = "CREATE TABLE `InstallExecuteSequence` "
+        "(`Action` CHAR(72) NOT NULL, `Condition` CHAR(255), "
+        "`Sequence` SHORT PRIMARY KEY `Action`)";
+    const auto sql_insert = "INSERT INTO `InstallExecuteSequence` (`Action`, "
+        "`Condition`, `Sequence`) VALUES (?, ?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, actions);
 }

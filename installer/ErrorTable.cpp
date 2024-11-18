@@ -17,7 +17,8 @@
 
 #include "ErrorTable.h"
 
-ErrorTable::ErrorTable(const nlohmann::json& json, const InstallerStrings& installerStrings) {
+ErrorTable::ErrorTable(const nlohmann::json& json,
+    const InstallerStrings& installerStrings) {
     std::cout << "Loading ErrorTable..." << std::endl;
 
     for (const auto& error : json) {
@@ -28,8 +29,10 @@ ErrorTable::ErrorTable(const nlohmann::json& json, const InstallerStrings& insta
 bool ErrorTable::generate(MSIHANDLE hDatabase) {
     std::cout << "Generating ErrorTable..." << std::endl;
 
-    const auto sql_create = "CREATE TABLE `Error` (`Error` SHORT NOT NULL, `Message` LONGCHAR LOCALIZABLE PRIMARY KEY `Error`)";
-    const auto sql_insert = "INSERT INTO `Error` (`Error`, `Message`) VALUES (?, ?)";
+    const auto sql_create = "CREATE TABLE `Error` (`Error` SHORT NOT NULL, "
+        "`Message` LONGCHAR LOCALIZABLE PRIMARY KEY `Error`)";
+    const auto sql_insert = "INSERT INTO `Error` (`Error`, `Message`) "
+        "VALUES (?, ?)";
 
     return Generator::generate(hDatabase, sql_create, sql_insert, errors);    
 }

@@ -19,7 +19,9 @@
 #include "MsiHelper.h"
 #include "JsonHelper.h"
 
-Control::Control(const nlohmann::json& json, const InstallerStrings& installerStrings, const std::string& dialog) : dialog(dialog) {
+Control::Control(const nlohmann::json& json,
+    const InstallerStrings& installerStrings, const std::string& dialog) :
+    dialog(dialog) {
     JsonHelper::get(json, "Control", control);
     JsonHelper::get(json, "Type", type);
     JsonHelper::get(json, "X", x);
@@ -56,5 +58,6 @@ const std::vector<EventMapping>& Control::get_event_mappings() const noexcept {
 }
 
 MSIHANDLE Control::getRecord() const {
-    return MsiHelper::MsiRecordSet({ dialog, control, type, x, y, width, height, attributes, property, text, next, help });
+    return MsiHelper::MsiRecordSet({ dialog, control, type, x, y, width,
+        height, attributes, property, text, next, help });
 }

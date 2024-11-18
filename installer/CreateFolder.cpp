@@ -18,7 +18,9 @@
 #include "CreateFolder.h"
 #include "MsiHelper.h"
 
-CreateFolder::CreateFolder(const std::string& directory, const std::string& component) : directory(directory), component(component) {
+CreateFolder::CreateFolder(const std::string& directory,
+    const std::string& component) : directory(directory),
+    component(component) {
 }
 
 MSIHANDLE CreateFolder::getRecord() const {

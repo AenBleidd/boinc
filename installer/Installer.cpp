@@ -44,7 +44,8 @@
 
 #include "Installer.h"
 
-Installer::Installer(const std::filesystem::path& output_path) noexcept : output_path(output_path) {
+Installer::Installer(const std::filesystem::path& output_path) :
+    output_path(output_path) {
 }
 
 bool Installer::load(const std::filesystem::path& json) {
@@ -70,71 +71,96 @@ bool Installer::load(const std::filesystem::path& json) {
     return load_from_json(j, json.parent_path());
 }
 
-bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem::path& path)
+bool Installer::load_from_json(const nlohmann::json& json,
+    const std::filesystem::path& path)
 {
     try {
         if (JsonHelper::exists(json, "Summary")) {
-            tables["Summary"] = std::make_shared<SummaryInformationTable>(json["Summary"], installer_strings);
+            tables["Summary"] =std::make_shared<SummaryInformationTable>(
+                json["Summary"], installer_strings);
         }
         if (JsonHelper::exists(json, "ActionText")) {
-            tables["ActionText"] = std::make_shared<ActionTextTable>(json["ActionText"], installer_strings);
+            tables["ActionText"] = std::make_shared<ActionTextTable>(
+                json["ActionText"], installer_strings);
         }
         if (JsonHelper::exists(json, "AdminExecuteSequence")) {
-            tables["AdminExecuteSequence"] = std::make_shared<AdminExecuteSequenceTable>(json["AdminExecuteSequence"]);
+            tables["AdminExecuteSequence"] = 
+                std::make_shared<AdminExecuteSequenceTable>(
+                    json["AdminExecuteSequence"]);
         }
         if (JsonHelper::exists(json, "AdminUISequence")) {
-            tables["AdminUISequence"] = std::make_shared<AdminUISequenceTable>(json["AdminUISequence"]);
+            tables["AdminUISequence"] = std::make_shared<AdminUISequenceTable>(
+                json["AdminUISequence"]);
         }
         if (JsonHelper::exists(json, "AdvtExecuteSequence")) {
-            tables["AdvtExecuteSequence"] = std::make_shared<AdvtExecuteSequenceTable>(json["AdvtExecuteSequence"]);
+            tables["AdvtExecuteSequence"] =
+                std::make_shared<AdvtExecuteSequenceTable>(
+                    json["AdvtExecuteSequence"]);
         }
         if (JsonHelper::exists(json, "Binary")) {
-            tables["Binary"] = std::make_shared<BinaryTable>(json["Binary"], path);
+            tables["Binary"] = std::make_shared<BinaryTable>(
+                json["Binary"], path);
         }
         if (JsonHelper::exists(json, "Checkbox")) {
-            tables["Checkbox"] = std::make_shared<CheckboxTable>(json["Checkbox"]);
+            tables["Checkbox"] = std::make_shared<CheckboxTable>(
+                json["Checkbox"]);
         }
         if (JsonHelper::exists(json, "CustomAction")) {
-            tables["CustomAction"] = std::make_shared<CustomActionTable>(json["CustomAction"]);
+            tables["CustomAction"] = std::make_shared<CustomActionTable>(
+                json["CustomAction"]);
         }
         if (JsonHelper::exists(json, "Dialog")) {
-            tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);
+            tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"],
+                installer_strings);
         }
         if (JsonHelper::exists(json, "Directory")) {
-            tables["Directory"] = std::make_shared<DirectoryTable>(json["Directory"], path, output_path, installer_strings);
+            tables["Directory"] = std::make_shared<DirectoryTable>(
+                json["Directory"], path, output_path, installer_strings);
         }
         if (JsonHelper::exists(json, "Error")) {
-            tables["Error"] = std::make_shared<ErrorTable>(json["Error"], installer_strings);
+            tables["Error"] = std::make_shared<ErrorTable>(json["Error"],
+                installer_strings);
         }
         if (JsonHelper::exists(json, "Feature")) {
-            tables["Feature"] = std::make_shared<FeatureTable>(json["Feature"], installer_strings);
+            tables["Feature"] = std::make_shared<FeatureTable>(json["Feature"],
+                installer_strings);
         }
         if (JsonHelper::exists(json, "Icon")) {
             tables["Icon"] = std::make_shared<IconTable>(json["Icon"], path);
         }
         if (JsonHelper::exists(json, "InstallExecuteSequence")) {
-            tables["InstallExecuteSequence"] = std::make_shared<InstallExecuteSequenceTable>(json["InstallExecuteSequence"]);
+            tables["InstallExecuteSequence"] =
+                std::make_shared<InstallExecuteSequenceTable>(
+                    json["InstallExecuteSequence"]);
         }
         if (JsonHelper::exists(json, "InstallUISequence")) {
-            tables["InstallUISequence"] = std::make_shared<InstallUISequenceTable>(json["InstallUISequence"]);
+            tables["InstallUISequence"] =
+                std::make_shared<InstallUISequenceTable>(
+                    json["InstallUISequence"]);
         }
         if (JsonHelper::exists(json, "LaunchCondition")) {
-            tables["LaunchCondition"] = std::make_shared<LaunchConditionTable>(json["LaunchCondition"], installer_strings);
+            tables["LaunchCondition"] = std::make_shared<LaunchConditionTable>(
+                json["LaunchCondition"], installer_strings);
         }
         if (JsonHelper::exists(json, "Property")) {
-            tables["Property"] = std::make_shared<PropertyTable>(json["Property"], installer_strings);
+            tables["Property"] = std::make_shared<PropertyTable>(
+                json["Property"], installer_strings);
         }
         if (JsonHelper::exists(json, "RadioButton")) {
-            tables["RadioButton"] = std::make_shared<RadioButtonTable>(json["RadioButton"], installer_strings);
+            tables["RadioButton"] = std::make_shared<RadioButtonTable>(
+                json["RadioButton"], installer_strings);
         }
         if (JsonHelper::exists(json, "TextStyle")) {
-            tables["TextStyle"] = std::make_shared<TextStyleTable>(json["TextStyle"]);
+            tables["TextStyle"] = std::make_shared<TextStyleTable>(
+                json["TextStyle"]);
         }
         if (JsonHelper::exists(json, "UIText")) {
-            tables["UIText"] = std::make_shared<UITextTable>(json["UIText"], installer_strings);
+            tables["UIText"] = std::make_shared<UITextTable>(json["UIText"],
+                installer_strings);
         }
         if (JsonHelper::exists(json, "Upgrade")) {
-            tables["Upgrade"] = std::make_shared<UpgradeTable>(json["Upgrade"]);
+            tables["Upgrade"] = std::make_shared<UpgradeTable>(
+                json["Upgrade"]);
         }
     }
     catch (const std::exception& e) {
@@ -149,7 +175,8 @@ bool Installer::forceCodePage(MSIHANDLE hDatabase) {
     std::ofstream file(idt_path);
     file << std::endl << std::endl << "1252\t_ForceCodepage" << std::endl;
     file.close();
-    const auto result = MsiDatabaseImport(hDatabase, output_path.string().c_str(), "_ForceCodepage.idt");
+    const auto result = MsiDatabaseImport(hDatabase,
+        output_path.string().c_str(), "_ForceCodepage.idt");
     std::filesystem::remove(idt_path);
     if (result != ERROR_SUCCESS) {
         std::cerr << "MsiDatabaseImport failed: " << result << std::endl;
@@ -164,13 +191,16 @@ bool Installer::create_msi(const std::filesystem::path& msi) {
     try {
         if (std::filesystem::exists(msi)) {
             if (!std::filesystem::remove(msi)) {
-                std::cerr << "Failed to remove existing file " << msi << std::endl;
+                std::cerr << "Failed to remove existing file " << msi
+                    << std::endl;
                 return false;
             }
         }
-        auto result = MsiOpenDatabase(msi.string().c_str(), MSIDBOPEN_CREATE, &hDatabase);
+        auto result = MsiOpenDatabase(msi.string().c_str(), MSIDBOPEN_CREATE,
+            &hDatabase);
         if (result != ERROR_SUCCESS) {
-            std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
+            std::cerr << "MsiOpenDatabase failed with error " << result
+                << std::endl;
             return false;
         }
 
@@ -180,7 +210,8 @@ bool Installer::create_msi(const std::filesystem::path& msi) {
 
         for (const auto& table : tables) {
             if (!table.second->generate(hDatabase)) {
-                std::cerr << "Failed to write table " << table.first << std::endl;
+                std::cerr << "Failed to write table " << table.first
+                    << std::endl;
                 return false;
             }
         }

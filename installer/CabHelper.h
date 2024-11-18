@@ -26,5 +26,6 @@ class CabHelper {
 public:
     CabHelper() noexcept = delete;
     ~CabHelper() = delete;
-    static bool create(const std::filesystem::path& root_path, const std::string& cabname, std::vector<File>& files);
+    static bool create(const std::filesystem::path& root_path,
+        const std::string& cabname, std::vector<File>& files);
 };

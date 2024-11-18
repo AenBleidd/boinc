@@ -28,5 +28,6 @@ TextStyle::TextStyle(const nlohmann::json& json) {
 }
 
 MSIHANDLE TextStyle::getRecord() const {
-    return MsiHelper::MsiRecordSet({ textstyle, facename, size, color, stylebits });
+    return MsiHelper::MsiRecordSet({ textstyle, facename, size, color,
+        stylebits });
 }

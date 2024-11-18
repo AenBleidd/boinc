@@ -23,7 +23,8 @@
 
 class Registry : public Record {
 public:
-    explicit Registry(const nlohmann::json& json, const std::string& component);
+    explicit Registry(const nlohmann::json& json,
+        const std::string& component);
     ~Registry() = default;
     MSIHANDLE getRecord() const override;
 private:
