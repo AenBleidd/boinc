@@ -27,6 +27,7 @@
 #include "RemoveFile.h"
 #include "ServiceControl.h"
 #include "ServiceInstall.h"
+#include "Shortcut.h"
 #include "InstallerStrings.h"
 
 class Component : public Record {
@@ -41,6 +42,7 @@ public:
     std::vector<RemoveFile> getRemoveFiles() const;
     std::vector<ServiceControl> getServiceControls() const;
     std::vector<ServiceInstall> getServiceInstalls() const;
+    std::vector<Shortcut> getShortcuts() const;
 private:
     std::string component{};
     std::string componentId{};
@@ -55,4 +57,5 @@ private:
     std::vector<RemoveFile> removeFiles{};
     std::vector<ServiceControl> serviceControls{};
     std::vector<ServiceInstall> serviceInstalls{};
+    std::vector<Shortcut> shortcuts{};
 };

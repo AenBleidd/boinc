@@ -45,6 +45,10 @@ Component::Component(const nlohmann::json& json, const std::string& directory, c
     JsonHelper::handle(json, "ServiceInstall", [&](const auto& serviceInstall) {
         serviceInstalls.emplace_back(serviceInstall, component, installerStrings);
         });
+    JsonHelper::handle(json, "Shortcut", [&](const auto& shortcut) {
+        shortcuts.emplace_back(shortcut, component, installerStrings);
+        });
+
     componentId = GuidHelper::generate_guid();
     if (!files.empty()) {
         keyPath = files.front().getFileId();
@@ -84,4 +88,8 @@ std::vector<ServiceControl> Component::getServiceControls() const {
 
 std::vector<ServiceInstall> Component::getServiceInstalls() const {
     return serviceInstalls;
+}
+
+std::vector<Shortcut> Component::getShortcuts() const {
+    return shortcuts;
 }

@@ -85,6 +85,8 @@
     <ClCompile Include="..\installer\ServiceControlTable.cpp" />
     <ClCompile Include="..\installer\ServiceInstall.cpp" />
     <ClCompile Include="..\installer\ServiceInstallTable.cpp" />
+    <ClCompile Include="..\installer\Shortcut.cpp" />
+    <ClCompile Include="..\installer\ShortcutTable.cpp" />
     <ClCompile Include="..\installer\Stream.cpp" />
     <ClCompile Include="..\installer\StreamTable.cpp" />
     <ClCompile Include="..\installer\SummaryInformationTable.cpp" />
@@ -166,6 +168,8 @@
     <ClInclude Include="..\installer\ServiceControlTable.h" />
     <ClInclude Include="..\installer\ServiceInstall.h" />
     <ClInclude Include="..\installer\ServiceInstallTable.h" />
+    <ClInclude Include="..\installer\Shortcut.h" />
+    <ClInclude Include="..\installer\ShortcutTable.h" />
     <ClInclude Include="..\installer\Stream.h" />
     <ClInclude Include="..\installer\StreamTable.h" />
     <ClInclude Include="..\installer\SummaryInformationTable.h" />

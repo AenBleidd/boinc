@@ -6749,6 +6749,19 @@
                                             "DirProperty": "newfolder1",
                                             "InstallMode": 2
                                         }
+                                    ],
+                                    "Shortcut": [
+                                        {
+                                            "Shortcut": "BOINCManagerShortcut",
+                                            "Directory_": "newfolder1",
+                                            "Name": "IDS_FEATURE_BOINC_MANAGER_NAME",
+                                            "Target": "[INSTALLDIR]boincmgr.exe",
+                                            "Description": "IDS_FEATURE_BOINC_MANAGER_DESCRIPTION",
+                                            "Icon_": "BOINCManagerShortc_C26EE48317504401A066FAD831B8521A.exe",
+                                            "IconIndex": 0,
+                                            "ShowCmd": 1,
+                                            "WkDir": "INSTALLDIR"
+                                        }
                                     ]
                                 },
                                 {

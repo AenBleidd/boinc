@@ -15,18 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <sstream>
+#pragma once
 
-#include "ActionText.h"
-#include "MsiHelper.h"
-#include "JsonHelper.h"
+#include "Shortcut.h"
+#include "Directory.h"
+#include "Generator.h"
 
-ActionText::ActionText(const nlohmann::json& json, const InstallerStrings& installerStrings) {
-    JsonHelper::get(json, "Action", action);
-    JsonHelper::get(json, "Description", description, installerStrings);
-    JsonHelper::get(json, "Template", tmplt, installerStrings);
-}
-
-MSIHANDLE ActionText::getRecord() const {
-    return MsiHelper::MsiRecordSet({ action, description, tmplt });
-}
+class ShortcutTable : public Generator<Shortcut> {
+public:
+    explicit ShortcutTable(const std::vector<Directory>& directories);
+    ~ShortcutTable() = default;
+    bool generate(MSIHANDLE hDatabase) override;
+private:
+    std::vector<Shortcut> values{};
+};

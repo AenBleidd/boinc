@@ -3,18 +3,27 @@ import xml.etree.ElementTree as ET
 import json
 
 xml_data = r'''
-	<table name="Upgrade">
-		<col key="yes" def="s38">UpgradeCode</col>
-		<col key="yes" def="S20">VersionMin</col>
-		<col key="yes" def="S20">VersionMax</col>
-		<col key="yes" def="S255">Language</col>
-		<col key="yes" def="i4">Attributes</col>
-		<col def="S255">Remove</col>
-		<col def="s72">ActionProperty</col>
-		<col def="S72">ISDisplayName</col>
-		<row><td>{76DD37FC-EE51-408D-9FB5-3D59FC8ED22A}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ISACTIONPROP2</td><td>World Community Grid Upgrade (7.14.2)</td></row>
-		<row><td>{862B80F6-835D-4F72-8C4F-EE68ED34C6F8}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ISACTIONPROP1</td><td>World Community Grid Upgrade</td></row>
-		<row><td>{E913E54D-5080-42EC-A312-B21948BA1C02}</td><td>0000.0000.0000</td><td>9999.9999.9999</td><td></td><td>769</td><td/><td>ACTPROP_E913E54D_5080_42EC_A312_B21948BA1C02</td><td>General Upgrade</td></row>
+	<table name="Shortcut">
+		<col key="yes" def="s72">Shortcut</col>
+		<col def="s72">Directory_</col>
+		<col def="l128">Name</col>
+		<col def="s72">Component_</col>
+		<col def="s255">Target</col>
+		<col def="S255">Arguments</col>
+		<col def="L255">Description</col>
+		<col def="I2">Hotkey</col>
+		<col def="S72">Icon_</col>
+		<col def="I2">IconIndex</col>
+		<col def="I2">ShowCmd</col>
+		<col def="S72">WkDir</col>
+		<col def="S255">DisplayResourceDLL</col>
+		<col def="I2">DisplayResourceId</col>
+		<col def="S255">DescriptionResourceDLL</col>
+		<col def="I2">DescriptionResourceId</col>
+		<col def="S255">ISComments</col>
+		<col def="S255">ISShortcutName</col>
+		<col def="I4">ISAttributes</col>
+		<row><td>BOINCManagerShortcut</td><td>newfolder1</td><td>##IDS_FEATURE_BOINC_MANAGER_NAME##</td><td>_BOINCManagerStartMenu</td><td>[INSTALLDIR]boincmgr.exe</td><td/><td>##IDS_FEATURE_BOINC_MANAGER_DESCRIPTION##</td><td/><td>BOINCManagerShortc_C26EE48317504401A066FAD831B8521A.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 '''
 

@@ -155,7 +155,7 @@ bool FileTable::generate(MSIHANDLE hDatabase) {
         return false;
     }
     
-    if (!StreamTable({ Stream("#" + cabname, root_path / cabname) }).generate(hDatabase)) {
+    if (!StreamTable({ Stream(cabname, root_path / cabname) }).generate(hDatabase)) {
         std::cerr << "Failed to generate StreamTable" << std::endl;
         return false;
     }
