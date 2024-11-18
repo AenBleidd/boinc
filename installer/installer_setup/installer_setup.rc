@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "installer_icon.h"
+#include "installer_setup.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -12,6 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
+
+#define _STRINGIZE(x) #x
+#define STRINGIZE(x) _STRINGIZE(x)
 
 /////////////////////////////////////////////////////////////////////////////
 // Neutral resources
@@ -30,6 +33,19 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON                          ICON              "res\\boinc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Binary
+//
+
+IDB_MSI                           BINARY            STRINGIZE(BOINC_MSI)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+IDB_SPLASH                        BITMAP            "res\\setup.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -54,11 +70,11 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "Space Sciences Laboratory"
-            VALUE "FileDescription", "BOINC Installer Icon"
+            VALUE "FileDescription", "BOINC Installer Setup"
             VALUE "FileVersion", BOINC_VERSION_STRING "\0"
-            VALUE "InternalName", "installer_icon"
+            VALUE "InternalName", "installer_setup"
             VALUE "LegalCopyright", "� 2003-2024 University of California"
-            VALUE "OriginalFilename", "installer_icon.exe"
+            VALUE "OriginalFilename", "setup.exe"
             VALUE "ProductName", "BOINC client"
             VALUE "ProductVersion", BOINC_VERSION_STRING "\0"
         END

@@ -148,6 +148,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "installer", "installer.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "installer_icon", "installer_icon.vcxproj", "{2EE8AD38-EC77-495B-8E16-9950A8C2AD3F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "installer_setup", "installer_setup.vcxproj", "{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB5EF2AB-F453-463B-835A-65BBE7182378} = {BB5EF2AB-F453-463B-835A-65BBE7182378}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -474,6 +479,14 @@ Global
 		{2EE8AD38-EC77-495B-8E16-9950A8C2AD3F}.Release|ARM64.Build.0 = Release|ARM64
 		{2EE8AD38-EC77-495B-8E16-9950A8C2AD3F}.Release|x64.ActiveCfg = Release|x64
 		{2EE8AD38-EC77-495B-8E16-9950A8C2AD3F}.Release|x64.Build.0 = Release|x64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Debug|ARM64.Build.0 = Debug|ARM64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Debug|x64.ActiveCfg = Debug|x64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Debug|x64.Build.0 = Debug|x64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Release|ARM64.ActiveCfg = Release|ARM64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Release|ARM64.Build.0 = Release|ARM64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Release|x64.ActiveCfg = Release|x64
+		{80DFF29A-7B1D-41F4-BEAE-307CDB39BF54}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

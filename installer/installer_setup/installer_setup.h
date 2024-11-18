@@ -17,3 +17,5 @@
 #endif
 
 #define IDI_ICON 101
+#define IDB_SPLASH 102
+#define IDB_MSI 103

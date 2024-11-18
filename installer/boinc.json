@@ -1021,9 +1021,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -1240,9 +1240,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -1367,7 +1367,7 @@
                     "Type": "Line",
                     "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -1586,9 +1586,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -1790,9 +1790,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -1952,9 +1952,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -2088,9 +2088,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -2167,9 +2167,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -2487,9 +2487,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -2645,9 +2645,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -2941,9 +2941,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -3060,9 +3060,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -3332,7 +3332,7 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
                     "Width": 374,
                     "Height": 0,
@@ -3545,9 +3545,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -4161,26 +4161,6 @@
                     "Attributes": 1
                 },
                 {
-                    "Control": "Branding1",
-                    "Type": "Text",
-                    "X": 4,
-                    "Y": 229,
-                    "Width": 50,
-                    "Height": 13,
-                    "Attributes": 3,
-                    "Text": "ID_STRING19"
-                },
-                {
-                    "Control": "Branding2",
-                    "Type": "Text",
-                    "X": 3,
-                    "Y": 228,
-                    "Width": 50,
-                    "Height": 13,
-                    "Attributes": 65537,
-                    "Text": "ID_STRING20"
-                },
-                {
                     "Control": "Cancel",
                     "Type": "PushButton",
                     "X": 301,
@@ -4247,9 +4227,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -4431,26 +4411,6 @@
                     "Attributes": 1
                 },
                 {
-                    "Control": "Branding1",
-                    "Type": "Text",
-                    "X": 4,
-                    "Y": 229,
-                    "Width": 50,
-                    "Height": 13,
-                    "Attributes": 3,
-                    "Text": "ID_STRING27"
-                },
-                {
-                    "Control": "Branding2",
-                    "Type": "Text",
-                    "X": 3,
-                    "Y": 228,
-                    "Width": 50,
-                    "Height": 13,
-                    "Attributes": 65537,
-                    "Text": "ID_STRING28"
-                },
-                {
                     "Control": "Cancel",
                     "Type": "PushButton",
                     "X": 301,
@@ -4568,9 +4528,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -5358,9 +5318,9 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
-                    "Width": 326,
+                    "Width": 374,
                     "Height": 0,
                     "Attributes": 1
                 },
@@ -5674,7 +5634,7 @@
                 {
                     "Control": "DlgLine",
                     "Type": "Line",
-                    "X": 48,
+                    "X": 0,
                     "Y": 234,
                     "Width": 374,
                     "Height": 0,

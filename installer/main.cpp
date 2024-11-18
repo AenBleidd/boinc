@@ -19,7 +19,7 @@
 
 #include "Installer.h"
 
-int main(int argc, char** argv) {
+int main(int, char**) {
     const std::string configuration =
 #ifdef _DEBUG
         "Debug";

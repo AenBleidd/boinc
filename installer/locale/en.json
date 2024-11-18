@@ -3109,7 +3109,7 @@
     },
     {
         "Id": "IDS_PRODUCTNAME_INSTALLSHIELD",
-        "Value": "[ProductName] - InstallShield Wizard"
+        "Value": "[ProductName] - BOINC Installer Wizard"
     },
     {
         "Id": "IDS_PROGMSG_IIS_CREATEAPPPOOL",
@@ -3553,11 +3553,11 @@
     },
     {
         "Id": "IDS__IsAdminInstallPointWelcome_ServerImage",
-        "Value": "The InstallShield(R) Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next."
+        "Value": "The BOINC Installer Wizard will create a server image of [ProductName] at a specified network location. To continue, click Next."
     },
     {
         "Id": "IDS__IsAdminInstallPointWelcome_Wizard",
-        "Value": "{&TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]"
+        "Value": "{&TahomaBold10}Welcome to the BOINC Installer Wizard for [ProductName]"
     },
     {
         "Id": "IDS__IsAdminInstallPoint_Change",
@@ -3769,7 +3769,7 @@
     },
     {
         "Id": "IDS__IsExitDialog_InstallSuccess",
-        "Value": "The InstallShield Wizard has successfully installed [ProductName]. Click Finish to exit the wizard."
+        "Value": "The BOINC Installer Wizard has successfully installed [ProductName]. Click Finish to exit the wizard."
     },
     {
         "Id": "IDS__IsExitDialog_LaunchProgram",
@@ -3781,7 +3781,7 @@
     },
     {
         "Id": "IDS__IsExitDialog_UninstallSuccess",
-        "Value": "The InstallShield Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard."
+        "Value": "The BOINC Installer Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard."
     },
     {
         "Id": "IDS__IsExitDialog_Update_InternetConnection",
@@ -3801,7 +3801,7 @@
     },
     {
         "Id": "IDS__IsExitDialog_WizardCompleted",
-        "Value": "{&TahomaBold10}InstallShield Wizard Completed"
+        "Value": "{&TahomaBold10}BOINC Installer Wizard Completed"
     },
     {
         "Id": "IDS__IsFatalError_ClickFinish",
@@ -3825,7 +3825,7 @@
     },
     {
         "Id": "IDS__IsFatalError_WizardCompleted",
-        "Value": "{&TahomaBold10}InstallShield Wizard Completed"
+        "Value": "{&TahomaBold10}BOINC Installer Wizard Completed"
     },
     {
         "Id": "IDS__IsFatalError_WizardInterrupted",
@@ -3893,11 +3893,11 @@
     },
     {
         "Id": "IDS__IsInitDlg_PreparingWizard",
-        "Value": "[ProductName] Setup is preparing the InstallShield Wizard which will guide you through the program setup process.  Please wait."
+        "Value": "[ProductName] Setup is preparing the BOINC Installer Wizard which will guide you through the program setup process.  Please wait."
     },
     {
         "Id": "IDS__IsInitDlg_WelcomeWizard",
-        "Value": "{&TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]"
+        "Value": "{&TahomaBold10}Welcome to the BOINC Installer Wizard for [ProductName]"
     },
     {
         "Id": "IDS__IsLicenseDlg_LicenseAgreement",
@@ -3961,11 +3961,11 @@
     },
     {
         "Id": "IDS__IsMaintenanceWelcome_MaintenanceOptionsDescription",
-        "Value": "The InstallShield(R) Wizard will allow you to modify, repair, or remove [ProductName]. To continue, click Next."
+        "Value": "The BOINC Installer Wizard will allow you to modify, repair, or remove [ProductName]. To continue, click Next."
     },
     {
         "Id": "IDS__IsMaintenanceWelcome_WizardWelcome",
-        "Value": "{&TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]"
+        "Value": "{&TahomaBold10}Welcome to the BOINC Installer Wizard for [ProductName]"
     },
     {
         "Id": "IDS__IsMsiRMFilesInUse_ApplicationsUsingFiles",
@@ -3981,11 +3981,11 @@
     },
     {
         "Id": "IDS__IsPatchDlg_PatchClickUpdate",
-        "Value": "The InstallShield(R) Wizard will install the Patch for [ProductName] on your computer.  To continue, click Update."
+        "Value": "The BOINC Installer Wizard will install the Patch for [ProductName] on your computer.  To continue, click Update."
     },
     {
         "Id": "IDS__IsPatchDlg_PatchWizard",
-        "Value": "[ProductName] Patch - InstallShield Wizard"
+        "Value": "[ProductName] Patch - BOINC Installer Wizard"
     },
     {
         "Id": "IDS__IsPatchDlg_Update",
@@ -4037,11 +4037,11 @@
     },
     {
         "Id": "IDS__IsProgressDlg_WaitUninstall",
-        "Value": "Please wait while the InstallShield Wizard uninstalls [ProductName]. This may take several minutes."
+        "Value": "Please wait while the BOINC Installer Wizard uninstalls [ProductName]. This may take several minutes."
     },
     {
         "Id": "IDS__IsProgressDlg_WaitUninstall2",
-        "Value": "Please wait while the InstallShield Wizard installs [ProductName]. This may take several minutes."
+        "Value": "Please wait while the BOINC Installer Wizard installs [ProductName]. This may take several minutes."
     },
     {
         "Id": "IDS__IsReadmeDlg_Cancel",
@@ -4085,7 +4085,7 @@
     },
     {
         "Id": "IDS__IsResumeDlg_ResumeSuspended",
-        "Value": "The InstallShield(R) Wizard will complete the installation of [ProductName] on your computer. To continue, click Next."
+        "Value": "The BOINC Installer Wizard will complete the installation of [ProductName] on your computer. To continue, click Next."
     },
     {
         "Id": "IDS__IsResumeDlg_Resuming",
@@ -4093,7 +4093,7 @@
     },
     {
         "Id": "IDS__IsResumeDlg_WizardResume",
-        "Value": "The InstallShield(R) Wizard will complete the upgrade of [ProductName] on your computer. To continue, click Next."
+        "Value": "The BOINC Installer Wizard will complete the upgrade of [ProductName] on your computer. To continue, click Next."
     },
     {
         "Id": "IDS__IsSelectDomainOrServer",
@@ -4169,7 +4169,7 @@
     },
     {
         "Id": "IDS__IsUserExit_WizardCompleted",
-        "Value": "{&TahomaBold10}InstallShield Wizard Completed"
+        "Value": "{&TahomaBold10}BOINC Installer Wizard Completed"
     },
     {
         "Id": "IDS__IsUserExit_WizardInterrupted",
@@ -4265,7 +4265,7 @@
     },
     {
         "Id": "IDS__IsWelcomeDlg_InstallProductName",
-        "Value": "The InstallShield(R) Wizard will install [ProductName] on your computer. To continue, click Next."
+        "Value": "The BOINC Installer Wizard will install [ProductName] on your computer. To continue, click Next."
     },
     {
         "Id": "IDS__IsWelcomeDlg_WarningCopyright",
@@ -4273,7 +4273,7 @@
     },
     {
         "Id": "IDS__IsWelcomeDlg_WelcomeProductName",
-        "Value": "{&TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]"
+        "Value": "{&TahomaBold10}Welcome to the BOINC Installer Wizard for [ProductName]"
     },
     {
         "Id": "IDS__ServiceConfigDlg_DialogDescription",
@@ -4365,19 +4365,11 @@
     },
     {
         "Id": "ID_STRING18",
-        "Value": "[ProductName] - InstallShield Wizard"
-    },
-    {
-        "Id": "ID_STRING19",
-        "Value": "{&MSSWhiteSerif8}InstallShield"
+        "Value": "[ProductName] - BOINC Installer Wizard"
     },
     {
         "Id": "ID_STRING2",
         "Value": "boot"
-    },
-    {
-        "Id": "ID_STRING20",
-        "Value": "{&Tahoma8}InstallShield"
     },
     {
         "Id": "ID_STRING21",
@@ -4401,15 +4393,15 @@
     },
     {
         "Id": "ID_STRING26",
-        "Value": "[ProductName] - InstallShield Wizard"
+        "Value": "[ProductName] - BOINC Installer Wizard"
     },
     {
         "Id": "ID_STRING27",
-        "Value": "{&MSSWhiteSerif8}InstallShield"
+        "Value": "{&MSSWhiteSerif8}BOINC Installer"
     },
     {
         "Id": "ID_STRING28",
-        "Value": "{&Tahoma8}InstallShield"
+        "Value": "{&Tahoma8}BOINC Installer"
     },
     {
         "Id": "ID_STRING29",
