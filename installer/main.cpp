@@ -20,9 +20,22 @@
 #include "Installer.h"
 
 int main(int argc, char** argv) {
-    Installer installer;
+    const std::string configuration =
+#ifdef _DEBUG
+        "Debug";
+#else
+        "Release";
+#endif
+    const std::string platform =
+#ifdef _ARM64_
+        "ARM64";
+#else
+        "x64";
+#endif
+    const auto output_path = std::filesystem::current_path() / "Build" / platform / configuration;
+    Installer installer(output_path);
     if (!installer.load(std::filesystem::current_path() / "../installer/boinc.json")) {
         return 1;
     }
-    return installer.create_msi(std::filesystem::current_path() / "boinc.msi") ? 0 : 1;
+    return installer.create_msi(output_path / "boinc.msi") ? 0 : 1;
 }

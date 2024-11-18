@@ -22,10 +22,11 @@
 
 class DirectoryTable : public Generator<Directory> {
 public:
-    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const InstallerStrings& installerStrings);
+    explicit DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const std::filesystem::path& output_path, const InstallerStrings& installerStrings);
     ~DirectoryTable() = default;
     bool generate(MSIHANDLE hDatabase) override;
 private:
     std::vector<Directory> directories{};
     std::filesystem::path root_path{};
+    std::filesystem::path output_path{};
 };

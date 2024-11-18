@@ -125,7 +125,7 @@ std::filesystem::path FileTable::GetAbsolutePath(const std::filesystem::path& fi
     return root_path / p;
 }
 
-FileTable::FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path) : root_path(root_path) {
+FileTable::FileTable(const std::vector<Directory>& directories, const std::filesystem::path& root_path, const std::filesystem::path& output_path) : root_path(root_path), output_path(output_path) {
     int sequence = 0;
     for (const auto& directory : directories) {
         for (const auto& component : directory.getComponents()) {
@@ -150,16 +150,16 @@ FileTable::FileTable(const std::vector<Directory>& directories, const std::files
 
 bool FileTable::generate(MSIHANDLE hDatabase) {
     const auto cabname = std::string("boinc.cab");
-    if (!CabHelper::create(root_path, cabname, files)) {
+    if (!CabHelper::create(output_path, cabname, files)) {
         return false;
     }
     
-    if (!StreamTable({ Stream(cabname, root_path / cabname) }).generate(hDatabase)) {
+    if (!StreamTable({ Stream(cabname, output_path / cabname) }).generate(hDatabase)) {
         std::cerr << "Failed to generate StreamTable" << std::endl;
         return false;
     }
 
-    std::filesystem::remove(root_path / cabname);
+    std::filesystem::remove(output_path / cabname);
 
     if (!MediaTable({ Media(1, static_cast<int>(files.size()), "1", "#" + cabname, "DISK1", "")}).generate(hDatabase)) {
         std::cerr << "Failed to generate MediaTable" << std::endl;

@@ -27,7 +27,7 @@
 #include "ServiceInstallTable.h"
 #include "ShortcutTable.h"
 
-DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const InstallerStrings& installerStrings) : root_path (root_path) {
+DirectoryTable::DirectoryTable(const nlohmann::json& json, const std::filesystem::path& root_path, const std::filesystem::path& output_path, const InstallerStrings& installerStrings) : root_path (root_path), output_path(output_path) {
     std::cout << "Loading DirectoryTable..." << std::endl;
     for (const auto& directory : json) {
         directories.emplace_back(directory, "", installerStrings);
@@ -47,7 +47,7 @@ bool DirectoryTable::generate(MSIHANDLE hDatabase) {
         std::cerr << "Failed to generate CreateFolderTable" << std::endl;
         return false;
     }
-    if (!FileTable(directories, root_path).generate(hDatabase)) {
+    if (!FileTable(directories, root_path, output_path).generate(hDatabase)) {
         std::cerr << "Failed to generate FileTable" << std::endl;
         return false;
     }

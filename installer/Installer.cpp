@@ -44,6 +44,9 @@
 
 #include "Installer.h"
 
+Installer::Installer(const std::filesystem::path& output_path) noexcept : output_path(output_path) {
+}
+
 bool Installer::load(const std::filesystem::path& json) {
     if (!installer_strings.load(json.parent_path())) {
         return false;
@@ -98,7 +101,7 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
             tables["Dialog"] = std::make_shared<DialogTable>(json["Dialog"], installer_strings);
         }
         if (JsonHelper::exists(json, "Directory")) {
-            tables["Directory"] = std::make_shared<DirectoryTable>(json["Directory"], path, installer_strings);
+            tables["Directory"] = std::make_shared<DirectoryTable>(json["Directory"], path, output_path, installer_strings);
         }
         if (JsonHelper::exists(json, "Error")) {
             tables["Error"] = std::make_shared<ErrorTable>(json["Error"], installer_strings);
@@ -141,6 +144,20 @@ bool Installer::load_from_json(const nlohmann::json& json, const std::filesystem
     return true;
 }
 
+bool Installer::forceCodePage(MSIHANDLE hDatabase) {
+    const auto idt_path = output_path / "_ForceCodepage.idt";
+    std::ofstream file(idt_path);
+    file << std::endl << std::endl << "1252\t_ForceCodepage" << std::endl;
+    file.close();
+    const auto result = MsiDatabaseImport(hDatabase, output_path.string().c_str(), "_ForceCodepage.idt");
+    std::filesystem::remove(idt_path);
+    if (result != ERROR_SUCCESS) {
+        std::cerr << "MsiDatabaseImport failed: " << result << std::endl;
+        return false;
+    }
+    return true;
+}
+
 bool Installer::create_msi(const std::filesystem::path& msi) {
     MSIHANDLE hDatabase;
 
@@ -154,6 +171,10 @@ bool Installer::create_msi(const std::filesystem::path& msi) {
         auto result = MsiOpenDatabase(msi.string().c_str(), MSIDBOPEN_CREATE, &hDatabase);
         if (result != ERROR_SUCCESS) {
             std::cerr << "MsiOpenDatabase failed with error " << result << std::endl;
+            return false;
+        }
+
+        if (!forceCodePage(hDatabase)) {
             return false;
         }
 
