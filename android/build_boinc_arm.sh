@@ -33,8 +33,6 @@ CONFIG_LDFLAGS="-L$VCPKG_DIR/lib"
 CONFIG_FLAGS="--with-ssl=$VCPKG_DIR --with-libcurl=$VCPKG_DIR"
 export _libcurl_pc="$VCPKG_DIR/lib/pkgconfig/libcurl.pc"
 
-
-
 export PATH="$TCBINARIES:$TCINCLUDES/bin:$PATH"
 export CC=armv7a-linux-androideabi16-clang
 export CXX=armv7a-linux-androideabi16-clang++
@@ -70,6 +68,7 @@ if [ -n "$COMPILEBOINC" ]; then
     fi
     if [ -n "$CONFIGURE" ]; then
         ./_autosetup
+        export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
         ./configure --host=arm-linux --with-boinc-platform="arm-android-linux-gnu" $CONFIG_FLAGS --disable-server --disable-manager --disable-shared --enable-static --disable-largefile
     fi
     echo MAKE_FLAGS=$MAKE_FLAGS

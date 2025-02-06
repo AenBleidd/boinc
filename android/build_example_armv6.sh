@@ -66,6 +66,7 @@ if [ -n "$COMPILEBOINC" ]; then
     fi
     if [ -n "$CONFIGURE" ]; then
         ./_autosetup
+        export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
         ./configure --host=armv6-linux --with-boinc-platform="armv-android-linux-gnu" --prefix="$TCINCLUDES" --libdir="$TCINCLUDES/lib" $CONFIG_FLAGS --enable-apps --disable-server --disable-manager --disable-client --disable-libraries --disable-shared --enable-static --disable-largefile --enable-boinczip
     fi
     echo MAKE_FLAGS=$MAKE_FLAGS

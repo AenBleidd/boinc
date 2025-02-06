@@ -67,6 +67,7 @@ if [ -n "$COMPILEBOINC" ]; then
     fi
     if [ -n "$CONFIGURE" ]; then
         ./_autosetup
+        export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
         ./configure --host=i686-linux --with-boinc-platform="x86-android-linux-gnu" $CONFIG_FLAGS --disable-server --disable-manager --disable-shared --enable-static --disable-largefile
     fi
     echo MAKE_FLAGS=$MAKE_FLAGS
