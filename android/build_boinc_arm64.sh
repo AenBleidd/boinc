@@ -23,6 +23,7 @@ export TOOLCHAINROOT="$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64"
 export TCBINARIES="$TOOLCHAINROOT/bin"
 export TCINCLUDES="$ANDROIDTC/aarch64-linux-android"
 export TCSYSROOT="$TOOLCHAINROOT/sysroot"
+export STDCPPTC="$TCINCLUDES/lib/libstdc++.a"
 export VCPKG_DIR=$VCPKG_ROOT/installed/arm64-android
 
 CONFIG_FLAGS=""
