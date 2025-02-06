@@ -11,8 +11,6 @@ BUILD_DIR="$PWD/3rdParty/wasm"
 VCPKG_ROOT="$BUILD_DIR/vcpkg"
 EMSDK_ROOT="$BUILD_DIR/emsdk"
 export VCPKG_DIR="$VCPKG_ROOT/installed/wasm32-emscripten"
-export CFLAGS="-pthread"
-export CXXFLAGS="-pthread"
 
 wasm/update_emsdk.sh
 source $EMSDK_ROOT/emsdk_env.sh

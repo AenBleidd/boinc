@@ -142,8 +142,6 @@ export VCPKG_ROOT="$BUILD_DIR/vcpkg"
 export ANDROID_TC=$PREFIX
 export VERBOSE=$verbose
 export CI=$ci
-export CFLAGS="-pthread"
-export CXXFLAGS="-pthread"
 
 if [ "$arch" = armv6 ]; then
     export ANDROID_TC_FLAGFILE="$PREFIX/ANDROID_TC_WITH_NDK-${NDK_ARMV6_VERSION}-${arch}_done"
