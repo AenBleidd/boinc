@@ -69,15 +69,6 @@ if [ -n "$COMPILEBOINC" ]; then
     fi
     if [ -n "$CONFIGURE" ]; then
         ./_autosetup
-        export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
-        export PATH="$TCBINARIES:$TCINCLUDES/bin:$PATH"
-        export CC=armv7a-linux-androideabi16-clang
-        export CXX=armv7a-linux-androideabi16-clang++
-        export LD=arm-linux-androideabi-ld
-        export CFLAGS="--sysroot=$TCSYSROOT -DANDROID -DDECLARE_TIMEZONE -Wall -I$TCINCLUDES/include -O3 -fomit-frame-pointer -fPIE -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -D__ANDROID_API__=16"
-        export CXXFLAGS="--sysroot=$TCSYSROOT -DANDROID -Wall -I$TCINCLUDES/include -funroll-loops -fexceptions -O3 -fomit-frame-pointer -fPIE -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -D__ANDROID_API__=16"
-        export LDFLAGS="$CONFIG_LDFLAGS -llog -fPIE -pie -latomic -static-libstdc++ -march=armv7-a -Wl,--fix-cortex-a8"
-        export GDB_CFLAGS="--sysroot=$TCSYSROOT -Wall -g -I$TCINCLUDES/include"
         ./configure --host=arm-linux --with-boinc-platform="arm-android-linux-gnu" $CONFIG_FLAGS --disable-server --disable-manager --disable-shared --enable-static --disable-largefile
     fi
     echo MAKE_FLAGS=$MAKE_FLAGS

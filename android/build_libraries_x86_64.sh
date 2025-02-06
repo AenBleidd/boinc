@@ -32,6 +32,7 @@ CONFIG_LDFLAGS=""
 CONFIG_LDFLAGS="-L$VCPKG_DIR/lib"
 CONFIG_FLAGS="--with-ssl=$VCPKG_DIR --with-libcurl=$VCPKG_DIR"
 export _libcurl_pc="$VCPKG_DIR/lib/pkgconfig/libcurl.pc"
+export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
 
 export PATH="$TCBINARIES:$TCINCLUDES/bin:$PATH"
 export CC=x86_64-linux-android21-clang
@@ -70,7 +71,6 @@ if [ -n "$COMPILEBOINC" ]; then
     fi
     if [ -n "$CONFIGURE" ]; then
         ./_autosetup
-        export PKG_CONFIG_PATH=$VCPKG_DIR/lib/pkgconfig/
         ./configure --host=x86_64-linux --with-boinc-platform="x86_64-android-linux-gnu" --with-boinc-alt-platform="x86-android-linux-gnu" --prefix="$TCINCLUDES" --libdir="$TCINCLUDES/lib" $CONFIG_FLAGS --disable-server --disable-manager --disable-client --disable-shared --enable-static --enable-boinczip
     fi
     echo MAKE_FLAGS=$MAKE_FLAGS
