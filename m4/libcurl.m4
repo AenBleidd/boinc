@@ -253,6 +253,7 @@ AC_DEFUN([LIBCURL_CHECK_CONFIG],
         AC_CACHE_CHECK([whether libcurl is usable],
            [libcurl_cv_lib_curl_usable],
            [
+            echo "CPPFLAGS: [${CPPFLAGS}] LIBS: [${LIBS}] LIBCURL:[${LIBCURL}]"
            _libcurl_save_cppflags=$CPPFLAGS
            CPPFLAGS="$CPPFLAGS $LIBCURL_CPPFLAGS"
            _libcurl_save_libs=$LIBS
