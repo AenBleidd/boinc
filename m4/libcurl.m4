@@ -124,6 +124,11 @@ AC_DEFUN([LIBCURL_CHECK_CONFIG],
                     LIBCURL=`echo $LIBCURL -latomic`
                     ;;
               esac
+
+              # there is a bug with libcurl built with openssl using vcpkg
+              # that fails on this test binary only
+              # remove -pthread from LIBS to avoid the issue
+              LIBCURL=`echo $LIBCURL | sed -e 's|-pthread||g'`
            fi
 
            # All curl-config scripts support --feature
@@ -253,7 +258,7 @@ AC_DEFUN([LIBCURL_CHECK_CONFIG],
         AC_CACHE_CHECK([whether libcurl is usable],
            [libcurl_cv_lib_curl_usable],
            [
-            echo "CPPFLAGS: [${CPPFLAGS}] LIBS: [${LIBS}] LIBCURL:[${LIBCURL}]"
+            echo "CPPFLAGS: [${CPPFLAGS}] LIBCURL_CPPFLAGS: [$LIBCURL_CPPFLAGS] LIBS: [${LIBS}] LIBCURL:[${LIBCURL}]"
            _libcurl_save_cppflags=$CPPFLAGS
            CPPFLAGS="$CPPFLAGS $LIBCURL_CPPFLAGS"
            _libcurl_save_libs=$LIBS
@@ -261,7 +266,7 @@ AC_DEFUN([LIBCURL_CHECK_CONFIG],
            # that fails on this test binary only
            # remove -pthread from LIBS to avoid the issue
            LIBS="$LIBS $LIBCURL"
-           LIBS="`echo $LIBS | sed -e 's/-pthread//g'`"
+         #   LIBS="`echo $LIBS | sed -e 's/-pthread//g'`"
 
            AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <curl/curl.h>],[
 /* Try and use a few common options to force a failure if we are
@@ -294,7 +299,7 @@ x=CURLOPT_VERBOSE;
            # that fails on this test binary only
            # remove -pthread from LIBS to avoid the issue
            LIBS="$LIBS $LIBCURL"
-           LIBS="`echo $LIBS | sed -e 's/-pthread//g'`"
+         #   LIBS="`echo $LIBS | sed -e 's/-pthread//g'`"
 
            AC_CHECK_FUNC(curl_free,,
                 AC_DEFINE(curl_free,free,
